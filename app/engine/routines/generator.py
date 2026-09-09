@@ -72,7 +72,13 @@ RATIO_TOLERANCE = 0.1
 TIME_TOLERANCE = 1.05
 MIN_ITEMS_PER_DAY = 3
 VOLUME_PASSES = 4
-AVERAGE_SET_MINUTES = 2.5
+# Cuánto ocupa de verdad una serie media: trabajo más el descanso que toque.
+# Sale de la tabla de descansos a propósito: si mañana sube el suelo de descanso,
+# el reparto de volumen se entera solo en vez de planificar de más y recortar.
+TYPICAL_REPS = 12
+AVERAGE_SET_MINUTES = (
+    TYPICAL_REPS * rx.SECONDS_PER_REP + sum(rx.REST_SECONDS.values()) / len(rx.REST_SECONDS)
+) / 60
 MIN_SCALED_LOW = 3
 ROLE_TRIM_ORDER = (ISOLATION, ACCESSORY, SECONDARY, MAIN)
 
@@ -403,10 +409,21 @@ def _fit_time(days: list[DraftDay], inputs: RoutineInputs, tier: str, notes: lis
     """Trim sets, then whole isolation/accessory exercises, until the day fits."""
     budget = inputs.session_minutes
     for day in days:
+        before = len(day.items)
         while _day_minutes(day, inputs, tier) > budget * TIME_TOLERANCE:
             if not _trim_once(day):
                 break
             day.trimmed = True
+        dropped = before - len(day.items)
+        if dropped:
+            # El descanso no se toca: lo que sobra son ejercicios, y se dice cuáles.
+            notes.append(
+                Note(
+                    "routine.exercises_dropped_for_time",
+                    level="warning",
+                    params={"day": day.template.name, "n": dropped, "minutes": budget},
+                )
+            )
         estimated = _day_minutes(day, inputs, tier)
         if day.trimmed:
             notes.append(

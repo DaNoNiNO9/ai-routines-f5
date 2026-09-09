@@ -5,8 +5,10 @@
   12-20.
 - RIR descends across the mesocycle from 3 to 0-1 (Helms et al. 2016 on
   RPE/RIR-based autoregulation; Zourdos et al. 2016).
-- Rest: 2-4 min for compounds, 60-90 s for isolation (Schoenfeld et al. 2016
-  found longer rests favour hypertrophy on compounds).
+- Rest: never under two minutes, 3 min on the main compounds (Schoenfeld et
+  al. 2016 found longer rests favour hypertrophy). A minute of rest looks
+  efficient on paper and is not: the following sets lose reps, so the
+  effective volume of the session drops even though the plan says otherwise.
 - Double progression: reach the top of the rep range in every set at the
   target RIR, then add the load increment and return to the bottom.
 - Deload every 4-8 weeks depending on experience and reported fatigue.
@@ -35,8 +37,14 @@ REP_RANGES: dict[str, tuple[int, int]] = {
 HEAVY_RANGE = (3, 6)
 CORE_RANGE = (10, 15)
 
-REST_SECONDS: dict[str, int] = {MAIN: 180, SECONDARY: 150, ACCESSORY: 90, ISOLATION: 60}
-BODYWEIGHT_REST_SECONDS: dict[str, int] = {MAIN: 90, SECONDARY: 90, ACCESSORY: 60, ISOLATION: 45}
+MIN_REST_SECONDS = 120
+REST_SECONDS: dict[str, int] = {MAIN: 180, SECONDARY: 180, ACCESSORY: 150, ISOLATION: 120}
+BODYWEIGHT_REST_SECONDS: dict[str, int] = {
+    MAIN: 150,
+    SECONDARY: 150,
+    ACCESSORY: 120,
+    ISOLATION: 120,
+}
 TEMPO_COMPOUND = "2-0-1-0"
 TEMPO_ISOLATION = "3-1-1-0"
 
@@ -114,9 +122,14 @@ def mesocycle_and_deload(tier: str, reported_fatigue: int | None) -> tuple[int, 
 
 
 def rest_seconds(exercise: ExerciseInfo, role: str) -> int:
-    """Rest between sets: long for loaded compounds, shorter for bodyweight work."""
+    """Rest between sets, never under ``MIN_REST_SECONDS``.
+
+    The floor is deliberate and applies to isolation and bodyweight work too:
+    resting less looks like fitting more work into the hour, but the next set
+    comes out short of reps and the session ends with less effective volume.
+    """
     table = BODYWEIGHT_REST_SECONDS if exercise.is_bodyweight else REST_SECONDS
-    return table[role]
+    return max(table[role], MIN_REST_SECONDS)
 
 
 def tempo_for(_exercise: ExerciseInfo, role: str) -> str:
