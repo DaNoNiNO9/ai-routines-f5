@@ -93,3 +93,12 @@ def test_every_icon_used_in_templates_is_in_the_sprite() -> None:
         usados.update(re.findall(r"icon\(\s*'([\w-]+)'", plantilla.read_text(encoding="utf-8")))
     assert usados, "ninguna plantilla usa iconos"
     assert usados <= disponibles, f"faltan en el sprite: {sorted(usados - disponibles)}"
+
+
+def test_the_embedded_sprite_matches_the_source() -> None:
+    """``scripts/inline_icons.py`` copies one into the other; they cannot drift."""
+    plantilla = (BASE_DIR / "app" / "templates" / "components" / "sprite.html").read_text(
+        encoding="utf-8"
+    )
+    fuente = ICONS.read_text(encoding="utf-8")
+    assert plantilla.endswith(fuente), "sprite.html no está al día: python scripts/inline_icons.py"
