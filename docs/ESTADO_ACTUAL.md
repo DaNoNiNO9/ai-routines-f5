@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Traducción al inglés terminada.** Siguiente: Fase 13 (auditoría final), empezando.
+**Fase 13 (auditoría final) en curso.** Hecho: motor (perfiles extremos). Pendiente: robustez web, seguridad, límites de §3.5, rendimiento y calidad.
 
 ## Terminado
 
@@ -29,7 +29,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 573 tests en verde |
+| Suite | 591 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -37,7 +37,9 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Arrancando la **Fase 13 (auditoría final)**. La traducción al inglés está cerrada y verificada contra el servidor: interfaz, avisos del motor, PDF y LEEME del ZIP en inglés, y los nombres de ejercicios y material salen de `name_en`.
+**Fase 13, bloque del motor terminado.** 1536 perfiles de nutrición, 640 rutinas y 3600 revisiones de ajuste con datos de los bordes. Tres arreglos: días de rutina que salían vacíos, bajadas de calorías que podían cruzar el suelo de seguridad (y decir «bajamos» mientras subían), y los códigos internos del motor que se colaban en los avisos.
+
+Siguiente bloque: robustez de la capa web (excepciones, transacciones, concurrencia).
 
 ## Siguiente paso
 
@@ -56,7 +58,6 @@ Después: cuando pases la URL, el remoto de GitHub.
 ## Detalles menores heredados
 
 - Los nombres generados y guardados en la base (rutina «Torso / pierna · 4 días», días «Torso A», comidas «Desayuno») se muestran tal cual en los dos idiomas: son datos, no interfaz.
-- Los avisos del motor cuelan códigos internos en el texto (`Split upper_lower de 4 días`, `Volumen extra (+27 %) para glutes, shoulders`). Pendiente de arreglar en la Fase 13.
 - El contador de series muestra "3/2" cuando se hacen más de las prescritas; es correcto pero se lee raro.
 - `instructions_es` sigue vacío: las instrucciones salen en inglés, marcadas como tales.
 - No hay fotografía de stock por no poder documentar su licencia (T-95).
