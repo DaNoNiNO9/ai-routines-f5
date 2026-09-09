@@ -15,3 +15,4 @@ ruff==0.16.6
 # Build-time tooling (exercise catalogue images)
 Pillow==12.3.0
 pypdf==6.1.1  # leer el PDF generado en los tests
+pypdfium2==5.13.0  # renderizar el PDF a imagen para revisarlo a ojo
