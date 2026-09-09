@@ -17,10 +17,12 @@ from typing import Any
 from flask import Flask, current_app
 from flask_babel import get_locale
 
+from app.cli import register_cli
 from app.errors import register_error_handlers
 from app.extensions import babel, csrf, db, limiter, migrate
 from app.i18n import select_locale
 from app.logging_config import configure_logging
+from app.models.base import render_migration_item
 from app.security import register_security_headers
 from config import CONFIGS, ProductionConfig
 
@@ -67,7 +69,9 @@ def create_app(
     _prepare_instance_folder(app)
 
     configure_logging(app)
+    _register_models()
     _init_extensions(app)
+    register_cli(app)
     _register_blueprints(app)
     register_error_handlers(app)
     register_security_headers(app)
@@ -86,9 +90,14 @@ def _prepare_instance_folder(app: Flask) -> None:
         app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 
 
+def _register_models() -> None:
+    """Import the models package so every table is on ``db.metadata`` before Migrate runs."""
+    import app.models  # noqa: F401
+
+
 def _init_extensions(app: Flask) -> None:
     db.init_app(app)
-    migrate.init_app(app, db, render_as_batch=True)
+    migrate.init_app(app, db, render_as_batch=True, render_item=render_migration_item)
     csrf.init_app(app)
     limiter.init_app(app)
     babel.init_app(app, locale_selector=select_locale)

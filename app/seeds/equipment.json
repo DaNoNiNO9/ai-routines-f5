@@ -1,0 +1,38 @@
+[
+  {"code": "body_only", "name_es": "Solo peso corporal", "name_en": "Bodyweight only", "category": "bodyweight", "sort_order": 10},
+  {"code": "pull_up_bar", "name_es": "Barra de dominadas", "name_en": "Pull-up bar", "category": "bodyweight", "sort_order": 20},
+  {"code": "dip_station", "name_es": "Paralelas (fondos)", "name_en": "Dip station", "category": "bodyweight", "sort_order": 30},
+  {"code": "suspension_trainer", "name_es": "Entrenador en suspensión (TRX)", "name_en": "Suspension trainer (TRX)", "category": "bodyweight", "sort_order": 40},
+
+  {"code": "barbell", "name_es": "Barra olímpica y discos", "name_en": "Barbell and plates", "category": "free_weights", "sort_order": 100},
+  {"code": "ez_bar", "name_es": "Barra EZ", "name_en": "EZ bar", "category": "free_weights", "sort_order": 110},
+  {"code": "trap_bar", "name_es": "Barra hexagonal", "name_en": "Trap bar", "category": "free_weights", "sort_order": 120},
+  {"code": "dumbbells", "name_es": "Mancuernas", "name_en": "Dumbbells", "category": "free_weights", "sort_order": 130},
+  {"code": "kettlebell", "name_es": "Kettlebell", "name_en": "Kettlebell", "category": "free_weights", "sort_order": 140},
+  {"code": "medicine_ball", "name_es": "Balón medicinal", "name_en": "Medicine ball", "category": "free_weights", "sort_order": 150},
+
+  {"code": "flat_bench", "name_es": "Banco plano", "name_en": "Flat bench", "category": "accessories", "sort_order": 200},
+  {"code": "incline_bench", "name_es": "Banco inclinable", "name_en": "Adjustable incline bench", "category": "accessories", "sort_order": 210},
+  {"code": "squat_rack", "name_es": "Rack o jaula de sentadillas", "name_en": "Squat rack or power cage", "category": "accessories", "sort_order": 220},
+  {"code": "resistance_bands", "name_es": "Bandas elásticas", "name_en": "Resistance bands", "category": "accessories", "sort_order": 230},
+  {"code": "back_extension_bench", "name_es": "Banco de hiperextensiones", "name_en": "Back extension bench", "category": "accessories", "sort_order": 240},
+  {"code": "ab_wheel", "name_es": "Rueda abdominal", "name_en": "Ab wheel", "category": "accessories", "sort_order": 250},
+  {"code": "stability_ball", "name_es": "Fitball", "name_en": "Stability ball", "category": "accessories", "sort_order": 260},
+  {"code": "plyo_box", "name_es": "Cajón pliométrico o step", "name_en": "Plyo box or step", "category": "accessories", "sort_order": 270},
+
+  {"code": "cable_machine", "name_es": "Polea (torre de cables)", "name_en": "Cable machine", "category": "cables", "sort_order": 300},
+  {"code": "lat_pulldown", "name_es": "Máquina de jalón al pecho", "name_en": "Lat pulldown machine", "category": "cables", "sort_order": 310},
+  {"code": "seated_row_machine", "name_es": "Remo sentado en polea", "name_en": "Seated cable row", "category": "cables", "sort_order": 320},
+
+  {"code": "smith_machine", "name_es": "Multipower (Smith)", "name_en": "Smith machine", "category": "machines", "sort_order": 400},
+  {"code": "leg_press", "name_es": "Prensa de piernas", "name_en": "Leg press", "category": "machines", "sort_order": 410},
+  {"code": "hack_squat", "name_es": "Hack squat", "name_en": "Hack squat machine", "category": "machines", "sort_order": 420},
+  {"code": "leg_extension", "name_es": "Máquina de extensión de cuádriceps", "name_en": "Leg extension machine", "category": "machines", "sort_order": 430},
+  {"code": "leg_curl", "name_es": "Máquina de curl femoral", "name_en": "Leg curl machine", "category": "machines", "sort_order": 440},
+  {"code": "chest_press_machine", "name_es": "Máquina de press de pecho", "name_en": "Chest press machine", "category": "machines", "sort_order": 450},
+  {"code": "shoulder_press_machine", "name_es": "Máquina de press de hombros", "name_en": "Shoulder press machine", "category": "machines", "sort_order": 460},
+  {"code": "pec_deck", "name_es": "Contractora (pec deck)", "name_en": "Pec deck", "category": "machines", "sort_order": 470},
+  {"code": "calf_raise_machine", "name_es": "Máquina de gemelos", "name_en": "Calf raise machine", "category": "machines", "sort_order": 480},
+  {"code": "hip_thrust_machine", "name_es": "Máquina de hip thrust", "name_en": "Hip thrust machine", "category": "machines", "sort_order": 490},
+  {"code": "cardio_machine", "name_es": "Máquina de cardio (cinta, bici, elíptica, remo)", "name_en": "Cardio machine (treadmill, bike, elliptical, rower)", "category": "machines", "sort_order": 500}
+]
