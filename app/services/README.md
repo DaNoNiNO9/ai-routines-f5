@@ -10,17 +10,26 @@
 
 4. `dashboard.py` (Fase 9): lecturas para las páginas del plan. `weight_series()` devuelve los pesajes de los últimos 90 días con la misma media móvil de 7 días del motor de ajuste (`WeightSeries.to_chart()` alinea ambas series para Chart.js); `next_routine_day()` es el día siguiente a la última sesión completada de la rutina vigente (día 1 si no hay ninguna); `next_review_on()` suma 14 días al último ajuste del plan (o a su inicio); `plan_history()` empareja cada versión con el ajuste que la creó; `today_targets()` saca del plan los objetivos de hoy (y, con ciclado, los de día de entreno y de descanso); `usable_alternatives()` filtra las alternativas del catálogo con el material, las lesiones, el nivel y las aversiones de la persona; `image_frames()` devuelve las dos ilustraciones de un ejercicio.
 
+5. `tracking.py` (Fase 10): diario por día. Una fila por usuario y día en `weight_logs`, `intake_logs` y `activity_logs`; guardar el mismo día otra vez reemplaza la entrada entera. `diary_rows()` devuelve los últimos 14 días completos (con huecos incluidos) y `recent_measurements()` los perímetros más recientes.
+6. `workouts.py` (Fase 10): sesiones. `start_session()` devuelve la sesión abierta si ya hay una (T-77); `log_set()` escribe una fila por sesión, ejercicio y número de serie, y repetir el número corrige en vez de duplicar (T-78); `substitute()` guarda el ejercicio alternativo solo para esa sesión y solo si es viable (T-79); `session_blocks()` monta la página en vivo con la última actuación y la carga sugerida por progresión doble (T-80); `summarise()` da totales y marcas con el 1RM de Epley (T-81); `history()` y `exercise_progress()` alimentan el historial y la gráfica.
+7. `adjustments.py` (Fase 10): la revisión quincenal. `build_inputs()` traduce el plan vigente y el diario a `AdjustmentInputs`; `preview()` ejecuta el motor **sin escribir nada**; `apply()` guarda exactamente una de tres cosas: versión nueva del plan (si cambian las calorías), objetivo de pasos nuevo, o solo la fila de auditoría (T-82, T-83). Los tres casos dejan la decisión completa en `plan_adjustments.data`.
+
 **Ficheros:**
 - `auth.py` — cuentas y contraseñas.
 - `onboarding.py` — pasos, borradores, perfil, catálogos para los formularios (`equipment_groups()`, `exercise_lookup()`), `complete()`.
 - `plans.py` — entradas del motor, catálogo (`exercise_info()`, `load_catalogue()`), persistencia de planes y rutinas, `active_plan()`, `active_routine()`, `GenerationResult`.
 - `dashboard.py` — lecturas del panel y de las páginas de plan (nunca escribe).
+- `tracking.py` — diario y perímetros.
+- `workouts.py` — sesiones, series, sustituciones, resúmenes y progreso.
+- `adjustments.py` — revisión quincenal (`preview`/`apply`).
 
 **Por dónde tocar:**
 - Añadir una pregunta al cuestionario → columna en `Profile` (+ migración), campo en el formulario del paso (`blueprints/onboarding/forms.py`), plantilla del paso, `profile_to_data()` y `data_to_profile_values()` aquí, fila en `_summary()` de la vista de revisión y, si el motor la usa, `nutrition_inputs()` / `routine_inputs()`.
 - Cambiar qué hace obligatorio un paso → `STEPS[...].required`.
 - Guardar algo más al terminar el cuestionario (por ejemplo perímetros en `body_measurements`) → `complete()`.
 - Cambiar cómo se versiona o se supersede un plan → `persist_plan()` / `persist_routine()`.
+- Cambiar el intervalo de revisión → `AdjustmentInputs.review_interval_days` (motor) y `dashboard.REVIEW_INTERVAL_DAYS`, que un test obliga a mantener iguales.
+- Cambiar cuántas series de más se admiten → `workouts.EXTRA_SETS_ALLOWED`.
 
 **Ojo con:**
 - Nada en `plans.py` hace `commit()`: `complete()` (o el test) es dueño de la transacción.
@@ -28,5 +37,8 @@
 - Los enums de perfil se coaccionan con `Enum(valor)` al construir las entradas: un objeto recién creado puede llevar todavía la cadena en vez del miembro.
 - El nombre de la rutina se guarda ya traducido (`labels.SPLIT_TYPE`); si se cambia el idioma, las rutinas antiguas conservan el nombre con el que se crearon.
 - `exercise_lookup()` resuelve por nombre en español, en inglés o por slug, sin distinguir mayúsculas; dos ejercicios con el mismo nombre se pisarían (el catálogo no tiene duplicados: lo comprueban los tests de semillas).
+- Las series se guardan contra el ejercicio **efectivo** (el sustituto si lo hay), no contra el prescrito: por eso no se puede sustituir con series ya registradas.
+- `adjustments.apply()` no hace `commit()`: la ruta decide, y ante `SafetyError` hace `rollback()` y no deja nada a medias.
+- La fila de auditoría de una revisión que cambia las calorías cuelga del plan **nuevo**, no del que cerró: así la próxima revisión se cuenta desde el cambio.
 
 **Tests:** `tests/unit/services/` (`test_auth_service.py`, `test_onboarding_service.py`, `test_plans_service.py`, `test_dashboard_service.py`), `tests/integration/test_onboarding.py` y `tests/integration/test_plan_pages.py`. La fixture `seeded` de `tests/conftest.py` carga los catálogos reales (0,2 s).

@@ -35,7 +35,7 @@ Estado: Fase 2. 20 tablas, SQLAlchemy 2.0, migraciones Alembic desde la primera 
 | `routines` | Mesociclo: split, días, semanas, descarga, instantánea y detalles. Versionada | `user_id`, `profile_id` |
 | `routine_days` | Día de la rutina con foco muscular y duración estimada | `routine_id`; único por (rutina, índice) |
 | `routine_exercises` | Prescripción: series, rango de reps, RIR inicial/final, descanso, tempo, incremento de carga | `routine_day_id`, `exercise_id` (RESTRICT) |
-| `workout_sessions` | Sesión real: inicio, fin, estado, semana del mesociclo, fatiga percibida | `user_id`, `routine_day_id` opcional (SET NULL) |
+| `workout_sessions` | Sesión real: inicio, fin, estado, semana del mesociclo, fatiga percibida, sustituciones de esa sesión (JSON) | `user_id`, `routine_day_id` opcional (SET NULL) |
 | `set_logs` | Serie real: tipo, reps, kg, RIR, hora | `workout_session_id`, `exercise_id` (RESTRICT), `routine_exercise_id` opcional |
 
 ## Relaciones
@@ -97,5 +97,5 @@ Amplios a propósito: rechazan basura, no personas poco habituales. Los límites
 - Crear: `flask db migrate -m "descripción"` (autogenerada; revisar siempre el fichero).
 - Aplicar: `flask db upgrade`. Deshacer: `flask db downgrade -1` o `flask db downgrade base`.
 - Los tipos propios se escriben en las migraciones como tipos estándar (`sa.DateTime(timezone=True)`, `sa.JSON().with_variant(postgresql.JSONB(), 'postgresql')`) gracias a `render_migration_item()` en `app/models/base.py`: los ficheros de `migrations/versions/` no importan código de la aplicación.
-- Historial: `196ae6a460b6` esquema inicial; `021183cac637` `training_time` y `wants_carb_cycling` en `profiles`; `f3a8881022c3` `questionnaire_drafts`.
+- Historial: `196ae6a460b6` esquema inicial; `021183cac637` `training_time` y `wants_carb_cycling` en `profiles`; `f3a8881022c3` `questionnaire_drafts`; `976a93809ca2` `substitutions` en `workout_sessions`.
 - `render_as_batch=True`: en SQLite, alterar tablas implica recrearlas; Alembic lo hace solo si los constraints tienen nombre (de ahí la convención).

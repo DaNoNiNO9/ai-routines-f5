@@ -6,9 +6,9 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 10 — Registro de entrenos, peso e ingesta, y motor de ajuste conectado.** En curso.
+**Fase 10 cerrada.** Siguiente: Fase 11 (diseño visual completo), sin empezar.
 
-## Terminado (fases 0 a 9, commiteadas)
+## Terminado
 
 | Fase | Contenido | Informe |
 |---|---|---|
@@ -19,36 +19,38 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | 7 | Autenticación, recuperación por correo, CSRF, rate limiting | `FASE_07` |
 | 8 | Cuestionario multipaso que genera y guarda plan y rutina | `FASE_08` |
 | 9 | Panel, nutrición y entrenamiento con gráficas e ilustraciones | `FASE_09` |
+| 10 | Diario (peso, ingesta, actividad, perímetros), sesiones de entrenamiento con temporizador y revisión quincenal aplicable | `FASE_10` |
 
-Último commit de fase cerrada: `e941497` (cierre de la Fase 9). En ese punto: 449 tests en verde, cobertura de `app/` 98,9 %, linter limpio.
+## Estado del repositorio
 
-## Qué estoy haciendo ahora (Fase 10)
+| Comprobación | Estado |
+|---|---|
+| Arranque de la app | OK |
+| Suite | 511 tests en verde |
+| Cobertura de `app/` | 98,5 % |
+| Linter y formato | limpios |
+| Migración aplicada | `976a93809ca2` (cabeza) |
+| Rama | `main`, sin remoto todavía |
 
-Estado del repo: **consistente**. La app arranca, la migración está aplicada (`976a93809ca2`, cabeza), el linter está limpio y la suite pasa con 510 tests y un 98,5 % de cobertura. Falta la verificación manual con el servidor levantado.
+## Qué estoy haciendo ahora
 
-Escrito:
-
-- `app/services/tracking.py` — diario (peso, ingesta, actividad) y perímetros, con altas idempotentes por día.
-- `app/services/workouts.py` — sesiones, series, sustituciones por sesión, cierre, resumen con marcas, historial y progreso por ejercicio (1RM estimado de Epley).
-- `app/services/adjustments.py` — revisión quincenal: construye las entradas del motor con los registros reales, `preview()` no escribe y `apply()` guarda versión nueva del plan, cambio de pasos o revisión sin cambios.
-- Blueprints `tracking` (`/diario`), `workouts` (`/entreno`) y `review` (`/revision`) con sus plantillas.
-- Temporizador de descanso y gráfica de progreso en `static/js/forja.js`; CSS de la sesión en vivo.
-- Blueprint `tracking` con sus formularios (peso, ingesta, actividad, perímetros), rangos espejo de los CHECK.
-- Migración `976a93809ca2`: columna `substitutions` en `workout_sessions`. **Aplicada.**
+Nada en curso. La Fase 10 quedó cerrada con su informe.
 
 ## Siguiente paso
 
-1. Verificación con el servidor levantado: registrar una sesión entera, pesajes e ingestas, y aplicar una revisión.
-2. Capturas a 390 px de la sesión en vivo y del diario.
-3. Informe `docs/fases/FASE_10_INFORME.md` y cierre.
+Fase 11 (diseño visual, §6 del prompt). Antes de tocar nada hay que **proponer 2-3 paletas con sus códigos hex y esperar el visto bueno**, igual que con la tipografía si hay duda. Lo que ya está encargado para esa fase:
 
-## Incidencias de esta fase
+- Revisión a 320, 768 y 1440 px y contraste WCAG AA verificado.
+- Tipografías de Google Fonts descargadas a `app/static/fonts/` y un set de iconos único (Lucide, Phosphor o Tabler), con licencias en `docs/CREDITOS.md`.
+- Estados de carga, vacío y error diseñados; micro-interacciones sin excesos.
+- Detalle heredado de la Fase 10: el contador de series muestra "3/2" cuando se hacen más de las prescritas; se lee raro.
 
-- **Resuelta**: el blueprint del diario colisionaba con `auth.register` en `/registro` (alta de cuenta). El diario vive ahora en `/diario`, con un test de regresión que falla si dos endpoints comparten regla y método.
-- **Resuelta**: el día viajaba en un campo oculto, así que un día inválido devolvía la página sin explicar nada. Ahora el motivo sale como aviso.
-- **Resuelta**: `Optional()` cortaba la cadena de validación y un cardio con tipo pero sin minutos se guardaba igual. La comprobación cruzada pasó al nivel del formulario.
-- **Resuelta (motor, Fase 6)**: la media móvil aceptaba ventanas parciales al principio de la serie. El centro de masa de esas ventanas avanza a media velocidad, así que la pendiente salía más plana que la real y el motor **infravaloraba la velocidad de pérdida**, justo la dirección en la que el tope de seguridad no puede equivocarse. Ahora solo promedia días con la ventana de 7 completa.
-- **Resuelta (motor, Fase 6)**: los escalones de calorías se redondeaban al múltiplo de 5 más cercano, así que un recorte podía quedar en el 5,1 % en vez del 5 % tope. Ahora los recortes redondean hacia arriba y las subidas hacia abajo: ningún escalón supera su límite documentado.
+## Cómo se trabaja
+
+- No se empieza una fase sin la anterior probada, testeada y validada.
+- Cada fase termina con: app levantada y comprobada, suite en verde, linter limpio, README del módulo e informe en `docs/fases/`.
+- Este documento se actualiza dentro de la fase, no solo al cerrarla; commit `wip:` cada vez que el repositorio queda consistente.
+- Lo que no esté claro se pregunta por terminal en vez de asumirlo.
 
 ## Aviso permanente
 
