@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 13 cerrada.** Con ella se cierran las trece fases del prompt maestro. Ver `docs/ESTADO_FINAL.md` y `docs/AUDITORIA_FINAL.md`.
+**Fases 0-13 cerradas.** Ahora se cambian cosas a partir de usar la app: ver `docs/DECISIONES.md`, bloque «Uso real».
 
 ## Terminado
 
@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 622 tests en verde |
+| Suite | 629 tests en verde |
 | Cobertura de `app/` | 98,6 % (motor 99,2 %) |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -38,7 +38,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Nada en curso. Las trece fases están cerradas y la auditoría final, hecha: siete hallazgos, todos corregidos y con su test.
+Cambios salidos de probar la app (T-104 a T-109): el paso de material y lesiones deja de ser un muro, los ejercicios que no gustan se marcan desde la rutina, el descanso entre series nunca baja de dos minutos y el cardio dice con qué se hace.
 
 ## Siguiente paso
 
@@ -53,6 +53,7 @@ Puesta en producción, cuando toque (`docs/ESTADO_FINAL.md`, "Lo que falta"):
 ## Detalles menores heredados
 
 - Los nombres generados y guardados en la base (rutina «Torso / pierna · 4 días», días «Torso A», comidas «Desayuno») se muestran tal cual en los dos idiomas: son datos, no interfaz.
+- El paso 4 pliega el material con Alpine: sin JavaScript no se puede ajustar (se envía el preset del sitio) ni declarar lesiones.
 - El contador de series muestra "3/2" cuando se hacen más de las prescritas; es correcto pero se lee raro.
 - `instructions_es` sigue vacío: las instrucciones salen en inglés, marcadas como tales.
 - No hay fotografía de stock por no poder documentar su licencia (T-95).
