@@ -288,3 +288,47 @@ def catalogue_name(row: Any) -> str:
     if english and has_app_context() and str(get_locale() or "").startswith("en"):
         return english
     return spanish
+
+
+EQUIPMENT_SUGGESTION: Mapping[MovementPattern, Any] = {
+    MovementPattern.VERTICAL_PULL: _l("una barra de dominadas o bandas"),
+    MovementPattern.HORIZONTAL_PULL: _l("mancuernas, bandas o un TRX"),
+    MovementPattern.VERTICAL_PUSH: _l("mancuernas o bandas"),
+    MovementPattern.HORIZONTAL_PUSH: _l("mancuernas o bandas"),
+    MovementPattern.KNEE_DOMINANT: _l("mancuernas o una kettlebell"),
+    MovementPattern.HIP_DOMINANT: _l("mancuernas, kettlebell o bandas"),
+    MovementPattern.CORE: _l("una esterilla"),
+}
+
+NOTE_PARAM_LABELS: Mapping[str, Mapping[Any, Any]] = {
+    "split": SPLIT_TYPE,
+    "muscle": MUSCLE_GROUP,
+    "pattern": MOVEMENT_PATTERN,
+    "method": BODY_FAT_METHOD,
+    "job": JOB_ACTIVITY,
+    "confidence": CONFIDENCE,
+}
+
+
+def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Los parámetros de un aviso del motor, con sus códigos ya en palabras.
+
+    El motor no habla ningún idioma: pone ``upper_lower`` o ``glutes`` en los
+    parámetros y deja que la aplicación decida cómo se leen. Sin esto, el
+    aviso saldría tal cual ("Split upper_lower de 4 días").
+    """
+    if not params or not has_app_context():
+        return params
+    translated = dict(params)
+    for key, mapping in NOTE_PARAM_LABELS.items():
+        if key in translated:
+            translated[key] = label(mapping, translated[key])
+    if "muscles" in translated:
+        # El motor los junta con comas para poder guardarlos como texto.
+        codes = str(translated["muscles"]).split(", ")
+        translated["muscles"] = ", ".join(label(MUSCLE_GROUP, code).lower() for code in codes)
+    if code == "routine.pattern_missing" and "pattern" in params:
+        suggestion = EQUIPMENT_SUGGESTION.get(MovementPattern(params["pattern"]))
+        if suggestion is not None:
+            translated["suggestion"] = str(suggestion)
+    return translated

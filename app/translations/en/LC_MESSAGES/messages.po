@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Forja 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 15:25+0200\n"
+"POT-Creation-Date: 2026-09-09 15:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Forja\n"
 "Language: en\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/__init__.py:117
+#: app/__init__.py:119
 msgid "Inicia sesión para continuar."
 msgstr "Sign in to continue."
 
@@ -592,6 +592,30 @@ msgstr "accessory"
 #: app/labels.py:260
 msgid "aislamiento"
 msgstr "isolation"
+
+#: app/labels.py:294
+msgid "una barra de dominadas o bandas"
+msgstr "a pull-up bar or bands"
+
+#: app/labels.py:295
+msgid "mancuernas, bandas o un TRX"
+msgstr "dumbbells, bands or a TRX"
+
+#: app/labels.py:296 app/labels.py:297
+msgid "mancuernas o bandas"
+msgstr "dumbbells or bands"
+
+#: app/labels.py:298
+msgid "mancuernas o una kettlebell"
+msgstr "dumbbells or a kettlebell"
+
+#: app/labels.py:299
+msgid "mancuernas, kettlebell o bandas"
+msgstr "dumbbells, a kettlebell or bands"
+
+#: app/labels.py:300
+msgid "una esterilla"
+msgstr "a mat"
 
 #: app/blueprints/account/forms.py:37 app/blueprints/auth/forms.py:23
 msgid "Nombre"
@@ -1552,464 +1576,470 @@ msgid "Carga máxima (kg)"
 msgstr "Top load (kg)"
 
 #. código del motor: body_fat.declared
-#: app/engine/messages.py:34
+#: app/engine/messages.py:45
 #, python-format
 msgid "Porcentaje de grasa declarado (%(value)s %%, método: %(method)s)."
 msgstr "Body fat as you reported it (%(value)s %%, method: %(method)s)."
 
 #. código del motor: body_fat.navy
-#: app/engine/messages.py:36
+#: app/engine/messages.py:47
 #, python-format
 msgid "Grasa corporal estimada por el método Navy a partir de tus perímetros: %(value)s %%."
 msgstr "Body fat estimated from your measurements with the US Navy formula: %(value)s %%."
 
 #. código del motor: body_fat.navy_invalid
-#: app/engine/messages.py:39
+#: app/engine/messages.py:50
 msgid "Los perímetros no permiten estimar la grasa (revisa cuello, cintura y cadera)."
 msgstr "Those measurements cannot give a body fat estimate (check neck, waist and hip)."
 
 #. código del motor: body_fat.unknown
-#: app/engine/messages.py:42
+#: app/engine/messages.py:53
 msgid "Sin dato de grasa corporal: la estimación es de baja confianza y se usa Mifflin-St Jeor."
 msgstr "No body fat figure: the estimate has low confidence and Mifflin-St Jeor is used."
 
 #. código del motor: bmr.katch_mcardle
-#: app/engine/messages.py:44
+#: app/engine/messages.py:55
 #, python-format
 msgid "Metabolismo basal por Katch-McArdle (masa magra %(lean_mass_kg)s kg)."
 msgstr "Basal metabolic rate by Katch-McArdle (lean mass %(lean_mass_kg)s kg)."
 
 #. código del motor: bmr.mifflin
-#: app/engine/messages.py:45
+#: app/engine/messages.py:56
 msgid "Metabolismo basal por Mifflin-St Jeor."
 msgstr "Basal metabolic rate by Mifflin-St Jeor."
 
 #. código del motor: tdee.steps_estimated
-#: app/engine/messages.py:47
+#: app/engine/messages.py:58
 #, python-format
 msgid "Pasos diarios estimados en %(steps)s por tu tipo de trabajo (%(job)s)."
 msgstr "Daily steps estimated at %(steps)s from your kind of work (%(job)s)."
 
 #. código del motor: tdee.lifestyle_modifier
-#: app/engine/messages.py:50
+#: app/engine/messages.py:61
 #, python-format
 msgid "Gasto por actividad reducido un %(pct)s %% por sueño corto o estrés alto."
 msgstr "Activity expenditure cut by %(pct)s %% for short sleep or high stress."
 
 #. código del motor: tdee.divergence
-#: app/engine/messages.py:53
+#: app/engine/messages.py:64
 #, python-format
 msgid "El gasto por componentes (%(components)s kcal) difiere un %(pct)s %% del método clásico (%(classic)s kcal): revisa pasos, trabajo o sesiones."
 msgstr "Expenditure by components (%(components)s kcal) differs by %(pct)s %% from the classic method (%(classic)s kcal): check steps, work or sessions."
 
 #. código del motor: target.deficit
-#: app/engine/messages.py:56 app/services/exports.py:327
+#: app/engine/messages.py:67 app/services/exports.py:327
 #: app/templates/nutrition/plan.html:39
 #, python-format
 msgid "Déficit del %(pct)s %% sobre el gasto."
 msgstr "Deficit of %(pct)s %% below expenditure."
 
 #. código del motor: target.surplus
-#: app/engine/messages.py:57 app/services/exports.py:329
+#: app/engine/messages.py:68 app/services/exports.py:329
 #: app/templates/nutrition/plan.html:40
 #, python-format
 msgid "Superávit del %(pct)s %% sobre el gasto."
 msgstr "Surplus of %(pct)s %% above expenditure."
 
 #. código del motor: target.maintenance
-#: app/engine/messages.py:58 app/services/exports.py:331
+#: app/engine/messages.py:69 app/services/exports.py:331
 #: app/templates/nutrition/plan.html:41
 msgid "Calorías de mantenimiento."
 msgstr "Maintenance calories."
 
 #. código del motor: target.recomposition_not_ideal
-#: app/engine/messages.py:60
+#: app/engine/messages.py:71
 msgid "La recomposición no encaja con tu experiencia y grasa actual: se usan calorías de mantenimiento; valora perder grasa o ganar músculo como objetivo."
 msgstr "Recomposition does not fit your experience and current body fat: maintenance calories are used; consider losing fat or gaining muscle as the goal."
 
 #. código del motor: target.raised_to_floor
-#: app/engine/messages.py:63
+#: app/engine/messages.py:74
 #, python-format
 msgid "Calorías subidas al mínimo seguro (%(floor)s kcal)."
 msgstr "Calories raised to the safe minimum (%(floor)s kcal)."
 
 #. código del motor: target.capped_by_max_loss
-#: app/engine/messages.py:65
+#: app/engine/messages.py:76
 #, python-format
 msgid "Ritmo limitado a %(max_weekly_kg)s kg por semana (1 %% del peso)."
 msgstr "Pace capped at %(max_weekly_kg)s kg per week (1 %% of body weight)."
 
 #. código del motor: target.date_in_past
-#: app/engine/messages.py:67
+#: app/engine/messages.py:78
 msgid "La fecha objetivo ya ha pasado."
 msgstr "The target date has already passed."
 
 #. código del motor: target.date_direction_mismatch
-#: app/engine/messages.py:69
+#: app/engine/messages.py:80
 msgid "El peso objetivo va en dirección contraria al objetivo elegido."
 msgstr "The target weight goes the opposite way to the goal you chose."
 
 #. código del motor: target.date_unrealistic
-#: app/engine/messages.py:72
+#: app/engine/messages.py:83
 #, python-format
 msgid "Con este ritmo necesitas %(weeks_needed)s semanas y tienes %(weeks_available)s: fecha realista aproximada %(realistic_date)s."
 msgstr "At this pace you need %(weeks_needed)s weeks and you have %(weeks_available)s: a realistic date is around %(realistic_date)s."
 
 #. código del motor: target.date_realistic
-#: app/engine/messages.py:76
+#: app/engine/messages.py:87
 #, python-format
 msgid "Fecha objetivo alcanzable: unas %(weeks_needed)s semanas de %(weeks_available)s."
 msgstr "The target date is reachable: about %(weeks_needed)s weeks out of %(weeks_available)s."
 
 #. código del motor: macros.protein_lean_basis
-#: app/engine/messages.py:79
+#: app/engine/messages.py:90
 #, python-format
 msgid "Proteína calculada sobre masa magra (%(per_kg)s g/kg de peso total)."
 msgstr "Protein set from lean mass (%(per_kg)s g/kg of total body weight)."
 
 #. código del motor: macros.fat_lowered_for_carbs
-#: app/engine/messages.py:82
+#: app/engine/messages.py:93
 #, python-format
 msgid "Grasa bajada al mínimo para no dejar los carbohidratos por debajo de %(floor)s g."
 msgstr "Fat lowered to its minimum so carbohydrates stay above %(floor)s g."
 
 #. código del motor: macros.deficit_reduced_for_carbs
-#: app/engine/messages.py:85
+#: app/engine/messages.py:96
 #, python-format
 msgid "Déficit reducido (%(kcal)s kcal más al día) para mantener al menos %(floor)s g de carbohidratos."
 msgstr "Deficit eased (%(kcal)s kcal more per day) to keep at least %(floor)s g of carbohydrates."
 
 #. código del motor: macros.calories_raised_for_carbs
-#: app/engine/messages.py:89
+#: app/engine/messages.py:100
 #, python-format
 msgid "Calorías subidas %(kcal)s kcal para cubrir el mínimo de carbohidratos (%(floor)s g)."
 msgstr "Calories raised by %(kcal)s kcal to reach the carbohydrate minimum (%(floor)s g)."
 
 #. código del motor: meals.protein_per_meal_low
-#: app/engine/messages.py:92
+#: app/engine/messages.py:103
 #, python-format
 msgid "Con este número de comidas tocan %(per_meal)s g de proteína por toma; con %(recommended_meals)s comidas cada toma superaría los 0,4 g/kg."
 msgstr "With this many meals each one gets %(per_meal)s g of protein; with %(recommended_meals)s meals each would clear 0.4 g/kg."
 
 #. código del motor: cycle.enabled
-#: app/engine/messages.py:96
+#: app/engine/messages.py:107
 #, python-format
 msgid "Ciclado de carbohidratos: %(high)s g los días de entreno y %(low)s g los de descanso."
 msgstr "Carb cycling: %(high)s g on training days and %(low)s g on rest days."
 
 #. código del motor: cycle.low_day_at_floor
-#: app/engine/messages.py:98
+#: app/engine/messages.py:109
 #, python-format
 msgid "Los días bajos se quedan en el mínimo de %(floor)s g."
 msgstr "Low days sit at the %(floor)s g minimum."
 
 #. código del motor: safety.minor
-#: app/engine/messages.py:99
+#: app/engine/messages.py:110
 msgid "Menores de 18 años: no se genera plan; consulta con un profesional sanitario."
 msgstr "Under 18: no plan is produced; please see a healthcare professional."
 
 #. código del motor: safety.pregnancy
-#: app/engine/messages.py:101
+#: app/engine/messages.py:112
 msgid "Embarazo o lactancia: no se genera plan; consulta con un profesional sanitario."
 msgstr "Pregnancy or breastfeeding: no plan is produced; please see a healthcare professional."
 
 #. código del motor: safety.eating_disorder
-#: app/engine/messages.py:104
+#: app/engine/messages.py:115
 msgid "Antecedentes de trastorno de la conducta alimentaria: no se genera plan; consulta con un profesional sanitario."
 msgstr "History of an eating disorder: no plan is produced; please see a healthcare professional."
 
 #. código del motor: safety.underweight
-#: app/engine/messages.py:107
+#: app/engine/messages.py:118
 #, python-format
 msgid "IMC %(bmi)s, por debajo de 18,5: no se genera un plan de déficit."
 msgstr "BMI %(bmi)s, below 18.5: no deficit plan is produced."
 
 #. código del motor: safety.essential_fat
-#: app/engine/messages.py:109
+#: app/engine/messages.py:120
 #, python-format
 msgid "Grasa corporal en niveles esenciales (%(body_fat)s %%): perder más no es seguro."
 msgstr "Body fat at essential levels (%(body_fat)s %%): losing more is not safe."
 
 #. código del motor: safety.deficit_blocked
-#: app/engine/messages.py:112
+#: app/engine/messages.py:123
 msgid "Puedes usar el módulo de entrenamiento y un plan de mantenimiento o ganancia; para perder peso consulta con un profesional sanitario."
 msgstr "You can use the training side and a maintenance or gaining plan; to lose weight, see a healthcare professional."
 
 #. código del motor: safety.below_floor
-#: app/engine/messages.py:115
+#: app/engine/messages.py:126
 #, python-format
 msgid "Calorías (%(calories)s) por debajo del mínimo (%(floor)s)."
 msgstr "Calories (%(calories)s) below the minimum (%(floor)s)."
 
 #. código del motor: safety.loss_too_fast
-#: app/engine/messages.py:116
+#: app/engine/messages.py:127
 #, python-format
 msgid "Pérdida prevista %(weekly)s kg/semana por encima del máximo %(max)s."
 msgstr "Planned loss of %(weekly)s kg/week is above the %(max)s maximum."
 
 #. código del motor: safety.deficit_while_underweight
-#: app/engine/messages.py:117
+#: app/engine/messages.py:128
 msgid "Déficit con IMC bajo."
 msgstr "Deficit with a low BMI."
 
 #. código del motor: safety.protein_out_of_range
-#: app/engine/messages.py:118
+#: app/engine/messages.py:129
 #, python-format
 msgid "Proteína fuera de rango (%(per_kg)s g/kg)."
 msgstr "Protein out of range (%(per_kg)s g/kg)."
 
 #. código del motor: safety.fat_too_low
-#: app/engine/messages.py:119
+#: app/engine/messages.py:130
 #, python-format
 msgid "Grasa demasiado baja (%(fat_g)s g)."
 msgstr "Fat too low (%(fat_g)s g)."
 
 #. código del motor: safety.negative_macro
-#: app/engine/messages.py:120
+#: app/engine/messages.py:131
 msgid "Macronutriente negativo."
 msgstr "Negative macronutrient."
 
 #. código del motor: safety.macros_mismatch
-#: app/engine/messages.py:122
+#: app/engine/messages.py:133
 #, python-format
 msgid "Los macros (%(energy)s kcal) no cuadran con las calorías (%(calories)s)."
 msgstr "The macros (%(energy)s kcal) do not add up to the calories (%(calories)s)."
 
 #. código del motor: routine.no_days
-#: app/engine/messages.py:124
+#: app/engine/messages.py:135
 msgid "Sin días de entrenamiento no se puede generar una rutina."
 msgstr "Without training days no routine can be built."
 
 #. código del motor: routine.nothing_possible
-#: app/engine/messages.py:126
+#: app/engine/messages.py:137
 msgid "Con el material y las limitaciones indicadas no hay ejercicios posibles; revisa el material o consulta con un profesional."
 msgstr "With the equipment and limits given there are no possible exercises; review the equipment or talk to a professional."
 
 #. código del motor: routine.days_capped
-#: app/engine/messages.py:129
+#: app/engine/messages.py:140
 msgid "Se planifican 6 días como máximo; el séptimo es descanso."
 msgstr "Six days at most are planned; the seventh is rest."
 
+#. código del motor: routine.days_dropped
+#: app/engine/messages.py:142
+#, python-format
+msgid "%(dropped)s día(s) se quedaron sin ningún ejercicio posible con tu material y tus limitaciones: la semana queda en %(days)s días de entrenamiento."
+msgstr "%(dropped)s day(s) ended up with no possible exercise given your equipment and your limits: the week comes down to %(days)s training days."
+
 #. código del motor: routine.split
-#: app/engine/messages.py:130
+#: app/engine/messages.py:145
 #, python-format
 msgid "Split %(split)s de %(days)s días."
 msgstr "%(split)s split, %(days)s days."
 
 #. código del motor: routine.mesocycle
-#: app/engine/messages.py:132
+#: app/engine/messages.py:147
 #, python-format
 msgid "Mesociclo de %(weeks)s semanas, descarga cada %(deload)s semanas; RIR por semana %(rir)s."
 msgstr "Mesocycle of %(weeks)s weeks, deload every %(deload)s weeks; RIR by week %(rir)s."
 
 #. código del motor: routine.double_progression
-#: app/engine/messages.py:135
+#: app/engine/messages.py:150
 msgid "Progresión doble: al completar el máximo del rango en todas las series con el RIR previsto, añade el incremento indicado y vuelve al mínimo del rango."
 msgstr "Double progression: once you hit the top of the range on every set at the planned RIR, add the increment shown and go back to the bottom of the range."
 
 #. código del motor: routine.level_relaxed
-#: app/engine/messages.py:139
+#: app/engine/messages.py:154
 #, python-format
 msgid "%(exercise)s: exige más técnica de la habitual para tu experiencia; empieza ligero."
 msgstr "%(exercise)s: it asks for more technique than usual at your level; start light."
 
 #. código del motor: routine.slot_unfilled
-#: app/engine/messages.py:142
+#: app/engine/messages.py:157
 #, python-format
 msgid "En %(day)s no hay ejercicio disponible para el patrón %(pattern)s con tu material y limitaciones."
 msgstr "On %(day)s there is no exercise for the %(pattern)s pattern with your equipment and limits."
 
 #. código del motor: routine.pattern_missing
-#: app/engine/messages.py:146
+#: app/engine/messages.py:161
 #, python-format
 msgid "El patrón %(pattern)s no se puede cubrir con tu material: añadir %(suggestion)s lo resolvería."
 msgstr "The %(pattern)s pattern cannot be covered with your equipment: adding %(suggestion)s would fix it."
 
 #. código del motor: routine.pull_bias
-#: app/engine/messages.py:150
+#: app/engine/messages.py:165
 #, python-format
 msgid "Con historial de hombro se programa un 30 %% más de tracción que de empuje."
 msgstr "With a shoulder history, 30 %% more pulling than pushing is programmed."
 
 #. código del motor: routine.push_pull
-#: app/engine/messages.py:152
+#: app/engine/messages.py:167
 #, python-format
 msgid "Series de empuje %(push)s y de tracción %(pull)s (ratio %(ratio)s)."
 msgstr "Pushing sets %(push)s and pulling sets %(pull)s (ratio %(ratio)s)."
 
 #. código del motor: routine.time_trimmed
-#: app/engine/messages.py:153
+#: app/engine/messages.py:168
 #, python-format
 msgid "%(day)s: series recortadas para encajar en %(minutes)s minutos."
 msgstr "%(day)s: sets trimmed to fit into %(minutes)s minutes."
 
 #. código del motor: routine.session_too_long
-#: app/engine/messages.py:155
+#: app/engine/messages.py:170
 #, python-format
 msgid "%(day)s: aun recortando, la sesión estimada dura %(estimated)s min y tienes %(budget)s; añade minutos o un día."
 msgstr "%(day)s: even trimmed, the session runs %(estimated)s min and you have %(budget)s; add minutes or a day."
 
 #. código del motor: routine.volume_scaled_by_time
-#: app/engine/messages.py:159
+#: app/engine/messages.py:174
 #, python-format
 msgid "Objetivos de volumen reducidos un %(pct)s %% para caber en tus sesiones; más días o minutos permitirían más series."
 msgstr "Volume targets cut by %(pct)s %% to fit your sessions; more days or minutes would allow more sets."
 
 #. código del motor: routine.pattern_trimmed
-#: app/engine/messages.py:163
+#: app/engine/messages.py:178
 #, python-format
 msgid "El patrón %(pattern)s ha quedado fuera esta semana por falta de tiempo."
 msgstr "The %(pattern)s pattern was left out this week for lack of time."
 
 #. código del motor: routine.pattern_not_scheduled
-#: app/engine/messages.py:166
+#: app/engine/messages.py:181
 #, python-format
 msgid "El patrón %(pattern)s no entra en esta distribución de días; rota en el siguiente mesociclo."
 msgstr "The %(pattern)s pattern does not fit this split; it rotates in next mesocycle."
 
 #. código del motor: routine.pattern_blocked_by_injury
-#: app/engine/messages.py:170
+#: app/engine/messages.py:185
 #, python-format
 msgid "El patrón %(pattern)s se omite por las lesiones o limitaciones declaradas."
 msgstr "The %(pattern)s pattern is skipped because of the injuries you declared."
 
 #. código del motor: routine.push_pull_unbalanced
-#: app/engine/messages.py:173
+#: app/engine/messages.py:188
 msgid "Con tu material no hay suficientes ejercicios de tracción para equilibrar el empuje."
 msgstr "With your equipment there are not enough pulling exercises to balance the pushing."
 
 #. código del motor: routine.priority_applied
-#: app/engine/messages.py:175
+#: app/engine/messages.py:190
 #, python-format
 msgid "Volumen extra (+27 %%) para %(muscles)s, compensado en el resto."
 msgstr "Extra volume (+27 %%) for %(muscles)s, taken off the rest."
 
 #. código del motor: routine.priority_slot_added
-#: app/engine/messages.py:177
+#: app/engine/messages.py:192
 #, python-format
 msgid "Añadido un ejercicio de %(muscle)s en %(day)s por ser prioritario."
 msgstr "Added a %(muscle)s exercise on %(day)s because it is a priority."
 
 #. código del motor: routine.volume_low
-#: app/engine/messages.py:180
+#: app/engine/messages.py:195
 #, python-format
 msgid "%(muscle)s: %(planned)s series efectivas, por debajo de las %(target_min)s objetivo (lo limita el material o el tiempo)."
 msgstr "%(muscle)s: %(planned)s effective sets, below the %(target_min)s target (equipment or time is the limit)."
 
 #. código del motor: cardio.not_punishment
-#: app/engine/messages.py:184
+#: app/engine/messages.py:199
 msgid "El cardio se programa por su efecto sobre el gasto y la salud, nunca como castigo por saltarse la dieta."
 msgstr "Cardio is programmed for what it does to expenditure and health, never as punishment for slipping on the diet."
 
 #. código del motor: cardio.deficit_not_covered
-#: app/engine/messages.py:188
+#: app/engine/messages.py:203
 #, python-format
 msgid "Quedan %(kcal)s kcal semanales de déficit sin cubrir con actividad: se alarga el plazo antes que añadir más cardio."
 msgstr "%(kcal)s kcal a week of deficit are still uncovered: the timeline stretches before more cardio is added."
 
 #. código del motor: cardio.health_sessions
-#: app/engine/messages.py:192
+#: app/engine/messages.py:207
 #, python-format
 msgid "%(sessions)s sesiones suaves de cardio a la semana por salud cardiovascular (opcionales)."
 msgstr "%(sessions)s easy cardio sessions a week for cardiovascular health (optional)."
 
 #. código del motor: cardio.summary
-#: app/engine/messages.py:195
+#: app/engine/messages.py:210
 #, python-format
 msgid "Objetivo de %(steps)s pasos al día, %(liss)s sesiones LISS y %(hiit)s HIIT (unas %(kcal)s kcal/semana)."
 msgstr "Target of %(steps)s steps a day, %(liss)s LISS sessions and %(hiit)s HIIT (about %(kcal)s kcal/week)."
 
 #. código del motor: adjust.insufficient_data
-#: app/engine/messages.py:199
+#: app/engine/messages.py:214
 #, python-format
 msgid "Todavía no hay datos suficientes (%(weight_days)s pesajes en %(span_days)s días): sigue registrando el peso a diario."
 msgstr "Not enough data yet (%(weight_days)s weigh-ins over %(span_days)s days): keep logging your weight daily."
 
 #. código del motor: adjust.too_early
-#: app/engine/messages.py:202
+#: app/engine/messages.py:217
 #, python-format
 msgid "La próxima revisión toca el %(next_review)s."
 msgstr "The next review is due on %(next_review)s."
 
 #. código del motor: adjust.trend
-#: app/engine/messages.py:204
+#: app/engine/messages.py:219
 #, python-format
 msgid "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado (media móvil de 7 días)."
 msgstr "Observed change %(observed)s kg/week against %(expected)s expected (7-day moving average)."
 
 #. código del motor: adjust.tdee_observed
-#: app/engine/messages.py:208
+#: app/engine/messages.py:223
 #, python-format
 msgid "Gasto observado por balance energético: %(observed)s kcal/día (teórico %(theoretical)s; se usa %(blended)s, con %(days)s días de datos)."
 msgstr "Expenditure observed from energy balance: %(observed)s kcal/day (theoretical %(theoretical)s; %(blended)s is used, with %(days)s days of data)."
 
 #. código del motor: adjust.adherence_first
-#: app/engine/messages.py:212
+#: app/engine/messages.py:227
 #, python-format
 msgid "La pérdida va lenta pero la adherencia media es del %(adherence)s %%: antes de tocar calorías, revisa el registro y la constancia."
 msgstr "Loss is slow but average adherence is %(adherence)s %%: before touching calories, look at your logging and consistency."
 
 #. código del motor: adjust.keep
-#: app/engine/messages.py:215
+#: app/engine/messages.py:230
 msgid "Vas según lo previsto: sin cambios hasta la próxima revisión."
 msgstr "You are on track: no changes until the next review."
 
 #. código del motor: adjust.reduce_calories
-#: app/engine/messages.py:217
+#: app/engine/messages.py:232
 #, python-format
 msgid "Calorías bajadas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories cut by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.increase_calories
-#: app/engine/messages.py:220
+#: app/engine/messages.py:235
 #, python-format
 msgid "Calorías subidas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories raised by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.add_steps
-#: app/engine/messages.py:223
+#: app/engine/messages.py:238
 #, python-format
 msgid "Las calorías ya están en el mínimo seguro: se suman %(steps)s pasos diarios en su lugar."
 msgstr "Calories are already at the safe minimum: %(steps)s daily steps are added instead."
 
 #. código del motor: adjust.loss_too_fast
-#: app/engine/messages.py:226
+#: app/engine/messages.py:241
 #, python-format
 msgid "Pierdes %(observed)s kg/semana, por encima del máximo de %(max_weekly)s kg (1 %% del peso): se suben calorías."
 msgstr "You are losing %(observed)s kg/week, above the %(max_weekly)s kg maximum (1 %% of body weight): calories go up."
 
 #. código del motor: adjust.diet_break
-#: app/engine/messages.py:230
+#: app/engine/messages.py:245
 #, python-format
 msgid "Llevas %(weeks)s semanas en déficit y el peso está estancado: descanso de dieta de 2 semanas a mantenimiento (%(calories)s kcal) antes de seguir."
 msgstr "You have been in a deficit for %(weeks)s weeks and weight has stalled: take a 2-week diet break at maintenance (%(calories)s kcal) before carrying on."
 
 #. código del motor: adjust.refeed
-#: app/engine/messages.py:234
+#: app/engine/messages.py:249
 #, python-format
 msgid "Estancamiento tras %(weeks)s semanas de déficit: día de recarga a mantenimiento (%(calories)s kcal) esta semana, priorizando carbohidratos."
 msgstr "Stalled after %(weeks)s weeks of deficit: a refeed day at maintenance (%(calories)s kcal) this week, favouring carbohydrates."
 
 #. código del motor: adjust.floor_reached
-#: app/engine/messages.py:237
+#: app/engine/messages.py:252
 #, python-format
 msgid "No se baja de %(floor)s kcal (mínimo seguro)."
 msgstr "Nothing goes below %(floor)s kcal (safe minimum)."
 
 #. código del motor: adjust.capped_step
-#: app/engine/messages.py:238
+#: app/engine/messages.py:253
 #, python-format
 msgid "Cambio limitado al %(pct)s %% por revisión."
 msgstr "Change capped at %(pct)s %% per review."
 
 #. código del motor: adjust.next_review
-#: app/engine/messages.py:239 app/templates/nutrition/plan.html:131
+#: app/engine/messages.py:254 app/templates/nutrition/plan.html:131
 #, python-format
 msgid "Próxima revisión: %(date)s."
 msgstr "Next review: %(date)s."
 
 #. código del motor: plan.confidence
-#: app/engine/messages.py:240
+#: app/engine/messages.py:255
 #, python-format
 msgid "Confianza de la estimación: %(confidence)s."
 msgstr "Confidence in the estimate: %(confidence)s."

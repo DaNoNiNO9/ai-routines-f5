@@ -99,9 +99,11 @@ def _register_models() -> None:
 
 def _wire_engine_translations() -> None:
     """The engine renders its notes through Flask-Babel while a request lasts."""
+    from app import labels
     from app.engine import messages as engine_messages
 
     engine_messages.translator = translate_engine_message
+    engine_messages.params_translator = labels.note_params
 
 
 def _init_extensions(app: Flask) -> None:
