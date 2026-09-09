@@ -53,7 +53,8 @@ def test_profile_changes_are_saved_and_validated(client: FlaskClient, seeded: SQ
         data={"display_name": "Ana María", "locale": "en", "timezone": "America/Bogota"},
         follow_redirects=True,
     )
-    assert "Datos guardados" in saved.get_data(as_text=True)
+    # Se acaba de elegir inglés: la confirmación ya llega en inglés.
+    assert "Saved." in saved.get_data(as_text=True)
     seeded.session.expire_all()
     user = _user(seeded)
     assert user.display_name == "Ana María"
@@ -64,7 +65,8 @@ def test_profile_changes_are_saved_and_validated(client: FlaskClient, seeded: SQ
         "/cuenta/perfil",
         data={"display_name": "Ana", "locale": "es", "timezone": "Marte/Olimpo"},
     )
-    assert "Esa zona horaria no existe" in bad.get_data(as_text=True)
+    # El formulario se rechaza entero, así que la cuenta sigue en inglés.
+    assert "That time zone does not exist" in bad.get_data(as_text=True)
     seeded.session.expire_all()
     assert _user(seeded).timezone == "America/Bogota"
 

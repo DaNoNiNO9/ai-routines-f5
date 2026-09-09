@@ -7,8 +7,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from flask import Flask
+from flask import Flask, g, has_app_context
 from flask.testing import FlaskClient
+from flask_babel import refresh
 from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
@@ -29,10 +30,30 @@ def make_app(tmp_path: Path) -> AppFactory:
     return _make
 
 
+class FreshClient(FlaskClient):
+    """Cliente que no se lleva de una petición a otra lo que se guarda en ``g``.
+
+    El fixture de base de datos mantiene abierto un contexto de aplicación
+    durante todo el test y las peticiones lo reutilizan, cosa que en
+    producción no pasa nunca: cada petición trae el suyo. Sin esta limpieza,
+    Flask-Login serviría la segunda petición con el usuario de la primera y
+    Flask-Babel con su idioma, y un test de "esto no lo puede ver otra
+    persona" pasaría sin comprobar nada.
+    """
+
+    def open(self, *args: Any, **kwargs: Any) -> Any:
+        if has_app_context():
+            g.pop("_login_user", None)
+            refresh()
+        return super().open(*args, **kwargs)
+
+
 @pytest.fixture
 def app(make_app: AppFactory) -> Flask:
     """Application instance configured for testing."""
-    return make_app()
+    instance = make_app()
+    instance.test_client_class = FreshClient
+    return instance
 
 
 @pytest.fixture

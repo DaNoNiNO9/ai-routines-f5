@@ -7,7 +7,6 @@ import zipfile
 
 from flask import Flask
 from flask.testing import FlaskClient
-from flask_babel import refresh
 from flask_sqlalchemy import SQLAlchemy
 from pypdf import PdfReader
 from sqlalchemy import select
@@ -19,19 +18,6 @@ from tests.integration.test_onboarding import _signup
 from tests.integration.test_plan_pages import _generate
 
 DEFICIT = Note(code="target.deficit", level="info", params={"pct": 20})
-
-
-def _page(client: FlaskClient, path: str, **kwargs: object) -> str:
-    """Pide una página resolviendo el idioma otra vez.
-
-    Flask-Babel cachea el idioma en ``g``, que vive en el contexto de
-    aplicación; el fixture de base de datos mantiene uno abierto durante todo
-    el test y las peticiones lo reutilizan, así que sin este refresco todas
-    hablarían el idioma de la primera. En producción cada petición trae su
-    propio contexto y esto no hace falta.
-    """
-    refresh()
-    return client.get(path, **kwargs).get_data(as_text=True)  # type: ignore[arg-type]
 
 
 def test_default_locale_is_spanish(client: FlaskClient) -> None:
@@ -73,7 +59,9 @@ def test_account_language_beats_the_browser_header(client: FlaskClient, seeded: 
     user.locale = "en"
     seeded.session.commit()
 
-    html = _page(client, "/panel", headers={"Accept-Language": "es-ES,es;q=0.9"})
+    html = client.get("/panel", headers={"Accept-Language": "es-ES,es;q=0.9"}).get_data(
+        as_text=True
+    )
     assert '<html lang="en"' in html
     assert "Start the questionnaire" in html
 
@@ -95,8 +83,8 @@ def test_stored_plan_explanations_are_rendered_again_in_english(
 ) -> None:
     """El plan se generó en castellano: sus avisos se vuelven a pintar traducidos."""
     _generate(client)
-    spanish = _page(client, "/nutricion")
-    english = _page(client, "/nutricion?lang=en")
+    spanish = client.get("/nutricion").get_data(as_text=True)
+    english = client.get("/nutricion?lang=en").get_data(as_text=True)
 
     assert "Metabolismo basal por Katch-McArdle" in spanish
     assert "Basal metabolic rate by Katch-McArdle" in english
@@ -107,7 +95,7 @@ def test_stored_plan_explanations_are_rendered_again_in_english(
 
 def test_routine_pages_are_translated_too(client: FlaskClient, seeded: SQLAlchemy) -> None:
     _generate(client)
-    html = _page(client, "/entrenamiento?lang=en")
+    html = client.get("/entrenamiento?lang=en").get_data(as_text=True)
     assert "Weekly volume" in html
     assert "How it is put together" in html
     assert "Double progression" in html  # aviso del motor, no plantilla
@@ -116,7 +104,6 @@ def test_routine_pages_are_translated_too(client: FlaskClient, seeded: SQLAlchem
 def test_the_pdf_is_exported_in_english(client: FlaskClient, seeded: SQLAlchemy) -> None:
     """El documento que alguien se lleva al médico, entero en su idioma."""
     _generate(client)
-    refresh()
     payload = client.get("/cuenta/plan.pdf?lang=en").get_data()
     reader = PdfReader(io.BytesIO(payload))
     texto = "\n".join(page.extract_text() for page in reader.pages)
@@ -133,7 +120,6 @@ def test_the_pdf_is_exported_in_english(client: FlaskClient, seeded: SQLAlchemy)
 def test_the_archive_readme_is_translated(client: FlaskClient, seeded: SQLAlchemy) -> None:
     """El LEEME se traduce; los nombres de columna se quedan en castellano a propósito."""
     _generate(client)
-    refresh()
     payload = client.get("/cuenta/datos.zip?lang=en").get_data()
     with zipfile.ZipFile(io.BytesIO(payload)) as archivo:
         leeme = archivo.read("LEEME.txt").decode("utf-8")
