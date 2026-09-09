@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 13 (auditoría final) en curso.** Hecho: motor, seguridad, robustez, límites de §3.5 y rendimiento. Pendiente: calidad (código muerto, READMEs) y los dos documentos de cierre.
+**Fase 13 cerrada.** Con ella se cierran las trece fases del prompt maestro. Ver `docs/ESTADO_FINAL.md` y `docs/AUDITORIA_FINAL.md`.
 
 ## Terminado
 
@@ -22,44 +22,33 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | 10 | Diario (peso, ingesta, actividad, perímetros), sesiones de entrenamiento con temporizador y revisión quincenal aplicable | `FASE_10` |
 | 11 | Diseño visual: paleta Forja, tipografías e iconos vendorizados, tema claro, estados y micro-interacciones | `FASE_11` |
 | 12 | Exportación del plan en PDF y de los datos en CSV, ajustes de cuenta y borrado RGPD | `FASE_12` |
-| — | Catálogo inglés completo (802 mensajes): interfaz, avisos del motor, PDF, LEEME del ZIP y nombres del catálogo | `FASE_TRADUCCIONES` |
+| — | Catálogo inglés completo (809 mensajes): interfaz, avisos del motor, PDF, LEEME del ZIP y nombres del catálogo | `FASE_TRADUCCIONES` |
+| 13 | Auditoría final: motor con datos de los bordes, seguridad, robustez, límites de §3.5, rendimiento y calidad | `FASE_13` |
 
 ## Estado del repositorio
 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 619 tests en verde |
-| Cobertura de `app/` | 98,4 % |
+| Suite | 622 tests en verde |
+| Cobertura de `app/` | 98,6 % (motor 99,2 %) |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
 | Rama | `main`, sin remoto todavía |
 
 ## Qué estoy haciendo ahora
 
-**Fase 13**, cinco bloques cerrados:
-
-- **Motor**: 1536 perfiles de nutrición, 640 rutinas y 3600 revisiones con datos de los bordes. Tres arreglos (días vacíos, bajadas por debajo del suelo, códigos internos en los avisos).
-- **Seguridad**: IDOR probado ruta por ruta, XSS, inyección, CSRF, argon2, secretos fuera del repositorio.
-- **Robustez**: fallo a mitad de la generación, doble clic en todo lo que escribe, cuentas sin datos, borrado en cascada.
-- **Límites de §3.5**: menores, embarazo, TCA, IMC bajo, números imposibles y campos colados, probados desde el formulario.
-- **Rendimiento**: 1000 cuentas y 100.000 series. El historial pasó de 7,2 s y 255 consultas a 96 ms y 6.
-
-Falta el bloque de calidad y escribir `docs/AUDITORIA_FINAL.md` y `docs/ESTADO_FINAL.md`.
+Nada en curso. Las trece fases están cerradas y la auditoría final, hecha: siete hallazgos, todos corregidos y con su test.
 
 ## Siguiente paso
 
-**Fase 13: auditoría final (§7 del prompt).** Es la fase más larga y no añade funcionalidad: revisa lo que hay. Contenido:
+Puesta en producción, cuando toque (`docs/ESTADO_FINAL.md`, "Lo que falta"):
 
-- Robustez: excepciones sin controlar, divisiones por cero, `None` inesperados, transacciones a medias, condiciones de carrera.
-- Casos extremos del motor con perfiles sintéticos: 40 y 200 kg, 140 y 210 cm, 16 y 85 años, 4 % y 60 % de grasa, todas las lesiones a la vez, sin material, objetivos incoherentes, campos con emojis y cadenas de 10.000 caracteres.
-- Seguridad: inyección, XSS, CSRF, IDOR probado explícitamente, cabeceras, cookies, límites de peticiones, secretos fuera de git.
-- Seguridad del usuario: reverificar uno por uno los límites de §3.5 intentando romperlos desde el formulario y por petición directa.
-- Rendimiento: N+1, índices, tiempos con 1000 usuarios y 100.000 series generadas.
-- Calidad: cobertura, código muerto, READMEs coherentes.
-- Cierre: `docs/AUDITORIA_FINAL.md` con hallazgos, severidad y corrección, y `docs/ESTADO_FINAL.md`.
-
-Después: cuando pases la URL, el remoto de GitHub.
+1. El remoto de GitHub, cuando pases la URL.
+2. Postgres: el código está preparado, pero solo se ha ejecutado sobre SQLite.
+3. Correo real y verificación de la dirección al cambiarla.
+4. Exportaciones en segundo plano si las cuentas acumulan años de datos.
+5. Instrucciones de los ejercicios en castellano y traducción de los nombres generados y guardados.
 
 ## Detalles menores heredados
 
