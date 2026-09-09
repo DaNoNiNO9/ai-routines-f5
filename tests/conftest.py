@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from pathlib import Path
 from typing import Any
 
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
+from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
+from app.extensions import db
 
 AppFactory = Callable[..., Flask]
 
@@ -36,3 +38,13 @@ def app(make_app: AppFactory) -> Flask:
 def client(app: Flask) -> FlaskClient:
     """HTTP test client bound to the test application."""
     return app.test_client()
+
+
+@pytest.fixture
+def database(app: Flask) -> Iterator[SQLAlchemy]:
+    """Fresh in-memory schema for one test, inside an application context."""
+    with app.app_context():
+        db.create_all()
+        yield db
+        db.session.remove()
+        db.drop_all()
