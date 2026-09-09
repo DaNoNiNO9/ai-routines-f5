@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Forja 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 20:48+0200\n"
+"POT-Creation-Date: 2026-09-09 21:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Forja\n"
 "Language: en\n"
@@ -2083,85 +2083,97 @@ msgstr "Not enough data yet (%(weight_days)s weigh-ins over %(span_days)s days):
 msgid "La próxima revisión toca el %(next_review)s."
 msgstr "The next review is due on %(next_review)s."
 
-#. código del motor: adjust.trend
+#. código del motor: adjust.sparse_trend
 #: app/engine/messages.py:246
+#, python-format
+msgid "Con %(weight_days)s pesajes en %(span_days)s días la tendencia se ve, pero con margen: se mira un mes entero y se ajusta la mitad. Pesándote más a menudo se afina antes."
+msgstr "With %(weight_days)s weigh-ins in %(span_days)s days the trend shows, but with a margin: a whole month is used and the change is halved. Weighing more often sharpens it sooner."
+
+#. código del motor: adjust.trend
+#: app/engine/messages.py:251
 #, python-format
 msgid "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado (media móvil de 7 días)."
 msgstr "Observed change %(observed)s kg/week against %(expected)s expected (7-day moving average)."
 
+#. código del motor: adjust.trend_raw
+#: app/engine/messages.py:255
+#, python-format
+msgid "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado, sobre los pesajes que has ido apuntando."
+msgstr "Observed change %(observed)s kg/week against %(expected)s expected, on the weigh-ins you have logged."
+
 #. código del motor: adjust.tdee_observed
-#: app/engine/messages.py:250
+#: app/engine/messages.py:259
 #, python-format
 msgid "Gasto observado por balance energético: %(observed)s kcal/día (teórico %(theoretical)s; se usa %(blended)s, con %(days)s días de datos)."
 msgstr "Expenditure observed from energy balance: %(observed)s kcal/day (theoretical %(theoretical)s; %(blended)s is used, with %(days)s days of data)."
 
 #. código del motor: adjust.adherence_first
-#: app/engine/messages.py:254
+#: app/engine/messages.py:263
 #, python-format
 msgid "La pérdida va lenta pero la adherencia media es del %(adherence)s %%: antes de tocar calorías, revisa el registro y la constancia."
 msgstr "Loss is slow but average adherence is %(adherence)s %%: before touching calories, look at your logging and consistency."
 
 #. código del motor: adjust.keep
-#: app/engine/messages.py:257
+#: app/engine/messages.py:266
 msgid "Vas según lo previsto: sin cambios hasta la próxima revisión."
 msgstr "You are on track: no changes until the next review."
 
 #. código del motor: adjust.reduce_calories
-#: app/engine/messages.py:259
+#: app/engine/messages.py:268
 #, python-format
 msgid "Calorías bajadas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories cut by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.increase_calories
-#: app/engine/messages.py:262
+#: app/engine/messages.py:271
 #, python-format
 msgid "Calorías subidas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories raised by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.add_steps
-#: app/engine/messages.py:265
+#: app/engine/messages.py:274
 #, python-format
 msgid "Las calorías ya están en el mínimo seguro: se suman %(steps)s pasos diarios en su lugar."
 msgstr "Calories are already at the safe minimum: %(steps)s daily steps are added instead."
 
 #. código del motor: adjust.loss_too_fast
-#: app/engine/messages.py:268
+#: app/engine/messages.py:277
 #, python-format
 msgid "Pierdes %(observed)s kg/semana, por encima del máximo de %(max_weekly)s kg (1 %% del peso): se suben calorías."
 msgstr "You are losing %(observed)s kg/week, above the %(max_weekly)s kg maximum (1 %% of body weight): calories go up."
 
 #. código del motor: adjust.diet_break
-#: app/engine/messages.py:272
+#: app/engine/messages.py:281
 #, python-format
 msgid "Llevas %(weeks)s semanas en déficit y el peso está estancado: descanso de dieta de 2 semanas a mantenimiento (%(calories)s kcal) antes de seguir."
 msgstr "You have been in a deficit for %(weeks)s weeks and weight has stalled: take a 2-week diet break at maintenance (%(calories)s kcal) before carrying on."
 
 #. código del motor: adjust.refeed
-#: app/engine/messages.py:276
+#: app/engine/messages.py:285
 #, python-format
 msgid "Estancamiento tras %(weeks)s semanas de déficit: día de recarga a mantenimiento (%(calories)s kcal) esta semana, priorizando carbohidratos."
 msgstr "Stalled after %(weeks)s weeks of deficit: a refeed day at maintenance (%(calories)s kcal) this week, favouring carbohydrates."
 
 #. código del motor: adjust.floor_reached
-#: app/engine/messages.py:279
+#: app/engine/messages.py:288
 #, python-format
 msgid "No se baja de %(floor)s kcal (mínimo seguro)."
 msgstr "Nothing goes below %(floor)s kcal (safe minimum)."
 
 #. código del motor: adjust.capped_step
-#: app/engine/messages.py:280
+#: app/engine/messages.py:289
 #, python-format
 msgid "Cambio limitado al %(pct)s %% por revisión."
 msgstr "Change capped at %(pct)s %% per review."
 
 #. código del motor: adjust.next_review
-#: app/engine/messages.py:281 app/templates/nutrition/plan.html:131
+#: app/engine/messages.py:290 app/templates/nutrition/plan.html:131
 #, python-format
 msgid "Próxima revisión: %(date)s."
 msgstr "Next review: %(date)s."
 
 #. código del motor: plan.confidence
-#: app/engine/messages.py:282
+#: app/engine/messages.py:291
 #, python-format
 msgid "Confianza de la estimación: %(confidence)s."
 msgstr "Confidence in the estimate: %(confidence)s."
@@ -2694,12 +2706,12 @@ msgstr "See why"
 
 #: app/templates/dashboard/index.html:85
 #, python-format
-msgid "Media de 7 días: %(delta)s kg en el periodo."
-msgstr "7-day average: %(delta)s kg over the period."
+msgid "%(delta)s kg desde que empezaste, en media semanal."
+msgstr "%(delta)s kg since you started, on the weekly average."
 
 #: app/templates/dashboard/index.html:87
-msgid "Con al menos tres pesajes por semana calculamos la media de 7 días, que es la que cuenta."
-msgstr "With at least three weigh-ins a week we work out the 7-day average, which is the one that counts."
+msgid "Con tres pesajes seguidos ya se ve la tendencia. Si te pesas menos, se mira mes a mes."
+msgstr "Three weigh-ins in a row already show the trend. If you weigh yourself less often, it is looked at month by month."
 
 #: app/templates/dashboard/index.html:90
 msgid "Evolución del peso"
@@ -2714,8 +2726,8 @@ msgid "Registrar peso"
 msgstr "Log weight"
 
 #: app/templates/dashboard/index.html:95
-msgid "Pésate por la mañana, tras ir al baño y antes de comer. Los días sueltos no importan: la media de 7 días sí."
-msgstr "Weigh yourself in the morning, after the bathroom and before eating. Single days do not matter: the 7-day average does."
+msgid "Pésate al levantarte, después del baño y antes de desayunar. Un día suelto no dice nada: el peso sube y baja con el agua y la sal."
+msgstr "Weigh yourself when you get up, after the bathroom and before breakfast. A single day means nothing: weight goes up and down with water and salt."
 
 #: app/templates/dashboard/index.html:102
 #, python-format
@@ -2727,8 +2739,8 @@ msgid "pendiente"
 msgstr "due"
 
 #: app/templates/dashboard/index.html:103
-msgid "Cada 14 días comparamos tu cambio de peso real con el esperado y ajustamos calorías o pasos en pequeños escalones."
-msgstr "Every 14 days we compare your real weight change with the expected one and move calories or steps in small increments."
+msgid "Cada dos semanas se mira si el peso se está moviendo como debería. Si no, se tocan calorías o pasos, poco a poco."
+msgstr "Every two weeks we look at whether the weight is moving as it should. If it is not, calories or steps change, little by little."
 
 #: app/templates/dashboard/index.html:105
 msgid "Sin plan que revisar."
@@ -3214,8 +3226,8 @@ msgstr "Fortnightly review"
 
 #: app/templates/review/index.html:10
 #, python-format
-msgid "Cada 14 días comparamos tu cambio de peso real (media móvil de 7 días) con el esperado, estimamos tu gasto real por balance energético y proponemos, como mucho, un cambio del 5 %%. Nada cambia hasta que lo apliques."
-msgstr "Every 14 days we compare your real weight change (7-day moving average) with the expected one, estimate your real expenditure from energy balance, and propose a change of at most 5 %%. Nothing changes until you apply it."
+msgid "Cada dos semanas se mira qué ha hecho tu peso frente a lo previsto y, con lo que has comido, cuánto gastas de verdad. De ahí sale una propuesta pequeña: nunca más de un 5 %%. No cambia nada hasta que le des al botón."
+msgstr "Every two weeks we look at what your weight has done against the plan and, with what you have eaten, at what you really burn. Out of that comes a small proposal: never more than 5 %%. Nothing changes until you press the button."
 
 #: app/templates/review/index.html:18
 msgid "Ir al diario"
@@ -3374,8 +3386,8 @@ msgid "Cardio"
 msgstr "Cardio"
 
 #: app/templates/tracking/measurements.html:11
-msgid "Una vez por semana, misma hora, cinta sin apretar. Con cuello, cintura y cadera estimamos la grasa corporal."
-msgstr "Once a week, same time of day, tape not pulled tight. With neck, waist and hip we estimate body fat."
+msgid "Una vez por semana, a la misma hora y con la cinta sin apretar. De cuello, cintura y cadera sale tu porcentaje de grasa."
+msgstr "Once a week, at the same time of day and with the tape not pulled tight. Your body fat percentage comes from neck, waist and hip."
 
 #: app/templates/tracking/measurements.html:16
 msgid "Nueva medición"
@@ -3402,8 +3414,8 @@ msgid "Gemelo"
 msgstr "Calf"
 
 #: app/templates/tracking/measurements.html:62
-msgid "Todavía no hay mediciones. Con cuello, cintura y cadera estimamos la grasa corporal."
-msgstr "No measurements yet. With neck, waist and hip we estimate body fat."
+msgid "Todavía no hay mediciones. De cuello, cintura y cadera sale tu porcentaje de grasa."
+msgstr "No measurements yet. Your body fat percentage comes from neck, waist and hip."
 
 #: app/templates/training/day.html:13
 msgid "RIR por semana:"

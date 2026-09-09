@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 629 tests en verde |
+| Suite | 633 tests en verde |
 | Cobertura de `app/` | 98,6 % (motor 99,2 %) |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -38,7 +38,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Cambios salidos de probar la app (T-104 a T-109): el paso de material y lesiones deja de ser un muro, los ejercicios que no gustan se marcan desde la rutina, el descanso entre series nunca baja de dos minutos y el cardio dice con qué se hace.
+Cambios salidos de probar la app (T-104 a T-111): el paso de material y lesiones deja de ser un muro, los ejercicios que no gustan se marcan desde la rutina, el descanso entre series nunca baja de dos minutos, el cardio dice con qué se hace y pesarse a diario deja de ser un requisito.
 
 ## Siguiente paso
 
