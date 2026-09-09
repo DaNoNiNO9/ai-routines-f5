@@ -1,0 +1,75 @@
+# Tool configuration (ruff, pytest, coverage).
+# The project is not packaged, so there is deliberately no [project] / [build-system] table.
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["app", "tests"]
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W",        # pycodestyle
+  "F",             # pyflakes
+  "I",             # isort
+  "N",             # pep8-naming
+  "UP",            # pyupgrade
+  "B",             # bugbear
+  "C4",            # comprehensions
+  "SIM",           # simplify
+  "RUF",           # ruff-specific rules
+  "D",             # docstrings (google convention)
+  "DTZ",           # datetimes must be timezone-aware
+  "BLE",           # no blind `except Exception` (golden rule 4: no silent errors)
+  "S110", "S112",  # no try/except/pass, no try/except/continue
+  "T20",           # no print(): use logging or click.echo
+  "G",             # correct string formatting in logging calls
+  "LOG",           # correct logging usage
+  "TRY",           # well-formed exceptions and handlers
+  "PT",            # pytest style
+  "PTH",           # pathlib instead of os.path
+  "ERA",           # no commented-out code
+  "RET",           # consistent returns
+  "ARG",           # unused arguments
+]
+ignore = [
+  "D100", "D104",  # module/package docstrings are optional
+  "D105", "D107",  # magic methods and __init__ docstrings are optional
+  "TRY003",        # long messages in exceptions are fine
+  "RUF012",        # mutable class attributes: used by SQLAlchemy models and config classes
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "S101", "ARG"]
+"migrations/**" = ["D", "E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config --import-mode=importlib"
+markers = [
+  "slow: slow tests (performance, long simulated time series)",
+]
+xfail_strict = true
+
+[tool.coverage.run]
+source = ["app"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+precision = 1
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+]
