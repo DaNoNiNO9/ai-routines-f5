@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Forja 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 15:45+0200\n"
+"POT-Creation-Date: 2026-09-09 20:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Forja\n"
 "Language: en\n"
@@ -617,6 +617,90 @@ msgstr "dumbbells, a kettlebell or bands"
 msgid "una esterilla"
 msgstr "a mat"
 
+#: app/labels.py:339
+msgid "Las cintas con asas que se cuelgan de un anclaje"
+msgstr "The straps with handles that hang from an anchor"
+
+#: app/labels.py:340
+msgid "La barra corta con ondulaciones, para bíceps y tríceps"
+msgstr "The short wavy bar, for biceps and triceps"
+
+#: app/labels.py:341
+msgid "La barra hexagonal en la que te metes dentro"
+msgstr "The hexagonal bar you stand inside"
+
+#: app/labels.py:342
+msgid "Balón con peso, para lanzamientos y abdominales"
+msgstr "A weighted ball, for throws and abs"
+
+#: app/labels.py:343
+msgid "El cajón para subirse o hacer saltos"
+msgstr "The box you step or jump onto"
+
+#: app/labels.py:344
+msgid "La pelota grande hinchable"
+msgstr "The big inflatable ball"
+
+#: app/labels.py:345
+msgid "El banco inclinado para lumbares y glúteos"
+msgstr "The angled bench for lower back and glutes"
+
+#: app/labels.py:346
+msgid "La ruedecita con dos asas"
+msgstr "The little wheel with two handles"
+
+#: app/labels.py:347
+msgid "La torre con poleas y cables regulables"
+msgstr "The tower with pulleys and adjustable cables"
+
+#: app/labels.py:348
+msgid "Sentado, tiras de una barra hacia el pecho"
+msgstr "Seated, you pull a bar down to your chest"
+
+#: app/labels.py:349
+msgid "Sentado, tiras de un agarre hacia el abdomen"
+msgstr "Seated, you pull a handle towards your belly"
+
+#: app/labels.py:350
+msgid "La barra guiada por raíles"
+msgstr "The bar that runs on rails"
+
+#: app/labels.py:351
+msgid "Sentadilla en máquina inclinada, de espaldas al respaldo"
+msgstr "Squat on an angled machine, back against the pad"
+
+#: app/labels.py:352
+msgid "Sentado, juntas los brazos por delante del pecho"
+msgstr "Seated, you bring your arms together in front of your chest"
+
+#: app/labels.py:353
+msgid "Empuje de cadera con la espalda apoyada"
+msgstr "Hip thrust with your back supported"
+
+#: app/labels.py:354
+msgid "Sentado, abres o cierras las piernas"
+msgstr "Seated, you open or close your legs"
+
+#: app/labels.py:355
+msgid "La estructura donde se apoya la barra para sentadillas"
+msgstr "The frame that holds the bar for squats"
+
+#: app/labels.py:361
+msgid "Damos por hecho que tienes de todo: barras, mancuernas, poleas y máquinas."
+msgstr "We assume you have it all: barbells, dumbbells, cables and machines."
+
+#: app/labels.py:364
+msgid "Damos por hecho lo básico: barras, mancuernas, bancos y alguna máquina."
+msgstr "We assume the basics: barbells, dumbbells, benches and a machine or two."
+
+#: app/labels.py:366
+msgid "Damos por hecho mancuernas, bandas y un banco."
+msgstr "We assume dumbbells, bands and a bench."
+
+#: app/labels.py:367
+msgid "Damos por hecho que entrenas solo con tu peso."
+msgstr "We assume you train with your body weight only."
+
 #: app/blueprints/account/forms.py:37 app/blueprints/auth/forms.py:23
 msgid "Nombre"
 msgstr "Name"
@@ -794,7 +878,7 @@ msgid "Contraseña actualizada. Ya puedes entrar."
 msgstr "Password updated. You can sign in now."
 
 #: app/blueprints/dashboard/routes.py:43
-#: app/blueprints/onboarding/routes.py:167 app/services/exports.py:381
+#: app/blueprints/onboarding/routes.py:143 app/services/exports.py:381
 #: app/templates/dashboard/index.html:81 app/templates/tracking/diary.html:25
 msgid "Peso"
 msgstr "Weight"
@@ -842,7 +926,7 @@ msgid "Sexo biológico"
 msgstr "Biological sex"
 
 #: app/blueprints/onboarding/forms.py:70
-#: app/blueprints/onboarding/routes.py:165
+#: app/blueprints/onboarding/routes.py:141
 msgid "Fecha de nacimiento"
 msgstr "Date of birth"
 
@@ -956,334 +1040,323 @@ msgid "Material disponible"
 msgstr "Equipment available"
 
 #: app/blueprints/onboarding/forms.py:214
-msgid "Músculos que quieres priorizar (máximo dos)"
-msgstr "Muscles you want to prioritise (two at most)"
+msgid "¿Hay algún músculo que quieras trabajar más? (opcional, máximo dos)"
+msgstr "Any muscle you want to work more? (optional, two at most)"
 
 #: app/blueprints/onboarding/forms.py:218
-msgid "Ejercicios que no quieres hacer"
-msgstr "Exercises you would rather not do"
+msgid "Tengo alguna molestia o lesión"
+msgstr "I have a niggle or an injury"
 
-#: app/blueprints/onboarding/forms.py:221
-msgid "Ejercicios que te gustan"
-msgstr "Exercises you enjoy"
-
-#: app/blueprints/onboarding/forms.py:227
+#: app/blueprints/onboarding/forms.py:225
 msgid "Marca al menos una opción; el peso corporal cuenta."
 msgstr "Tick at least one; body weight counts."
 
-#: app/blueprints/onboarding/forms.py:232
+#: app/blueprints/onboarding/forms.py:230
 msgid "Elige como mucho dos músculos."
 msgstr "Choose two muscles at most."
 
-#: app/blueprints/onboarding/forms.py:256
+#: app/blueprints/onboarding/forms.py:258
 msgid "Sin molestias"
 msgstr "No trouble"
 
-#: app/blueprints/onboarding/forms.py:266
+#: app/blueprints/onboarding/forms.py:268
 msgid "Objetivo principal"
 msgstr "Main goal"
 
-#: app/blueprints/onboarding/forms.py:269
-#: app/blueprints/onboarding/routes.py:257
+#: app/blueprints/onboarding/forms.py:271
+#: app/blueprints/onboarding/routes.py:231
 msgid "Ritmo"
 msgstr "Pace"
 
-#: app/blueprints/onboarding/forms.py:275
+#: app/blueprints/onboarding/forms.py:277
 msgid "Peso objetivo (kg, opcional)"
 msgstr "Target weight (kg, optional)"
 
-#: app/blueprints/onboarding/forms.py:277
+#: app/blueprints/onboarding/forms.py:279
 msgid "Fecha objetivo (opcional)"
 msgstr "Target date (optional)"
 
-#: app/blueprints/onboarding/forms.py:282
+#: app/blueprints/onboarding/forms.py:284
 msgid "La fecha objetivo tiene que ser futura."
 msgstr "The target date has to be in the future."
 
-#: app/blueprints/onboarding/forms.py:289
-#: app/blueprints/onboarding/routes.py:265
+#: app/blueprints/onboarding/forms.py:291
+#: app/blueprints/onboarding/routes.py:239
 msgid "Comidas al día"
 msgstr "Meals per day"
 
-#: app/blueprints/onboarding/forms.py:296
+#: app/blueprints/onboarding/forms.py:298
 msgid "Patrón de alimentación"
 msgstr "Eating pattern"
 
-#: app/blueprints/onboarding/forms.py:302
+#: app/blueprints/onboarding/forms.py:304
 msgid "Alimentos que no quieres (separados por comas)"
 msgstr "Foods you would rather avoid (comma separated)"
 
-#: app/blueprints/onboarding/forms.py:306
+#: app/blueprints/onboarding/forms.py:308
 msgid "Alergias o intolerancias (separadas por comas)"
 msgstr "Allergies or intolerances (comma separated)"
 
-#: app/blueprints/onboarding/forms.py:310
+#: app/blueprints/onboarding/forms.py:312
 msgid "Presupuesto para comida"
 msgstr "Food budget"
 
-#: app/blueprints/onboarding/forms.py:316
-#: app/blueprints/onboarding/routes.py:270
+#: app/blueprints/onboarding/forms.py:318
+#: app/blueprints/onboarding/routes.py:244
 msgid "Tiempo para cocinar"
 msgstr "Time to cook"
 
-#: app/blueprints/onboarding/forms.py:322
+#: app/blueprints/onboarding/forms.py:324
 msgid "Quiero ciclar carbohidratos (más en días de entreno, menos en descanso)"
 msgstr "I want to cycle carbohydrates (more on training days, less on rest days)"
 
-#: app/blueprints/onboarding/forms.py:325
+#: app/blueprints/onboarding/forms.py:327
 msgid "Bebidas alcohólicas por semana"
 msgstr "Alcoholic drinks per week"
 
-#: app/blueprints/onboarding/forms.py:330
+#: app/blueprints/onboarding/forms.py:332
 msgid "Cafés o bebidas con cafeína al día"
 msgstr "Coffees or caffeinated drinks per day"
 
-#: app/blueprints/onboarding/forms.py:346
+#: app/blueprints/onboarding/forms.py:348
 msgid "Estoy embarazada o en periodo de lactancia"
 msgstr "I am pregnant or breastfeeding"
 
-#: app/blueprints/onboarding/forms.py:348
+#: app/blueprints/onboarding/forms.py:350
 msgid "Tengo o he tenido un trastorno de la conducta alimentaria"
 msgstr "I have or have had an eating disorder"
 
-#: app/blueprints/onboarding/forms.py:351
+#: app/blueprints/onboarding/forms.py:353
 msgid "Algo más que debamos saber (opcional)"
 msgstr "Anything else we should know (optional)"
 
-#: app/blueprints/onboarding/routes.py:34 app/templates/dashboard/index.html:99
+#: app/blueprints/onboarding/routes.py:35 app/templates/dashboard/index.html:99
 #: app/templates/review/index.html:4 app/templates/tracking/diary.html:18
 msgid "Revisión"
 msgstr "Review"
 
-#: app/blueprints/onboarding/routes.py:38
+#: app/blueprints/onboarding/routes.py:39
 msgid "Faltan respuestas: revisa los pasos marcados."
 msgstr "Some answers are missing: check the steps marked."
 
-#: app/blueprints/onboarding/routes.py:39
+#: app/blueprints/onboarding/routes.py:40
 msgid "Alguna respuesta no es válida. Revisa los pasos y vuelve a intentarlo."
 msgstr "One of the answers is not valid. Check the steps and try again."
 
-#: app/blueprints/onboarding/routes.py:41
+#: app/blueprints/onboarding/routes.py:42
 msgid "No se pudo generar el plan con estos datos. Lo hemos registrado; revisa las respuestas o inténtalo más tarde."
 msgstr "The plan could not be built with these answers. We have logged it; check your answers or try again later."
 
-#: app/blueprints/onboarding/routes.py:89
-#, python-format
-msgid "No reconocemos: %(names)s. Elige nombres de la lista."
-msgstr "We do not recognise: %(names)s. Pick names from the list."
-
-#: app/blueprints/onboarding/routes.py:126
+#: app/blueprints/onboarding/routes.py:103
 msgid "Completa primero los pasos anteriores."
 msgstr "Finish the earlier steps first."
 
-#: app/blueprints/onboarding/routes.py:161
+#: app/blueprints/onboarding/routes.py:137
 msgid "Sí"
 msgstr "Yes"
 
-#: app/blueprints/onboarding/routes.py:161
+#: app/blueprints/onboarding/routes.py:137
 msgid "No"
 msgstr "No"
 
-#: app/blueprints/onboarding/routes.py:164
+#: app/blueprints/onboarding/routes.py:140
 msgid "Sexo"
 msgstr "Sex"
 
-#: app/blueprints/onboarding/routes.py:166 app/services/exports.py:382
+#: app/blueprints/onboarding/routes.py:142 app/services/exports.py:382
 msgid "Altura"
 msgstr "Height"
 
-#: app/blueprints/onboarding/routes.py:169 app/templates/tracking/diary.html:17
+#: app/blueprints/onboarding/routes.py:145 app/templates/tracking/diary.html:17
 #: app/templates/tracking/measurements.html:5
 #: app/templates/tracking/measurements.html:10
 msgid "Perímetros"
 msgstr "Measurements"
 
-#: app/blueprints/onboarding/routes.py:173
+#: app/blueprints/onboarding/routes.py:149
 msgid "cuello"
 msgstr "neck"
 
-#: app/blueprints/onboarding/routes.py:174
+#: app/blueprints/onboarding/routes.py:150
 msgid "cintura"
 msgstr "waist"
 
-#: app/blueprints/onboarding/routes.py:175
+#: app/blueprints/onboarding/routes.py:151
 msgid "cadera"
 msgstr "hip"
 
-#: app/blueprints/onboarding/routes.py:179
-#: app/blueprints/onboarding/routes.py:194
+#: app/blueprints/onboarding/routes.py:155
+#: app/blueprints/onboarding/routes.py:170
 msgid "no indicados"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:182 app/services/exports.py:385
+#: app/blueprints/onboarding/routes.py:158 app/services/exports.py:385
 #: app/templates/nutrition/plan.html:90
 msgid "Grasa corporal"
 msgstr "Body fat"
 
-#: app/blueprints/onboarding/routes.py:187
+#: app/blueprints/onboarding/routes.py:163
 msgid "no indicada"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:193
+#: app/blueprints/onboarding/routes.py:169
 msgid "Trabajo"
 msgstr "Work"
 
-#: app/blueprints/onboarding/routes.py:194
+#: app/blueprints/onboarding/routes.py:170
 msgid "Pasos diarios"
 msgstr "Daily steps"
 
-#: app/blueprints/onboarding/routes.py:195
+#: app/blueprints/onboarding/routes.py:171
 msgid "Sueño"
 msgstr "Sleep"
 
-#: app/blueprints/onboarding/routes.py:196
+#: app/blueprints/onboarding/routes.py:172
 msgid "Estrés"
 msgstr "Stress"
 
-#: app/blueprints/onboarding/routes.py:198
+#: app/blueprints/onboarding/routes.py:174
 msgid "Otra actividad"
 msgstr "Other activity"
 
-#: app/blueprints/onboarding/routes.py:204
-#: app/blueprints/onboarding/routes.py:234
+#: app/blueprints/onboarding/routes.py:180
+#: app/blueprints/onboarding/routes.py:210
+#: app/blueprints/onboarding/routes.py:218
 #: app/blueprints/onboarding/routes.py:242
-#: app/blueprints/onboarding/routes.py:268
-#: app/blueprints/onboarding/routes.py:278
+#: app/blueprints/onboarding/routes.py:252
 msgid "ninguna"
 msgstr "none"
 
-#: app/blueprints/onboarding/routes.py:210
+#: app/blueprints/onboarding/routes.py:186
 msgid "Experiencia"
 msgstr "Experience"
 
-#: app/blueprints/onboarding/routes.py:214
+#: app/blueprints/onboarding/routes.py:190
 msgid "Frecuencia"
 msgstr "Frequency"
 
-#: app/blueprints/onboarding/routes.py:216
+#: app/blueprints/onboarding/routes.py:192
 #, python-format
 msgid "%(days)s días x %(minutes)s min"
 msgstr "%(days)s days x %(minutes)s min"
 
-#: app/blueprints/onboarding/routes.py:221
+#: app/blueprints/onboarding/routes.py:197
 msgid "Lugar"
 msgstr "Place"
 
-#: app/blueprints/onboarding/routes.py:222
+#: app/blueprints/onboarding/routes.py:198
 msgid "Hora"
 msgstr "Time"
 
-#: app/blueprints/onboarding/routes.py:226
+#: app/blueprints/onboarding/routes.py:202
 msgid "Material"
 msgstr "Equipment"
 
-#: app/blueprints/onboarding/routes.py:230
+#: app/blueprints/onboarding/routes.py:206
 msgid "Prioridad"
 msgstr "Priority"
 
-#: app/blueprints/onboarding/routes.py:237
+#: app/blueprints/onboarding/routes.py:213
 msgid "Lesiones"
 msgstr "Injuries"
 
-#: app/blueprints/onboarding/routes.py:245
+#: app/blueprints/onboarding/routes.py:223
 msgid "Ejercicios que evitar"
 msgstr "Exercises to avoid"
 
-#: app/blueprints/onboarding/routes.py:247
-#: app/blueprints/onboarding/routes.py:252
-#: app/blueprints/onboarding/routes.py:267
-msgid "ninguno"
-msgstr "none"
-
-#: app/blueprints/onboarding/routes.py:250
+#: app/blueprints/onboarding/routes.py:224
 msgid "Ejercicios preferidos"
 msgstr "Preferred exercises"
 
-#: app/blueprints/onboarding/routes.py:256 app/services/onboarding.py:71
+#: app/blueprints/onboarding/routes.py:230 app/services/onboarding.py:71
 msgid "Objetivo"
 msgstr "Goal"
 
-#: app/blueprints/onboarding/routes.py:259
+#: app/blueprints/onboarding/routes.py:233
 msgid "Peso objetivo"
 msgstr "Target weight"
 
-#: app/blueprints/onboarding/routes.py:260
+#: app/blueprints/onboarding/routes.py:234
 msgid "no indicado"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:262
+#: app/blueprints/onboarding/routes.py:236
 msgid "Fecha objetivo"
 msgstr "Target date"
 
-#: app/blueprints/onboarding/routes.py:262
+#: app/blueprints/onboarding/routes.py:236
 msgid "sin fecha"
 msgstr "no date"
 
-#: app/blueprints/onboarding/routes.py:266
+#: app/blueprints/onboarding/routes.py:240
 msgid "Patrón"
 msgstr "Pattern"
 
-#: app/blueprints/onboarding/routes.py:267
+#: app/blueprints/onboarding/routes.py:241
 msgid "Alimentos que evitar"
 msgstr "Foods to avoid"
 
-#: app/blueprints/onboarding/routes.py:268
+#: app/blueprints/onboarding/routes.py:241
+msgid "ninguno"
+msgstr "none"
+
+#: app/blueprints/onboarding/routes.py:242
 msgid "Alergias"
 msgstr "Allergies"
 
-#: app/blueprints/onboarding/routes.py:269
+#: app/blueprints/onboarding/routes.py:243
 msgid "Presupuesto"
 msgstr "Budget"
 
-#: app/blueprints/onboarding/routes.py:271 app/services/exports.py:360
+#: app/blueprints/onboarding/routes.py:245 app/services/exports.py:360
 #: app/templates/nutrition/plan.html:78
 msgid "Ciclado de carbohidratos"
 msgstr "Carb cycling"
 
-#: app/blueprints/onboarding/routes.py:272
+#: app/blueprints/onboarding/routes.py:246
 msgid "Alcohol"
 msgstr "Alcohol"
 
-#: app/blueprints/onboarding/routes.py:272
+#: app/blueprints/onboarding/routes.py:246
 #, python-format
 msgid "%(n)s bebidas/semana"
 msgstr "%(n)s drinks/week"
 
-#: app/blueprints/onboarding/routes.py:273
+#: app/blueprints/onboarding/routes.py:247
 msgid "Cafeína"
 msgstr "Caffeine"
 
-#: app/blueprints/onboarding/routes.py:273
+#: app/blueprints/onboarding/routes.py:247
 #, python-format
 msgid "%(n)s al día"
 msgstr "%(n)s a day"
 
-#: app/blueprints/onboarding/routes.py:276
+#: app/blueprints/onboarding/routes.py:250
 msgid "Embarazo o lactancia"
 msgstr "Pregnancy or breastfeeding"
 
-#: app/blueprints/onboarding/routes.py:277
+#: app/blueprints/onboarding/routes.py:251
 msgid "Antecedentes de TCA"
 msgstr "History of an eating disorder"
 
-#: app/blueprints/onboarding/routes.py:278
+#: app/blueprints/onboarding/routes.py:252
 msgid "Notas"
 msgstr "Notes"
 
-#: app/blueprints/onboarding/routes.py:299
+#: app/blueprints/onboarding/routes.py:273
 #, python-format
 msgid "Faltan respuestas en el paso %(n)s."
 msgstr "Answers are missing on step %(n)s."
 
-#: app/blueprints/onboarding/routes.py:308
+#: app/blueprints/onboarding/routes.py:282
 msgid "Hemos guardado tus respuestas, pero no podemos darte un plan."
 msgstr "We have saved your answers, but we cannot give you a plan."
 
-#: app/blueprints/onboarding/routes.py:311
+#: app/blueprints/onboarding/routes.py:285
 msgid "Plan de nutrición listo. No pudimos montar una rutina con ese material."
 msgstr "Nutrition plan ready. We could not build a routine with that equipment."
 
-#: app/blueprints/onboarding/routes.py:315
+#: app/blueprints/onboarding/routes.py:289
 msgid "Plan y rutina generados."
 msgstr "Plan and routine generated."
 
@@ -1461,6 +1534,19 @@ msgstr "Activity saved."
 #: app/blueprints/tracking/routes.py:179
 msgid "Medidas guardadas."
 msgstr "Measurements saved."
+
+#: app/blueprints/training/routes.py:114
+msgid "No hay otro ejercicio para ese hueco con tu material y tus limitaciones."
+msgstr "There is no other exercise for that slot with your equipment and your limits."
+
+#: app/blueprints/training/routes.py:121
+#, python-format
+msgid "%(old)s fuera: ahora toca %(new)s. No volverá a aparecer en tus rutinas."
+msgstr "%(old)s is out: %(new)s takes its place. It will not show up in your routines again."
+
+#: app/blueprints/training/routes.py:140
+msgid "Vuelve a estar disponible para las próximas rutinas."
+msgstr "It is available again for the next routines."
 
 #: app/blueprints/workouts/forms.py:13
 msgid "1 · Fresco"
@@ -1873,173 +1959,209 @@ msgstr "Pushing sets %(push)s and pulling sets %(pull)s (ratio %(ratio)s)."
 msgid "%(day)s: series recortadas para encajar en %(minutes)s minutos."
 msgstr "%(day)s: sets trimmed to fit into %(minutes)s minutes."
 
-#. código del motor: routine.session_too_long
+#. código del motor: routine.exercises_dropped_for_time
 #: app/engine/messages.py:170
+#, python-format
+msgid "%(day)s: %(n)s ejercicio(s) de aislamiento fuera para caber en %(minutes)s minutos. El descanso entre series no se recorta: manda el trabajo básico."
+msgstr "%(day)s: %(n)s isolation exercise(s) dropped to fit in %(minutes)s minutes. The rest between sets is not cut: the compound work comes first."
+
+#. código del motor: routine.session_too_long
+#: app/engine/messages.py:174
 #, python-format
 msgid "%(day)s: aun recortando, la sesión estimada dura %(estimated)s min y tienes %(budget)s; añade minutos o un día."
 msgstr "%(day)s: even trimmed, the session runs %(estimated)s min and you have %(budget)s; add minutes or a day."
 
 #. código del motor: routine.volume_scaled_by_time
-#: app/engine/messages.py:174
+#: app/engine/messages.py:178
 #, python-format
 msgid "Objetivos de volumen reducidos un %(pct)s %% para caber en tus sesiones; más días o minutos permitirían más series."
 msgstr "Volume targets cut by %(pct)s %% to fit your sessions; more days or minutes would allow more sets."
 
 #. código del motor: routine.pattern_trimmed
-#: app/engine/messages.py:178
+#: app/engine/messages.py:182
 #, python-format
 msgid "El patrón %(pattern)s ha quedado fuera esta semana por falta de tiempo."
 msgstr "The %(pattern)s pattern was left out this week for lack of time."
 
 #. código del motor: routine.pattern_not_scheduled
-#: app/engine/messages.py:181
+#: app/engine/messages.py:185
 #, python-format
 msgid "El patrón %(pattern)s no entra en esta distribución de días; rota en el siguiente mesociclo."
 msgstr "The %(pattern)s pattern does not fit this split; it rotates in next mesocycle."
 
 #. código del motor: routine.pattern_blocked_by_injury
-#: app/engine/messages.py:185
+#: app/engine/messages.py:189
 #, python-format
 msgid "El patrón %(pattern)s se omite por las lesiones o limitaciones declaradas."
 msgstr "The %(pattern)s pattern is skipped because of the injuries you declared."
 
 #. código del motor: routine.push_pull_unbalanced
-#: app/engine/messages.py:188
+#: app/engine/messages.py:192
 msgid "Con tu material no hay suficientes ejercicios de tracción para equilibrar el empuje."
 msgstr "With your equipment there are not enough pulling exercises to balance the pushing."
 
 #. código del motor: routine.priority_applied
-#: app/engine/messages.py:190
+#: app/engine/messages.py:194
 #, python-format
 msgid "Volumen extra (+27 %%) para %(muscles)s, compensado en el resto."
 msgstr "Extra volume (+27 %%) for %(muscles)s, taken off the rest."
 
 #. código del motor: routine.priority_slot_added
-#: app/engine/messages.py:192
+#: app/engine/messages.py:196
 #, python-format
 msgid "Añadido un ejercicio de %(muscle)s en %(day)s por ser prioritario."
 msgstr "Added a %(muscle)s exercise on %(day)s because it is a priority."
 
 #. código del motor: routine.volume_low
-#: app/engine/messages.py:195
+#: app/engine/messages.py:199
 #, python-format
 msgid "%(muscle)s: %(planned)s series efectivas, por debajo de las %(target_min)s objetivo (lo limita el material o el tiempo)."
 msgstr "%(muscle)s: %(planned)s effective sets, below the %(target_min)s target (equipment or time is the limit)."
 
 #. código del motor: cardio.not_punishment
-#: app/engine/messages.py:199
+#: app/engine/messages.py:203
 msgid "El cardio se programa por su efecto sobre el gasto y la salud, nunca como castigo por saltarse la dieta."
 msgstr "Cardio is programmed for what it does to expenditure and health, never as punishment for slipping on the diet."
 
 #. código del motor: cardio.deficit_not_covered
-#: app/engine/messages.py:203
+#: app/engine/messages.py:207
 #, python-format
 msgid "Quedan %(kcal)s kcal semanales de déficit sin cubrir con actividad: se alarga el plazo antes que añadir más cardio."
 msgstr "%(kcal)s kcal a week of deficit are still uncovered: the timeline stretches before more cardio is added."
 
 #. código del motor: cardio.health_sessions
-#: app/engine/messages.py:207
+#: app/engine/messages.py:211
 #, python-format
 msgid "%(sessions)s sesiones suaves de cardio a la semana por salud cardiovascular (opcionales)."
 msgstr "%(sessions)s easy cardio sessions a week for cardiovascular health (optional)."
 
+#. código del motor: cardio.liss_machine
+#: app/engine/messages.py:214
+msgid "El cardio suave, en la máquina que prefieras: cinta a ritmo vivo, bici, elíptica o remo. Ritmo de poder hablar sin quedarte sin aire."
+msgstr "Easy cardio, on whichever machine you prefer: treadmill at a brisk pace, bike, elliptical or rower. A pace where you can still talk."
+
+#. código del motor: cardio.liss_outdoor
+#: app/engine/messages.py:218
+msgid "El cardio suave: andar rápido, bici o trote cómodo. Ritmo de poder hablar sin quedarte sin aire."
+msgstr "Easy cardio: brisk walking, cycling or a comfortable jog. A pace where you can still talk."
+
+#. código del motor: cardio.liss_low_impact
+#: app/engine/messages.py:222
+msgid "Por lo que has contado de tus articulaciones, el cardio suave mejor sin impacto: bici, elíptica, remo o andar. Nada de correr ni saltar."
+msgstr "Given what you told us about your joints, keep the easy cardio low impact: bike, elliptical, rower or walking. No running or jumping."
+
+#. código del motor: cardio.hiit_machine
+#: app/engine/messages.py:226
+msgid "El HIIT, en bici estática, remo o cinta en cuesta: 30 segundos fuertes y 90 suaves, con 10 minutos de calentamiento y vuelta a la calma."
+msgstr "HIIT on a stationary bike, rower or treadmill on an incline: 30 seconds hard and 90 easy, with 10 minutes of warm-up and cool-down."
+
+#. código del motor: cardio.hiit_outdoor
+#: app/engine/messages.py:230
+msgid "El HIIT: cuestas, comba o sprints en bici. 30 segundos fuertes y 90 suaves, con 10 minutos de calentamiento y vuelta a la calma."
+msgstr "HIIT: hills, skipping rope or bike sprints. 30 seconds hard and 90 easy, with 10 minutes of warm-up and cool-down."
+
+#. código del motor: cardio.hiit_low_impact
+#: app/engine/messages.py:234
+msgid "El HIIT, sin impacto: bici o remo, 30 segundos fuertes y 90 suaves."
+msgstr "HIIT, low impact: bike or rower, 30 seconds hard and 90 easy."
+
 #. código del motor: cardio.summary
-#: app/engine/messages.py:210
+#: app/engine/messages.py:237
 #, python-format
 msgid "Objetivo de %(steps)s pasos al día, %(liss)s sesiones LISS y %(hiit)s HIIT (unas %(kcal)s kcal/semana)."
 msgstr "Target of %(steps)s steps a day, %(liss)s LISS sessions and %(hiit)s HIIT (about %(kcal)s kcal/week)."
 
 #. código del motor: adjust.insufficient_data
-#: app/engine/messages.py:214
+#: app/engine/messages.py:241
 #, python-format
 msgid "Todavía no hay datos suficientes (%(weight_days)s pesajes en %(span_days)s días): sigue registrando el peso a diario."
 msgstr "Not enough data yet (%(weight_days)s weigh-ins over %(span_days)s days): keep logging your weight daily."
 
 #. código del motor: adjust.too_early
-#: app/engine/messages.py:217
+#: app/engine/messages.py:244
 #, python-format
 msgid "La próxima revisión toca el %(next_review)s."
 msgstr "The next review is due on %(next_review)s."
 
 #. código del motor: adjust.trend
-#: app/engine/messages.py:219
+#: app/engine/messages.py:246
 #, python-format
 msgid "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado (media móvil de 7 días)."
 msgstr "Observed change %(observed)s kg/week against %(expected)s expected (7-day moving average)."
 
 #. código del motor: adjust.tdee_observed
-#: app/engine/messages.py:223
+#: app/engine/messages.py:250
 #, python-format
 msgid "Gasto observado por balance energético: %(observed)s kcal/día (teórico %(theoretical)s; se usa %(blended)s, con %(days)s días de datos)."
 msgstr "Expenditure observed from energy balance: %(observed)s kcal/day (theoretical %(theoretical)s; %(blended)s is used, with %(days)s days of data)."
 
 #. código del motor: adjust.adherence_first
-#: app/engine/messages.py:227
+#: app/engine/messages.py:254
 #, python-format
 msgid "La pérdida va lenta pero la adherencia media es del %(adherence)s %%: antes de tocar calorías, revisa el registro y la constancia."
 msgstr "Loss is slow but average adherence is %(adherence)s %%: before touching calories, look at your logging and consistency."
 
 #. código del motor: adjust.keep
-#: app/engine/messages.py:230
+#: app/engine/messages.py:257
 msgid "Vas según lo previsto: sin cambios hasta la próxima revisión."
 msgstr "You are on track: no changes until the next review."
 
 #. código del motor: adjust.reduce_calories
-#: app/engine/messages.py:232
+#: app/engine/messages.py:259
 #, python-format
 msgid "Calorías bajadas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories cut by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.increase_calories
-#: app/engine/messages.py:235
+#: app/engine/messages.py:262
 #, python-format
 msgid "Calorías subidas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories raised by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.add_steps
-#: app/engine/messages.py:238
+#: app/engine/messages.py:265
 #, python-format
 msgid "Las calorías ya están en el mínimo seguro: se suman %(steps)s pasos diarios en su lugar."
 msgstr "Calories are already at the safe minimum: %(steps)s daily steps are added instead."
 
 #. código del motor: adjust.loss_too_fast
-#: app/engine/messages.py:241
+#: app/engine/messages.py:268
 #, python-format
 msgid "Pierdes %(observed)s kg/semana, por encima del máximo de %(max_weekly)s kg (1 %% del peso): se suben calorías."
 msgstr "You are losing %(observed)s kg/week, above the %(max_weekly)s kg maximum (1 %% of body weight): calories go up."
 
 #. código del motor: adjust.diet_break
-#: app/engine/messages.py:245
+#: app/engine/messages.py:272
 #, python-format
 msgid "Llevas %(weeks)s semanas en déficit y el peso está estancado: descanso de dieta de 2 semanas a mantenimiento (%(calories)s kcal) antes de seguir."
 msgstr "You have been in a deficit for %(weeks)s weeks and weight has stalled: take a 2-week diet break at maintenance (%(calories)s kcal) before carrying on."
 
 #. código del motor: adjust.refeed
-#: app/engine/messages.py:249
+#: app/engine/messages.py:276
 #, python-format
 msgid "Estancamiento tras %(weeks)s semanas de déficit: día de recarga a mantenimiento (%(calories)s kcal) esta semana, priorizando carbohidratos."
 msgstr "Stalled after %(weeks)s weeks of deficit: a refeed day at maintenance (%(calories)s kcal) this week, favouring carbohydrates."
 
 #. código del motor: adjust.floor_reached
-#: app/engine/messages.py:252
+#: app/engine/messages.py:279
 #, python-format
 msgid "No se baja de %(floor)s kcal (mínimo seguro)."
 msgstr "Nothing goes below %(floor)s kcal (safe minimum)."
 
 #. código del motor: adjust.capped_step
-#: app/engine/messages.py:253
+#: app/engine/messages.py:280
 #, python-format
 msgid "Cambio limitado al %(pct)s %% por revisión."
 msgstr "Change capped at %(pct)s %% per review."
 
 #. código del motor: adjust.next_review
-#: app/engine/messages.py:254 app/templates/nutrition/plan.html:131
+#: app/engine/messages.py:281 app/templates/nutrition/plan.html:131
 #, python-format
 msgid "Próxima revisión: %(date)s."
 msgstr "Next review: %(date)s."
 
 #. código del motor: plan.confidence
-#: app/engine/messages.py:255
+#: app/engine/messages.py:282
 #, python-format
 msgid "Confianza de la estimación: %(confidence)s."
 msgstr "Confidence in the estimate: %(confidence)s."
@@ -2225,7 +2347,7 @@ msgstr "%(n)s x %(m)s min of easy cardio"
 msgid "%(n)s x %(m)s min de HIIT"
 msgstr "%(n)s x %(m)s min of HIIT"
 
-#: app/services/exports.py:494 app/templates/training/routine.html:96
+#: app/services/exports.py:494 app/templates/training/routine.html:115
 msgid "Cómo está montada"
 msgstr "How it is put together"
 
@@ -2542,8 +2664,8 @@ msgstr "Next session"
 
 #: app/templates/dashboard/index.html:66
 #: app/templates/onboarding/result.html:76 app/templates/training/day.html:4
-#: app/templates/training/day.html:9 app/templates/training/day.html:73
-#: app/templates/training/day.html:75 app/templates/training/routine.html:38
+#: app/templates/training/day.html:9 app/templates/training/day.html:79
+#: app/templates/training/day.html:81 app/templates/training/routine.html:38
 #: app/templates/training/routine.html:48 app/templates/workouts/session.html:9
 #: app/templates/workouts/summary.html:10
 #, python-format
@@ -3010,28 +3132,49 @@ msgid "Si conoces tu porcentaje, indícalo con el método: cuanto más fiable, m
 msgstr "If you know your percentage, give it with the method: the more reliable it is, the more confident the plan."
 
 #: app/templates/onboarding/step_equipment.html:4
-msgid "Hemos marcado el material habitual de tu lugar de entrenamiento. Ajústalo: solo se programan ejercicios con lo que tienes."
-msgstr "We have ticked the usual equipment for where you train. Adjust it: only exercises you have the kit for are programmed."
+msgid "Con esto decidimos qué ejercicios puedes hacer. Si entrenas donde siempre y no te duele nada, no tienes que tocar nada."
+msgstr "This is what decides which exercises you can do. If you train where you always do and nothing hurts, you do not need to touch a thing."
 
-#: app/templates/onboarding/step_equipment.html:27
-msgid "Los músculos prioritarios reciben más series; el resto baja un poco para que el total siga siendo recuperable."
-msgstr "Priority muscles get more sets; the rest come down a little so the total stays recoverable."
+#: app/templates/onboarding/step_equipment.html:16
+msgid "Tu material"
+msgstr "Your equipment"
 
-#: app/templates/onboarding/step_equipment.html:29
+#: app/templates/onboarding/step_equipment.html:17
+#, python-format
+msgid "%(n)s marcados"
+msgstr "%(n)s ticked"
+
+#: app/templates/onboarding/step_equipment.html:20
+msgid "Solo se programan ejercicios con lo que esté marcado."
+msgstr "Only exercises you have ticked the kit for are programmed."
+
+#: app/templates/onboarding/step_equipment.html:25
+msgid "Ajustar lo que tengo"
+msgstr "Adjust what I have"
+
+#: app/templates/onboarding/step_equipment.html:26
+msgid "Ya está"
+msgstr "Done"
+
+#: app/templates/onboarding/step_equipment.html:63
+msgid "Ya tienes dos. Desmarca uno si quieres cambiarlo."
+msgstr "That is two. Untick one to swap it."
+
+#: app/templates/onboarding/step_equipment.html:68
+msgid "Es opcional: sin elegir ninguno, el reparto es equilibrado. Los prioritarios reciben más series y el resto baja un poco para que la semana siga siendo recuperable."
+msgstr "It is optional: with none chosen the split is even. Priority muscles get more sets and the rest come down a little, so the week stays recoverable."
+
+#: app/templates/onboarding/step_equipment.html:71
 msgid "Lesiones o molestias"
 msgstr "Injuries or niggles"
 
-#: app/templates/onboarding/step_equipment.html:30
-msgid "Se excluyen los ejercicios contraindicados según la gravedad. Ante una lesión grave, consulta antes con un profesional."
-msgstr "Exercises ruled out by severity are excluded. With a severe injury, talk to a professional first."
+#: app/templates/onboarding/step_equipment.html:76
+msgid "Si no marcas nada, damos por hecho que no hay ninguna."
+msgstr "If you tick nothing, we assume there is none."
 
-#: app/templates/onboarding/step_equipment.html:37
-msgid "Preferencias (opcional)"
-msgstr "Preferences (optional)"
-
-#: app/templates/onboarding/step_equipment.html:38
-msgid "Escribe nombres de la lista separados por comas."
-msgstr "Type names from the list, separated by commas."
+#: app/templates/onboarding/step_equipment.html:81
+msgid "Marca la zona y cómo está. Se quitan los ejercicios desaconsejados según la gravedad; ante una lesión seria, consulta antes con un profesional."
+msgstr "Tick the area and how it is. Exercises ruled out by severity are dropped; with a serious injury, talk to a professional first."
 
 #: app/templates/onboarding/step_goal.html:4
 msgid "El objetivo decide el balance calórico; los límites de seguridad (suelo calórico, ritmo máximo de pérdida) se aplican siempre."
@@ -3317,19 +3460,27 @@ msgstr "in English"
 msgid "Alternativas"
 msgstr "Alternatives"
 
-#: app/templates/training/day.html:61
+#: app/templates/training/day.html:63
+msgid "No me gusta: cámbialo"
+msgstr "I do not like it: swap it"
+
+#: app/templates/training/day.html:65
+msgid "Se queda fuera de esta rutina y de las siguientes. Puedes deshacerlo desde la rutina."
+msgstr "It stays out of this routine and the next ones. You can undo it from the routine."
+
+#: app/templates/training/day.html:67
 msgid "Ninguna con tu material y tus lesiones."
 msgstr "None with your equipment and your injuries."
 
-#: app/templates/training/day.html:65
+#: app/templates/training/day.html:71
 msgid "Buscar vídeo"
 msgstr "Search for a video"
 
-#: app/templates/training/day.html:72
+#: app/templates/training/day.html:78
 msgid "Otros días"
 msgstr "Other days"
 
-#: app/templates/training/day.html:74
+#: app/templates/training/day.html:80
 msgid "Toda la rutina"
 msgstr "The whole routine"
 
@@ -3399,6 +3550,18 @@ msgstr "Estimated weekly burn"
 #: app/templates/training/routine.html:90
 msgid "Sin prescripción de cardio."
 msgstr "No cardio prescribed."
+
+#: app/templates/training/routine.html:96
+msgid "Ejercicios apartados"
+msgstr "Exercises set aside"
+
+#: app/templates/training/routine.html:97
+msgid "Los que marcaste como \"no me gusta\". No se programan; devuélvelos cuando quieras."
+msgstr "The ones you marked as \"I do not like it\". They are not programmed; bring them back whenever you want."
+
+#: app/templates/training/routine.html:105
+msgid "Volver a permitirlo"
+msgstr "Allow it again"
 
 #: app/templates/workouts/history.html:4
 msgid "Historial de entrenos"
