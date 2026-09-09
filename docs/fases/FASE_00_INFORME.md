@@ -36,13 +36,26 @@ import importlib
 from importlib.metadata import version
 
 MODULES = {
-    "flask": "Flask", "sqlalchemy": "SQLAlchemy", "flask_sqlalchemy": "Flask-SQLAlchemy",
-    "flask_migrate": "Flask-Migrate", "alembic": "alembic", "flask_wtf": "Flask-WTF",
-    "wtforms": "WTForms", "email_validator": "email-validator", "flask_login": "Flask-Login",
-    "argon2": "argon2-cffi", "flask_limiter": "Flask-Limiter", "flask_babel": "Flask-Babel",
-    "babel": "Babel", "dotenv": "python-dotenv", "pythonjsonlogger": "python-json-logger",
-    "waitress": "waitress", "pytest": "pytest", "pytest_cov": "pytest-cov",
-    "coverage": "coverage", "hypothesis": "hypothesis",
+    "flask": "Flask",
+    "sqlalchemy": "SQLAlchemy",
+    "flask_sqlalchemy": "Flask-SQLAlchemy",
+    "flask_migrate": "Flask-Migrate",
+    "alembic": "alembic",
+    "flask_wtf": "Flask-WTF",
+    "wtforms": "WTForms",
+    "email_validator": "email-validator",
+    "flask_login": "Flask-Login",
+    "argon2": "argon2-cffi",
+    "flask_limiter": "Flask-Limiter",
+    "flask_babel": "Flask-Babel",
+    "babel": "Babel",
+    "dotenv": "python-dotenv",
+    "pythonjsonlogger": "python-json-logger",
+    "waitress": "waitress",
+    "pytest": "pytest",
+    "pytest_cov": "pytest-cov",
+    "coverage": "coverage",
+    "hypothesis": "hypothesis",
 }
 for module, dist in MODULES.items():
     importlib.import_module(module)

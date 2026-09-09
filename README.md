@@ -2,7 +2,7 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 0 cerrada (entorno, esqueleto Flask, tests). Informes de cada fase en `docs/fases/`.
+**Estado actual:** Fase 1 cerrada (arquitectura: configuración por entorno, logging estructurado, errores globales, cabeceras de seguridad, i18n). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 
@@ -27,6 +27,7 @@ python3.11 -m venv .venv
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt   # incluye las dependencias de ejecución
 
+copy .env.example .env                # Linux: cp .env.example .env ; ajusta SECRET_KEY si quieres
 flask run                             # http://127.0.0.1:5000 (configuración en .flaskenv)
 ```
 
@@ -34,24 +35,46 @@ Comprobación rápida: `curl.exe -i http://127.0.0.1:5000/health` debe devolver 
 
 ## Variables de entorno
 
+Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del entorno o de `.env` (nunca versionado; plantilla en `.env.example`).
+
 | Variable | Dónde | Valor por defecto | Para qué |
 |---|---|---|---|
-| `FLASK_APP` | `.flaskenv` (versionado) | `app` | Paquete que expone `create_app()` |
+| `FLASK_APP` | `.flaskenv` | `app` | Paquete que expone `create_app()` |
 | `FLASK_DEBUG` | `.flaskenv` | `1` | Depurador y recarga del servidor de desarrollo. Nunca en producción |
 | `FLASK_RUN_PORT` | `.flaskenv` | `5000` | Puerto de `flask run` |
-
-La Fase 1 añade `.env.example` con los secretos y la configuración por entorno. `.env` nunca se versiona.
+| `FORJA_ENV` | `.env` | `development` | `development`, `testing` o `production` (elige la clase de `config.py`) |
+| `SECRET_KEY` | `.env` | clave insegura solo en desarrollo | Firma de sesiones y tokens CSRF. Obligatoria en producción (32+ caracteres) |
+| `DATABASE_URL` | `.env` | vacío → `instance/forja.db` (SQLite) | Producción: `postgresql+psycopg://usuario:clave@host:5432/forja` |
+| `LOG_LEVEL` | `.env` | `DEBUG` en dev, `INFO` en el resto | Nivel del logger `app` |
+| `LOG_DIR` | `.env` | `logs/` | Carpeta de `forja.log` (JSON por línea, rotación 5 MB x 5) |
+| `RATELIMIT_STORAGE_URI` | `.env` | `memory://` | Almacén del rate limiting; con varios workers usar Redis |
+| `SQLALCHEMY_ECHO` | `.env` | `0` | Volcar SQL en el log (solo desarrollo) |
 
 ## Comandos de desarrollo
 
 | Comando | Qué hace |
 |---|---|
 | `flask run` | Servidor de desarrollo con recarga automática |
+| `flask run --no-reload` | Un solo proceso (útil para pruebas con `curl`) |
 | `pytest` | Suite de tests |
 | `pytest --cov` | Tests con cobertura de `app/`, ramas incluidas (`--cov-report=html` genera `htmlcov/`) |
 | `ruff check .` | Linter |
 | `ruff format .` | Formateador (`--check` solo verifica) |
+| `waitress-serve --port 8000 wsgi:app` | Servidor de producción en Windows o Linux (`FORJA_ENV=production`) |
 | `uv pip compile --universal --python-version 3.11 requirements.in -o requirements.txt` | Recompilar dependencias tras tocar `requirements.in` (igual con `-dev`) |
+
+Rutas de diagnóstico, solo en desarrollo y testing: `/_debug/boom` (provoca un 500), `/_debug/echo` (formulario con CSRF), `/_debug/limited` (2 peticiones por minuto), `/_debug/abort/<código>`.
+
+## Traducciones
+
+Los textos se marcan con `{{ _('...') }}` en plantillas y `lazy_gettext` en Python desde el principio. Los catálogos se generan al final del proyecto:
+
+```powershell
+pybabel extract -F babel.cfg -k _l -o messages.pot .
+pybabel init -i messages.pot -d app/translations -l en     # solo la primera vez
+pybabel update -i messages.pot -d app/translations         # siguientes veces
+pybabel compile -d app/translations
+```
 
 ## Arquitectura (objetivo)
 
@@ -76,29 +99,35 @@ La Fase 1 añade `.env.example` con los secretos y la configuración por entorno
  └──────────────────────────────────┘
 ```
 
-Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `services/` es la única capa que habla con ambos.
+Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `services/` es la única capa que habla con ambos. Detalle en `docs/ARQUITECTURA.md`.
 
 **Ficheros (raíz):**
-- `app/__init__.py` — factory `create_app()`. Hoy solo dos rutas: `/` y `/health`.
-- `tests/` — `conftest.py` (fixtures `app` y `client`) y `test_smoke.py`.
+- `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging y seguridad.
+- `config.py` — clases de configuración por entorno y validación de producción.
+- `wsgi.py` — punto de entrada para waitress o gunicorn.
+- `tests/` — `conftest.py` (fixtures `make_app`, `app`, `client`), `test_smoke.py` e `integration/`.
 - `pyproject.toml` — configuración de ruff, pytest y coverage.
 - `requirements.in` / `requirements-dev.in` — dependencias directas fijadas (fuente).
 - `requirements.txt` / `requirements-dev.txt` — árbol completo compilado. Generados: no editar a mano.
-- `.flaskenv` — variables no secretas del CLI de Flask.
+- `.flaskenv` — variables no secretas del CLI de Flask. `.env.example` — plantilla del resto.
+- `babel.cfg` — qué ficheros rastrea pybabel.
 - `docs/ENTORNO.md` — máquina de desarrollo, versiones y trampas.
 - `docs/DECISIONES.md` — decisiones de producto y técnicas, con fecha.
+- `docs/ARQUITECTURA.md` — capas, ciclo de petición, convenciones.
 - `docs/fases/` — informe de cierre de cada fase.
 
 **Por dónde tocar:**
 - Añadir o subir una dependencia → `requirements.in` (o `requirements-dev.in`), recompilar con el comando de arriba y reinstalar.
+- Nueva variable de configuración → `config.py` (`BaseConfig` y la subclase que la cambie), `.env.example` y la tabla de arriba.
 - Cambiar reglas de lint o de tests → `pyproject.toml`, tablas `[tool.ruff]` y `[tool.pytest.ini_options]`.
 - Cambiar el puerto de desarrollo → `.flaskenv`, `FLASK_RUN_PORT`.
-- Cambiar el nombre visible del producto → `APP_NAME` en `app/__init__.py` (pasará a `config.py` en la Fase 1).
+- Cambiar el nombre visible del producto → `APP_NAME` en `config.py`.
 
 **Ojo con:**
 - `requirements*.txt` están generados: editar los `.in` y recompilar, nunca el `.txt`.
 - En PowerShell, `curl` es un alias de `Invoke-WebRequest`; usa `curl.exe`.
-- `FLASK_DEBUG=1` activa el depurador interactivo de Werkzeug: solo para desarrollo local.
+- Con `FLASK_DEBUG=1` un error 500 muestra el depurador de Werkzeug, no la página de error de la app. Para ver la página real: `$env:FLASK_DEBUG="0"; flask run --no-reload`.
+- Producción no arranca sin `SECRET_KEY` y `DATABASE_URL`, ni con `DEBUG` o `ENABLE_DEBUG_ROUTES` activos. Es a propósito.
 - `pytest` corre con `--strict-config --strict-markers`: una clave desconocida en `pyproject.toml` o un marker no declarado hacen fallar la suite a propósito.
 - ruff prohíbe `print()`, `except Exception` a ciegas y `datetime.now()` sin zona horaria. No es un capricho del linter: son las reglas de oro del proyecto.
 

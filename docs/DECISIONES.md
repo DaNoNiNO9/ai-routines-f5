@@ -35,3 +35,13 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-09 | Servidor | `flask run` en dev; waitress (Windows) o gunicorn (Linux) en prod a través de `wsgi.py` (Fase 1) | |
 | T-10 | Estilo | Línea de 100 caracteres, comillas dobles, docstrings estilo Google | |
 | T-11 | Exportación a PDF | Pendiente hasta la Fase 12: WeasyPrint exige GTK en Windows; alternativas reportlab o CSS de impresión | Se decide con el propietario en su momento |
+
+## 2026-09-09 — Fase 1 (arquitectura)
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-12 | CSP | `script-src 'self' 'unsafe-eval'` y `style-src 'self' 'unsafe-inline'`; todo lo demás restringido al origen | Alpine.js estándar compila expresiones con `new Function`; Alpine y Chart.js escriben atributos `style`. Revisable si se adopta la build CSP de Alpine |
+| T-13 | Errores | Un handler para `HTTPException` (incluye el 500 que Flask genera al envolver excepciones) y otro para `CSRFError`; sin handler genérico de `Exception` | Así en desarrollo el depurador de Werkzeug sigue funcionando y en tests las excepciones se propagan, mientras producción muestra la página 500 y Flask registra la traza |
+| T-14 | Rutas de diagnóstico | Blueprint `debug` bajo `/_debug` solo con `ENABLE_DEBUG_ROUTES`; producción no arranca si está activo | Poder provocar 500, CSRF y 429 a mano y en tests sin dejar puertas abiertas |
+| T-15 | Id de petición | Cabecera `X-Request-ID` (se respeta la entrante, truncada a 64, o se generan 12 hex); aparece en logs, respuestas y páginas de error | Correlacionar lo que ve el usuario con la línea del log |
+| T-16 | Textos | Los mensajes de error viven en Python con `lazy_gettext` y tildes correctas; el resto de textos en plantillas con `_()` | Preparado para pybabel desde el principio (D-05) |
