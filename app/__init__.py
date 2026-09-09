@@ -21,7 +21,7 @@ from flask_babel import lazy_gettext as _l
 from app.cli import register_cli
 from app.errors import register_error_handlers
 from app.extensions import babel, csrf, db, limiter, login_manager, migrate
-from app.i18n import select_locale
+from app.i18n import select_locale, translate_engine_message
 from app.logging_config import configure_logging
 from app.models.base import render_migration_item
 from app.security import register_security_headers
@@ -72,6 +72,7 @@ def create_app(
     configure_logging(app)
     _register_models()
     _init_extensions(app)
+    _wire_engine_translations()
     register_cli(app)
     _register_blueprints(app)
     register_error_handlers(app)
@@ -94,6 +95,13 @@ def _prepare_instance_folder(app: Flask) -> None:
 def _register_models() -> None:
     """Import the models package so every table is on ``db.metadata`` before Migrate runs."""
     import app.models  # noqa: F401
+
+
+def _wire_engine_translations() -> None:
+    """The engine renders its notes through Flask-Babel while a request lasts."""
+    from app.engine import messages as engine_messages
+
+    engine_messages.translator = translate_engine_message
 
 
 def _init_extensions(app: Flask) -> None:

@@ -216,8 +216,15 @@ def _next_version(model: type[Plan] | type[Routine], user: User) -> int:
 
 
 def messages_for(notes: tuple[Note, ...]) -> list[dict[str, str]]:
-    """Rendered Spanish text (with level) for engine notes."""
+    """Rendered text (with level) for engine notes, in the active language."""
     return [{"level": note.level, "text": messages.render(note)} for note in notes]
+
+
+def _stored_notes(notes: tuple[Note, ...]) -> list[dict[str, Any]]:
+    """The notes themselves, so they can be rendered again in another language."""
+    return [
+        {"code": note.code, "level": note.level, "params": _jsonable(note.params)} for note in notes
+    ]
 
 
 def _join_notes(notes: tuple[Note, ...], limit: int) -> str | None:
@@ -259,6 +266,7 @@ def persist_plan(
     previous = active_plan(user)
     details = nutrition.to_dict()
     details["messages"] = messages_for(nutrition.all_notes())
+    details["all_notes"] = _stored_notes(nutrition.all_notes())
     if steps_target is not None:
         details["steps_target"] = steps_target
     elif previous is not None and isinstance(previous.details.get("steps_target"), int):
@@ -342,6 +350,7 @@ def persist_routine(
     previous = active_routine(user)
     details = routine_plan.to_dict()
     details["messages"] = messages_for(routine_plan.all_notes())
+    details["all_notes"] = _stored_notes(routine_plan.all_notes())
     routine = Routine(
         user=user,
         profile=profile,
@@ -437,6 +446,26 @@ def generate_for_profile(user: User, profile: Profile, today: date) -> Generatio
 
 
 def messages_of(details: dict[str, Any]) -> list[dict[str, str]]:
-    """Rendered messages stored with a plan or routine (empty for old rows)."""
+    """Explanations of a stored plan or routine, in the language of this request.
+
+    The notes are kept as ``code`` plus ``params`` so they can be rendered
+    again: a plan generated in Spanish reads in English for an English user.
+    Rows written before that (or with a malformed note) fall back to the text
+    frozen at generation time.
+    """
+    raw = details.get("all_notes")
+    if isinstance(raw, list):
+        rendered: list[dict[str, str]] = []
+        for item in raw:
+            if not isinstance(item, dict) or "code" not in item:
+                continue
+            note = Note(
+                code=str(item["code"]),
+                level=str(item.get("level", "info")),
+                params=item.get("params") or {},
+            )
+            rendered.append({"level": note.level, "text": messages.render(note)})
+        if rendered:
+            return rendered
     stored = details.get("messages", [])
     return [item for item in stored if isinstance(item, dict) and "text" in item]
