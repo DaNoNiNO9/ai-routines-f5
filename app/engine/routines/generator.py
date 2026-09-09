@@ -139,6 +139,19 @@ def build_routine(inputs: RoutineInputs, exercises: list[ExerciseInfo]) -> Routi
     _balance_push_pull(draft_days, inputs, pool, used, notes, allow_additions=False)
     _check_coverage(draft_days, pool, exercises, inputs, notes)
 
+    # Un día sin ejercicios no es un día de entrenamiento: se cae y se dice.
+    with_work = [day for day in draft_days if day.items]
+    if len(with_work) < len(draft_days):
+        notes.append(
+            Note(
+                "routine.days_dropped",
+                level="warning",
+                params={"dropped": len(draft_days) - len(with_work), "days": len(with_work)},
+            )
+        )
+        draft_days = with_work
+        days = len(with_work)
+
     weeks, deload = rx.mesocycle_and_deload(tier, inputs.reported_fatigue)
     rir = rx.weekly_rir(weeks)
     notes.append(

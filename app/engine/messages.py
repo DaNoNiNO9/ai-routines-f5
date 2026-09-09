@@ -9,6 +9,10 @@ that the application replaces at start-up (see ``app.i18n``). Left alone it
 returns the Spanish text, which is what the engine tests and the logs expect.
 The strings reach the catalogue through ``scripts/babel_engine.py``.
 
+``params_translator`` does the same for the values: the engine puts stable
+codes in the parameters (``upper_lower``, ``glutes``) and the application
+swaps them for their label, so no internal code reaches the reader.
+
 Placeholders are printf-style with names (``%(pct)s``) and a literal percent
 is written ``%%``, like every other string in the catalogue. Braces would
 read better here, but Babel flags any msgid where a percent is followed by a
@@ -18,7 +22,8 @@ refuses to compile a catalogue that mixes both formats.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
+from typing import Any
 
 from app.engine.types import Note
 
@@ -28,7 +33,13 @@ def _as_written(text: str) -> str:
     return text
 
 
+def _as_produced(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:  # noqa: ARG001
+    """Default parameter translator: the codes the engine produced."""
+    return params
+
+
 translator: Callable[[str], str] = _as_written
+params_translator: Callable[[str, Mapping[str, Any]], Mapping[str, Any]] = _as_produced
 
 TEMPLATES: dict[str, str] = {
     "body_fat.declared": "Porcentaje de grasa declarado (%(value)s %%, método: %(method)s).",
@@ -127,6 +138,10 @@ TEMPLATES: dict[str, str] = {
         "material o consulta con un profesional."
     ),
     "routine.days_capped": "Se planifican 6 días como máximo; el séptimo es descanso.",
+    "routine.days_dropped": (
+        "%(dropped)s día(s) se quedaron sin ningún ejercicio posible con tu material y tus "
+        "limitaciones: la semana queda en %(days)s días de entrenamiento."
+    ),
     "routine.split": "Split %(split)s de %(days)s días.",
     "routine.mesocycle": (
         "Mesociclo de %(weeks)s semanas, descarga cada %(deload)s semanas; RIR por semana %(rir)s."
@@ -247,7 +262,7 @@ def render(note: Note) -> str:
     if template is None:
         return note.code if not note.params else f"{note.code} {note.params}"
     try:
-        return translator(template) % note.params
+        return translator(template) % params_translator(note.code, note.params)
     except (KeyError, TypeError, ValueError):
         return f"{note.code} {note.params}"
 
