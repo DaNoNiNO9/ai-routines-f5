@@ -71,12 +71,12 @@ ai-routines-f5/
 ├── config.py, wsgi.py, .flaskenv, .env.example, babel.cfg
 ├── app/
 │   ├── __init__.py, extensions.py, errors.py, logging_config.py, security.py, i18n.py
-│   ├── blueprints/{main,debug,auth,dashboard,onboarding}/  (Fase 9+: nutrition, training, tracking, account, api)
+│   ├── blueprints/{main,debug,auth,dashboard,onboarding,nutrition,training}/  (Fase 10+: tracking, account, api)
 │   ├── templates/{base.html, main/, errors/, debug/}
 │   ├── static/css/app.css                       (Fase 11: vendor/, img/, fonts/)
 │   ├── engine/                                  (Fase 4-6)
 │   ├── models/                                  (Fase 2)
-│   ├── services/{auth,onboarding,plans}.py       (Fases 7-8; ajuste en Fase 10)
+│   ├── services/{auth,onboarding,plans,dashboard}.py  (Fases 7-9; ajuste en Fase 10)
 │   └── seeds/                                   (Fase 3)
 ├── migrations/                                  (Fase 2)
 ├── tests/{conftest.py, test_smoke.py, integration/, unit/}
