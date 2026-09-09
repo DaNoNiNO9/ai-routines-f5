@@ -2,7 +2,7 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 10 cerrada: motor, autenticación, cuestionario, páginas del plan y el registro real (diario de peso, ingesta y actividad; sesiones de entrenamiento con temporizador de descanso; revisión quincenal que recalcula el plan con los datos registrados). Siguiente: diseño visual completo (Fase 11). El estado vivo del proyecto está en `docs/ESTADO_ACTUAL.md`. Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
+**Estado actual:** Fase 11 cerrada: motor, autenticación, cuestionario, páginas del plan, registro real (diario, sesiones con temporizador, revisión quincenal) y el diseño visual completo (paleta Forja, tipografías e iconos vendorizados, tema claro, estados vacíos y micro-interacciones). Siguiente: exportación PDF y CSV, cuenta y borrado RGPD (Fase 12). El estado vivo del proyecto está en `docs/ESTADO_ACTUAL.md`. Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`, diseño en `docs/DISEÑO.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 
@@ -111,7 +111,7 @@ pybabel compile -d app/translations
 Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `services/` es la única capa que habla con ambos. Detalle en `docs/ARQUITECTURA.md`.
 
 **Ficheros (raíz):**
-- `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging, seguridad, autenticación y correo.
+- `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging, seguridad, autenticación, correo y diseño.
 - `app/services/` — orquestación entre motor, modelos y web (`auth.py`, `onboarding.py`, `plans.py`, `dashboard.py`, `tracking.py`, `workouts.py`, `adjustments.py`); ver su `README.md`.
 - `app/models/` — esquema SQLAlchemy 2.0 (20 tablas). Su `README.md` explica tipos, mixins, cascadas y cómo migrar.
 - `app/engine/` — motor de cálculo. Su `README.md` recorre cada etapa con sus fórmulas y fuentes y dice qué constante tocar para cambiar cada regla.

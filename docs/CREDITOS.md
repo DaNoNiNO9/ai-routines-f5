@@ -20,8 +20,27 @@ Los enlaces de vídeo (`video_url`) son búsquedas en YouTube con el nombre del 
 
 Ambas se descargaron de jsDelivr el 2026-09-09 y se sirven desde el propio servidor (`/static/vendor/`); nada se carga de terceros en caliente.
 
+## Tipografías
+
+| Recurso | Origen | Licencia | Uso en Forja |
+|---|---|---|---|
+| Barlow Condensed 600 y 700 | [Barlow](https://github.com/jpt/barlow) de Jeremy Tribby, vía Google Fonts | SIL Open Font License 1.1 (`app/static/fonts/LICENSE-barlow.txt`) | Titulares, cifras grandes y temporizador. Subconjuntos latin y latin-ext en woff2. |
+| Inter variable 400-700 | [Inter](https://github.com/rsms/inter) de Rasmus Andersson, vía Google Fonts | SIL Open Font License 1.1 (`app/static/fonts/LICENSE-inter.txt`) | Cuerpo, formularios y tablas. Subconjuntos latin y latin-ext en woff2. |
+
+Descargadas el 2026-09-09 desde `fonts.googleapis.com` y servidas desde `app/static/fonts/` con reglas `@font-face` propias (`app/static/css/fonts.css`). En caliente no se pide nada a Google.
+
+## Iconos
+
+| Recurso | Origen | Licencia | Uso en Forja |
+|---|---|---|---|
+| Lucide 1.43.0, 28 iconos | [lucide-icons/lucide](https://github.com/lucide-icons/lucide), paquete `lucide-static` | ISC (`app/static/img/LICENSE-lucide.txt`) | Navegación, títulos de tarjeta, estados vacíos, avisos y acciones de la sesión. Sprite generado por `scripts/build_icons.py` e incrustado por `base.html`. |
+
+Es el único set de iconos del proyecto: no se mezcla con otros.
+
+## Fotografía
+
+No se ha añadido fotografía de stock. Elegir una foto de Unsplash o Pexels y atribuirla como piden sus licencias exige una clave de API que este proyecto no tiene, y no se incluye ninguna imagen cuya licencia no se pueda documentar aquí. La portada y los estados vacíos usan las ilustraciones del catálogo (dominio público) y composición tipográfica.
+
 ## Pendiente de añadir en fases posteriores
 
-- Tipografías de Google Fonts (Fase 11): licencia OFL, ficheros descargados a `app/static/fonts/`.
-- Set de iconos (Fase 11): Lucide, Phosphor o Tabler, licencia MIT/ISC, vendorizado.
-- Fotografía de landing y estados vacíos (Fase 11): Unsplash o Pexels, con autor y licencia por imagen.
+- Nada por ahora.

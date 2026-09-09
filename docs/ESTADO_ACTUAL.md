@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 11 — Diseño visual.** En curso.
+**Fase 11 cerrada.** Siguiente: Fase 12 (exportación, cuenta y borrado RGPD), sin empezar.
 
 ## Terminado
 
@@ -20,13 +20,14 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | 8 | Cuestionario multipaso que genera y guarda plan y rutina | `FASE_08` |
 | 9 | Panel, nutrición y entrenamiento con gráficas e ilustraciones | `FASE_09` |
 | 10 | Diario (peso, ingesta, actividad, perímetros), sesiones de entrenamiento con temporizador y revisión quincenal aplicable | `FASE_10` |
+| 11 | Diseño visual: paleta Forja, tipografías e iconos vendorizados, tema claro, estados y micro-interacciones | `FASE_11` |
 
 ## Estado del repositorio
 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 542 tests en verde |
+| Suite | 543 tests en verde |
 | Cobertura de `app/` | 98,5 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -34,20 +35,24 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Paleta y tipografía elegidas por el usuario: **A "Forja"** (naranja `#FF8A34` sobre carbón `#0E1013`) y **Barlow Condensed + Inter**.
-
-Hecho: tipografías descargadas al proyecto (`app/static/fonts/`, OFL), sprite de iconos de Lucide con solo los 28 que se usan (`scripts/build_icons.py`), tokens de la paleta con borde reforzado para controles, escala tipográfica, cifras tabulares, estados vacíos con icono, micro-interacciones con `prefers-reduced-motion`, estado de carga en los botones, resalte de la serie recién guardada, cambio de tema oscuro/claro sin JavaScript y portada nueva.
-
-Pendiente: revisión a 320, 768 y 1440 px, `docs/DISEÑO.md` con las referencias, créditos de las nuevas licencias e informe de fase.
+Nada en curso. La Fase 11 quedó cerrada con su informe.
 
 ## Siguiente paso
 
-Fase 11 (diseño visual, §6 del prompt). Antes de tocar nada hay que **proponer 2-3 paletas con sus códigos hex y esperar el visto bueno**, igual que con la tipografía si hay duda. Lo que ya está encargado para esa fase:
+**Fase 12: exportación, cuenta y borrado RGPD.** Contenido previsto:
 
-- Revisión a 320, 768 y 1440 px y contraste WCAG AA verificado.
-- Tipografías de Google Fonts descargadas a `app/static/fonts/` y un set de iconos único (Lucide, Phosphor o Tabler), con licencias en `docs/CREDITOS.md`.
-- Estados de carga, vacío y error diseñados; micro-interacciones sin excesos.
-- Detalle heredado de la Fase 10: el contador de series muestra "3/2" cuando se hacen más de las prescritas; se lee raro.
+- PDF del plan (nutrición y rutina) y CSV de los datos registrados.
+- Página de cuenta: cambiar contraseña y correo, elegir idioma y zona horaria.
+- Exportación completa de los datos personales y borrado de la cuenta (RGPD), con confirmación explícita.
+- Decisión abierta: qué librería de PDF. Sin dependencias pesadas ni binarios externos; la opción razonable en este stack es generar HTML e imprimirlo desde el navegador, o usar una librería pura de Python. Lo consulto antes de elegir.
+
+Después: Fase 13 (auditoría final, §7 del prompt) y los catálogos de traducción con pybabel.
+
+## Detalles menores heredados
+
+- El contador de series muestra "3/2" cuando se hacen más de las prescritas; es correcto pero se lee raro.
+- `instructions_es` sigue vacío: las instrucciones salen en inglés, marcadas como tales.
+- No hay fotografía de stock por no poder documentar su licencia (T-95).
 
 ## Cómo se trabaja
 

@@ -15,7 +15,8 @@
 9. Cuestionario (Fase 8): `blueprints/onboarding/` muestra un formulario por bloque (`/cuestionario/paso/<n>`, siete pasos), guarda cada paso en un borrador (`services/onboarding.py`), no deja saltar pasos sin completar los anteriores, permite volver atrás sin perder nada, resume todo en `/cuestionario/revisar` y, al generar, crea la versión nueva del perfil con su plan y su rutina; `/cuestionario/resultado` los muestra o explica por qué no hay plan. Los textos de los enums salen de `labels.py`.
 10. Panel y plan (Fase 9): `blueprints/dashboard` (hoy, próxima sesión, peso con media de 7 días, próxima revisión), `blueprints/nutrition` (objetivo, macros, comidas, ciclado, cómo se calculó, avisos, protocolo de ajuste, historial de versiones) y `blueprints/training` (rutina, volumen, cardio; un día por página con ilustraciones, prescripción, instrucciones y alternativas viables). Solo leen: `services/dashboard.py` hace las consultas. Las gráficas son Chart.js vendorizado, alimentado por bloques JSON (`components/charts.html` + `static/js/forja.js`); Alpine.js solo alterna la ilustración inicial/final. Todo funciona sin JavaScript salvo las gráficas.
 11. Registro y ajuste (Fase 10): `blueprints/tracking` (diario de peso, ingesta y actividad por día, más perímetros), `blueprints/workouts` (sesión en vivo con una fila por serie, temporizador de descanso, sustituciones, cierre con resumen, historial y progreso) y `blueprints/review` (qué propone el motor de ajuste y aplicarlo). La lógica vive en `services/`; las vistas solo traducen errores.
-12. Correo: `email.py` con backend `log` (desarrollo y tests; mensajes en `app.extensions["outbox"]`) o `smtp` (producción, `smtplib` + STARTTLS). Los fallos se registran con traza y se convierten en `EmailDeliveryError`.
+12. Diseño (Fase 11): los tokens de color, la escala tipográfica y los componentes viven en `static/css/app.css`; las tipografías y el sprite de iconos están en el repositorio. El tema (oscuro por defecto) se guarda en la sesión y lo cambia `main.toggle_theme`, sin JavaScript. Detalles y referencias en `docs/DISEÑO.md`.
+13. Correo: `email.py` con backend `log` (desarrollo y tests; mensajes en `app.extensions["outbox"]`) o `smtp` (producción, `smtplib` + STARTTLS). Los fallos se registran con traza y se convierten en `EmailDeliveryError`.
 
 **Ficheros:**
 - `__init__.py` — `create_app()` y el context processor global (`app_name`, `app_version`, `current_locale`, `current_year`).
@@ -31,7 +32,10 @@
 - `labels.py` — etiquetas traducibles de todos los enums (`choices()` para WTForms, `label()` para plantillas).
 - `blueprints/nutrition/routes.py`, `blueprints/training/routes.py`, `blueprints/dashboard/routes.py` — páginas del plan (solo lectura).
 - `blueprints/tracking/{forms,routes}.py`, `blueprints/workouts/{forms,routes}.py`, `blueprints/review/routes.py` — registro diario, sesiones y revisión.
-- `static/vendor/` — Alpine.js 3.17.2 y Chart.js 4.5.1 con sus licencias (ver `docs/CREDITOS.md`); `static/js/forja.js` — construcción de gráficas desde `<canvas data-chart>`.
+- `static/vendor/` — Alpine.js 3.17.2 y Chart.js 4.5.1 con sus licencias (ver `docs/CREDITOS.md`); `static/js/forja.js` — gráficas, temporizador de descanso, cronómetro y estado de carga de los botones.
+- `static/fonts/` — Barlow Condensed e Inter (OFL); `static/css/fonts.css` — reglas `@font-face` locales.
+- `static/img/icons.svg` — sprite de Lucide (`scripts/build_icons.py`), incrustado por `templates/components/sprite.html` (`scripts/inline_icons.py`).
+- `templates/components/icons.html` — macro `icon(nombre, label=None)`.
 - `templates/components/charts.html` — macro `chart(id, kind, data, label)`; `templates/nutrition/plan.html`, `templates/training/{routine,day}.html`, `templates/dashboard/index.html`.
 - `services/auth.py` — registro, autenticación, política de contraseñas, tokens de recuperación, `load_user`.
 - `email.py` — envío de correo con backend `log` o `smtp`.
@@ -58,6 +62,8 @@
 - Las clases de `config.py` leen `os.environ` al importarse: en tests, cambia valores con `overrides`, no con `monkeypatch.setenv` (salvo `FORJA_ENV`, que se lee en cada `create_app`).
 - `limiter` es una instancia global compartida entre apps: los tests que activan el rate limiting llaman a `limiter.reset()`.
 - El logger `app.request` no propaga: sus líneas solo van al fichero JSON, no a la consola (la consola ya tiene el access log de Werkzeug).
+- Los iconos llevan el trazo en la clase `.icon`, no en el sprite: un `<symbol>` instanciado con `<use>` hereda la presentación del `<svg>` que lo referencia, y sin eso salen rellenos de negro.
+- Las animaciones de entrada no tocan la opacidad: si no llegan a ejecutarse, el contenido tiene que verse igual.
 - La CSP permite `'unsafe-eval'` en scripts porque Alpine.js lo necesita. Si algún día se usa la build CSP de Alpine, quitarlo. No hay scripts inline: los datos de las gráficas van en `<script type="application/json">` (no se ejecutan) y `forja.js` los lee.
 - Chart.js (208 KB) se carga solo en las páginas con gráficas, mediante el bloque `scripts` de la plantilla; Alpine (56 KB) siempre.
 - **`forja.js` va antes que Alpine en `base.html`**: Alpine arranca en un microtask nada más ejecutarse, así que un `Alpine.data()` registrado después nunca llega a `alpine:init` y el componente desaparece (`x-show` sobre una variable inexistente). Hay un test que comprueba el orden.
