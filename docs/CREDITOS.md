@@ -11,9 +11,17 @@ Todo recurso externo incluido en el proyecto se lista aquí con su origen y lice
 
 Los enlaces de vídeo (`video_url`) son búsquedas en YouTube con el nombre del ejercicio (decisión T-25); no se embebe ni se descarga contenido de terceros.
 
+## Librerías JavaScript vendorizadas
+
+| Recurso | Origen | Licencia | Uso en Forja |
+|---|---|---|---|
+| Alpine.js 3.17.2 (`app/static/vendor/alpine-3.17.2.min.js`) | [alpinejs/alpine](https://github.com/alpinejs/alpine), build `dist/cdn.min.js` del paquete npm `alpinejs@3.17.2` | MIT (`app/static/vendor/LICENSE-alpinejs.txt`) | Interacciones pequeñas sin build: alternar la ilustración inicial/final de cada ejercicio. Requiere `'unsafe-eval'` en la CSP (T-06). |
+| Chart.js 4.5.1 (`app/static/vendor/chart-4.5.1.umd.js`) | [chartjs/Chart.js](https://github.com/chartjs/Chart.js), build `dist/chart.umd.js` del paquete npm `chart.js@4.5.1` | MIT (`app/static/vendor/LICENSE-chartjs.txt`) | Gráficas del panel y del plan (peso con media móvil, reparto de macros, componentes del gasto). Se carga solo en las páginas que la usan. |
+
+Ambas se descargaron de jsDelivr el 2026-09-09 y se sirven desde el propio servidor (`/static/vendor/`); nada se carga de terceros en caliente.
+
 ## Pendiente de añadir en fases posteriores
 
 - Tipografías de Google Fonts (Fase 11): licencia OFL, ficheros descargados a `app/static/fonts/`.
 - Set de iconos (Fase 11): Lucide, Phosphor o Tabler, licencia MIT/ISC, vendorizado.
 - Fotografía de landing y estados vacíos (Fase 11): Unsplash o Pexels, con autor y licencia por imagen.
-- Librerías JS vendorizadas: Alpine.js (MIT) y Chart.js (MIT).
