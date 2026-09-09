@@ -129,3 +129,18 @@ def test_impossible_equipment_explains_the_missing_routine(
     assert "No pudimos montar una rutina" in training
     panel = client.get("/panel").get_data(as_text=True)
     assert "Sin rutina activa" in panel
+
+
+def test_alpine_loads_after_the_components_it_needs(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    """Alpine starts in a microtask, so ``alpine:init`` fires before any later script.
+
+    With the order swapped, `x-data="restTimer(...)"` resolves to nothing and the
+    rest timer disappears instead of counting down.
+    """
+    _signup(client)
+    page = client.get("/panel").get_data(as_text=True)
+    assert "forja.js" in page
+    assert "alpine-3.17.2.min.js" in page
+    assert page.index("forja.js") < page.index("alpine-3.17.2.min.js")
