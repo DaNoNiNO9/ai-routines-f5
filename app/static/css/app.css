@@ -401,7 +401,10 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
   font-variant-numeric: tabular-nums;
 }
 
-/* Iconos: heredan color y tamaño del texto que los rodea. */
+/* Iconos: heredan color y tamaño del texto que los rodea.
+   El trazo va aquí y no en el sprite: al instanciar un <symbol> con <use>, los
+   atributos de presentación se heredan del <svg> que lo referencia, no del
+   documento del sprite. Sin esto los iconos salen rellenos de negro. */
 .icon {
   display: inline-block;
   vertical-align: -0.135em;
@@ -409,6 +412,11 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
   width: 1.15em;
   height: 1.15em;
   color: inherit;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .icon-lg { width: 1.6em; height: 1.6em; }
 .nav-links a, .link-button, .button { display: inline-flex; align-items: center; gap: 0.45em; }
@@ -455,7 +463,10 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
   outline-offset: 2px;
 }
 
-@keyframes forja-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+/* Solo desplazamiento, nunca opacidad: si la animación no llega a ejecutarse
+   (bfcache, motor sin animaciones, captura headless) el contenido tiene que
+   estar visible igual. */
+@keyframes forja-entra { from { transform: translateY(7px); } to { transform: none; } }
 @keyframes forja-marca { 0% { background: var(--accent-soft); } 100% { background: transparent; } }
 @keyframes forja-gira { to { transform: rotate(360deg); } }
 
@@ -523,3 +534,37 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
 .flash-error .icon, .flash-danger .icon { color: var(--danger); }
 .flash-warning .icon { color: var(--warning); }
 .flash-info .icon { color: var(--focus); }
+
+/* En el móvil la navegación es una barra de iconos: el texto sigue ahí para
+   los lectores de pantalla, pero no ocupa tres líneas. */
+.nav-label { white-space: nowrap; }
+@media (max-width: 34rem) {
+  .nav { gap: var(--space-3); }
+  .nav-links { gap: var(--space-2); flex-wrap: nowrap; }
+  .brand { min-width: 0; }
+  .nav-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .nav-links .icon { width: 1.4em; height: 1.4em; }
+  .nav-links a, .nav-links .link-button { padding: var(--space-1); }
+  .brand { font-size: 1.05rem; }
+}
+
+/* Los números no necesitan flechas: en el móvil se comen el ancho del campo. */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.set-field .field-input { padding-inline: var(--space-2); text-align: center; }
+@media (max-width: 26rem) {
+  .set-form { gap: var(--space-1); }
+  .set-field .field-input { padding-inline: var(--space-1); }
+  .set-submit { min-width: 2.6rem; padding-inline: var(--space-2); }
+}
