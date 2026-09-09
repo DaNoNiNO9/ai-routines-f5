@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, date, datetime
 from typing import TYPE_CHECKING
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint, Column, ForeignKey, String, Table
@@ -14,6 +15,7 @@ from app.models.base import SoftDeleteMixin, TimestampMixin, UTCDateTime, utcnow
 
 if TYPE_CHECKING:
     from app.models.exercise import Equipment
+    from app.models.onboarding import QuestionnaireDraft
     from app.models.plan import Plan, PlanAdjustment
     from app.models.profile import Profile
     from app.models.routine import Routine
@@ -77,6 +79,16 @@ class User(UserMixin, TimestampMixin, SoftDeleteMixin, db.Model):
     workout_sessions: Mapped[list[WorkoutSession]] = relationship(
         back_populates="user", cascade="all, delete-orphan", order_by="WorkoutSession.started_at"
     )
+    questionnaire_draft: Mapped[QuestionnaireDraft | None] = relationship(
+        back_populates="user", cascade="all, delete-orphan", uselist=False
+    )
+
+    def today(self) -> date:
+        """Calendar date in the user's time zone (UTC if the zone is unknown)."""
+        try:
+            return datetime.now(ZoneInfo(self.timezone)).date()
+        except (ZoneInfoNotFoundError, ValueError):
+            return datetime.now(UTC).date()
 
     @validates("email")
     def _normalise_email(self, _key: str, value: str) -> str:

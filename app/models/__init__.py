@@ -2,6 +2,7 @@
 
 from app.models.base import SoftDeleteMixin, TimestampMixin, UTCDateTime, utcnow
 from app.models.exercise import Equipment, Exercise, ExerciseAlternative, exercise_equipment
+from app.models.onboarding import QuestionnaireDraft
 from app.models.plan import Meal, Plan, PlanAdjustment
 from app.models.profile import Injury, Profile
 from app.models.routine import Routine, RoutineDay, RoutineExercise
@@ -21,6 +22,7 @@ __all__ = [
     "Plan",
     "PlanAdjustment",
     "Profile",
+    "QuestionnaireDraft",
     "Routine",
     "RoutineDay",
     "RoutineExercise",
