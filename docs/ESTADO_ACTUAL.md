@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 12 cerrada.** Siguiente: Fase 13 (auditoría final), sin empezar.
+**Traducción al inglés terminada.** Siguiente: Fase 13 (auditoría final), empezando.
 
 ## Terminado
 
@@ -22,21 +22,22 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | 10 | Diario (peso, ingesta, actividad, perímetros), sesiones de entrenamiento con temporizador y revisión quincenal aplicable | `FASE_10` |
 | 11 | Diseño visual: paleta Forja, tipografías e iconos vendorizados, tema claro, estados y micro-interacciones | `FASE_11` |
 | 12 | Exportación del plan en PDF y de los datos en CSV, ajustes de cuenta y borrado RGPD | `FASE_12` |
+| — | Catálogo inglés completo (802 mensajes): interfaz, avisos del motor, PDF, LEEME del ZIP y nombres del catálogo | `FASE_TRADUCCIONES` |
 
 ## Estado del repositorio
 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 563 tests en verde |
-| Cobertura de `app/` | 98,5 % |
+| Suite | 573 tests en verde |
+| Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
 | Rama | `main`, sin remoto todavía |
 
 ## Qué estoy haciendo ahora
 
-Nada en curso. La Fase 12 quedó cerrada con su informe.
+Arrancando la **Fase 13 (auditoría final)**. La traducción al inglés está cerrada y verificada contra el servidor: interfaz, avisos del motor, PDF y LEEME del ZIP en inglés, y los nombres de ejercicios y material salen de `name_en`.
 
 ## Siguiente paso
 
@@ -50,10 +51,12 @@ Nada en curso. La Fase 12 quedó cerrada con su informe.
 - Calidad: cobertura, código muerto, READMEs coherentes.
 - Cierre: `docs/AUDITORIA_FINAL.md` con hallazgos, severidad y corrección, y `docs/ESTADO_FINAL.md`.
 
-Después: catálogos de traducción con pybabel y, cuando pases la URL, el remoto de GitHub.
+Después: cuando pases la URL, el remoto de GitHub.
 
 ## Detalles menores heredados
 
+- Los nombres generados y guardados en la base (rutina «Torso / pierna · 4 días», días «Torso A», comidas «Desayuno») se muestran tal cual en los dos idiomas: son datos, no interfaz.
+- Los avisos del motor cuelan códigos internos en el texto (`Split upper_lower de 4 días`, `Volumen extra (+27 %) para glutes, shoulders`). Pendiente de arreglar en la Fase 13.
 - El contador de series muestra "3/2" cuando se hacen más de las prescritas; es correcto pero se lee raro.
 - `instructions_es` sigue vacío: las instrucciones salen en inglés, marcadas como tales.
 - No hay fotografía de stock por no poder documentar su licencia (T-95).

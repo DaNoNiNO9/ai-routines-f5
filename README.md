@@ -76,7 +76,7 @@ Rutas de diagnóstico, solo en desarrollo y testing: `/_debug/boom` (provoca un 
 
 ## Traducciones
 
-Los textos se marcan con `{{ _('...') }}` en plantillas y `lazy_gettext` en Python desde el principio. Los catálogos se generan al final del proyecto:
+Los textos se marcan con `{{ _('...') }}` en plantillas y `lazy_gettext` en Python desde el principio. Las plantillas del motor viven en un diccionario (`app/engine/messages.py`), así que llegan al catálogo con el extractor de `scripts/babel_engine.py`, declarado en `babel.cfg`. Idiomas: castellano e inglés.
 
 ```powershell
 pybabel extract -F babel.cfg -k _l -o messages.pot .
@@ -84,6 +84,14 @@ pybabel init -i messages.pot -d app/translations -l en     # solo la primera vez
 pybabel update -i messages.pot -d app/translations         # siguientes veces
 pybabel compile -d app/translations
 ```
+
+Tres reglas que hay que respetar:
+
+- Los marcadores son printf con nombre (`%(pct)s`) y el porcentaje literal se escribe `%%`, también en el motor. Babel marca como `python-format` cualquier texto donde un `%` va seguido de espacio y letra de conversión (`% sobre` parece un `%s`) y se niega a compilar un catálogo que mezcle formatos.
+- El `.mo` está versionado: `tests/unit/test_catalogue.py` comprueba que está compilado al día, que no queda nada sin traducir ni marcado como dudoso, y que cada traducción conserva los marcadores del original.
+- Los avisos del motor se guardan en el plan como `código` + `parámetros` (`details["all_notes"]`), de modo que un plan generado en castellano se lee en inglés sin regenerarlo.
+
+Selección de idioma: `?lang=en` (se recuerda en la sesión) → sesión → idioma de la cuenta → `Accept-Language` → castellano.
 
 ## Arquitectura (objetivo)
 

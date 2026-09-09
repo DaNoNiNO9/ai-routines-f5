@@ -44,3 +44,6 @@ node_modules/
 
 # Cached downloads of the build scripts
 scripts/cache/
+
+# Plantilla de traducción: se regenera con pybabel extract
+messages.pot
