@@ -15,6 +15,7 @@ from flask_babel import lazy_gettext as _l
 from app.engine.enums import (
     ActivityIntensity,
     Aggressiveness,
+    BmrMethod,
     BodyFatMethod,
     Confidence,
     DietPattern,
@@ -23,6 +24,7 @@ from app.engine.enums import (
     InjuryArea,
     JobActivity,
     Level,
+    MealTiming,
     MovementPattern,
     MuscleGroup,
     Severity,
@@ -221,6 +223,24 @@ CONFIDENCE: Mapping[Confidence, Any] = {
     Confidence.LOW: _l("baja"),
     Confidence.MEDIUM: _l("media"),
     Confidence.HIGH: _l("alta"),
+}
+
+BMR_METHOD: Mapping[BmrMethod, Any] = {
+    BmrMethod.KATCH_MCARDLE: _l("Katch-McArdle (sobre masa magra)"),
+    BmrMethod.MIFFLIN_ST_JEOR: _l("Mifflin-St Jeor"),
+    BmrMethod.HARRIS_BENEDICT: _l("Harris-Benedict revisada"),
+}
+
+MEAL_TIMING: Mapping[MealTiming, Any] = {
+    MealTiming.REGULAR: _l("normal"),
+    MealTiming.PRE_WORKOUT: _l("antes de entrenar"),
+    MealTiming.POST_WORKOUT: _l("después de entrenar"),
+}
+
+VOLUME_STATUS: Mapping[str, Any] = {
+    "low": _l("por debajo"),
+    "ok": _l("en rango"),
+    "high": _l("por encima"),
 }
 
 STRESS_LEVEL: Mapping[int, Any] = {

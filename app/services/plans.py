@@ -150,6 +150,31 @@ def routine_inputs(
     )
 
 
+def exercise_info(row: Exercise, slug_by_id: dict[int, str]) -> ExerciseInfo:
+    """``ExerciseInfo`` for a catalogue row (alternatives resolved through ``slug_by_id``)."""
+    return exercise_from_dict(
+        {
+            "slug": row.slug,
+            "name_es": row.name_es,
+            "primary_muscle": row.primary_muscle.value,
+            "secondary_muscles": list(row.secondary_muscles),
+            "movement_pattern": row.movement_pattern.value,
+            "mechanic": row.mechanic.value,
+            "force": row.force.value,
+            "technical_level": row.technical_level.value,
+            "equipment": sorted(row.equipment_codes),
+            "contraindications": list(row.contraindications),
+            "is_unilateral": row.is_unilateral,
+            "is_bodyweight": row.is_bodyweight,
+            "alternatives": [
+                {"slug": slug_by_id[alt.alternative_id]}
+                for alt in row.alternatives
+                if alt.alternative_id in slug_by_id
+            ],
+        }
+    )
+
+
 def load_catalogue() -> tuple[list[ExerciseInfo], dict[str, Exercise]]:
     """Active exercises as the generator sees them, plus the rows by slug."""
     rows = (
@@ -163,31 +188,7 @@ def load_catalogue() -> tuple[list[ExerciseInfo], dict[str, Exercise]]:
         .all()
     )
     slug_by_id = {row.id: row.slug for row in rows}
-    catalogue = [
-        exercise_from_dict(
-            {
-                "slug": row.slug,
-                "name_es": row.name_es,
-                "primary_muscle": row.primary_muscle.value,
-                "secondary_muscles": list(row.secondary_muscles),
-                "movement_pattern": row.movement_pattern.value,
-                "mechanic": row.mechanic.value,
-                "force": row.force.value,
-                "technical_level": row.technical_level.value,
-                "equipment": sorted(row.equipment_codes),
-                "contraindications": list(row.contraindications),
-                "is_unilateral": row.is_unilateral,
-                "is_bodyweight": row.is_bodyweight,
-                "alternatives": [
-                    {"slug": slug_by_id[alt.alternative_id]}
-                    for alt in row.alternatives
-                    if alt.alternative_id in slug_by_id
-                ],
-            }
-        )
-        for row in rows
-    ]
-    return catalogue, {row.slug: row for row in rows}
+    return [exercise_info(row, slug_by_id) for row in rows], {row.slug: row for row in rows}
 
 
 def active_plan(user: User) -> Plan | None:
