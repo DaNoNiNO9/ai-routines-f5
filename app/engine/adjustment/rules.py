@@ -183,7 +183,7 @@ def _deficit_rules(review: Review) -> AdjustmentDecision:
     if loss > max_loss:
         needed = (loss - max_loss) * KCAL_PER_KG / 7
         delta = min(needed, inputs.plan_calories * MAX_RAISE_FRACTION)
-        new_calories = _round(inputs.plan_calories + delta)
+        new_calories = _round_smaller_raise(inputs.plan_calories + delta)
         review.notes.append(
             Note(
                 "adjust.loss_too_fast",
@@ -235,7 +235,7 @@ def _deficit_rules(review: Review) -> AdjustmentDecision:
             review.notes.append(
                 Note("adjust.capped_step", params={"pct": round(MAX_CUT_FRACTION * 100)})
             )
-        new_calories = _round(inputs.plan_calories - delta)
+        new_calories = _round_smaller_cut(inputs.plan_calories - delta)
         # Never below the floor, never faster than the weekly cap after the cut.
         min_for_cap = inputs.plan_calories - (max_loss - loss) * KCAL_PER_KG / 7
         lowest = max(floor, min_for_cap)
@@ -264,7 +264,7 @@ def _surplus_rules(review: Review) -> AdjustmentDecision:
     inputs = review.inputs
     weight = inputs.current_weight_kg
     if review.observed > weight * SURPLUS_FAST_FRACTION and review.observed > review.expected:
-        new_calories = _round(inputs.plan_calories * (1 - MAX_CUT_FRACTION))
+        new_calories = _round_smaller_cut(inputs.plan_calories * (1 - MAX_CUT_FRACTION))
         review.notes.append(
             _change_note("adjust.reduce_calories", inputs.plan_calories, new_calories)
         )
@@ -281,7 +281,7 @@ def _surplus_rules(review: Review) -> AdjustmentDecision:
                 )
             )
             return review.decision("adherence", AdjustmentReason.GAIN_TOO_SLOW)
-        new_calories = _round(inputs.plan_calories * (1 + MAX_CUT_FRACTION))
+        new_calories = _round_smaller_raise(inputs.plan_calories * (1 + MAX_CUT_FRACTION))
         review.notes.append(
             _change_note("adjust.increase_calories", inputs.plan_calories, new_calories)
         )
@@ -295,7 +295,7 @@ def _surplus_rules(review: Review) -> AdjustmentDecision:
 def _maintenance_rules(review: Review) -> AdjustmentDecision:
     inputs = review.inputs
     if review.observed < -MAINTENANCE_DRIFT_KG:
-        new_calories = _round(inputs.plan_calories * (1 + MAINTENANCE_STEP))
+        new_calories = _round_smaller_raise(inputs.plan_calories * (1 + MAINTENANCE_STEP))
         review.notes.append(
             _change_note("adjust.increase_calories", inputs.plan_calories, new_calories)
         )
@@ -305,7 +305,9 @@ def _maintenance_rules(review: Review) -> AdjustmentDecision:
     if review.observed > MAINTENANCE_DRIFT_KG:
         floor = safety.calorie_floor(inputs.sex, inputs.bmr_kcal)
         lowest = int(math.ceil(floor / ROUND_TO) * ROUND_TO)
-        new_calories = max(_round(inputs.plan_calories * (1 - MAINTENANCE_STEP)), lowest)
+        new_calories = max(
+            _round_smaller_cut(inputs.plan_calories * (1 - MAINTENANCE_STEP)), lowest
+        )
         review.notes.append(
             _change_note("adjust.reduce_calories", inputs.plan_calories, new_calories)
         )
@@ -317,7 +319,18 @@ def _maintenance_rules(review: Review) -> AdjustmentDecision:
 
 
 def _round(value: float) -> int:
+    """Nearest multiple of ``ROUND_TO`` (for targets, not for capped steps)."""
     return int(round(value / ROUND_TO) * ROUND_TO)
+
+
+def _round_smaller_cut(value: float) -> int:
+    """Round a lowered intake up, so the cut never exceeds its cap."""
+    return int(math.ceil(value / ROUND_TO) * ROUND_TO)
+
+
+def _round_smaller_raise(value: float) -> int:
+    """Round a raised intake down, so the increase never exceeds its cap."""
+    return int(math.floor(value / ROUND_TO) * ROUND_TO)
 
 
 def _change_note(code: str, old: int, new: int) -> Note:

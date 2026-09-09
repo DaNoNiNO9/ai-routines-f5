@@ -14,7 +14,7 @@ from sqlalchemy import select
 
 from app.engine.adjustment.smoothing import moving_average
 from app.engine.adjustment.types import WeightPoint
-from app.engine.enums import WorkoutStatus
+from app.engine.enums import AdjustmentReason, WorkoutStatus
 from app.engine.routines import catalog
 from app.engine.routines.types import InjuryInput
 from app.extensions import db
@@ -102,11 +102,18 @@ def next_routine_day(user: User, routine: Routine | None) -> RoutineDay | None:
     return routine.days[(position + 1) % len(routine.days)]
 
 
+# Records that create a plan, not reviews of one.
+CREATION_REASONS = (AdjustmentReason.INITIAL, AdjustmentReason.PROFILE_CHANGE)
+
+
 def next_review_on(plan: Plan) -> date:
-    """When the biweekly review of ``plan`` is due (after its last adjustment, else its start)."""
+    """When the biweekly review of ``plan`` is due (after its last review, else its start)."""
     last = db.session.scalar(
         select(PlanAdjustment)
-        .where(PlanAdjustment.plan_id == plan.id)
+        .where(
+            PlanAdjustment.plan_id == plan.id,
+            PlanAdjustment.reason.not_in(CREATION_REASONS),
+        )
         .order_by(PlanAdjustment.created_at.desc(), PlanAdjustment.id.desc())
     )
     if last is not None and isinstance(last.data, dict):

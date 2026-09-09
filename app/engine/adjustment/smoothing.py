@@ -22,18 +22,28 @@ GOOD_COVERAGE = 0.7
 def moving_average(
     weights: Sequence[WeightPoint], window_days: int = WINDOW_DAYS
 ) -> list[tuple[date, float]]:
-    """Trailing average per logged day (only days whose window holds enough weigh-ins)."""
+    """Trailing average per logged day.
+
+    A day only gets an average when its whole ``window_days`` window lies inside
+    the logged history and holds at least ``MIN_POINTS_PER_WINDOW`` weigh-ins.
+    """
     points = sorted(weights, key=lambda point: point.day)
     by_day: dict[date, float] = {}
     for point in points:
         by_day[point.day] = point.weight_kg
+    if not by_day:
+        return []
+    first = min(by_day)
     smoothed: list[tuple[date, float]] = []
     for day in sorted(by_day):
-        window = [
-            by_day[other]
-            for other in by_day
-            if day - timedelta(days=window_days - 1) <= other <= day
-        ]
+        start = day - timedelta(days=window_days - 1)
+        if start < first:
+            # A partial window averages fewer days, so its centre of mass advances
+            # at half speed and the fitted slope comes out flatter than reality.
+            # That would under-report how fast someone is losing weight, which is
+            # exactly the direction the safety cap must not err in.
+            continue
+        window = [by_day[other] for other in by_day if start <= other <= day]
         if len(window) >= MIN_POINTS_PER_WINDOW:
             smoothed.append((day, round(sum(window) / len(window), 2)))
     return smoothed

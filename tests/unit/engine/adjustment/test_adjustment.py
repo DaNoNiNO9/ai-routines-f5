@@ -25,8 +25,10 @@ def _days(count: int) -> list[date]:
 def test_moving_average_filters_daily_noise() -> None:
     weights, _, _, _ = simulate(80, 2500, 2500, 21, noise_sd=0.6, seed=3)
     smoothed = moving_average(weights)
-    assert len(smoothed) == 19  # the first two days lack a 3-point window
-    assert all(abs(value - 80) < 0.45 for _, value in smoothed[6:])
+    # Only days with a full 7-day window behind them get an average.
+    assert len(smoothed) == 21 - 6
+    assert smoothed[0][0] == weights[0].day + timedelta(days=6)
+    assert all(abs(value - 80) < 0.45 for _, value in smoothed)
     sparse = [WeightPoint(START, 80), WeightPoint(START + timedelta(days=1), 80.2)]
     assert moving_average(sparse) == []
 
@@ -128,7 +130,7 @@ def test_slow_loss_cuts_at_most_five_percent_and_respects_the_floor() -> None:
     decision = rules.decide(make_adjustment_inputs(weights, intakes))
     assert decision.action == "reduce_calories"
     assert decision.reason is AdjustmentReason.LOSS_TOO_SLOW
-    assert -decision.calorie_delta <= 2200 * 0.05 + 1
+    assert -decision.calorie_delta <= 2200 * 0.05  # the rounding never widens the cut
     assert decision.new_calories >= safety.calorie_floor(Sex.MALE, 1800)
     assert any(note.code == "adjust.reduce_calories" for note in decision.notes)
 
@@ -218,7 +220,8 @@ def test_maintenance_rules() -> None:
     )
     assert up.action == "increase_calories"
     assert up.calorie_delta == pytest.approx(2400 * 0.03, abs=5)
-    gaining, intakes, _, _ = simulate(70, 2000, 2400, 21, seed=15, noise_sd=0.15)
+    # A 500 kcal daily surplus: the drift is unmistakable, not borderline.
+    gaining, intakes, _, _ = simulate(70, 1900, 2400, 21, seed=15, noise_sd=0.15)
     down = rules.decide(
         make_adjustment_inputs(
             gaining,

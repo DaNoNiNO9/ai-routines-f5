@@ -11,8 +11,7 @@ from __future__ import annotations
 import dataclasses
 import logging
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
-from typing import Any
+from datetime import date, timedelta
 
 from sqlalchemy import select
 
@@ -24,13 +23,13 @@ from app.engine.adjustment.types import (
     IntakePoint,
     WeightPoint,
 )
-from app.engine.enums import AdjustmentReason, PlanStatus
+from app.engine.enums import AdjustmentReason
 from app.engine.macros import carb_cycle, compute_macros, hydration
 from app.engine.meals import distribute_meals
 from app.engine.nutrition import build_nutrition_plan
 from app.engine.routines.cardio import steps_target as default_steps_target
 from app.engine.targets import with_calories
-from app.engine.types import NutritionPlan
+from app.engine.types import NutritionInputs, NutritionPlan
 from app.extensions import db
 from app.models import IntakeLog, Plan, PlanAdjustment, Profile, User, WeightLog
 from app.services import plans
@@ -217,8 +216,8 @@ def _explanation(decision: AdjustmentDecision) -> str:
 
 
 def _plan_with_calories(
-    profile: Profile, plan: Plan, new_calories: int, today: date, current_weight_kg: float
-) -> tuple[Any, NutritionPlan]:
+    profile: Profile, new_calories: int, today: date, current_weight_kg: float
+) -> tuple[NutritionInputs, NutritionPlan]:
     """Rebuild the nutrition numbers around ``new_calories`` with the current weight."""
     inputs = dataclasses.replace(
         plans.nutrition_inputs(profile, today), weight_kg=current_weight_kg
@@ -252,7 +251,6 @@ def _plan_with_calories(
         hydration=water,
         notes=(*meal_notes, *nutrition.notes),
     )
-    del plan  # kept in the signature for symmetry with the caller; the numbers come from the engine
     return inputs, adjusted
 
 
@@ -277,7 +275,7 @@ def apply(user: User, today: date) -> AppliedReview:
 
     if decision.calorie_delta != 0:
         inputs, adjusted = _plan_with_calories(
-            profile, plan, decision.new_calories, today, current.inputs.current_weight_kg
+            profile, decision.new_calories, today, current.inputs.current_weight_kg
         )
         new_plan = plans.persist_plan(
             user,
@@ -323,19 +321,3 @@ def apply(user: User, today: date) -> AppliedReview:
     db.session.flush()
     logger.info("Review recorded for user %s: %s", user.id, decision.action)
     return AppliedReview(decision, adjustment, plan, plan)
-
-
-def latest_review(plan: Plan) -> PlanAdjustment | None:
-    """The most recent review recorded on ``plan``."""
-    records = review_records(plan)
-    return records[-1] if records else None
-
-
-def is_active(plan: Plan) -> bool:
-    """Convenience for templates."""
-    return plan.status is PlanStatus.ACTIVE
-
-
-def as_of(value: datetime) -> date:
-    """Calendar date of a stored UTC timestamp."""
-    return value.date()

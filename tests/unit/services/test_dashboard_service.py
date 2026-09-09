@@ -24,15 +24,17 @@ def test_review_interval_matches_the_engine_default() -> None:
 
 def test_weight_series_smooths_and_limits_the_window(database: SQLAlchemy) -> None:
     user = make_user(database.session)
-    for offset, kg in ((100, 90.0), (4, 80.0), (3, 80.4), (2, 79.8), (1, 80.2), (0, 80.0)):
+    daily = {7: 80.6, 6: 80.5, 5: 80.4, 4: 80.0, 3: 80.4, 2: 79.8, 1: 80.2, 0: 80.0}
+    for offset, kg in ((100, 90.0), *daily.items()):
         database.session.add(
             WeightLog(user=user, logged_on=TODAY - timedelta(days=offset), weight_kg=kg)
         )
     database.session.commit()
     series = dashboard.weight_series(user, TODAY)
-    assert [kg for _day, kg in series.points] == [80.0, 80.4, 79.8, 80.2, 80.0]  # 100 days ago out
+    assert len(series.points) == len(daily)  # the weigh-in from 100 days ago is out of the window
     assert series.latest == (TODAY, 80.0)
-    assert series.smoothed[0][0] == TODAY - timedelta(days=2)  # third weigh-in opens the window
+    # The average starts once a whole 7-day window fits behind the day.
+    assert series.smoothed[0][0] == TODAY - timedelta(days=1)
     assert series.change_kg is not None
     chart = series.to_chart()
     assert chart["labels"][-1] == TODAY.strftime("%d/%m")

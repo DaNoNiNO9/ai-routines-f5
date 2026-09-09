@@ -306,9 +306,7 @@ def abandon(session: WorkoutSession) -> None:
     session.status = WorkoutStatus.ABANDONED
 
 
-def last_performance(
-    user: User, item: RoutineExercise, exercise: Exercise, before: WorkoutSession
-) -> Performance | None:
+def last_performance(user: User, exercise: Exercise, before: WorkoutSession) -> Performance | None:
     """Working sets of the most recent completed session with this exercise."""
     previous = db.session.scalar(
         select(WorkoutSession)
@@ -331,7 +329,6 @@ def last_performance(
     )
     if not sets:
         return None
-    del item  # the prescription may differ between routine versions; the exercise is what counts
     return Performance(day=previous.started_at.date(), sets=sets)
 
 
@@ -362,7 +359,7 @@ def session_blocks(
         }
         count = max(item.sets, *(logged.keys() or [0]))
         rows = [SetRow(index=index, log=logged.get(index)) for index in range(1, count + 1)]
-        previous = last_performance(user, item, exercise, session)
+        previous = last_performance(user, exercise, session)
         blocks.append(
             ExerciseBlock(
                 item=item,
