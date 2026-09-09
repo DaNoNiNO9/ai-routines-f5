@@ -265,8 +265,10 @@ h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 var(-
 .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 40rem) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
-fieldset.choices { border: 0; padding: 0; margin: 0 0 var(--space-3); min-width: 0; }
-fieldset.choices legend { padding: 0; }
+fieldset.choices,
+fieldset.field { border: 0; padding: 0; margin: 0 0 var(--space-3); min-width: 0; }
+fieldset.choices legend,
+fieldset.field legend { padding: 0; }
 .choice {
   display: flex;
   gap: var(--space-2);
@@ -285,6 +287,19 @@ fieldset.choices legend { padding: 0; }
 .choices-compact .choice { padding: var(--space-1) var(--space-2); }
 .choice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: var(--space-1); }
 .choice-group { margin: var(--space-2) 0 var(--space-1); color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+
+/* Alpine tapa lo que va plegado hasta que arranca; sin JS queda oculto y el
+   paso sigue funcionando con lo que ya viene marcado. */
+[x-cloak] { display: none !important; }
+.summary-box { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; justify-content: space-between; padding: var(--space-3); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+.summary-box > div:first-child { flex: 1 1 20rem; }
+.summary-box .button { flex: none; }
+.summary-box .muted { margin: 0.2rem 0 0; }
+.summary-title { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin: 0; font-weight: 600; }
+.injury-panel { margin-top: var(--space-3); }
+.injury-row { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-bottom: var(--space-1); }
+.injury-area { flex: 1 1 12rem; }
+.injury-severity { min-width: 10rem; }
 .summary { margin-bottom: var(--space-4); }
 .summary dl { display: grid; grid-template-columns: minmax(8rem, max-content) 1fr; gap: var(--space-1) var(--space-3); margin: 0; }
 .summary dt { color: var(--text-muted); }

@@ -211,15 +211,13 @@ class EquipmentForm(StepForm):
 
     equipment = MultiCheckboxField(_l("Material disponible"), choices=[])
     priority_muscles = MultiCheckboxField(
-        _l("Músculos que quieres priorizar (máximo dos)"),
+        _l("¿Hay algún músculo que quieras trabajar más? (opcional, máximo dos)"),
         choices=labels.choices(labels.PRIORITY_MUSCLES),
     )
-    disliked_exercises = StringField(
-        _l("Ejercicios que no quieres hacer"), validators=[Optional(), Length(max=500)]
-    )
-    preferred_exercises = StringField(
-        _l("Ejercicios que te gustan"), validators=[Optional(), Length(max=500)]
-    )
+    # Solo abre la parte de lesiones: no se guarda, las zonas hablan por sí solas.
+    has_injuries = BooleanField(_l("Tengo alguna molestia o lesión"))
+    # Los ejercicios que gustan o no se marcan desde la rutina, viéndolos, no aquí
+    # de memoria contra un catálogo de 190 nombres.
 
     def validate_equipment(self, field: MultiCheckboxField) -> None:
         """At least one item (bodyweight counts)."""
@@ -242,7 +240,11 @@ class EquipmentForm(StepForm):
 
     def to_data(self) -> dict[str, Any]:
         """Answers plus the injuries dictionary (the per-area selects are not stored)."""
-        data = {k: v for k, v in super().to_data().items() if not k.startswith("injury_")}
+        data = {
+            k: v
+            for k, v in super().to_data().items()
+            if not k.startswith("injury_") and k != "has_injuries"
+        }
         data["injuries"] = self.injuries()
         return data
 

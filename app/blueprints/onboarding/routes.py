@@ -13,7 +13,8 @@ from flask_login import current_user, login_required
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import labels
-from app.blueprints.onboarding.forms import INJURY_FIELDS, STEP_FORMS, EquipmentForm, split_list
+from app.blueprints.onboarding.forms import INJURY_FIELDS, STEP_FORMS
+from app.engine.enums import TrainingLocation
 from app.engine.equipment_presets import preset_for
 from app.engine.nutrition import build_nutrition_plan
 from app.engine.routines.generator import build_routine
@@ -58,11 +59,7 @@ def _form_defaults(number: int, data: dict[str, Any]) -> dict[str, Any]:
             defaults["equipment"] = sorted(preset_for(location)) if location else ["body_only"]
         for area, name in INJURY_FIELDS.items():
             defaults[name] = (data.get("injuries") or {}).get(area.value, "none")
-        lookup = onboarding.exercise_lookup()
-        for key in ("disliked_exercises", "preferred_exercises"):
-            defaults[key] = ", ".join(
-                lookup.name_of(slug) for slug in data.get(key, []) if lookup.name_of(slug)
-            )
+        defaults["has_injuries"] = bool(data.get("injuries"))
     if number == 6:
         for key in ("food_aversions", "allergies"):
             if isinstance(data.get(key), list):
@@ -70,36 +67,16 @@ def _form_defaults(number: int, data: dict[str, Any]) -> dict[str, Any]:
     return defaults
 
 
-def _resolve_exercises(form: EquipmentForm, values: dict[str, Any]) -> bool:
-    """Turn exercise names into slugs; unknown names become field errors."""
-    lookup = onboarding.exercise_lookup()
-    ok = True
-    for key in ("disliked_exercises", "preferred_exercises"):
-        slugs: list[str] = []
-        unknown: list[str] = []
-        for name in split_list(values.get(key)):
-            slug = lookup.slug_of(name)
-            if slug is None:
-                unknown.append(name)
-            elif slug not in slugs:
-                slugs.append(slug)
-        if unknown:
-            ok = False
-            form[key].errors.append(
-                _("No reconocemos: %(names)s. Elige nombres de la lista.", names=", ".join(unknown))
-            )
-        values[key] = slugs
-    return ok
-
-
-def _step_context(number: int, form: Any) -> dict[str, Any]:
+def _step_context(number: int, form: Any, data: dict[str, Any] | None = None) -> dict[str, Any]:
     context: dict[str, Any] = {}
     if number == 4:
         groups = onboarding.equipment_groups()
         form.equipment.choices = [(code, name) for _label, items in groups for code, name in items]
+        location = (data or {}).get("training_location")
         context["equipment_groups"] = groups
-        context["injury_fields"] = list(INJURY_FIELDS.values())
-        context["exercise_names"] = onboarding.exercise_lookup().names
+        context["injury_fields"] = list(INJURY_FIELDS.items())
+        context["location"] = TrainingLocation(location) if location else None
+        context["equipment_hints"] = labels.EQUIPMENT_HINT
     return context
 
 
@@ -131,13 +108,12 @@ def step(number: int) -> str | WerkzeugResponse:
         if request.method == "POST"
         else form_class(data=_form_defaults(number, draft.data))
     )
-    context = _step_context(number, form)
+    context = _step_context(number, form, draft.data)
     if form.validate_on_submit():
         values = form.to_data()
         ready = True
         if number == 4:
             values["equipment_for_location"] = draft.data.get("training_location")
-            ready = _resolve_exercises(form, values)
         if ready:
             onboarding.save_step(draft, number, values)
             if number == LAST_STEP:
@@ -241,17 +217,15 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
             )
             or _("ninguna"),
         ),
-        (
-            _("Ejercicios que evitar"),
-            ", ".join(lookup.name_of(s) or s for s in data.get("disliked_exercises", []))
-            or _("ninguno"),
-        ),
-        (
-            _("Ejercicios preferidos"),
-            ", ".join(lookup.name_of(s) or s for s in data.get("preferred_exercises", []))
-            or _("ninguno"),
-        ),
     ]
+    # Los ejercicios marcados se eligen desde la rutina: aquí solo se enseñan si hay.
+    for etiqueta, clave in (
+        (_("Ejercicios que evitar"), "disliked_exercises"),
+        (_("Ejercicios preferidos"), "preferred_exercises"),
+    ):
+        marcados = ", ".join(lookup.name_of(s) or s for s in data.get(clave, []))
+        if marcados:
+            rows_equipment.append((etiqueta, marcados))
     rows_goal = [
         (_("Objetivo"), labels.label(labels.GOAL, data.get("goal"))),
         (_("Ritmo"), labels.label(labels.AGGRESSIVENESS, data.get("aggressiveness"))),

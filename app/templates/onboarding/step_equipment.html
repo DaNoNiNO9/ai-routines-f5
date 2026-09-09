@@ -1,44 +1,99 @@
 {% extends "onboarding/_wizard.html" %}
 
 {% block intro %}
-<p class="lead">{{ _('Hemos marcado el material habitual de tu lugar de entrenamiento. Ajústalo: solo se programan ejercicios con lo que tienes.') }}</p>
+<p class="lead">{{ _('Con esto decidimos qué ejercicios puedes hacer. Si entrenas donde siempre y no te duele nada, no tienes que tocar nada.') }}</p>
 {% endblock %}
 
 {% block fields %}
-  <fieldset class="field choices choices-compact{% if form.equipment.errors %} field-invalid{% endif %}">
+  {% set marcado = form.equipment.data or [] %}
+  <fieldset class="field{% if form.equipment.errors %} field-invalid{% endif %}"
+            x-data="{ abierto: {{ 'true' if form.equipment.errors else 'false' }} }">
     <legend class="field-label">{{ form.equipment.label.text }}</legend>
-    {% for group_label, items in equipment_groups %}
-      <p class="choice-group">{{ group_label }}</p>
-      <div class="choice-grid">
-        {% for code, name in items %}
-          <label class="choice">
-            <input type="checkbox" class="choice-input" name="equipment" value="{{ code }}"{% if code in (form.equipment.data or []) %} checked{% endif %}>
-            <span class="choice-text">{{ name }}</span>
-          </label>
-        {% endfor %}
+
+    <div class="summary-box">
+      <div>
+        <p class="summary-title">
+          {% if location %}{{ labels.label(labels.TRAINING_LOCATION, location) }}{% else %}{{ _('Tu material') }}{% endif %}
+          <span class="badge">{{ _('%(n)s marcados', n=marcado|length) }}</span>
+        </p>
+        <p class="muted">
+          {% if location %}{{ labels.TRAINING_LOCATION_SUMMARY[location] }} {% endif %}{{ _('Solo se programan ejercicios con lo que esté marcado.') }}
+        </p>
       </div>
-    {% endfor %}
+      <button type="button" class="button button-secondary" @click="abierto = !abierto"
+              :aria-expanded="abierto ? 'true' : 'false'" aria-controls="material-detalle">
+        <span x-show="!abierto">{{ _('Ajustar lo que tengo') }}</span>
+        <span x-show="abierto" x-cloak>{{ _('Ya está') }}</span>
+      </button>
+    </div>
+
+    <div id="material-detalle" x-show="abierto" x-cloak>
+      {% for group_label, items in equipment_groups %}
+        <p class="choice-group">{{ group_label }}</p>
+        <div class="choice-grid">
+          {% for code, name in items %}
+            <label class="choice">
+              <input type="checkbox" class="choice-input" name="equipment" value="{{ code }}"{% if code in marcado %} checked{% endif %}>
+              <span class="choice-text">
+                {{ name }}
+                {% if equipment_hints.get(code) %}<small class="choice-help">{{ equipment_hints[code] }}</small>{% endif %}
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
     {% for error in form.equipment.errors %}
       <p class="field-error" role="alert">{{ error }}</p>
     {% endfor %}
   </fieldset>
 
-  {{ checkboxes(form.priority_muscles) }}
-  <p class="help">{{ _('Los músculos prioritarios reciben más series; el resto baja un poco para que el total siga siendo recuperable.') }}</p>
-
-  <h2 class="h3">{{ _('Lesiones o molestias') }}</h2>
-  <p class="help">{{ _('Se excluyen los ejercicios contraindicados según la gravedad. Ante una lesión grave, consulta antes con un profesional.') }}</p>
-  <div class="grid-2">
-    {% for name in injury_fields %}
-      {{ field(form[name]) }}
+  <fieldset class="field choices choices-compact{% if form.priority_muscles.errors %} field-invalid{% endif %}"
+            x-data="{ elegidos: {{ (form.priority_muscles.data or [])|length }} }">
+    <legend class="field-label">{{ form.priority_muscles.label.text }}</legend>
+    <div class="choice-grid">
+      {% for sub in form.priority_muscles %}
+        <label class="choice">
+          {{ sub(class_="choice-input", **{"@change": "elegidos += $event.target.checked ? 1 : -1", ":disabled": "elegidos >= 2 && !$el.checked"}) }}
+          <span class="choice-text">{{ sub.label.text }}</span>
+        </label>
+      {% endfor %}
+    </div>
+    <p class="help" x-show="elegidos >= 2" x-cloak>{{ _('Ya tienes dos. Desmarca uno si quieres cambiarlo.') }}</p>
+    {% for error in form.priority_muscles.errors %}
+      <p class="field-error" role="alert">{{ error }}</p>
     {% endfor %}
-  </div>
+  </fieldset>
+  <p class="help">{{ _('Es opcional: sin elegir ninguno, el reparto es equilibrado. Los prioritarios reciben más series y el resto baja un poco para que la semana siga siendo recuperable.') }}</p>
 
-  <h2 class="h3">{{ _('Preferencias (opcional)') }}</h2>
-  <p class="help">{{ _('Escribe nombres de la lista separados por comas.') }}</p>
-  {{ field(form.disliked_exercises, list="exercise-names") }}
-  {{ field(form.preferred_exercises, list="exercise-names") }}
-  <datalist id="exercise-names">
-    {% for name in exercise_names %}<option value="{{ name }}">{% endfor %}
-  </datalist>
+  <fieldset class="field" x-data="{ lesionado: {{ 'true' if form.has_injuries.data else 'false' }} }">
+    <legend class="field-label">{{ _('Lesiones o molestias') }}</legend>
+    <label class="choice">
+      {{ form.has_injuries(class_="choice-input", **{"x-model": "lesionado"}) }}
+      <span class="choice-text">
+        {{ form.has_injuries.label.text }}
+        <small class="choice-help">{{ _('Si no marcas nada, damos por hecho que no hay ninguna.') }}</small>
+      </span>
+    </label>
+
+    <div x-show="lesionado" x-cloak class="injury-panel">
+      <p class="help">{{ _('Marca la zona y cómo está. Se quitan los ejercicios desaconsejados según la gravedad; ante una lesión seria, consulta antes con un profesional.') }}</p>
+      {% for area, name in injury_fields %}
+        {% set campo = form[name] %}
+        {% set declarada = campo.data and campo.data != 'none' %}
+        <div class="injury-row" x-data="{ tocada: {{ 'true' if declarada else 'false' }} }">
+          <label class="choice injury-area">
+            <input type="checkbox" class="choice-input"
+                   @change="tocada = $event.target.checked; $refs.gravedad.value = tocada ? 'mild' : 'none'"
+                   {% if declarada %}checked{% endif %}>
+            <span class="choice-text">{{ labels.label(labels.INJURY_AREA, area) }}</span>
+          </label>
+          <div x-show="tocada" x-cloak>
+            {{ campo(class_="field-input injury-severity", **{"x-ref": "gravedad"}) }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </fieldset>
 {% endblock %}

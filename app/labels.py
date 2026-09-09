@@ -332,3 +332,37 @@ def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
         if suggestion is not None:
             translated["suggestion"] = str(suggestion)
     return translated
+
+
+# Lo que el nombre no dice: solo el material que no se reconoce a la primera.
+EQUIPMENT_HINT: Mapping[str, Any] = {
+    "suspension_trainer": _l("Las cintas con asas que se cuelgan de un anclaje"),
+    "ez_bar": _l("La barra corta con ondulaciones, para bíceps y tríceps"),
+    "trap_bar": _l("La barra hexagonal en la que te metes dentro"),
+    "medicine_ball": _l("Balón con peso, para lanzamientos y abdominales"),
+    "plyo_box": _l("El cajón para subirse o hacer saltos"),
+    "stability_ball": _l("La pelota grande hinchable"),
+    "back_extension_bench": _l("El banco inclinado para lumbares y glúteos"),
+    "ab_wheel": _l("La ruedecita con dos asas"),
+    "cable_machine": _l("La torre con poleas y cables regulables"),
+    "lat_pulldown": _l("Sentado, tiras de una barra hacia el pecho"),
+    "seated_row_machine": _l("Sentado, tiras de un agarre hacia el abdomen"),
+    "smith_machine": _l("La barra guiada por raíles"),
+    "hack_squat": _l("Sentadilla en máquina inclinada, de espaldas al respaldo"),
+    "pec_deck": _l("Sentado, juntas los brazos por delante del pecho"),
+    "hip_thrust_machine": _l("Empuje de cadera con la espalda apoyada"),
+    "hip_abductor_adductor_machine": _l("Sentado, abres o cierras las piernas"),
+    "squat_rack": _l("La estructura donde se apoya la barra para sentadillas"),
+}
+
+# Cómo se resume el sitio de entrenamiento en el paso del material.
+TRAINING_LOCATION_SUMMARY: Mapping[TrainingLocation, Any] = {
+    TrainingLocation.FULL_GYM: _l(
+        "Damos por hecho que tienes de todo: barras, mancuernas, poleas y máquinas."
+    ),
+    TrainingLocation.BASIC_GYM: _l(
+        "Damos por hecho lo básico: barras, mancuernas, bancos y alguna máquina."
+    ),
+    TrainingLocation.HOME_EQUIPMENT: _l("Damos por hecho mancuernas, bandas y un banco."),
+    TrainingLocation.HOME_BODYWEIGHT: _l("Damos por hecho que entrenas solo con tu peso."),
+}
