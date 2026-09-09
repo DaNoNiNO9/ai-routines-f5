@@ -69,3 +69,17 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-28 | Alternativas | Calculadas al generar el catálogo: mismo patrón y músculo primario, hasta 4, priorizando otro material y misma mecánica | Cobertura del 90 %+ sin curar 190 listas a mano; revisables en el JSON |
 | T-29 | Selección | 190 ejercicios de los 876 del dataset, con nombre en español propio; instrucciones en inglés del dataset (`instructions_es` vacío) | Limitación conocida: traducir 190 instrucciones se deja para una fase posterior o para hacer a mano |
 | T-30 | Presets de material | `app/engine/equipment_presets.py` define el material asumido por lugar (gimnasio completo, básico, casa con material, casa sin material) y lo comparten cuestionario, generador y tests de cobertura | Un solo sitio para la regla; el test exige todos los patrones en cada preset (salvo tracción vertical sin material) |
+
+## 2026-09-09 — Fase 4 (motor nutricional)
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-31 | Selección de BMR | Katch-McArdle siempre que exista un % graso (declarado por cualquier método o estimado por Navy); Mifflin-St Jeor en caso contrario; Harris-Benedict revisada solo para el rango | Es lo que pide §3.3; la confianza se muestra aparte según el método |
+| T-32 | NEAT | Pasos × 0,75 m × 0,5 kcal/kg/km (ACSM) + extra ocupacional fijo (0/100/250/500 kcal) y pasos estimados por trabajo (4000/7000/9000/12000, Tudor-Locke) | Modelo por componentes con constantes citadas; el motor de ajuste corregirá el TDEE con datos reales |
+| T-33 | TEF | 10 % de la ingesta resuelto por punto fijo sobre el objetivo; el déficit porcentual se define sobre el gasto real a esa ingesta | Literal de §3.4 |
+| T-34 | Déficit y superávit | Déficit 10-25 % escalado linealmente entre 12-30 % de grasa (hombres) y 20-38 % (mujeres), ±5 puntos por agresividad; superávit 5 % principiantes, 7,5 % intermedios, 10 % avanzados, ±2,5 puntos; recomposición 5 % de déficit solo si principiante/retomando o grasa alta | §3.5 con la lectura literal de "principiantes con superávits pequeños" |
+| T-35 | Suelo de carbohidratos | 1,0 / 1,5 / 2,0 g/kg según días de entreno (≤2, 3-4, ≥5), mínimo 100 g; primero baja la grasa al mínimo (0,6 g/kg y 20 %), después sube calorías reduciendo el déficit | §3.6: nunca carbohidratos a cero |
+| T-36 | Modificador de estilo de vida | −1,5 % (sueño < 7 h) o −3 % (< 6 h) y −2 % (estrés ≥ 4) sobre NEAT + EAT, explicado en una nota | Pequeño y conservador, como pide §3.4 |
+| T-37 | Notas | El motor emite `Note(code, level, params)`; el texto en español vive en `messages.py` y la UI podrá traducirlo | Motor sin texto de interfaz; explicaciones reproducibles y testeables |
+| T-38 | Puerta de seguridad | `evaluate_eligibility` al principio (bloqueos por persona) y `verify_plan` al final (límites sobre los números); una violación final lanza `SafetyError` en vez de devolver el plan | Garantía verificada con Hypothesis; `targets.py` reutiliza las mismas constantes para producir planes válidos a la primera |
+| T-39 | Perfil | Nuevas columnas `training_time` y `wants_carb_cycling` (migración `021183cac637` con `server_default` para bases con filas) | El reparto por comidas necesita saber cuándo se entrena |

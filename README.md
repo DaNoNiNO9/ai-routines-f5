@@ -2,12 +2,12 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 3 cerrada (catálogo de 190 ejercicios con imágenes locales, patrón de movimiento, material, contraindicaciones y alternativas). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
+**Estado actual:** Fase 4 cerrada (motor de cálculo nutricional: composición corporal, BMR, TDEE por componentes, objetivo calórico, macros, comidas, ciclado y puerta de seguridad, todo como funciones puras con sus fuentes). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 
 1. Cuestionario multi-paso (Fase 8) → perfil versionado en base de datos (Fase 2).
-2. `app/engine/` (Fases 4-6): funciones puras, sin Flask ni base de datos. Composición corporal → BMR → TDEE por componentes → objetivo calórico → macros → rutina. `safety.py` es la última puerta antes de devolver cualquier plan.
+2. `app/engine/`: funciones puras, sin Flask ni base de datos. Composición corporal → BMR → TDEE por componentes → objetivo calórico → macros → comidas (Fase 4, hecho) → rutina (Fase 5) → ajuste (Fase 6). `safety.py` es la última puerta antes de devolver cualquier plan.
 3. `app/services/` orquesta motor y modelos y persiste planes y rutinas versionados.
 4. Blueprints y plantillas Jinja2 muestran el plan; Alpine.js y Chart.js vendorizados para interacción y gráficas.
 5. El usuario registra peso, medidas, ingesta y entrenos (Fase 10); el motor de ajuste (Fase 6) compara cada dos semanas lo real con lo esperado y recalcula.
@@ -64,6 +64,7 @@ Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del en
 | `python scripts/build_exercises.py` | Regenerar `app/seeds/exercises.json` y las imágenes desde la curación de `scripts/exercise_catalogue.py` |
 | `pytest` | Suite de tests |
 | `pytest --cov` | Tests con cobertura de `app/`, ramas incluidas (`--cov-report=html` genera `htmlcov/`) |
+| `pytest tests/unit/engine --cov=app/engine` | Solo el motor, con su cobertura (objetivo ≥ 95 %) |
 | `ruff check .` | Linter |
 | `ruff format .` | Formateador (`--check` solo verifica) |
 | `waitress-serve --port 8000 wsgi:app` | Servidor de producción en Windows o Linux (`FORJA_ENV=production`) |
@@ -110,6 +111,7 @@ Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `servi
 **Ficheros (raíz):**
 - `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging y seguridad.
 - `app/models/` — esquema SQLAlchemy 2.0 (20 tablas). Su `README.md` explica tipos, mixins, cascadas y cómo migrar.
+- `app/engine/` — motor de cálculo. Su `README.md` recorre cada etapa con sus fórmulas y fuentes y dice qué constante tocar para cambiar cada regla.
 - `app/engine/enums.py` — vocabulario de dominio compartido por motor, modelos y formularios.
 - `app/seeds/` — datos de referencia (`equipment.json`, `exercises.json` generado) y cargadores idempotentes; comandos en `app/cli.py`. Su `README.md` explica cómo se genera el catálogo.
 - `scripts/` — `exercise_catalogue.py` (curación de 190 ejercicios) y `build_exercises.py` (generador con descarga de imágenes).
