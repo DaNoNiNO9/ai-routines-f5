@@ -202,10 +202,19 @@ def active_plan(user: User) -> Plan | None:
 
 
 def active_routine(user: User) -> Routine | None:
-    """The routine in force for ``user`` (at most one)."""
+    """The routine in force for ``user`` (at most one).
+
+    Trae ya los días con sus ejercicios: casi todo el que pide la rutina los
+    pinta, y sin esto son treinta consultas para dibujar una semana.
+    """
     return db.session.scalar(
         select(Routine)
         .where(Routine.user_id == user.id, Routine.status == PlanStatus.ACTIVE)
+        .options(
+            selectinload(Routine.days)
+            .selectinload(RoutineDay.exercises)
+            .selectinload(RoutineExercise.exercise)
+        )
         .order_by(Routine.version.desc())
     )
 

@@ -7,10 +7,12 @@ it). Nothing here commits: the routes own the transaction.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import date, datetime
+from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import case, func, select
 from sqlalchemy.orm import selectinload
 
 from app.engine.enums import SetType, WorkoutStatus
@@ -374,6 +376,48 @@ def session_blocks(
     return blocks
 
 
+def _epley_sql() -> Any:
+    """El 1RM de Epley en SQL, con la misma excepción para la serie de una repetición."""
+    return case(
+        (SetLog.reps <= 1, SetLog.weight_kg),
+        else_=SetLog.weight_kg * (1 + SetLog.reps / float(EPLEY_DIVISOR)),
+    )
+
+
+def previous_bests(user: User) -> dict[tuple[int, int], float]:
+    """Mejor 1RM anterior a cada sesión, por ejercicio, en una sola consulta.
+
+    El historial pinta 50 sesiones con varios ejercicios cada una: preguntar
+    "¿cuál era mi marca antes de esta?" una vez por casilla eran cientos de
+    consultas que además cargaban todas las series de la cuenta.
+    """
+    rows = db.session.execute(
+        select(
+            WorkoutSession.id,
+            SetLog.exercise_id,
+            func.max(_epley_sql()),
+        )
+        .join(SetLog, SetLog.workout_session_id == WorkoutSession.id)
+        .where(
+            WorkoutSession.user_id == user.id,
+            WorkoutSession.status == WorkoutStatus.COMPLETED,
+            WorkoutSession.deleted_at.is_(None),
+            SetLog.set_type == SetType.WORKING,
+            SetLog.reps >= 1,
+        )
+        .group_by(WorkoutSession.id, SetLog.exercise_id)
+        .order_by(WorkoutSession.started_at, WorkoutSession.id)
+    ).all()
+    best_so_far: dict[int, float] = {}
+    before: dict[tuple[int, int], float] = {}
+    for session_id, exercise_id, best in rows:
+        earlier = best_so_far.get(exercise_id)
+        if earlier is not None:
+            before[(session_id, exercise_id)] = round(earlier, 1)
+        best_so_far[exercise_id] = max(earlier or 0.0, float(best))
+    return before
+
+
 def _best_1rm_before(user: User, exercise_id: int, before: WorkoutSession) -> float | None:
     rows = db.session.scalars(
         select(SetLog)
@@ -392,8 +436,19 @@ def _best_1rm_before(user: User, exercise_id: int, before: WorkoutSession) -> fl
     return max(estimated_1rm(row.weight_kg, row.reps) for row in rows)
 
 
-def summarise(user: User, session: WorkoutSession, now: datetime | None = None) -> SessionSummary:
-    """Totals and per-exercise best sets of a session."""
+def summarise(
+    user: User,
+    session: WorkoutSession,
+    now: datetime | None = None,
+    *,
+    earlier_bests: Mapping[tuple[int, int], float] | None = None,
+) -> SessionSummary:
+    """Totals and per-exercise best sets of a session.
+
+    ``earlier_bests`` viene de ``previous_bests`` cuando se resumen muchas
+    sesiones de golpe; sin él se pregunta por cada ejercicio, que es lo
+    razonable para una sola sesión.
+    """
     working = [row for row in session.sets if row.set_type is SetType.WORKING]
     end = session.finished_at or now or utcnow()
     duration = max(0, int((end - session.started_at).total_seconds() // 60))
@@ -410,7 +465,11 @@ def summarise(user: User, session: WorkoutSession, now: datetime | None = None) 
                 top_weight=best.weight_kg,
                 top_reps=best.reps,
                 est_1rm=estimated_1rm(best.weight_kg, best.reps),
-                previous_1rm=_best_1rm_before(user, exercise_id, session),
+                previous_1rm=(
+                    earlier_bests.get((session.id, exercise_id))
+                    if earlier_bests is not None
+                    else _best_1rm_before(user, exercise_id, session)
+                ),
             )
         )
     return SessionSummary(
@@ -436,7 +495,8 @@ def history(user: User, limit: int = MAX_HISTORY) -> list[SessionSummary]:
         .order_by(WorkoutSession.started_at.desc())
         .limit(limit)
     ).all()
-    return [summarise(user, session) for session in sessions]
+    earlier = previous_bests(user)
+    return [summarise(user, session, earlier_bests=earlier) for session in sessions]
 
 
 def trained_exercises(user: User) -> list[Exercise]:
@@ -464,33 +524,35 @@ class ProgressPoint:
 
 def exercise_progress(user: User, exercise: Exercise) -> list[ProgressPoint]:
     """One point per completed session, oldest first."""
-    sessions = db.session.scalars(
-        select(WorkoutSession)
+    rows = db.session.execute(
+        select(WorkoutSession.started_at, SetLog.weight_kg, SetLog.reps)
         .join(SetLog, SetLog.workout_session_id == WorkoutSession.id)
         .where(
             WorkoutSession.user_id == user.id,
             WorkoutSession.status == WorkoutStatus.COMPLETED,
+            WorkoutSession.deleted_at.is_(None),
             SetLog.exercise_id == exercise.id,
+            SetLog.set_type == SetType.WORKING,
+            SetLog.reps >= 1,
         )
-        .distinct()
-        .order_by(WorkoutSession.started_at)
+        .order_by(WorkoutSession.started_at, WorkoutSession.id)
     ).all()
+    # Una sola consulta: la mejor serie de cada sesión se elige aquí.
+    best_by_session: dict[datetime, tuple[float, int]] = {}
+    for started_at, weight_kg, reps in rows:
+        current = best_by_session.get(started_at)
+        score = (estimated_1rm(weight_kg, reps), weight_kg)
+        if current is None or score > (estimated_1rm(*current), current[0]):
+            best_by_session[started_at] = (weight_kg, reps)
     points: list[ProgressPoint] = []
-    for session in sessions:
-        rows = [
-            row
-            for row in session.sets
-            if row.exercise_id == exercise.id and row.set_type is SetType.WORKING and row.reps >= 1
-        ]
-        if not rows:
-            continue
-        best = max(rows, key=lambda row: (estimated_1rm(row.weight_kg, row.reps), row.weight_kg))
+    for started_at in sorted(best_by_session):
+        weight_kg, reps = best_by_session[started_at]
         points.append(
             ProgressPoint(
-                day=session.started_at.date(),
-                top_weight=best.weight_kg,
-                top_reps=best.reps,
-                est_1rm=estimated_1rm(best.weight_kg, best.reps),
+                day=started_at.date(),
+                top_weight=weight_kg,
+                top_reps=reps,
+                est_1rm=estimated_1rm(weight_kg, reps),
             )
         )
     return points

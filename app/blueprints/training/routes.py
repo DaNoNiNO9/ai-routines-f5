@@ -60,6 +60,7 @@ def day(index: int) -> str | WerkzeugResponse:
     if current is None:
         abort(404)
     equipment = frozenset(item.code for item in current_user.equipment)
+    dashboard.preload_alternatives(current.exercises)
     alternatives = {
         item.id: dashboard.usable_alternatives(item, profile, equipment)
         for item in current.exercises

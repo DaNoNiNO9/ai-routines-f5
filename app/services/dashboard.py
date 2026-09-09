@@ -6,11 +6,13 @@ Everything here only reads; the dashboard never changes state.
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Any
 
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 from app.engine.adjustment.smoothing import moving_average
 from app.engine.adjustment.types import WeightPoint
@@ -20,6 +22,7 @@ from app.engine.routines.types import InjuryInput
 from app.extensions import db
 from app.models import (
     Exercise,
+    ExerciseAlternative,
     Plan,
     PlanAdjustment,
     Profile,
@@ -159,6 +162,28 @@ def today_targets(plan: Plan) -> dict[str, Any]:
             "training_days": cycle.get("training_days"),
         },
     }
+
+
+def preload_alternatives(items: Sequence[RoutineExercise]) -> None:
+    """Trae de una vez las alternativas de varias prescripciones y su material.
+
+    Sin esto, pintar un día son doce consultas por ejercicio: la lista de
+    alternativas, cada ficha y el material de cada una, una a una.
+    """
+    if not items:
+        return
+    db.session.scalars(
+        select(RoutineExercise)
+        .where(RoutineExercise.id.in_([item.id for item in items]))
+        .options(
+            selectinload(RoutineExercise.exercise)
+            .selectinload(Exercise.alternatives)
+            .selectinload(ExerciseAlternative.alternative)
+            # La ficha de cada alternativa se lee entera (material y sus propias
+            # alternativas), así que se trae ya.
+            .options(selectinload(Exercise.equipment), selectinload(Exercise.alternatives))
+        )
+    ).all()
 
 
 def usable_alternatives(
