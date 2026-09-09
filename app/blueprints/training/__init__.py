@@ -1,0 +1,1 @@
+"""Training routine pages (``/entrenamiento``)."""

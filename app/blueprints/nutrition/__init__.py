@@ -1,0 +1,1 @@
+"""Nutrition plan pages (``/nutricion``)."""

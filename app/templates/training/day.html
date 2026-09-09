@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('training.routine') }}">{{ routine.name }}</a></p>
+  <h1>{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }}</h1>
+  <p class="lead">{{ _('%(n)s ejercicios · unos %(m)s minutos', n=day.exercises|length, m=day.estimated_minutes) }}</p>
+  <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
+  {% if weekly_rir %}
+    <p class="meta">{{ _('RIR por semana:') }} {% for rir in weekly_rir %}{{ _('S%(n)s', n=loop.index) }} {{ rir }}{% if not loop.last %} · {% endif %}{% endfor %}. {{ _('Sube la carga cuando llegues al máximo de repeticiones en todas las series.') }}</p>
+  {% endif %}
+  {% if day.notes %}<p class="help">{{ day.notes }}</p>{% endif %}
+</section>
+
+<ol class="exercise-cards">
+  {% for item in day.exercises %}
+    <li class="card exercise-card" x-data="{ frame: 0 }">
+      {% set images = frames[item.id] %}
+      {% if images %}
+        <button type="button" class="exercise-media" @click="frame = 1 - frame" aria-label="{{ _('Cambiar entre posición inicial y final') }}">
+          <img src="{{ url_for('static', filename=images[0]) }}" alt="{{ _('%(name)s, posición inicial', name=item.exercise.name_es) }}" loading="lazy" :hidden="frame !== 0">
+          {% if images|length > 1 %}
+            <img src="{{ url_for('static', filename=images[1]) }}" alt="{{ _('%(name)s, posición final', name=item.exercise.name_es) }}" loading="lazy" hidden :hidden="frame !== 1">
+          {% endif %}
+        </button>
+      {% endif %}
+      <div class="exercise-body">
+        <p class="eyebrow">{{ loop.index }} · {{ labels.label(labels.MOVEMENT_PATTERN, item.exercise.movement_pattern) }} · {{ labels.label(labels.MUSCLE_GROUP, item.exercise.primary_muscle) }}</p>
+        <h2 class="card-title">{{ item.exercise.name_es }}</h2>
+        <dl class="rx">
+          <div><dt>{{ _('Series') }}</dt><dd>{{ item.sets }}</dd></div>
+          <div><dt>{{ _('Reps') }}</dt><dd>{{ item.rep_min }}-{{ item.rep_max }}</dd></div>
+          <div><dt>RIR</dt><dd>{{ item.rir_start }}→{{ item.rir_end }}</dd></div>
+          <div><dt>{{ _('Descanso') }}</dt><dd>{{ item.rest_seconds }} s</dd></div>
+          {% if item.tempo %}<div><dt>{{ _('Tempo') }}</dt><dd>{{ item.tempo }}</dd></div>{% endif %}
+          {% if item.load_increment_kg %}<div><dt>{{ _('Progresión') }}</dt><dd>+{{ item.load_increment_kg }} kg</dd></div>{% endif %}
+        </dl>
+        {% if item.exercise.is_unilateral %}<p class="meta">{{ _('Unilateral: las series son por lado.') }}</p>{% endif %}
+        {% if item.notes %}<p class="help">{{ item.notes }}</p>{% endif %}
+        {% if item.exercise.instructions_es or item.exercise.instructions_en %}
+          <details class="panel">
+            <summary>{{ _('Cómo se hace') }}{% if not item.exercise.instructions_es %} <span class="muted">({{ _('en inglés') }})</span>{% endif %}</summary>
+            <p>{{ item.exercise.instructions_es or item.exercise.instructions_en }}</p>
+          </details>
+        {% endif %}
+        {% set options = alternatives[item.id] %}
+        <details class="panel">
+          <summary>{{ _('Alternativas') }} ({{ options|length }})</summary>
+          {% if options %}
+            <ul class="alt-list">
+              {% for alt in options %}<li>{{ alt.name_es }} <span class="muted">· {{ alt.equipment|map(attribute='name_es')|join(', ') }}</span></li>{% endfor %}
+            </ul>
+          {% else %}
+            <p class="muted">{{ _('Ninguna con tu material y tus lesiones.') }}</p>
+          {% endif %}
+        </details>
+        {% if item.exercise.video_url %}
+          <p><a class="link-external" href="{{ item.exercise.video_url }}" target="_blank" rel="noopener noreferrer">{{ _('Buscar vídeo') }}</a></p>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+</ol>
+
+<nav class="day-nav" aria-label="{{ _('Otros días') }}">
+  {% if previous_day %}<a class="button button-secondary" href="{{ url_for('training.day', index=previous_day.day_index) }}">← {{ _('Día %(n)s', n=previous_day.day_index) }}</a>{% else %}<span></span>{% endif %}
+  <a class="button button-secondary" href="{{ url_for('training.routine') }}">{{ _('Toda la rutina') }}</a>
+  {% if following_day %}<a class="button button-secondary" href="{{ url_for('training.day', index=following_day.day_index) }}">{{ _('Día %(n)s', n=following_day.day_index) }} →</a>{% else %}<span></span>{% endif %}
+</nav>
+{% endblock %}

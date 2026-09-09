@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Entrenamiento') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">{{ _('Entrenamiento') }}</p>
+  {% if routine %}
+    <h1>{{ routine.name }}</h1>
+    <p class="lead">{{ _('Mesociclo de %(w)s semanas, descarga cada %(d)s · versión %(v)s desde el %(date)s.', w=routine.mesocycle_weeks, d=routine.deload_every_weeks, v=routine.version, date=routine.starts_on.strftime('%d/%m/%Y')) }}</p>
+    {% if d.weekly_rir %}
+      <ul class="chips" aria-label="{{ _('RIR por semana') }}">
+        {% for rir in d.weekly_rir %}<li class="chip">{{ _('Semana %(n)s', n=loop.index) }} · RIR {{ rir }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  {% else %}
+    <h1>{{ _('Tu rutina') }}</h1>
+  {% endif %}
+</section>
+
+{% if routine is none %}
+  <section class="card">
+    {% if not has_plan %}
+      <h2 class="card-title">{{ _('Sin rutina') }}</h2>
+      <p>{{ _('No generamos rutina cuando la seguridad impide el plan de nutrición. Actualiza el cuestionario si tu situación cambia.') }}</p>
+    {% else %}
+      <h2 class="card-title">{{ _('No pudimos montar una rutina con ese material') }}</h2>
+      <ul class="notes">{% for reason in reasons %}<li class="note-error">{{ reason }}</li>{% endfor %}</ul>
+    {% endif %}
+    <p><a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar cuestionario') }}</a></p>
+  </section>
+{% else %}
+  {% if next_day %}
+    <section class="card card-accent">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{{ _('Próxima sesión') }}</p>
+          <h2 class="card-title">{{ _('Día %(n)s', n=next_day.day_index) }} · {{ next_day.name }}</h2>
+        </div>
+        <a class="button" href="{{ url_for('training.day', index=next_day.day_index) }}">{{ _('Ver la sesión') }}</a>
+      </div>
+    </section>
+  {% endif %}
+
+  <div class="grid-cards">
+    {% for day in routine.days %}
+      <article class="card">
+        <h2 class="card-title">{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }}</h2>
+        <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
+        <ol class="exercise-list">
+          {% for item in day.exercises %}<li>{{ item.exercise.name_es }} <span class="muted">{{ item.sets }}×{{ item.rep_min }}-{{ item.rep_max }}</span></li>{% endfor %}
+        </ol>
+        <p class="meta">{{ _('%(n)s ejercicios · unos %(m)s minutos', n=day.exercises|length, m=day.estimated_minutes) }}</p>
+        <p><a class="button button-small button-secondary" href="{{ url_for('training.day', index=day.day_index) }}">{{ _('Ver día') }}</a></p>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="grid-cards">
+    <section class="card">
+      <h2 class="card-title">{{ _('Volumen semanal') }}</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>{{ _('Músculo') }}</th><th>{{ _('Series') }}</th><th>{{ _('Rango') }}</th><th></th></tr></thead>
+          <tbody>
+            {% for entry in d.volume %}
+              <tr>
+                <td>{{ labels.label(labels.MUSCLE_GROUP, entry.muscle) }}{% if entry.is_priority %} <span class="badge">{{ _('prioridad') }}</span>{% endif %}</td>
+                <td>{{ entry.planned_sets }}</td>
+                <td>{{ entry.target_min }}-{{ entry.target_max }}</td>
+                <td><span class="badge status-{{ entry.status }}">{{ labels.label(labels.VOLUME_STATUS, entry.status) }}</span></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">{{ _('Empuje %(push)s series · tracción %(pull)s series · ratio %(ratio)s.', push=d.push_sets, pull=d.pull_sets, ratio=d.pull_to_push_ratio) }}</p>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">{{ _('Cardio y pasos') }}</h2>
+      {% if d.cardio %}
+        <p class="big-number">{{ d.cardio.daily_steps_target }} <small>{{ _('pasos al día') }}</small></p>
+        <dl class="kv">
+          <dt>{{ _('Cardio suave (LISS)') }}</dt><dd>{% if d.cardio.liss_sessions %}{{ d.cardio.liss_sessions }} × {{ d.cardio.liss_minutes }} min{% else %}—{% endif %}</dd>
+          <dt>HIIT</dt><dd>{% if d.cardio.hiit_sessions %}{{ d.cardio.hiit_sessions }} × {{ d.cardio.hiit_minutes }} min{% else %}—{% endif %}</dd>
+          <dt>{{ _('Gasto semanal estimado') }}</dt><dd>{{ d.cardio.weekly_kcal_estimate }} kcal</dd>
+        </dl>
+      {% else %}
+        <p class="empty">{{ _('Sin prescripción de cardio.') }}</p>
+      {% endif %}
+    </section>
+
+    {% if messages %}
+      <section class="card card-span">
+        <h2 class="card-title">{{ _('Cómo está montada') }}</h2>
+        <ul class="notes">{% for item in messages %}<li class="note-{{ item.level }}">{{ item.text }}</li>{% endfor %}</ul>
+      </section>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}
