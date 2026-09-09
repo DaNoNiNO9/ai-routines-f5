@@ -19,6 +19,7 @@ Estado: Fase 2. 20 tablas, SQLAlchemy 2.0, migraciones Alembic desde la primera 
 | `users` | Cuenta: email único (normalizado a minúsculas), hash argon2, idioma, zona horaria, consentimiento, último login | Dueña de todo lo demás (cascade) |
 | `user_equipment` | Material que tiene el usuario | `user_id` + `equipment_id` |
 | `profiles` | Cuestionario completo (bloques A-E) y banderas de seguridad (embarazo/lactancia, TCA). Versionado | `user_id`, `version` único por usuario, `superseded_at` |
+| `questionnaire_drafts` | Borrador del cuestionario: respuestas dadas hasta ahora (JSON plano) y último paso completado; se borra al generar el plan | `user_id` único (uno por usuario, cascade) |
 | `injuries` | Lesiones declaradas en una versión del perfil, con severidad | `profile_id`; única por (perfil, zona) |
 | `weight_logs` | Peso diario | única por (usuario, día) |
 | `body_measurements` | Perímetros semanales y % graso opcional con su método | única por (usuario, día) |
@@ -80,6 +81,7 @@ Amplios a propósito: rechazan basura, no personas poco habituales. Los límites
 | `profiles.training_days_per_week` | 1-7 |
 | `profiles.session_minutes` | 15-240 |
 | `profiles.meals_per_day` | 1-8 |
+| `questionnaire_drafts.step` | `>= 0` |
 | `intake_logs.calories` | 0-20000 |
 | `plans.calorie_target` | 500-10000 |
 | `routines.mesocycle_weeks` | 3-8 |
@@ -95,4 +97,5 @@ Amplios a propósito: rechazan basura, no personas poco habituales. Los límites
 - Crear: `flask db migrate -m "descripción"` (autogenerada; revisar siempre el fichero).
 - Aplicar: `flask db upgrade`. Deshacer: `flask db downgrade -1` o `flask db downgrade base`.
 - Los tipos propios se escriben en las migraciones como tipos estándar (`sa.DateTime(timezone=True)`, `sa.JSON().with_variant(postgresql.JSONB(), 'postgresql')`) gracias a `render_migration_item()` en `app/models/base.py`: los ficheros de `migrations/versions/` no importan código de la aplicación.
+- Historial: `196ae6a460b6` esquema inicial; `021183cac637` `training_time` y `wants_carb_cycling` en `profiles`; `f3a8881022c3` `questionnaire_drafts`.
 - `render_as_batch=True`: en SQLite, alterar tablas implica recrearlas; Alembic lo hace solo si los constraints tienen nombre (de ahí la convención).

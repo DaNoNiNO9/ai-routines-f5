@@ -15,6 +15,7 @@
 - `base.py` — convención de nombres, `UTCDateTime`, `JSONType`, `enum_column()`, mixins, pragma de SQLite y `render_migration_item()` (cómo se escriben los tipos propios en las migraciones).
 - `user.py` — `User` (con `UserMixin` de Flask-Login) y la tabla `user_equipment`.
 - `profile.py` — `Profile` (cuestionario versionado, bloques A-E y banderas de seguridad) e `Injury`.
+- `onboarding.py` — `QuestionnaireDraft`: respuestas parciales del cuestionario (JSON) y último paso completado, una por usuario.
 - `tracking.py` — `WeightLog`, `BodyMeasurement`, `IntakeLog`, `ActivityLog` (una fila por usuario y día).
 - `exercise.py` — `Equipment`, `Exercise`, `ExerciseAlternative` y la tabla `exercise_equipment`.
 - `plan.py` — `Plan` (nutricional, versionado), `Meal`, `PlanAdjustment` (auditoría de recálculos).
