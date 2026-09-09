@@ -73,6 +73,19 @@ class BaseConfig:
     LOG_MAX_BYTES = 5 * 1024 * 1024
     LOG_BACKUP_COUNT = 5
 
+    # Email (app/email.py): "log" keeps messages in memory and in the log; "smtp" delivers.
+    MAIL_BACKEND = os.environ.get("MAIL_BACKEND", "log")
+    MAIL_SERVER = os.environ.get("MAIL_SERVER", "")
+    MAIL_PORT = int(os.environ.get("MAIL_PORT", "587"))
+    MAIL_USE_TLS = env_bool("MAIL_USE_TLS", True)
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", "")
+    MAIL_FROM = os.environ.get("MAIL_FROM", "Forja <no-reply@forja.local>")
+
+    # Accounts
+    PASSWORD_MIN_LENGTH = 10
+    PASSWORD_RESET_MAX_AGE = 3600
+
     # Security headers
     ENABLE_HSTS = False
 
@@ -100,6 +113,7 @@ class TestingConfig(BaseConfig):
     LOG_TO_FILE = False
     LOG_LEVEL = "DEBUG"
     ENABLE_DEBUG_ROUTES = True
+    MAIL_BACKEND = "log"
 
 
 class ProductionConfig(BaseConfig):
@@ -133,6 +147,10 @@ class ProductionConfig(BaseConfig):
             problems.append("DEBUG must be false")
         if config.get("ENABLE_DEBUG_ROUTES"):
             problems.append("ENABLE_DEBUG_ROUTES must be false")
+        if config.get("MAIL_BACKEND") != "smtp":
+            problems.append("MAIL_BACKEND must be smtp (password recovery needs email)")
+        elif not config.get("MAIL_SERVER") or not config.get("MAIL_FROM"):
+            problems.append("MAIL_SERVER and MAIL_FROM must be set")
         if problems:
             raise RuntimeError("Invalid production configuration: " + "; ".join(problems))
 

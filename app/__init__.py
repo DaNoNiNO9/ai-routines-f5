@@ -16,10 +16,11 @@ from typing import Any
 
 from flask import Flask, current_app
 from flask_babel import get_locale
+from flask_babel import lazy_gettext as _l
 
 from app.cli import register_cli
 from app.errors import register_error_handlers
-from app.extensions import babel, csrf, db, limiter, migrate
+from app.extensions import babel, csrf, db, limiter, login_manager, migrate
 from app.i18n import select_locale
 from app.logging_config import configure_logging
 from app.models.base import render_migration_item
@@ -101,12 +102,24 @@ def _init_extensions(app: Flask) -> None:
     csrf.init_app(app)
     limiter.init_app(app)
     babel.init_app(app, locale_selector=select_locale)
+    from app.services.auth import load_user
+
+    login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
+    login_manager.login_message = _l("Inicia sesión para continuar.")
+    login_manager.login_message_category = "warning"
+    login_manager.session_protection = "basic"
+    login_manager.user_loader(load_user)
 
 
 def _register_blueprints(app: Flask) -> None:
+    from app.blueprints.auth.routes import bp as auth_bp
+    from app.blueprints.dashboard.routes import bp as dashboard_bp
     from app.blueprints.main.routes import bp as main_bp
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(dashboard_bp)
 
     if app.config["ENABLE_DEBUG_ROUTES"]:
         from app.blueprints.debug.routes import bp as debug_bp
@@ -120,4 +133,5 @@ def _template_context() -> dict[str, Any]:
         "app_version": current_app.config["APP_VERSION"],
         "current_locale": str(get_locale()),
         "current_year": datetime.now(tz=UTC).year,
+        "password_min_length": current_app.config["PASSWORD_MIN_LENGTH"],
     }
