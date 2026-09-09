@@ -260,17 +260,35 @@ def _deficit_rules(review: Review) -> AdjustmentDecision:
     return review.decision("keep", AdjustmentReason.SCHEDULED_REVIEW)
 
 
+def _reduce_or_steps(review: Review, wanted: int, reason: AdjustmentReason) -> AdjustmentDecision:
+    """Bajada de calorías que nunca cruza el suelo de seguridad.
+
+    Si el suelo (o un plan que ya está por debajo de él) no deja sitio para
+    bajar, la palanca son los pasos: subir el número y llamarlo "bajada" era
+    mentir en el aviso y en el histórico.
+    """
+    inputs = review.inputs
+    floor = safety.calorie_floor(inputs.sex, inputs.bmr_kcal)
+    lowest = int(math.ceil(floor / ROUND_TO) * ROUND_TO)
+    new_calories = max(wanted, lowest)
+    if new_calories >= inputs.plan_calories:
+        review.notes.append(Note("adjust.floor_reached", params={"floor": round(floor)}))
+        steps = min(STEP_INCREMENT, MAX_STEPS_TARGET - inputs.steps_target)
+        if steps <= 0:
+            review.notes.append(Note("adjust.keep"))
+            return review.decision("keep", reason)
+        review.notes.append(Note("adjust.add_steps", params={"steps": steps}))
+        return review.decision("add_steps", reason, steps_delta=steps)
+    review.notes.append(_change_note("adjust.reduce_calories", inputs.plan_calories, new_calories))
+    return review.decision("reduce_calories", reason, new_calories=new_calories)
+
+
 def _surplus_rules(review: Review) -> AdjustmentDecision:
     inputs = review.inputs
     weight = inputs.current_weight_kg
     if review.observed > weight * SURPLUS_FAST_FRACTION and review.observed > review.expected:
-        new_calories = _round_smaller_cut(inputs.plan_calories * (1 - MAX_CUT_FRACTION))
-        review.notes.append(
-            _change_note("adjust.reduce_calories", inputs.plan_calories, new_calories)
-        )
-        return review.decision(
-            "reduce_calories", AdjustmentReason.GAIN_TOO_FAST, new_calories=new_calories
-        )
+        wanted = _round_smaller_cut(inputs.plan_calories * (1 - MAX_CUT_FRACTION))
+        return _reduce_or_steps(review, wanted, AdjustmentReason.GAIN_TOO_FAST)
     if review.observed < review.expected * SLOW_FRACTION:
         if review.adherence is not None and review.adherence < ADHERENCE_THRESHOLD:
             review.notes.append(
@@ -303,17 +321,8 @@ def _maintenance_rules(review: Review) -> AdjustmentDecision:
             "increase_calories", AdjustmentReason.LOSS_TOO_FAST, new_calories=new_calories
         )
     if review.observed > MAINTENANCE_DRIFT_KG:
-        floor = safety.calorie_floor(inputs.sex, inputs.bmr_kcal)
-        lowest = int(math.ceil(floor / ROUND_TO) * ROUND_TO)
-        new_calories = max(
-            _round_smaller_cut(inputs.plan_calories * (1 - MAINTENANCE_STEP)), lowest
-        )
-        review.notes.append(
-            _change_note("adjust.reduce_calories", inputs.plan_calories, new_calories)
-        )
-        return review.decision(
-            "reduce_calories", AdjustmentReason.GAIN_TOO_FAST, new_calories=new_calories
-        )
+        wanted = _round_smaller_cut(inputs.plan_calories * (1 - MAINTENANCE_STEP))
+        return _reduce_or_steps(review, wanted, AdjustmentReason.GAIN_TOO_FAST)
     review.notes.append(Note("adjust.keep"))
     return review.decision("keep", AdjustmentReason.SCHEDULED_REVIEW)
 
