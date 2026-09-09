@@ -98,6 +98,76 @@ TEMPLATES: dict[str, str] = {
     "safety.macros_mismatch": (
         "Los macros ({energy} kcal) no cuadran con las calorías ({calories})."
     ),
+    "routine.no_days": "Sin días de entrenamiento no se puede generar una rutina.",
+    "routine.nothing_possible": (
+        "Con el material y las limitaciones indicadas no hay ejercicios posibles; "
+        "revisa el material o consulta con un profesional."
+    ),
+    "routine.days_capped": "Se planifican 6 días como máximo; el séptimo es descanso.",
+    "routine.split": "Split {split} de {days} días.",
+    "routine.mesocycle": (
+        "Mesociclo de {weeks} semanas, descarga cada {deload} semanas; RIR por semana {rir}."
+    ),
+    "routine.double_progression": (
+        "Progresión doble: al completar el máximo del rango en todas las series con el RIR "
+        "previsto, añade el incremento indicado y vuelve al mínimo del rango."
+    ),
+    "routine.level_relaxed": (
+        "{exercise}: exige más técnica de la habitual para tu experiencia; empieza ligero."
+    ),
+    "routine.slot_unfilled": (
+        "En {day} no hay ejercicio disponible para el patrón {pattern} con tu material "
+        "y limitaciones."
+    ),
+    "routine.pattern_missing": (
+        "El patrón {pattern} no se puede cubrir con tu material: añadir {suggestion} lo resolvería."
+    ),
+    "routine.pull_bias": (
+        "Con historial de hombro se programa un 30 % más de tracción que de empuje."
+    ),
+    "routine.push_pull": "Series de empuje {push} y de tracción {pull} (ratio {ratio}).",
+    "routine.time_trimmed": "{day}: series recortadas para encajar en {minutes} minutos.",
+    "routine.session_too_long": (
+        "{day}: aun recortando, la sesión estimada dura {estimated} min y tienes {budget}; "
+        "añade minutos o un día."
+    ),
+    "routine.volume_scaled_by_time": (
+        "Objetivos de volumen reducidos un {pct} % para caber en tus sesiones; "
+        "más días o minutos permitirían más series."
+    ),
+    "routine.pattern_trimmed": (
+        "El patrón {pattern} ha quedado fuera esta semana por falta de tiempo."
+    ),
+    "routine.pattern_not_scheduled": (
+        "El patrón {pattern} no entra en esta distribución de días; rota en el siguiente mesociclo."
+    ),
+    "routine.pattern_blocked_by_injury": (
+        "El patrón {pattern} se omite por las lesiones o limitaciones declaradas."
+    ),
+    "routine.push_pull_unbalanced": (
+        "Con tu material no hay suficientes ejercicios de tracción para equilibrar el empuje."
+    ),
+    "routine.priority_applied": "Volumen extra (+27 %) para {muscles}, compensado en el resto.",
+    "routine.priority_slot_added": "Añadido un ejercicio de {muscle} en {day} por ser prioritario.",
+    "routine.volume_low": (
+        "{muscle}: {planned} series efectivas, por debajo de las {target_min} objetivo "
+        "(lo limita el material o el tiempo)."
+    ),
+    "cardio.not_punishment": (
+        "El cardio se programa por su efecto sobre el gasto y la salud, nunca como castigo "
+        "por saltarse la dieta."
+    ),
+    "cardio.deficit_not_covered": (
+        "Quedan {kcal} kcal semanales de déficit sin cubrir con actividad: se alarga el plazo "
+        "antes que añadir más cardio."
+    ),
+    "cardio.health_sessions": (
+        "{sessions} sesiones suaves de cardio a la semana por salud cardiovascular (opcionales)."
+    ),
+    "cardio.summary": (
+        "Objetivo de {steps} pasos al día, {liss} sesiones LISS y {hiit} HIIT "
+        "(unas {kcal} kcal/semana)."
+    ),
     "plan.confidence": "Confianza de la estimación: {confidence}.",
 }
 
