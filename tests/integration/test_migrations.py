@@ -28,6 +28,7 @@ EXPECTED_TABLES = {
     "plan_adjustments",
     "plans",
     "profiles",
+    "questionnaire_drafts",
     "routine_days",
     "routine_exercises",
     "routines",

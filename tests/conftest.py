@@ -13,6 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
 from app.extensions import db
+from app.seeds.loaders import seed_equipment, seed_exercises
 
 AppFactory = Callable[..., Flask]
 
@@ -48,3 +49,12 @@ def database(app: Flask) -> Iterator[SQLAlchemy]:
         yield db
         db.session.remove()
         db.drop_all()
+
+
+@pytest.fixture
+def seeded(database: SQLAlchemy) -> SQLAlchemy:
+    """``database`` plus the equipment and exercise catalogues (about 0.2 s)."""
+    seed_equipment(database.session)
+    seed_exercises(database.session)
+    database.session.commit()
+    return database
