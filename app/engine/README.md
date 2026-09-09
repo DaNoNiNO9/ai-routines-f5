@@ -1,4 +1,4 @@
-# app/engine/ — motor de cálculo (nutrición y rutinas)
+# app/engine/ — motor de cálculo (nutrición, rutinas y ajuste)
 
 **Qué hace:** convierte los datos del cuestionario en (1) un plan nutricional completo y (2) una rutina de gimnasio completa, con los límites de seguridad aplicados y verificados. Son funciones puras: sin Flask, sin base de datos, con dataclasses inmutables de entrada y salida y salida determinista. Cada fórmula lleva su fuente en el docstring del módulo.
 
@@ -30,10 +30,18 @@
 9. `routines/cardio.py`: pasos objetivo (+2000 en pérdida de grasa, 8-12k; ≥ 7000 en el resto) y LISS/HIIT solo para el déficit que la dieta no cubre (máximo 3 LISS + 1 HIIT, HIIT solo con experiencia y sin lesión inferior); si sobra déficit, nota para alargar el plazo. Nunca como castigo.
 10. Cobertura: cada patrón obligatorio ausente se explica: recortado por tiempo, no programado en esa distribución de días, bloqueado por lesiones o imposible con el material (con sugerencia).
 
+## Ajuste (`adjustment.rules.decide(inputs)`)
+
+1. `adjustment/types.py`: `AdjustmentInputs` (modo del plan, calorías y cambio semanal esperado, BMR y TDEE teórico, pesajes e ingestas registradas, semanas en déficit, último ajuste) y `AdjustmentDecision` (acción, motivo, calorías y pasos nuevos, tendencia, TDEE estimado, adherencia, próxima revisión y notas).
+2. `smoothing.py`: media móvil de 7 días (ventana de calendario, mínimo 3 pesajes) y tendencia en kg/semana por mínimos cuadrados sobre la serie suavizada; hacen falta ≥ 8 pesajes en ≥ 10 días. Nunca se comparan días sueltos.
+3. `energy_balance.py`: `TDEE observado = ingesta media + (−Δpeso × 7700) / días` con ≥ 70 % de días de ingesta registrados, acotado a ±25 % del teórico, y mezclado con el teórico según los días de historia (confianza total a los 28 días). Se calcula sobre los últimos 42 días, no solo sobre la ventana de revisión, para que la estimación converja al gasto real aunque las calorías hayan cambiado.
+4. `rules.py`: revisión cada 14 días (antes, "esperar"; sin datos, nueva cita en 7 días). Déficit: pérdida < 50 % de la esperada → adherencia primero (< 85 % no se recorta), después recorte ≤ 5 % sin bajar del suelo ni superar el tope del 1 %, y +1000 pasos si ya está en el suelo; pérdida > 1 %/semana → subir calorías; estancamiento con ≥ 4 semanas y un estancamiento previo → refeed; con ≥ 8 semanas → descanso de dieta de 2 semanas a mantenimiento. Superávit: ±5 %. Mantenimiento: ±3 % ante derivas > 0,25 kg/semana.
+
 **Ficheros:**
 - `enums.py`, `types.py`, `messages.py`, `equipment_presets.py` — vocabulario, estructuras, plantillas en español de cada `Note`, material por lugar.
 - `body_composition.py`, `bmr.py`, `tdee.py`, `targets.py`, `macros.py`, `meals.py`, `safety.py`, `nutrition.py` — etapas de nutrición y orquestador.
 - `routines/types.py`, `catalog.py`, `splits.py`, `volume.py`, `selection.py`, `prescription.py`, `cardio.py`, `generator.py` — etapas de rutinas y orquestador.
+- `adjustment/types.py`, `smoothing.py`, `energy_balance.py`, `rules.py` — motor de ajuste.
 
 **Por dónde tocar:**
 - Rango de déficit / superávit / proteína / suelo de carbohidratos → `targets.py` y `macros.py` (constantes al principio). Límites de seguridad → `safety.py`.
@@ -42,6 +50,7 @@
 - Preferencias del entrenador (staples, bonus por material) → `selection.py` (`STAPLES`, `EQUIPMENT_BONUS`).
 - Rangos de volumen y factor de prioridad → `volume.py`. Reps, RIR, descansos, tempo, incrementos, mesociclo → `prescription.py`.
 - Cardio → `cardio.py` (`steps_target()`, METs, máximos de sesiones).
+- Cadencia de revisión, umbrales de adherencia, tamaño de los pasos de ajuste, semanas para refeed y descanso → constantes de `adjustment/rules.py`; ventana y confianza del TDEE observado → `adjustment/energy_balance.py`.
 - Añadir una explicación → emitir un `Note("codigo", params=...)` y su plantilla en `messages.py`.
 
 **Ojo con:**
@@ -53,4 +62,4 @@
 - Los objetivos de volumen se escalan al tiempo: una sesión de 45 min × 3 días no puede sostener 12-18 series por grupo; el plan lo dice en vez de fingir.
 - Los nombres de comidas y de días son texto en español dentro del motor (etiquetas); el resto son códigos traducibles.
 
-**Tests:** `tests/unit/engine/` (nutrición: fórmulas con valores de referencia, límites, extremos, Hypothesis) y `tests/unit/engine/routines/` (unidades y generador: rejilla de 100 perfiles experiencia × días × lugar, lesiones, prioridades, tiempo, preferencias, determinismo, bloqueos). `pytest tests/unit/engine --cov=app/engine`.
+**Tests:** `tests/unit/engine/adjustment/` (suavizado, balance energético, cada regla y una simulación de 12 semanas con cinco semillas que debe converger al gasto real sin cruzar límites), `tests/unit/engine/` (nutrición: fórmulas con valores de referencia, límites, extremos, Hypothesis) y `tests/unit/engine/routines/` (unidades y generador: rejilla de 100 perfiles experiencia × días × lugar, lesiones, prioridades, tiempo, preferencias, determinismo, bloqueos). `pytest tests/unit/engine --cov=app/engine`.

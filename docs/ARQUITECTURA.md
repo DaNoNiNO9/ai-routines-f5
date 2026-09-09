@@ -13,7 +13,7 @@ Estado: Fase 1. Este documento describe la arquitectura objetivo y marca lo que 
  └──────┬──────────────────────────────────────────────┘
         │
  ┌──────▼───────┐          ┌────────────────────────────┐
- │ services/    │ ───────► │ engine/ (funciones puras)  │  ← nutrición (Fase 4) y rutinas (Fase 5) hechas; ajuste Fase 6
+ │ services/    │ ───────► │ engine/ (funciones puras)  │  ← completo (Fases 4-6)
  │ orquestación │          │ nutrición · rutinas ·      │
  │ (Fase 8+)    │          │ ajuste · safety            │
  └──────┬───────┘          └────────────────────────────┘
