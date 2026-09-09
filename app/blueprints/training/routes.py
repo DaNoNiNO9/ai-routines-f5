@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
-from flask import Blueprint, abort, redirect, render_template, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import labels
 from app.engine.routines.generator import build_routine
+from app.extensions import db
 from app.services import dashboard, onboarding, plans
 
 bp = Blueprint("training", __name__, url_prefix="/entrenamiento")
@@ -42,6 +44,7 @@ def routine() -> str | WerkzeugResponse:
         reasons=reasons,
         has_plan=has_plan,
         next_day=dashboard.next_routine_day(current_user, active),
+        set_aside=plans.exercises_by_slug(profile.disliked_exercises),
         labels=labels,
     )
 
@@ -79,3 +82,60 @@ def day(index: int) -> str | WerkzeugResponse:
         weekly_rir=active.details.get("weekly_rir", []),
         labels=labels,
     )
+
+
+@bp.post("/dia/<int:index>/cambiar")
+@login_required
+def swap(index: int) -> WerkzeugResponse:
+    """Aparta un ejercicio que no gusta y lo cambia por su mejor alternativa."""
+    profile = onboarding.current_profile(current_user)
+    routine = plans.active_routine(current_user)
+    if profile is None or routine is None:
+        return redirect(url_for("training.routine"))
+    day = next((item for item in routine.days if item.day_index == index), None)
+    if day is None:
+        abort(404)
+    # Se busca dentro del día de la persona: un identificador de otra cuenta no existe aquí.
+    item = next(
+        (
+            row
+            for row in day.exercises
+            if row.id == request.form.get("routine_exercise_id", type=int)
+        ),
+        None,
+    )
+    if item is None:
+        abort(404)
+    equipment = frozenset(row.code for row in current_user.equipment)
+    dropped = item.exercise.display_name
+    replacement = plans.swap_disliked_exercise(profile, item, equipment)
+    if replacement is None:
+        flash(
+            _("No hay otro ejercicio para ese hueco con tu material y tus limitaciones."),
+            "warning",
+        )
+    else:
+        db.session.commit()
+        flash(
+            _(
+                "%(old)s fuera: ahora toca %(new)s. No volverá a aparecer en tus rutinas.",
+                old=dropped,
+                new=replacement.display_name,
+            ),
+            "success",
+        )
+    return redirect(url_for("training.day", index=index))
+
+
+@bp.post("/permitir")
+@login_required
+def allow_again() -> WerkzeugResponse:
+    """Devuelve a la rutina un ejercicio apartado por error."""
+    profile = onboarding.current_profile(current_user)
+    if profile is None:
+        return redirect(url_for("onboarding.index"))
+    slug = request.form.get("slug", "")
+    if plans.allow_exercise_again(profile, slug):
+        db.session.commit()
+        flash(_("Vuelve a estar disponible para las próximas rutinas."), "success")
+    return redirect(url_for("training.routine"))

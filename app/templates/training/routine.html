@@ -91,6 +91,25 @@
       {% endif %}
     </section>
 
+    {% if set_aside %}
+      <section class="card card-span">
+        <h2 class="card-title">{{ _('Ejercicios apartados') }} ({{ set_aside|length }})</h2>
+        <p class="help">{{ _('Los que marcaste como "no me gusta". No se programan; devuélvelos cuando quieras.') }}</p>
+        <ul class="alt-list">
+          {% for exercise in set_aside %}
+            <li>
+              {{ exercise.display_name }}
+              <form method="post" action="{{ url_for('training.allow_again') }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="slug" value="{{ exercise.slug }}">
+                <button type="submit" class="button button-secondary button-small">{{ _('Volver a permitirlo') }}</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
     {% if messages %}
       <section class="card card-span">
         <h2 class="card-title">{{ _('Cómo está montada') }}</h2>

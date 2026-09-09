@@ -9,6 +9,7 @@ Nothing here commits; the caller owns the transaction.
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date
 from typing import Any
@@ -452,6 +453,52 @@ def generate_for_profile(user: User, profile: Profile, today: date) -> Generatio
     )
     plan.details = {**plan.details, "steps_target": steps}
     return GenerationResult(profile, nutrition, plan, routine_plan, routine)
+
+
+def exercises_by_slug(slugs: Sequence[str]) -> list[Exercise]:
+    """Las fichas de esos ejercicios, en el orden en que se apartaron."""
+    if not slugs:
+        return []
+    rows = db.session.scalars(select(Exercise).where(Exercise.slug.in_(list(slugs)))).all()
+    by_slug = {row.slug: row for row in rows}
+    return [by_slug[slug] for slug in slugs if slug in by_slug]
+
+
+def swap_disliked_exercise(
+    profile: Profile, item: RoutineExercise, equipment: frozenset[str]
+) -> Exercise | None:
+    """Aparta un ejercicio para siempre y lo cambia por su mejor alternativa.
+
+    Se decide viendo el ejercicio, no de memoria en el cuestionario. El
+    ejercicio apartado se guarda en el perfil, así que tampoco aparecerá en
+    las rutinas que se generen después. Devuelve ``None`` (y no cambia nada)
+    cuando no hay ningún recambio posible con el material y las lesiones.
+    """
+    # dashboard importa de aquí: el import va dentro para no cerrar el círculo.
+    from app.services.dashboard import usable_alternatives
+
+    disliked = list(profile.disliked_exercises)
+    dropped = item.exercise.slug
+    same_day = {other.exercise.slug for other in item.day.exercises if other.id != item.id}
+    ruled_out = {*disliked, dropped, *same_day}
+    options = [
+        row for row in usable_alternatives(item, profile, equipment) if row.slug not in ruled_out
+    ]
+    if not options:
+        return None
+    profile.disliked_exercises = [*disliked, dropped]
+    item.exercise = options[0]
+    logger.info("User %s swapped %s for %s", profile.user_id, dropped, options[0].slug)
+    return options[0]
+
+
+def allow_exercise_again(profile: Profile, slug: str) -> bool:
+    """Devuelve un ejercicio apartado a la lista de posibles."""
+    disliked = list(profile.disliked_exercises)
+    if slug not in disliked:
+        return False
+    profile.disliked_exercises = [item for item in disliked if item != slug]
+    return True
 
 
 def messages_of(details: dict[str, Any]) -> list[dict[str, str]]:
