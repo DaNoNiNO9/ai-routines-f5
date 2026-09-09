@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 12 — Exportación, cuenta y borrado RGPD.** En curso.
+**Fase 12 cerrada.** Siguiente: Fase 13 (auditoría final), sin empezar.
 
 ## Terminado
 
@@ -21,13 +21,14 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | 9 | Panel, nutrición y entrenamiento con gráficas e ilustraciones | `FASE_09` |
 | 10 | Diario (peso, ingesta, actividad, perímetros), sesiones de entrenamiento con temporizador y revisión quincenal aplicable | `FASE_10` |
 | 11 | Diseño visual: paleta Forja, tipografías e iconos vendorizados, tema claro, estados y micro-interacciones | `FASE_11` |
+| 12 | Exportación del plan en PDF y de los datos en CSV, ajustes de cuenta y borrado RGPD | `FASE_12` |
 
 ## Estado del repositorio
 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 562 tests en verde |
+| Suite | 563 tests en verde |
 | Cobertura de `app/` | 98,5 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -35,11 +36,21 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Librería de PDF elegida por el usuario: **ReportLab** (BSD, Python puro, sin librerías del sistema).
+Nada en curso. La Fase 12 quedó cerrada con su informe.
 
-Hecho: `services/exports.py` con el PDF del plan (nutrición, cómo se ha calculado, rutina día a día y el aviso en cada página) y el ZIP con un CSV por tipo de dato; blueprint `account` (`/cuenta`) con datos de la cuenta, cambio de correo y contraseña con la contraseña actual por delante, las dos descargas y el borrado con doble confirmación; borrado real en cascada, no una marca.
+## Siguiente paso
 
-Pendiente: verificación con el servidor levantado abriendo el PDF de verdad, `docs/DECISIONES.md`, READMEs e informe de fase.
+**Fase 13: auditoría final (§7 del prompt).** Es la fase más larga y no añade funcionalidad: revisa lo que hay. Contenido:
+
+- Robustez: excepciones sin controlar, divisiones por cero, `None` inesperados, transacciones a medias, condiciones de carrera.
+- Casos extremos del motor con perfiles sintéticos: 40 y 200 kg, 140 y 210 cm, 16 y 85 años, 4 % y 60 % de grasa, todas las lesiones a la vez, sin material, objetivos incoherentes, campos con emojis y cadenas de 10.000 caracteres.
+- Seguridad: inyección, XSS, CSRF, IDOR probado explícitamente, cabeceras, cookies, límites de peticiones, secretos fuera de git.
+- Seguridad del usuario: reverificar uno por uno los límites de §3.5 intentando romperlos desde el formulario y por petición directa.
+- Rendimiento: N+1, índices, tiempos con 1000 usuarios y 100.000 series generadas.
+- Calidad: cobertura, código muerto, READMEs coherentes.
+- Cierre: `docs/AUDITORIA_FINAL.md` con hallazgos, severidad y corrección, y `docs/ESTADO_FINAL.md`.
+
+Después: catálogos de traducción con pybabel y, cuando pases la URL, el remoto de GitHub.
 
 ## Detalles menores heredados
 

@@ -174,3 +174,16 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-93 | Movimiento | Las animaciones de entrada solo mueven, nunca cambian la opacidad, y todo se apaga con `prefers-reduced-motion` | Una animación que no llegue a ejecutarse (bfcache, motor sin animaciones) no puede dejar contenido invisible. Se detectó en las capturas: las tarjetas de estadísticas salían en blanco |
 | T-94 | Navegación en móvil | Por debajo de 34 rem la navegación se queda en iconos y el texto pasa a ser accesible pero invisible | Seis destinos no caben con texto en 320 px: se partían en tres líneas encima de la marca |
 | T-95 | Fotografía | No se añade fotografía de stock; la portada usa las ilustraciones del catálogo (dominio público) y composición tipográfica | Unsplash y Pexels necesitan clave de API para atribuir como piden sus licencias, y no se mete nada cuya licencia no se pueda documentar en `docs/CREDITOS.md` |
+
+## 2026-09-09 — Fase 12 (exportación, cuenta y RGPD)
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-96 | PDF | ReportLab, elegida por el usuario entre ReportLab, fpdf2 y una página para imprimir | Rueda de Python pura con licencia BSD y sin librerías del sistema: instala igual en Windows y en el VPS. Descartada WeasyPrint por necesitar GTK en Windows |
+| T-97 | Tipografía del PDF | Helvetica, la incrustada de serie, en vez de Barlow e Inter | Las de la app están en woff2 y ReportLab necesita TTF: serían 500 KB más y un paso de conversión, a cambio de que un documento que se imprime se parezca algo más a la app |
+| T-98 | Contenido del PDF | Objetivo, comidas, ciclado, cómo se ha calculado (con las fórmulas nombradas) y la rutina día a día; el aviso de herramienta orientativa en **todas** las páginas, no solo en la primera | Es el documento que alguien le enseña a su médico o a su dietista: tiene que explicarse solo y no puede parecer una prescripción |
+| T-99 | PDF sin plan | Si la seguridad bloqueó el plan, el PDF se genera igual y lista los motivos | Es justo lo que conviene llevarle a un profesional |
+| T-100 | Exportación de datos | Un ZIP con un CSV por tipo de dato (once) más un LEEME que explica las columnas; UTF-8 con BOM y fechas ISO | Cumple el derecho de portabilidad (RGPD, artículo 20) en un formato que abre cualquier hoja de cálculo sin pelearse con los acentos |
+| T-101 | Nombre del fichero | El nombre de la persona se pasa a ASCII para el `Content-Disposition` | Un nombre con acentos o en otro alfabeto rompe la cabecera; se detectó con "Ana Ríos" |
+| T-102 | Credenciales | Cambiar el correo o la contraseña exige la contraseña actual; el borrado exige contraseña **y** escribir BORRAR | Quien se deja la sesión abierta no debería perder la cuenta por un despiste ajeno |
+| T-103 | Borrado RGPD | Borrado real en cascada (`db.session.delete(user)`), no una marca de borrado | El artículo 17 es supresión, no ocultación. Los `SoftDeleteMixin` siguen sirviendo para deshacer cosas dentro de la app, pero no para esto |

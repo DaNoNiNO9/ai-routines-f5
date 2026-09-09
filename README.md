@@ -2,7 +2,7 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 11 cerrada: motor, autenticación, cuestionario, páginas del plan, registro real (diario, sesiones con temporizador, revisión quincenal) y el diseño visual completo (paleta Forja, tipografías e iconos vendorizados, tema claro, estados vacíos y micro-interacciones). Siguiente: exportación PDF y CSV, cuenta y borrado RGPD (Fase 12). El estado vivo del proyecto está en `docs/ESTADO_ACTUAL.md`. Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`, diseño en `docs/DISEÑO.md`.
+**Estado actual:** Fase 12 cerrada: motor, autenticación, cuestionario, páginas del plan, registro real (diario, sesiones con temporizador, revisión quincenal) el diseño visual completo y la exportación (plan en PDF, datos en CSV), los ajustes de cuenta y el borrado RGPD. Siguiente: auditoría final (Fase 13). El estado vivo del proyecto está en `docs/ESTADO_ACTUAL.md`. Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`, diseño en `docs/DISEÑO.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 

@@ -14,11 +14,14 @@
 6. `workouts.py` (Fase 10): sesiones. `start_session()` devuelve la sesión abierta si ya hay una (T-77); `log_set()` escribe una fila por sesión, ejercicio y número de serie, y repetir el número corrige en vez de duplicar (T-78); `substitute()` guarda el ejercicio alternativo solo para esa sesión y solo si es viable (T-79); `session_blocks()` monta la página en vivo con la última actuación y la carga sugerida por progresión doble (T-80); `summarise()` da totales y marcas con el 1RM de Epley (T-81); `history()` y `exercise_progress()` alimentan el historial y la gráfica.
 7. `adjustments.py` (Fase 10): la revisión quincenal. `build_inputs()` traduce el plan vigente y el diario a `AdjustmentInputs`; `preview()` ejecuta el motor **sin escribir nada**; `apply()` guarda exactamente una de tres cosas: versión nueva del plan (si cambian las calorías), objetivo de pasos nuevo, o solo la fila de auditoría (T-82, T-83). Los tres casos dejan la decisión completa en `plan_adjustments.data`.
 
+8. `exports.py` (Fase 12): `plan_pdf()` maqueta el plan con ReportLab (objetivo, comidas, ciclado, cómo se ha calculado con las fórmulas nombradas, rutina día a día y el aviso legal en todas las páginas); funciona también sin plan, listando los motivos del bloqueo. `data_archive()` devuelve un ZIP con un CSV por tipo de dato y un LEEME; los CSV llevan BOM para que las hojas de cálculo respeten los acentos. `export_filename()` pasa el nombre a ASCII porque viaja en una cabecera HTTP.
+
 **Ficheros:**
-- `auth.py` — cuentas y contraseñas.
+- `auth.py` — cuentas y contraseñas (incluye cambio de correo, de contraseña y borrado en cascada).
 - `onboarding.py` — pasos, borradores, perfil, catálogos para los formularios (`equipment_groups()`, `exercise_lookup()`), `complete()`.
 - `plans.py` — entradas del motor, catálogo (`exercise_info()`, `load_catalogue()`), persistencia de planes y rutinas, `active_plan()`, `active_routine()`, `GenerationResult`.
 - `dashboard.py` — lecturas del panel y de las páginas de plan (nunca escribe).
+- `exports.py` — PDF del plan y ZIP con los datos personales.
 - `tracking.py` — diario y perímetros.
 - `workouts.py` — sesiones, series, sustituciones, resúmenes y progreso.
 - `adjustments.py` — revisión quincenal (`preview`/`apply`).
@@ -39,6 +42,8 @@
 - `exercise_lookup()` resuelve por nombre en español, en inglés o por slug, sin distinguir mayúsculas; dos ejercicios con el mismo nombre se pisarían (el catálogo no tiene duplicados: lo comprueban los tests de semillas).
 - Las series se guardan contra el ejercicio **efectivo** (el sustituto si lo hay), no contra el prescrito: por eso no se puede sustituir con series ya registradas.
 - `adjustments.apply()` no hace `commit()`: la ruta decide, y ante `SafetyError` hace `rollback()` y no deja nada a medias.
+- `auth.delete_account()` sí hace `commit()`: es un borrado real en cascada y no tiene vuelta atrás.
+- El PDF usa Helvetica, no las tipografías de la app: ReportLab necesita TTF y las nuestras están en woff2.
 - La fila de auditoría de una revisión que cambia las calorías cuelga del plan **nuevo**, no del que cerró: así la próxima revisión se cuenta desde el cambio.
 
 **Tests:** `tests/unit/services/` (`test_auth_service.py`, `test_onboarding_service.py`, `test_plans_service.py`, `test_dashboard_service.py`), `tests/integration/test_onboarding.py` y `tests/integration/test_plan_pages.py`. La fixture `seeded` de `tests/conftest.py` carga los catálogos reales (0,2 s).

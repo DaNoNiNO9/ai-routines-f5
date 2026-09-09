@@ -16,7 +16,8 @@
 10. Panel y plan (Fase 9): `blueprints/dashboard` (hoy, próxima sesión, peso con media de 7 días, próxima revisión), `blueprints/nutrition` (objetivo, macros, comidas, ciclado, cómo se calculó, avisos, protocolo de ajuste, historial de versiones) y `blueprints/training` (rutina, volumen, cardio; un día por página con ilustraciones, prescripción, instrucciones y alternativas viables). Solo leen: `services/dashboard.py` hace las consultas. Las gráficas son Chart.js vendorizado, alimentado por bloques JSON (`components/charts.html` + `static/js/forja.js`); Alpine.js solo alterna la ilustración inicial/final. Todo funciona sin JavaScript salvo las gráficas.
 11. Registro y ajuste (Fase 10): `blueprints/tracking` (diario de peso, ingesta y actividad por día, más perímetros), `blueprints/workouts` (sesión en vivo con una fila por serie, temporizador de descanso, sustituciones, cierre con resumen, historial y progreso) y `blueprints/review` (qué propone el motor de ajuste y aplicarlo). La lógica vive en `services/`; las vistas solo traducen errores.
 12. Diseño (Fase 11): los tokens de color, la escala tipográfica y los componentes viven en `static/css/app.css`; las tipografías y el sprite de iconos están en el repositorio. El tema (oscuro por defecto) se guarda en la sesión y lo cambia `main.toggle_theme`, sin JavaScript. Detalles y referencias en `docs/DISEÑO.md`.
-13. Correo: `email.py` con backend `log` (desarrollo y tests; mensajes en `app.extensions["outbox"]`) o `smtp` (producción, `smtplib` + STARTTLS). Los fallos se registran con traza y se convierten en `EmailDeliveryError`.
+13. Cuenta y exportación (Fase 12): `blueprints/account` (`/cuenta`) reúne los datos de la cuenta, el cambio de correo y de contraseña (los dos piden la contraseña actual), la descarga del plan en PDF, la de todos los datos en ZIP y el borrado con doble confirmación. La maquetación del PDF y el armado del ZIP viven en `services/exports.py`.
+14. Correo: `email.py` con backend `log` (desarrollo y tests; mensajes en `app.extensions["outbox"]`) o `smtp` (producción, `smtplib` + STARTTLS). Los fallos se registran con traza y se convierten en `EmailDeliveryError`.
 
 **Ficheros:**
 - `__init__.py` — `create_app()` y el context processor global (`app_name`, `app_version`, `current_locale`, `current_year`).
@@ -32,6 +33,8 @@
 - `labels.py` — etiquetas traducibles de todos los enums (`choices()` para WTForms, `label()` para plantillas).
 - `blueprints/nutrition/routes.py`, `blueprints/training/routes.py`, `blueprints/dashboard/routes.py` — páginas del plan (solo lectura).
 - `blueprints/tracking/{forms,routes}.py`, `blueprints/workouts/{forms,routes}.py`, `blueprints/review/routes.py` — registro diario, sesiones y revisión.
+- `blueprints/account/{forms,routes}.py` — cuenta, descargas y borrado.
+- `security.py` — además de las cabeceras, `safe_redirect_target()`, que usan el cambio de tema y el `next` del acceso.
 - `static/vendor/` — Alpine.js 3.17.2 y Chart.js 4.5.1 con sus licencias (ver `docs/CREDITOS.md`); `static/js/forja.js` — gráficas, temporizador de descanso, cronómetro y estado de carga de los botones.
 - `static/fonts/` — Barlow Condensed e Inter (OFL); `static/css/fonts.css` — reglas `@font-face` locales.
 - `static/img/icons.svg` — sprite de Lucide (`scripts/build_icons.py`), incrustado por `templates/components/sprite.html` (`scripts/inline_icons.py`).
