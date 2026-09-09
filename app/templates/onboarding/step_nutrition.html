@@ -1,0 +1,21 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('Las calorías y macros se reparten entre tus comidas; el resto sirve para adaptar las sugerencias.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  <div class="grid-2">
+    {{ field(form.meals_per_day) }}
+    {{ field(form.diet_pattern) }}
+  </div>
+  {{ field(form.food_aversions) }}
+  {{ field(form.allergies) }}
+  {{ radios(form.budget_level, compact=true) }}
+  {{ radios(form.cooking_time, compact=true) }}
+  {{ checkbox(form.wants_carb_cycling) }}
+  <div class="grid-2">
+    {{ field(form.alcohol_drinks_per_week, inputmode="numeric") }}
+    {{ field(form.caffeine_cups_per_day, inputmode="numeric") }}
+  </div>
+{% endblock %}

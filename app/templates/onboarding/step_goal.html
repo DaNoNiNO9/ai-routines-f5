@@ -1,0 +1,15 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('El objetivo decide el balance calórico; los límites de seguridad (suelo calórico, ritmo máximo de pérdida) se aplican siempre.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  {{ radios(form.goal, help=labels.GOAL_HELP) }}
+  {{ radios(form.aggressiveness, help=labels.AGGRESSIVENESS_HELP) }}
+  <div class="grid-2">
+    {{ field(form.target_weight_kg, step="0.1", inputmode="decimal") }}
+    {{ field(form.target_date) }}
+  </div>
+  <p class="help">{{ _('Si pones fecha, te diremos con sinceridad si es realista.') }}</p>
+{% endblock %}

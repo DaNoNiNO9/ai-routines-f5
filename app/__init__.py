@@ -116,10 +116,12 @@ def _register_blueprints(app: Flask) -> None:
     from app.blueprints.auth.routes import bp as auth_bp
     from app.blueprints.dashboard.routes import bp as dashboard_bp
     from app.blueprints.main.routes import bp as main_bp
+    from app.blueprints.onboarding.routes import bp as onboarding_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(onboarding_bp)
 
     if app.config["ENABLE_DEBUG_ROUTES"]:
         from app.blueprints.debug.routes import bp as debug_bp

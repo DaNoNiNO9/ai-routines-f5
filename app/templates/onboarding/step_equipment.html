@@ -1,0 +1,44 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('Hemos marcado el material habitual de tu lugar de entrenamiento. Ajústalo: solo se programan ejercicios con lo que tienes.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  <fieldset class="field choices choices-compact{% if form.equipment.errors %} field-invalid{% endif %}">
+    <legend class="field-label">{{ form.equipment.label.text }}</legend>
+    {% for group_label, items in equipment_groups %}
+      <p class="choice-group">{{ group_label }}</p>
+      <div class="choice-grid">
+        {% for code, name in items %}
+          <label class="choice">
+            <input type="checkbox" class="choice-input" name="equipment" value="{{ code }}"{% if code in (form.equipment.data or []) %} checked{% endif %}>
+            <span class="choice-text">{{ name }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    {% for error in form.equipment.errors %}
+      <p class="field-error" role="alert">{{ error }}</p>
+    {% endfor %}
+  </fieldset>
+
+  {{ checkboxes(form.priority_muscles) }}
+  <p class="help">{{ _('Los músculos prioritarios reciben más series; el resto baja un poco para que el total siga siendo recuperable.') }}</p>
+
+  <h2 class="h3">{{ _('Lesiones o molestias') }}</h2>
+  <p class="help">{{ _('Se excluyen los ejercicios contraindicados según la gravedad. Ante una lesión grave, consulta antes con un profesional.') }}</p>
+  <div class="grid-2">
+    {% for name in injury_fields %}
+      {{ field(form[name]) }}
+    {% endfor %}
+  </div>
+
+  <h2 class="h3">{{ _('Preferencias (opcional)') }}</h2>
+  <p class="help">{{ _('Escribe nombres de la lista separados por comas.') }}</p>
+  {{ field(form.disliked_exercises, list="exercise-names") }}
+  {{ field(form.preferred_exercises, list="exercise-names") }}
+  <datalist id="exercise-names">
+    {% for name in exercise_names %}<option value="{{ name }}">{% endfor %}
+  </datalist>
+{% endblock %}

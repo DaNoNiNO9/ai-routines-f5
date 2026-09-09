@@ -1,0 +1,30 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('Con esto calculamos tu metabolismo basal y tu composición corporal.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  {{ radios(form.sex) }}
+  <p class="help">{{ _('Las fórmulas metabólicas usan el sexo biológico; no es una pregunta sobre identidad.') }}</p>
+  <div class="grid-2">
+    {{ field(form.birth_date, autocomplete="bday") }}
+    {{ field(form.height_cm, step="0.5", inputmode="decimal") }}
+  </div>
+  {{ field(form.weight_kg, step="0.1", inputmode="decimal") }}
+
+  <h2 class="h3">{{ _('Perímetros (opcional)') }}</h2>
+  <p class="help">{{ _('Con cuello y cintura (y cadera en mujeres) estimamos la grasa corporal por la fórmula de la Marina de EE. UU. Mide sin apretar la cinta.') }}</p>
+  <div class="grid-3">
+    {{ field(form.neck_cm, step="0.5", inputmode="decimal") }}
+    {{ field(form.waist_cm, step="0.5", inputmode="decimal") }}
+    {{ field(form.hip_cm, step="0.5", inputmode="decimal") }}
+  </div>
+
+  <h2 class="h3">{{ _('Grasa corporal (opcional)') }}</h2>
+  <p class="help">{{ _('Si conoces tu porcentaje, indícalo con el método: cuanto más fiable, más confianza tendrá el plan.') }}</p>
+  <div class="grid-2">
+    {{ field(form.body_fat_pct, step="0.5", inputmode="decimal") }}
+    {{ field(form.body_fat_method) }}
+  </div>
+{% endblock %}

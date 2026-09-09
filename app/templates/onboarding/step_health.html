@@ -1,0 +1,11 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('Dos situaciones en las que no damos plan de nutrición, porque necesitan seguimiento profesional. Responde con sinceridad: no se comparte con nadie.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  {{ checkbox(form.is_pregnant_or_breastfeeding) }}
+  {{ checkbox(form.has_eating_disorder_history) }}
+  {{ field(form.notes, rows="4") }}
+{% endblock %}

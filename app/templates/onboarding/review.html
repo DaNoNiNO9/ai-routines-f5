@@ -1,0 +1,29 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('Repasa tus respuestas. Al generar el plan guardamos una versión nueva del cuestionario; las anteriores quedan en el historial.') }}</p>
+{% endblock %}
+
+{% block body %}
+  {% for section in sections %}
+    <section class="summary">
+      <div class="section-head">
+        <h2 class="h3">{{ section.step.number }}. {{ section.step.title }}</h2>
+        <a class="button button-small button-secondary" href="{{ url_for('onboarding.step', number=section.step.number) }}">{{ _('Editar') }}</a>
+      </div>
+      <dl>
+        {% for label, value in section.rows %}
+          <dt>{{ label }}</dt>
+          <dd>{{ value }}</dd>
+        {% endfor %}
+      </dl>
+    </section>
+  {% endfor %}
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="wizard-nav">
+      <a class="button button-secondary" href="{{ url_for('onboarding.step', number=steps|length - 1) }}">{{ _('Atrás') }}</a>
+      <button type="submit" class="button">{{ _('Generar mi plan') }}</button>
+    </div>
+  </form>
+{% endblock %}

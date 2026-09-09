@@ -1,0 +1,17 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('La rutina se adapta a los días y minutos que de verdad tienes, no a los que te gustaría tener.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  {{ radios(form.training_experience) }}
+  <div class="grid-2">
+    {{ field(form.training_days_per_week) }}
+    {{ field(form.session_minutes) }}
+  </div>
+  <p class="help">{{ _('Cuenta el tiempo real en el gimnasio, incluido el calentamiento.') }}</p>
+  {{ radios(form.training_location, help=labels.TRAINING_LOCATION_HELP) }}
+  {{ radios(form.training_time, compact=true) }}
+  <p class="help">{{ _('Sirve para colocar más carbohidratos alrededor del entrenamiento.') }}</p>
+{% endblock %}

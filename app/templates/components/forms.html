@@ -2,9 +2,9 @@
 <div class="field{% if f.errors %} field-invalid{% endif %}">
   {{ f.label(class_="field-label") }}
   {% if autofocus %}
-    {{ f(class_="field-input", autocomplete=autocomplete, autofocus=true) }}
+    {{ f(class_="field-input", autocomplete=autocomplete, autofocus=true, **kwargs) }}
   {% else %}
-    {{ f(class_="field-input", autocomplete=autocomplete) }}
+    {{ f(class_="field-input", autocomplete=autocomplete, **kwargs) }}
   {% endif %}
   {% for error in f.errors %}
     <p class="field-error" role="alert">{{ error }}</p>
@@ -22,4 +22,41 @@
     <p class="field-error" role="alert">{{ error }}</p>
   {% endfor %}
 </div>
+{% endmacro %}
+
+{# Radio buttons as a fieldset; `help` maps a choice value to a short explanation. #}
+{% macro radios(f, help={}, compact=false) %}
+<fieldset class="field choices{% if compact %} choices-compact{% endif %}{% if f.errors %} field-invalid{% endif %}">
+  <legend class="field-label">{{ f.label.text }}</legend>
+  {% for sub in f %}
+    <label class="choice">
+      {{ sub(class_="choice-input") }}
+      <span class="choice-text">
+        {{ sub.label.text }}
+        {% if help.get(sub.data) %}<small class="choice-help">{{ help[sub.data] }}</small>{% endif %}
+      </span>
+    </label>
+  {% endfor %}
+  {% for error in f.errors %}
+    <p class="field-error" role="alert">{{ error }}</p>
+  {% endfor %}
+</fieldset>
+{% endmacro %}
+
+{# Checkbox list for a SelectMultipleField. #}
+{% macro checkboxes(f) %}
+<fieldset class="field choices choices-compact{% if f.errors %} field-invalid{% endif %}">
+  <legend class="field-label">{{ f.label.text }}</legend>
+  <div class="choice-grid">
+  {% for sub in f %}
+    <label class="choice">
+      {{ sub(class_="choice-input") }}
+      <span class="choice-text">{{ sub.label.text }}</span>
+    </label>
+  {% endfor %}
+  </div>
+  {% for error in f.errors %}
+    <p class="field-error" role="alert">{{ error }}</p>
+  {% endfor %}
+</fieldset>
 {% endmacro %}

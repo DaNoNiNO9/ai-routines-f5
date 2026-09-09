@@ -6,7 +6,29 @@
 <section class="hero">
   <p class="eyebrow">{{ _('Panel') }}</p>
   <h1>{{ _('Hola, %(name)s.', name=user.display_name) }}</h1>
-  <p class="lead">{{ _('Tu cuenta está lista. El cuestionario para generar tu plan llega en la Fase 8; después verás aquí tu nutrición, tu rutina y tu progreso.') }}</p>
+  {% if profile is none %}
+    <p class="lead">{{ _('Para calcular tu plan de nutrición y tu rutina necesitamos unos minutos de preguntas. Se guardan en cada paso.') }}</p>
+    <p><a class="button" href="{{ url_for('onboarding.index') }}">{% if draft %}{{ _('Continuar el cuestionario') }}{% else %}{{ _('Empezar el cuestionario') }}{% endif %}</a></p>
+  {% else %}
+    <p class="lead">{{ _('Objetivo: %(goal)s.', goal=labels.label(labels.GOAL, profile.goal)) }}</p>
+    <div class="stat-grid">
+      {% if plan %}
+        <div class="stat"><span class="stat-value">{{ plan.calorie_target }}</span><span class="stat-label">{{ _('kcal / día') }}</span></div>
+        <div class="stat"><span class="stat-value">{{ plan.protein_g|int }} g</span><span class="stat-label">{{ _('proteína') }}</span></div>
+      {% else %}
+        <div class="stat"><span class="stat-value">—</span><span class="stat-label">{{ _('sin plan de nutrición') }}</span></div>
+      {% endif %}
+      {% if routine %}
+        <div class="stat"><span class="stat-value">{{ routine.days_per_week }}</span><span class="stat-label">{{ _('días · %(name)s', name=routine.name) }}</span></div>
+      {% else %}
+        <div class="stat"><span class="stat-value">—</span><span class="stat-label">{{ _('sin rutina') }}</span></div>
+      {% endif %}
+    </div>
+    <p class="auth-links">
+      <a class="button" href="{{ url_for('onboarding.result') }}">{{ _('Ver mi plan') }}</a>
+      <a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar cuestionario') }}</a>
+    </p>
+  {% endif %}
   <p class="meta">{{ _('Cuenta creada el %(date)s.', date=user.created_at.strftime('%d/%m/%Y')) }}</p>
 </section>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field, checkbox, radios, checkboxes %}
+
+{% block title %}{{ step.title }} · {{ _('Cuestionario') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<nav class="steps-nav" aria-label="{{ _('Progreso del cuestionario') }}">
+  <ol class="steps">
+    {% for s in steps %}
+      {% set reachable = s.number <= draft.step + 1 %}
+      {% set state = 'current' if s.number == step.number else ('done' if s.number <= draft.step else 'todo') %}
+      <li class="step step-{{ state }}"{% if s.number == step.number %} aria-current="step"{% endif %}>
+        {% if reachable and s.number != step.number %}
+          <a href="{{ url_for('onboarding.review') if s.key == 'review' else url_for('onboarding.step', number=s.number) }}">{{ s.number }}. {{ s.title }}</a>
+        {% else %}
+          <span>{{ s.number }}. {{ s.title }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+  <p class="meta">{{ _('Paso %(n)s de %(total)s', n=step.number, total=steps|length) }}</p>
+</nav>
+
+<section class="card wizard-card">
+  <h1>{{ step.title }}</h1>
+  {% block intro %}{% endblock %}
+  {% block body %}
+  <form method="post" novalidate class="form">
+    {{ form.hidden_tag() }}
+    {% block fields %}{% endblock %}
+    <div class="wizard-nav">
+      {% if step.number > 1 %}
+        <a class="button button-secondary" href="{{ url_for('onboarding.step', number=step.number - 1) }}">{{ _('Atrás') }}</a>
+      {% else %}
+        <span></span>
+      {% endif %}
+      <button type="submit" class="button">{{ _('Continuar') }}</button>
+    </div>
+  </form>
+  {% endblock %}
+  <p class="help wizard-help">{{ _('Tus respuestas se guardan en cada paso: puedes cerrar y volver más tarde.') }}</p>
+</section>
+{% endblock %}

@@ -222,3 +222,69 @@ h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 var(-
 .link-button:hover { color: var(--text); }
 .flash-info { border-color: var(--focus); }
 .auth-links { display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+
+/* Questionnaire and plan summary (Phase 8) */
+.h3 { font-size: 1.15rem; margin: var(--space-4) 0 var(--space-2); }
+.steps-nav { margin-bottom: var(--space-3); }
+.steps { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-1); padding: 0; margin: 0 0 var(--space-2); }
+.step { flex: 1 1 8rem; }
+.step a, .step span {
+  display: block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: var(--text-muted);
+}
+.step a:hover { color: var(--text); border-color: var(--text-muted); }
+.step-done a, .step-done span { border-color: var(--success); color: var(--text); }
+.step-current span { border-color: var(--accent); color: var(--text); font-weight: 700; }
+.wizard-card { max-width: 46rem; margin-inline: auto; }
+.wizard-nav { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); margin-top: var(--space-4); }
+.wizard-help { margin-top: var(--space-3); }
+.button-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.button-secondary:hover { border-color: var(--text-muted); filter: none; }
+.grid-2, .grid-3 { display: grid; gap: 0 var(--space-3); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 40rem) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+fieldset.choices { border: 0; padding: 0; margin: 0 0 var(--space-3); min-width: 0; }
+fieldset.choices legend { padding: 0; }
+.choice {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-1);
+  cursor: pointer;
+  background: var(--bg);
+}
+.choice:has(.choice-input:checked) { border-color: var(--accent); }
+.choice:has(.choice-input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+.choice-input { margin-top: 0.3rem; flex: none; }
+.choice-help { display: block; color: var(--text-muted); font-size: 0.85rem; }
+.choices-compact .choice { padding: var(--space-1) var(--space-2); }
+.choice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: var(--space-1); }
+.choice-group { margin: var(--space-2) 0 var(--space-1); color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+.summary { margin-bottom: var(--space-4); }
+.summary dl { display: grid; grid-template-columns: minmax(8rem, max-content) 1fr; gap: var(--space-1) var(--space-3); margin: 0; }
+.summary dt { color: var(--text-muted); }
+.summary dd { margin: 0; }
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); flex-wrap: wrap; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: var(--space-2); margin: var(--space-3) 0; }
+.stat { padding: var(--space-3); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
+.stat-value { display: block; font-size: 1.6rem; font-weight: 800; line-height: 1.1; }
+.stat-label { display: block; color: var(--text-muted); font-size: 0.85rem; margin-top: var(--space-1); }
+.table-wrap { overflow-x: auto; margin: var(--space-2) 0; }
+.table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.table th, .table td { padding: var(--space-2); border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.table th { color: var(--text-muted); font-weight: 600; }
+.notes { padding-left: 1.2rem; margin: var(--space-3) 0 0; }
+.notes li { margin-bottom: var(--space-1); }
+.note-warning { color: var(--warning); }
+.note-error { color: var(--danger); }
+.badge { display: inline-block; padding: 0.1rem 0.6rem; border-radius: 999px; background: var(--bg); border: 1px solid var(--border); font-size: 0.85rem; font-weight: 500; }
+.form select.field-input, .form textarea.field-input { width: 100%; }

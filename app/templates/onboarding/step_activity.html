@@ -1,0 +1,24 @@
+{% extends "onboarding/_wizard.html" %}
+
+{% block intro %}
+<p class="lead">{{ _('Tu gasto fuera del gimnasio pesa más que el entrenamiento. Sé realista.') }}</p>
+{% endblock %}
+
+{% block fields %}
+  {{ radios(form.job_activity, help=labels.JOB_ACTIVITY_HELP) }}
+  {{ field(form.daily_steps, inputmode="numeric") }}
+  <p class="help">{{ _('Si tu móvil o reloj los cuenta, usa la media de las últimas semanas. Si no, los estimamos por tu trabajo.') }}</p>
+  <div class="grid-2">
+    {{ field(form.sleep_hours, step="0.5", inputmode="decimal") }}
+  </div>
+  {{ radios(form.stress_level, compact=true) }}
+
+  <h2 class="h3">{{ _('Otra actividad física') }}</h2>
+  <p class="help">{{ _('Deporte o actividad aparte de las pesas: fútbol, correr, bici, clases…') }}</p>
+  {{ field(form.other_activity_type) }}
+  <div class="grid-3">
+    {{ field(form.other_activity_sessions_per_week, inputmode="numeric") }}
+    {{ field(form.other_activity_minutes, inputmode="numeric") }}
+    {{ field(form.other_activity_intensity) }}
+  </div>
+{% endblock %}
