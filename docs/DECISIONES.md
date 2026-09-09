@@ -58,3 +58,14 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-22 | Borrado | Físico en cascada desde `users` (GDPR); lógico en `plans`, `routines`, `workout_sessions` y `users`; `RESTRICT` en ejercicios referenciados | Derecho al olvido completo y posibilidad de deshacer en el día a día |
 | T-23 | Registro de ingesta | Tabla `intake_logs` (kcal, macros, adherencia 0-100) y `activity_logs` (pasos, cardio), una fila por día | Alimentan el TDEE observado del motor de ajuste (D-07) |
 | T-24 | Migraciones | Flask-Migrate con `render_as_batch=True` y `render_item` propio: los ficheros de migración usan solo tipos estándar; test que compara migración y modelos | Migraciones independientes del código de la app y sin deriva silenciosa |
+
+## 2026-09-09 — Fase 3 (catálogo de ejercicios)
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-25 | Vídeos | `video_url` apunta a una búsqueda de YouTube con el nombre del ejercicio; la columna admite enlaces concretos cuando se curen | No hay forma de verificar 190 ids de vídeo y sus licencias; una búsqueda es siempre válida y no embebe contenido de terceros |
+| T-26 | Imágenes | Dos ilustraciones por ejercicio (inicio y fin) del dataset, recodificadas a 560 px y calidad JPEG 75, en `app/static/img/exercises/` | Assets locales (§6) con un tamaño total contenido (< 15 MB); dominio público |
+| T-27 | Contraindicaciones | Lista JSON `{area, min_severity}` por ejercicio: se excluye cuando el usuario declara esa zona con severidad igual o mayor. Curadas a mano por patrón y ejercicio | Regla simple de aplicar en el generador y de explicar al usuario; la fuente no trae este dato |
+| T-28 | Alternativas | Calculadas al generar el catálogo: mismo patrón y músculo primario, hasta 4, priorizando otro material y misma mecánica | Cobertura del 90 %+ sin curar 190 listas a mano; revisables en el JSON |
+| T-29 | Selección | 190 ejercicios de los 876 del dataset, con nombre en español propio; instrucciones en inglés del dataset (`instructions_es` vacío) | Limitación conocida: traducir 190 instrucciones se deja para una fase posterior o para hacer a mano |
+| T-30 | Presets de material | `app/engine/equipment_presets.py` define el material asumido por lugar (gimnasio completo, básico, casa con material, casa sin material) y lo comparten cuestionario, generador y tests de cobertura | Un solo sitio para la regla; el test exige todos los patrones en cada preset (salvo tracción vertical sin material) |
