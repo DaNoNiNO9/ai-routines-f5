@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 13 (auditoría final) en curso.** Hecho: motor (perfiles extremos). Pendiente: robustez web, seguridad, límites de §3.5, rendimiento y calidad.
+**Fase 13 (auditoría final) en curso.** Hecho: motor, seguridad, robustez, límites de §3.5 y rendimiento. Pendiente: calidad (código muerto, READMEs) y los dos documentos de cierre.
 
 ## Terminado
 
@@ -29,17 +29,23 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 591 tests en verde |
-| Cobertura de `app/` | 98,3 % |
+| Suite | 619 tests en verde |
+| Cobertura de `app/` | 98,4 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
 | Rama | `main`, sin remoto todavía |
 
 ## Qué estoy haciendo ahora
 
-**Fase 13, bloque del motor terminado.** 1536 perfiles de nutrición, 640 rutinas y 3600 revisiones de ajuste con datos de los bordes. Tres arreglos: días de rutina que salían vacíos, bajadas de calorías que podían cruzar el suelo de seguridad (y decir «bajamos» mientras subían), y los códigos internos del motor que se colaban en los avisos.
+**Fase 13**, cinco bloques cerrados:
 
-Siguiente bloque: robustez de la capa web (excepciones, transacciones, concurrencia).
+- **Motor**: 1536 perfiles de nutrición, 640 rutinas y 3600 revisiones con datos de los bordes. Tres arreglos (días vacíos, bajadas por debajo del suelo, códigos internos en los avisos).
+- **Seguridad**: IDOR probado ruta por ruta, XSS, inyección, CSRF, argon2, secretos fuera del repositorio.
+- **Robustez**: fallo a mitad de la generación, doble clic en todo lo que escribe, cuentas sin datos, borrado en cascada.
+- **Límites de §3.5**: menores, embarazo, TCA, IMC bajo, números imposibles y campos colados, probados desde el formulario.
+- **Rendimiento**: 1000 cuentas y 100.000 series. El historial pasó de 7,2 s y 255 consultas a 96 ms y 6.
+
+Falta el bloque de calidad y escribir `docs/AUDITORIA_FINAL.md` y `docs/ESTADO_FINAL.md`.
 
 ## Siguiente paso
 
