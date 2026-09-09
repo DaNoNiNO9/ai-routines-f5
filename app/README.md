@@ -11,6 +11,8 @@
 5. Registra blueprints: `main` siempre; `debug` (bajo `/_debug`) solo si `ENABLE_DEBUG_ROUTES`.
 6. `errors.register_error_handlers()` captura `CSRFError` y cualquier `HTTPException`, incluido el 500 con el que Flask envuelve las excepciones no controladas (que Flask ya ha registrado con su traza). Responde con `errors/error.html`, o con JSON si la ruta empieza por `/api/` o el cliente acepta JSON pero no HTML.
 7. `security.register_security_headers()` añade CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` y, solo con `ENABLE_HSTS`, HSTS.
+8. Autenticación (Fase 7): `services/auth.py` hace el trabajo (argon2id, verificación ficticia para correos desconocidos, tokens de recuperación firmados y caducables ligados al hash actual, cargador de usuario para Flask-Login) y `blueprints/auth/routes.py` solo traduce errores a mensajes y redirecciones. Rutas: `/registro`, `/entrar`, `/salir` (POST), `/recuperar`, `/restablecer/<token>`; `/panel` (blueprint `dashboard`) exige sesión. Límites por IP en los POST (login 5/min y 30/h, registro 10/h, recuperación 5/h).
+9. Correo: `email.py` con backend `log` (desarrollo y tests; mensajes en `app.extensions["outbox"]`) o `smtp` (producción, `smtplib` + STARTTLS). Los fallos se registran con traza y se convierten en `EmailDeliveryError`.
 
 **Ficheros:**
 - `__init__.py` — `create_app()` y el context processor global (`app_name`, `app_version`, `current_locale`, `current_year`).
@@ -21,6 +23,10 @@
 - `i18n.py` — `select_locale()`: `?lang=` → sesión → `Accept-Language` → `es`.
 - `blueprints/main/routes.py` — `/` y `/health`.
 - `blueprints/debug/routes.py` — `/_debug/boom` (500), `/_debug/echo` (CSRF), `/_debug/limited` (429), `/_debug/abort/<código>`.
+- `blueprints/auth/forms.py` y `routes.py` — formularios (WTForms) y vistas de cuentas; `blueprints/dashboard/routes.py` — zona con sesión.
+- `services/auth.py` — registro, autenticación, política de contraseñas, tokens de recuperación, `load_user`.
+- `email.py` — envío de correo con backend `log` o `smtp`.
+- `templates/components/forms.html` — macros `field` y `checkbox` para formularios accesibles con errores en línea.
 - `templates/base.html` — esqueleto: cabecera, flashes, `<main>`, pie con el aviso permanente de "herramienta orientativa".
 - `templates/errors/error.html` — única plantilla de error (código, título, mensaje, referencia).
 - `static/css/app.css` — tokens de diseño (tema oscuro por defecto, claro disponible) y estilos base.
@@ -31,6 +37,9 @@
 - Relajar o endurecer la CSP → `security.py`, `CSP_DIRECTIVES`.
 - Cambiar formato o destino de los logs → `logging_config.py` (`CONSOLE_FORMAT`, `JSON_FORMAT`, `_build_file_handler()`).
 - Añadir un idioma → `config.py`, `LANGUAGES`, y generar su catálogo con pybabel (ver README raíz).
+- Cambiar la política de contraseñas → `services/auth.py` (`password_problems`, `COMMON_PASSWORDS`) y `PASSWORD_MIN_LENGTH` en `config.py`.
+- Cambiar los límites de peticiones de las cuentas → decoradores `limiter.limit` en `blueprints/auth/routes.py`.
+- Caducidad del enlace de recuperación → `PASSWORD_RESET_MAX_AGE` en `config.py`.
 - Nueva variable de configuración → `config.py` en `BaseConfig` (valor por entorno en la subclase que lo necesite) y documentarla en `.env.example` y en el README raíz.
 
 **Ojo con:**

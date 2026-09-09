@@ -2,7 +2,7 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 6 cerrada: el motor completo (nutrición, rutinas y ajuste quincenal con TDEE observado) como funciones puras y testeadas; a partir de aquí, la aplicación web (auth, cuestionario, panel, registro). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
+**Estado actual:** Fase 7 cerrada: motor completo (nutrición, rutinas y ajuste) y autenticación (registro, inicio de sesión, recuperación de contraseña por correo, límites de peticiones). Siguiente: cuestionario multipaso (Fase 8). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 
@@ -51,6 +51,8 @@ Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del en
 | `LOG_DIR` | `.env` | `logs/` | Carpeta de `forja.log` (JSON por línea, rotación 5 MB x 5) |
 | `RATELIMIT_STORAGE_URI` | `.env` | `memory://` | Almacén del rate limiting; con varios workers usar Redis |
 | `SQLALCHEMY_ECHO` | `.env` | `0` | Volcar SQL en el log (solo desarrollo) |
+| `MAIL_BACKEND` | `.env` | `log` | `log` deja los correos en el log (desarrollo); `smtp` los envía (obligatorio en producción) |
+| `MAIL_SERVER`, `MAIL_PORT`, `MAIL_USE_TLS`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM` | `.env` | puerto 587, TLS activo | Servidor SMTP para la recuperación de contraseña |
 
 ## Comandos de desarrollo
 
@@ -109,7 +111,8 @@ pybabel compile -d app/translations
 Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `services/` es la única capa que habla con ambos. Detalle en `docs/ARQUITECTURA.md`.
 
 **Ficheros (raíz):**
-- `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging y seguridad.
+- `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging, seguridad, autenticación y correo.
+- `app/services/` — orquestación entre motor, modelos y web (`auth.py` por ahora).
 - `app/models/` — esquema SQLAlchemy 2.0 (20 tablas). Su `README.md` explica tipos, mixins, cascadas y cómo migrar.
 - `app/engine/` — motor de cálculo. Su `README.md` recorre cada etapa con sus fórmulas y fuentes y dice qué constante tocar para cambiar cada regla.
 - `app/engine/enums.py` — vocabulario de dominio compartido por motor, modelos y formularios.

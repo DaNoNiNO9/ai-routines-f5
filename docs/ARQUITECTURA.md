@@ -15,7 +15,7 @@ Estado: Fase 1. Este documento describe la arquitectura objetivo y marca lo que 
  ┌──────▼───────┐          ┌────────────────────────────┐
  │ services/    │ ───────► │ engine/ (funciones puras)  │  ← completo (Fases 4-6)
  │ orquestación │          │ nutrición · rutinas ·      │
- │ (Fase 8+)    │          │ ajuste · safety            │
+ │ (auth hecho) │          │ ajuste · safety            │
  └──────┬───────┘          └────────────────────────────┘
         │
  ┌──────▼───────────────────────────┐
@@ -71,12 +71,12 @@ ai-routines-f5/
 ├── config.py, wsgi.py, .flaskenv, .env.example, babel.cfg
 ├── app/
 │   ├── __init__.py, extensions.py, errors.py, logging_config.py, security.py, i18n.py
-│   ├── blueprints/{main,debug}/routes.py        (Fase 7+: auth, onboarding, dashboard, nutrition, training, tracking, account, api)
+│   ├── blueprints/{main,debug,auth,dashboard}/     (Fase 8+: onboarding, nutrition, training, tracking, account, api)
 │   ├── templates/{base.html, main/, errors/, debug/}
 │   ├── static/css/app.css                       (Fase 11: vendor/, img/, fonts/)
 │   ├── engine/                                  (Fase 4-6)
 │   ├── models/                                  (Fase 2)
-│   ├── services/                                (Fase 8+)
+│   ├── services/auth.py                         (Fase 7; plan, rutina y ajuste en Fase 8+)
 │   └── seeds/                                   (Fase 3)
 ├── migrations/                                  (Fase 2)
 ├── tests/{conftest.py, test_smoke.py, integration/, unit/}
