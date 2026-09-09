@@ -144,3 +144,14 @@ def test_the_file_name_is_safe(database: SQLAlchemy) -> None:
     nameless = make_user(database.session, email="x@y.com", display_name="///")
     assert exports.export_filename(nameless, TODAY, "zip") == "forja-datos-usuario-2026-09-09.zip"
     assert isinstance(database.session.scalar(select(User)), User)
+
+
+def test_the_pdf_writes_labels_in_spanish_not_enum_values(seeded: SQLAlchemy) -> None:
+    """A plan someone takes to a dietitian cannot say "fat_loss" or "katch_mcardle"."""
+    user, profile, result = _generate(seeded)
+    text = _pdf_text(exports.plan_pdf(user, result.plan, result.routine, profile, TODAY))
+    assert "Perder grasa".lower() in text.lower()
+    assert "Katch-McArdle" in text
+    assert "fat_loss" not in text
+    assert "katch_mcardle" not in text
+    assert "navy" not in text.lower() or "Navy" in text  # la fórmula sí se nombra
