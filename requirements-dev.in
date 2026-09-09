@@ -11,3 +11,6 @@ hypothesis==6.168.0
 
 # Linter and formatter
 ruff==0.16.6
+
+# Build-time tooling (exercise catalogue images)
+Pillow==12.3.0

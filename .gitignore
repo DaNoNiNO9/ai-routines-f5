@@ -41,3 +41,6 @@ Thumbs.db
 
 # Node (only used, if ever, to download frontend assets)
 node_modules/
+
+# Cached downloads of the build scripts
+scripts/cache/

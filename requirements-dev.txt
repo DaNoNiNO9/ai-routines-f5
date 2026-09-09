@@ -86,6 +86,8 @@ packaging==26.3
     # via
     #   limits
     #   pytest
+pillow==12.3.0
+    # via -r requirements-dev.in
 pluggy==1.6.0
     # via
     #   pytest
