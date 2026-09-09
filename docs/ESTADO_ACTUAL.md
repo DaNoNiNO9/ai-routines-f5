@@ -24,7 +24,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora (Fase 10)
 
-Estado del repo: **consistente**. La app arranca, la migración está aplicada (`976a93809ca2`, cabeza), el linter está limpio y la suite pasa con 481 tests (los servicios de la Fase 10 ya están cubiertos; faltan los de integración).
+Estado del repo: **consistente**. La app arranca, la migración está aplicada (`976a93809ca2`, cabeza), el linter está limpio y la suite pasa con 510 tests y un 98,5 % de cobertura. Falta la verificación manual con el servidor levantado.
 
 Escrito:
 
@@ -38,13 +38,15 @@ Escrito:
 
 ## Siguiente paso
 
-1. Tests de integración de la Fase 10: diario, flujo completo de una sesión y página de revisión.
-2. Verificación con el servidor levantado: registrar una sesión entera, pesajes e ingestas, y aplicar una revisión.
+1. Verificación con el servidor levantado: registrar una sesión entera, pesajes e ingestas, y aplicar una revisión.
+2. Capturas a 390 px de la sesión en vivo y del diario.
 3. Informe `docs/fases/FASE_10_INFORME.md` y cierre.
 
 ## Incidencias de esta fase
 
-- **Resuelta**: el blueprint del diario colisionaba con `auth.register` en `/registro` (alta de cuenta). El diario vive ahora en `/diario`. Pendiente: test de regresión que detecte dos endpoints con la misma regla y método.
+- **Resuelta**: el blueprint del diario colisionaba con `auth.register` en `/registro` (alta de cuenta). El diario vive ahora en `/diario`, con un test de regresión que falla si dos endpoints comparten regla y método.
+- **Resuelta**: el día viajaba en un campo oculto, así que un día inválido devolvía la página sin explicar nada. Ahora el motivo sale como aviso.
+- **Resuelta**: `Optional()` cortaba la cadena de validación y un cardio con tipo pero sin minutos se guardaba igual. La comprobación cruzada pasó al nivel del formulario.
 - **Resuelta (motor, Fase 6)**: la media móvil aceptaba ventanas parciales al principio de la serie. El centro de masa de esas ventanas avanza a media velocidad, así que la pendiente salía más plana que la real y el motor **infravaloraba la velocidad de pérdida**, justo la dirección en la que el tope de seguridad no puede equivocarse. Ahora solo promedia días con la ventana de 7 completa.
 - **Resuelta (motor, Fase 6)**: los escalones de calorías se redondeaban al múltiplo de 5 más cercano, así que un recorte podía quedar en el 5,1 % en vez del 5 % tope. Ahora los recortes redondean hacia arriba y las subidas hacia abajo: ningún escalón supera su límite documentado.
 

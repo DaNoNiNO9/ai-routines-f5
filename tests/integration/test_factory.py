@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pytest
+from flask import Flask
 
 from app import create_app
 from config import MIN_SECRET_KEY_LENGTH
@@ -90,3 +91,20 @@ def test_production_boots_with_valid_configuration() -> None:
     assert app.config["ENABLE_HSTS"] is True
     # Debug routes are not mounted in production.
     assert app.test_client().get("/_debug/boom").status_code == 404
+
+
+def test_no_two_endpoints_share_a_url_and_method(app: Flask) -> None:
+    """A blueprint prefix must not shadow an existing page.
+
+    "/registro" (sign-up) once swallowed the diary, which was registered later
+    under the same prefix: Flask keeps both rules and the first one wins.
+    """
+    seen: dict[tuple[str, str], str] = {}
+    clashes: list[str] = []
+    for rule in app.url_map.iter_rules():
+        for method in rule.methods - {"HEAD", "OPTIONS"}:
+            key = (rule.rule, method)
+            if key in seen:
+                clashes.append(f"{method} {rule.rule}: {seen[key]} y {rule.endpoint}")
+            seen[key] = rule.endpoint
+    assert clashes == []

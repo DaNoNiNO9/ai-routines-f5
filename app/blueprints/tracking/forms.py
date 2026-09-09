@@ -6,8 +6,6 @@ say no in Spanish, the database says no in SQL, and neither trusts the other.
 
 from __future__ import annotations
 
-from datetime import date
-
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -74,12 +72,29 @@ class ActivityForm(DayForm):
     )
     notes = StringField(_l("Nota (opcional)"), validators=[Optional(), Length(max=200)])
 
-    def validate_cardio_minutes(self, field: IntegerField) -> None:
-        """Minutes and kind travel together, or neither does."""
-        if field.data and not self.cardio_kind.data:
-            raise ValidationError(_l("Indica qué tipo de cardio has hecho."))
-        if self.cardio_kind.data and not field.data:
-            raise ValidationError(_l("Indica cuántos minutos han sido."))
+    def validate(self, extra_validators: dict | None = None) -> bool:
+        """Minutes and kind travel together, or neither does.
+
+        This is a form-level check on purpose: ``Optional()`` stops the chain
+        when a field is empty, so an inline validator would never see the case
+        of a kind without minutes.
+        """
+        ok = super().validate(extra_validators)
+        kind = self.cardio_kind.data
+        minutes = self.cardio_minutes.data
+        if minutes and not kind:
+            self.cardio_kind.errors = [
+                *self.cardio_kind.errors,
+                _l("Indica qué tipo de cardio has hecho."),
+            ]
+            ok = False
+        if kind and not minutes:
+            self.cardio_minutes.errors = [
+                *self.cardio_minutes.errors,
+                _l("Indica cuántos minutos han sido."),
+            ]
+            ok = False
+        return ok
 
 
 class MeasurementForm(FlaskForm):
@@ -128,8 +143,3 @@ class MeasurementForm(FlaskForm):
             self.neck_cm.errors = [*self.neck_cm.errors, _l("Rellena al menos una medida.")]
             ok = False
         return ok
-
-
-def today_or(value: date | None) -> date:
-    """``value`` when given, today in the user's time zone otherwise."""
-    return value or current_user.today()

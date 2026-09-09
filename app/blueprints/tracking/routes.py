@@ -77,6 +77,17 @@ def _diary_page(day: date, **overrides: object) -> str:
     )
 
 
+def _rejected(form: object, **overrides: object) -> str:
+    """Re-render the diary explaining why it was not saved.
+
+    The day travels in a hidden field, so ``hidden_tag()`` would swallow its
+    errors and the page would come back unchanged with no explanation.
+    """
+    for message in form.day.errors:
+        flash(str(message), "error")
+    return _diary_page(form.day.data or current_user.today(), **overrides)
+
+
 @bp.get("")
 @login_required
 def diary() -> str:
@@ -90,7 +101,7 @@ def save_weight() -> str | WerkzeugResponse:
     """Record the weigh-in of a day (saving it again replaces it)."""
     form = WeightForm()
     if not form.validate_on_submit():
-        return _diary_page(form.day.data or current_user.today(), weight_form=form)
+        return _rejected(form, weight_form=form)
     day = form.day.data
     tracking.upsert_weight(
         current_user, day, float(form.weight_kg.data or 0), (form.notes.data or "").strip() or None
@@ -106,7 +117,7 @@ def save_intake() -> str | WerkzeugResponse:
     """Record what was eaten on a day."""
     form = IntakeForm()
     if not form.validate_on_submit():
-        return _diary_page(form.day.data or current_user.today(), intake_form=form)
+        return _rejected(form, intake_form=form)
     day = form.day.data
     tracking.upsert_intake(
         current_user,
@@ -129,7 +140,7 @@ def save_activity() -> str | WerkzeugResponse:
     """Record steps and cardio of a day."""
     form = ActivityForm()
     if not form.validate_on_submit():
-        return _diary_page(form.day.data or current_user.today(), activity_form=form)
+        return _rejected(form, activity_form=form)
     day = form.day.data
     tracking.upsert_activity(
         current_user,
