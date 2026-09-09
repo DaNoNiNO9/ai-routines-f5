@@ -345,3 +345,61 @@ def test_inputs_validation() -> None:
         make_adjustment_inputs(weights, intakes, plan_calories=100)
     with pytest.raises(InputError, match="at least one weight"):
         make_adjustment_inputs([], []).current_weight_kg  # noqa: B018 - property raises
+
+
+def _sparse_weights(start_kg: float, kg_per_day: float, days: list[int]) -> list[WeightPoint]:
+    """Pesajes sueltos: uno cada tantos días, sobre una bajada lineal."""
+    return [
+        WeightPoint(day=START + timedelta(days=offset), weight_kg=start_kg + kg_per_day * offset)
+        for offset in days
+    ]
+
+
+def _sparse_inputs(weights: list[WeightPoint], **overrides: object) -> AdjustmentInputs:
+    intakes = [
+        IntakePoint(day=START + timedelta(days=offset), calories=2000, adherence_pct=95)
+        for offset in range(61)
+    ]
+    return make_adjustment_inputs(
+        weights,
+        intakes,
+        today=START + timedelta(days=60),
+        expected_weekly_change_kg=-0.5,
+        **overrides,
+    )
+
+
+def test_weighing_once_a_month_still_gets_a_review() -> None:
+    """Pesarse a diario no es un requisito: con tres pesajes ya se ve la pendiente."""
+    decision = rules.decide(_sparse_inputs(_sparse_weights(80.0, -0.07, [0, 30, 60])))
+
+    assert decision.observed_weekly_change_kg is not None
+    assert decision.observed_weekly_change_kg == pytest.approx(-0.49, abs=0.05)
+    codes = [note.code for note in decision.notes]
+    assert "adjust.sparse_trend" in codes
+    assert "adjust.trend_raw" in codes  # no se habla de media móvil cuando no la hay
+    assert "adjust.insufficient_data" not in codes
+    # Con pocos pesajes se mira un mes, no dos semanas.
+    assert (decision.next_review_on - (START + timedelta(days=60))).days == 28
+
+
+def test_a_difference_the_size_of_the_noise_changes_nothing() -> None:
+    """Con pesajes sueltos, 100 g de diferencia son agua, no progreso."""
+    decision = rules.decide(_sparse_inputs(_sparse_weights(80.0, -0.08, [0, 28, 56])))
+    assert decision.action == "keep"
+    assert not decision.changes_plan
+
+
+def test_sparse_data_halves_the_step() -> None:
+    """La mitad de datos, la mitad de escalón: 2,5 % en vez de 5 %."""
+    lento = rules.decide(_sparse_inputs(_sparse_weights(80.0, -0.01, [0, 21, 42, 60])))
+    assert lento.action == "reduce_calories"
+    assert abs(lento.calorie_delta) <= round(2200 * 0.025) + 5
+
+
+def test_sparse_data_never_relaxes_the_safety_cap() -> None:
+    """Perder demasiado rápido se corrige aunque haya tres pesajes contados."""
+    decision = rules.decide(_sparse_inputs(_sparse_weights(80.0, -0.2, [0, 30, 60])))
+    assert decision.action == "increase_calories"
+    assert decision.calorie_delta > 0
+    assert "adjust.loss_too_fast" in [note.code for note in decision.notes]
