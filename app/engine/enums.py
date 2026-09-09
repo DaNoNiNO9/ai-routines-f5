@@ -270,3 +270,12 @@ class CardioKind(StrEnum):
     LISS = "liss"
     HIIT = "hiit"
     STEPS = "steps"
+
+
+class TrainingTime(StrEnum):
+    """When the gym session usually happens; drives the carb distribution across meals."""
+
+    NONE = "none"
+    MORNING = "morning"
+    MIDDAY = "midday"
+    EVENING = "evening"

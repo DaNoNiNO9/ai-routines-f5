@@ -30,6 +30,7 @@ from app.engine.enums import (
     Sex,
     TrainingExperience,
     TrainingLocation,
+    TrainingTime,
 )
 from app.extensions import db
 from app.models.base import JSONType, TimestampMixin, UTCDateTime, enum_column, utcnow
@@ -106,6 +107,9 @@ class Profile(TimestampMixin, db.Model):
     training_location: Mapped[TrainingLocation] = mapped_column(
         enum_column(TrainingLocation), nullable=False
     )
+    training_time: Mapped[TrainingTime] = mapped_column(
+        enum_column(TrainingTime), default=TrainingTime.NONE, nullable=False
+    )
     priority_muscles: Mapped[list[str]] = mapped_column(JSONType, default=list, nullable=False)
     disliked_exercises: Mapped[list[str]] = mapped_column(JSONType, default=list, nullable=False)
     preferred_exercises: Mapped[list[str]] = mapped_column(JSONType, default=list, nullable=False)
@@ -131,6 +135,7 @@ class Profile(TimestampMixin, db.Model):
     cooking_time: Mapped[Level] = mapped_column(
         enum_column(Level, name="cooking_time"), default=Level.MEDIUM, nullable=False
     )
+    wants_carb_cycling: Mapped[bool] = mapped_column(default=False, nullable=False)
     alcohol_drinks_per_week: Mapped[int] = mapped_column(default=0, nullable=False)
     caffeine_cups_per_day: Mapped[int] = mapped_column(default=0, nullable=False)
 
