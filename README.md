@@ -2,12 +2,12 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 4 cerrada (motor de cálculo nutricional: composición corporal, BMR, TDEE por componentes, objetivo calórico, macros, comidas, ciclado y puerta de seguridad, todo como funciones puras con sus fuentes). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
+**Estado actual:** Fase 5 cerrada (motor nutricional y generador de rutinas como funciones puras: split, selección determinista de ejercicios, volumen con prioridades, equilibrio empuje/tracción, encaje en el tiempo, prescripción, mesociclos y cardio). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 
 1. Cuestionario multi-paso (Fase 8) → perfil versionado en base de datos (Fase 2).
-2. `app/engine/`: funciones puras, sin Flask ni base de datos. Composición corporal → BMR → TDEE por componentes → objetivo calórico → macros → comidas (Fase 4, hecho) → rutina (Fase 5) → ajuste (Fase 6). `safety.py` es la última puerta antes de devolver cualquier plan.
+2. `app/engine/`: funciones puras, sin Flask ni base de datos. Composición corporal → BMR → TDEE por componentes → objetivo calórico → macros → comidas (Fase 4) → rutina (Fase 5) → ajuste (Fase 6, pendiente). `safety.py` es la última puerta antes de devolver cualquier plan.
 3. `app/services/` orquesta motor y modelos y persiste planes y rutinas versionados.
 4. Blueprints y plantillas Jinja2 muestran el plan; Alpine.js y Chart.js vendorizados para interacción y gráficas.
 5. El usuario registra peso, medidas, ingesta y entrenos (Fase 10); el motor de ajuste (Fase 6) compara cada dos semanas lo real con lo esperado y recalcula.
