@@ -168,6 +168,44 @@ TEMPLATES: dict[str, str] = {
         "Objetivo de {steps} pasos al día, {liss} sesiones LISS y {hiit} HIIT "
         "(unas {kcal} kcal/semana)."
     ),
+    "adjust.insufficient_data": (
+        "Todavía no hay datos suficientes ({weight_days} pesajes en {span_days} días): "
+        "sigue registrando el peso a diario."
+    ),
+    "adjust.too_early": "La próxima revisión toca el {next_review}.",
+    "adjust.trend": (
+        "Cambio observado {observed} kg/semana frente a {expected} esperado "
+        "(media móvil de 7 días)."
+    ),
+    "adjust.tdee_observed": (
+        "Gasto observado por balance energético: {observed} kcal/día (teórico {theoretical}; "
+        "se usa {blended}, con {days} días de datos)."
+    ),
+    "adjust.adherence_first": (
+        "La pérdida va lenta pero la adherencia media es del {adherence} %: antes de tocar "
+        "calorías, revisa el registro y la constancia."
+    ),
+    "adjust.keep": "Vas según lo previsto: sin cambios hasta la próxima revisión.",
+    "adjust.reduce_calories": "Calorías bajadas {delta} kcal ({pct} %): de {old} a {new} kcal.",
+    "adjust.increase_calories": "Calorías subidas {delta} kcal ({pct} %): de {old} a {new} kcal.",
+    "adjust.add_steps": (
+        "Las calorías ya están en el mínimo seguro: se suman {steps} pasos diarios en su lugar."
+    ),
+    "adjust.loss_too_fast": (
+        "Pierdes {observed} kg/semana, por encima del máximo de {max_weekly} kg (1 % del peso): "
+        "se suben calorías."
+    ),
+    "adjust.diet_break": (
+        "Llevas {weeks} semanas en déficit y el peso está estancado: descanso de dieta de "
+        "2 semanas a mantenimiento ({calories} kcal) antes de seguir."
+    ),
+    "adjust.refeed": (
+        "Estancamiento tras {weeks} semanas de déficit: día de recarga a mantenimiento "
+        "({calories} kcal) esta semana, priorizando carbohidratos."
+    ),
+    "adjust.floor_reached": "No se baja de {floor} kcal (mínimo seguro).",
+    "adjust.capped_step": "Cambio limitado al {pct} % por revisión.",
+    "adjust.next_review": "Próxima revisión: {date}.",
     "plan.confidence": "Confianza de la estimación: {confidence}.",
 }
 
