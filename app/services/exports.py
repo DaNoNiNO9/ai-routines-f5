@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Any
 
+from flask_babel import gettext as _
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import A4
@@ -55,10 +56,13 @@ INK = colors.HexColor("#15171c")
 MUTED = colors.HexColor("#5a6170")
 RULE = colors.HexColor("#d7dae2")
 
-DISCLAIMER = (
-    "Forja es una herramienta orientativa. No sustituye el consejo de un médico, "
-    "dietista-nutricionista ni de ningún otro profesional sanitario."
-)
+
+def _disclaimer() -> str:
+    """El mismo aviso que el pie de la web, en el idioma de quien lee."""
+    return _(
+        "Forja es una herramienta orientativa. No sustituye el consejo de un médico, "
+        "dietista-nutricionista ni de ningún otro profesional sanitario."
+    )
 
 
 @dataclass(frozen=True)
@@ -176,7 +180,7 @@ def _page_furniture(canvas: Any, doc: Any) -> None:
     canvas.setFont("Helvetica", 7)
     canvas.setFillColor(MUTED)
     text = canvas.beginText(18 * mm, 14 * mm)
-    for line in _wrap(DISCLAIMER, 110):
+    for line in _wrap(_disclaimer(), 110):
         text.textLine(line)
     canvas.drawText(text)
     canvas.drawRightString(width - 18 * mm, 14 * mm, str(canvas.getPageNumber()))
@@ -229,29 +233,33 @@ def plan_pdf(
         rightMargin=18 * mm,
         topMargin=22 * mm,
         bottomMargin=22 * mm,
-        title=f"Forja · plan de {user.display_name}",
+        title=_("Forja · plan de %(name)s", name=user.display_name),
         author="Forja",
-        subject="Plan de nutrición y entrenamiento",
+        subject=_("Plan de nutrición y entrenamiento"),
     )
     document.forja_subtitle = f"{user.display_name} · {today.strftime('%d/%m/%Y')}"
     flow: list[Any] = []
 
-    flow.append(Paragraph("PLAN DE NUTRICIÓN Y ENTRENAMIENTO", styles["eyebrow"]))
+    flow.append(Paragraph(_("Plan de nutrición y entrenamiento").upper(), styles["eyebrow"]))
     flow.append(Paragraph(user.display_name, styles["title"]))
     flow.append(
         Paragraph(
-            f"Generado el {today.strftime('%d/%m/%Y')} · cuestionario v{profile.version} · "
-            f"objetivo: {label(GOAL, profile.goal).lower()}",
+            _(
+                "Generado el %(date)s · cuestionario v%(version)s · objetivo: %(goal)s",
+                date=today.strftime("%d/%m/%Y"),
+                version=profile.version,
+                goal=label(GOAL, profile.goal).lower(),
+            ),
             styles["muted"],
         )
     )
     flow.append(Spacer(1, 8))
 
     if plan is None:
-        flow.append(Paragraph("No hay plan de nutrición", styles["h2"]))
+        flow.append(Paragraph(_("No hay plan de nutrición"), styles["h2"]))
         flow.append(
             Paragraph(
-                "Las respuestas del cuestionario impiden calcular un plan con seguridad:",
+                _("Las respuestas del cuestionario impiden calcular un plan con seguridad:"),
                 styles["body"],
             )
         )
@@ -268,6 +276,15 @@ def plan_pdf(
     return buffer.getvalue()
 
 
+def _meal_name(meal: Any) -> str:
+    """El nombre de la comida, marcando las que rodean al entrenamiento."""
+    if meal.timing.value == "pre_workout":
+        return _("%(name)s (pre)", name=meal.name)
+    if meal.timing.value == "post_workout":
+        return _("%(name)s (post)", name=meal.name)
+    return str(meal.name)
+
+
 def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphStyle]) -> list[Any]:
     details = plan.details or {}
     target = details.get("target") or {}
@@ -277,11 +294,18 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
     hydration = details.get("hydration") or {}
     flow: list[Any] = []
 
-    flow.append(Paragraph("Objetivo diario", styles["h2"]))
+    flow.append(Paragraph(_("Objetivo diario"), styles["h2"]))
     flow.append(
         _table(
             [
-                ["Calorías", "Proteína", "Carbohidratos", "Grasa", "Fibra", "Agua"],
+                [
+                    _("Calorías"),
+                    _("Proteína"),
+                    _("Carbohidratos"),
+                    _("Grasa"),
+                    _("Fibra"),
+                    _("Agua"),
+                ],
                 [
                     f"{plan.calorie_target} kcal",
                     f"{_round(plan.protein_g)} g",
@@ -296,27 +320,31 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
         )
     )
     flow.append(Spacer(1, 6))
-    modo = {"deficit": "Déficit", "surplus": "Superávit"}.get(target.get("mode"), "Mantenimiento")
-    flow.append(
-        Paragraph(
-            f"{modo} del {_round(float(target.get('fraction', 0)) * 100, 1)} % sobre el gasto. "
-            f"Mantenimiento estimado {_round(target.get('maintenance_kcal'))} kcal, "
-            f"balance diario {_round(target.get('daily_balance_kcal'))} kcal, "
-            f"cambio esperado {_round(target.get('expected_weekly_change_kg'), 2)} kg por semana. "
-            "En días de entrenamiento, "
-            f"{hydration.get('training_day_ml', 0) / 1000:.1f} l de agua.",
-            styles["body"],
-        )
+    # La primera frase es la del motor: misma redacción y traducción ya hecha.
+    pct = _round(float(target.get("fraction", 0)) * 100, 1)
+    modo = target.get("mode")
+    if modo == "deficit":
+        cabeza = _("Déficit del %(pct)s %% sobre el gasto.", pct=pct)
+    elif modo == "surplus":
+        cabeza = _("Superávit del %(pct)s %% sobre el gasto.", pct=pct)
+    else:
+        cabeza = _("Calorías de mantenimiento.")
+    detalle = _(
+        "Mantenimiento estimado %(tdee)s kcal, balance diario %(balance)s kcal, cambio "
+        "esperado %(change)s kg por semana. En días de entrenamiento, %(water)s l de agua.",
+        tdee=_round(target.get("maintenance_kcal")),
+        balance=_round(target.get("daily_balance_kcal")),
+        change=_round(target.get("expected_weekly_change_kg"), 2),
+        water=f"{hydration.get('training_day_ml', 0) / 1000:.1f}",
     )
+    flow.append(Paragraph(f"{cabeza} {detalle}", styles["body"]))
 
     if plan.meals:
-        flow.append(Paragraph("Reparto por comidas", styles["h2"]))
-        filas = [["Comida", "kcal", "Proteína", "Carbos", "Grasa"]]
+        flow.append(Paragraph(_("Reparto por comidas"), styles["h2"]))
+        filas = [[_("Comida"), "kcal", _("Proteína"), _("Carbos"), _("Grasa")]]
         filas += [
             [
-                meal.name
-                + (" (pre)" if meal.timing.value == "pre_workout" else "")
-                + (" (post)" if meal.timing.value == "post_workout" else ""),
+                _meal_name(meal),
                 str(meal.calories),
                 f"{_round(meal.protein_g)} g",
                 f"{_round(meal.carbs_g)} g",
@@ -329,59 +357,68 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
     cycle = details.get("carb_cycle")
     if isinstance(cycle, dict):
         alto, bajo = cycle.get("high_day", {}), cycle.get("low_day", {})
-        flow.append(Paragraph("Ciclado de carbohidratos", styles["h3"]))
+        flow.append(Paragraph(_("Ciclado de carbohidratos"), styles["h3"]))
         flow.append(
             Paragraph(
-                f"{cycle.get('training_days')} días de entrenamiento con "
-                f"{alto.get('carbs_g')} g de carbohidratos ({alto.get('calories')} kcal) y "
-                f"{cycle.get('rest_days')} de descanso con {bajo.get('carbs_g')} g "
-                f"({bajo.get('calories')} kcal). La media semanal es la del plan.",
+                _(
+                    "%(td)s días de entreno con %(hc)s g de carbohidratos (%(hk)s kcal) y "
+                    "%(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media semanal es la "
+                    "del plan.",
+                    td=cycle.get("training_days"),
+                    hc=alto.get("carbs_g"),
+                    hk=alto.get("calories"),
+                    rd=cycle.get("rest_days"),
+                    lc=bajo.get("carbs_g"),
+                    lk=bajo.get("calories"),
+                ),
                 styles["body"],
             )
         )
 
-    flow.append(Paragraph("Cómo se ha calculado", styles["h2"]))
+    flow.append(Paragraph(_("Cómo se ha calculado"), styles["h2"]))
     composicion = [
-        ["Dato", "Valor"],
-        ["Peso", f"{_round(body.get('weight_kg'), 1)} kg"],
-        ["Altura", f"{_round(body.get('height_cm'), 0)} cm"],
-        ["IMC", _round(body.get("bmi"), 1)],
+        [_("Dato"), _("Valor")],
+        [_("Peso"), f"{_round(body.get('weight_kg'), 1)} kg"],
+        [_("Altura"), f"{_round(body.get('height_cm'), 0)} cm"],
+        [_("IMC"), _round(body.get("bmi"), 1)],
         [
-            "Grasa corporal",
+            _("Grasa corporal"),
             f"{_round(body.get('body_fat_pct'), 1)} %"
             if body.get("body_fat_pct") is not None
-            else "sin estimación",
+            else _("sin estimación"),
         ],
         [
-            "Método",
+            _("Método"),
             label(BODY_FAT_METHOD, body.get("body_fat_source"))
             if body.get("body_fat_pct") is not None
             else "—",
         ],
         [
-            "Masa magra",
+            _("Masa magra"),
             f"{_round(body.get('lean_mass_kg'), 1)} kg" if body.get("lean_mass_kg") else "—",
         ],
-        ["Metabolismo basal", f"{_round(bmr.get('selected_kcal'))} kcal"],
-        ["Fórmula del basal", label(BMR_METHOD, bmr.get("method"))],
-        ["Gasto por actividad diaria", f"{_round(spent.get('neat_kcal'))} kcal"],
-        ["Gasto por ejercicio", f"{_round(spent.get('eat_kcal'))} kcal"],
-        ["Mantenimiento", f"{_round(spent.get('maintenance_kcal'))} kcal"],
+        [_("Metabolismo basal"), f"{_round(bmr.get('selected_kcal'))} kcal"],
+        [_("Fórmula del basal"), label(BMR_METHOD, bmr.get("method"))],
+        [_("Gasto por actividad diaria"), f"{_round(spent.get('neat_kcal'))} kcal"],
+        [_("Gasto por ejercicio"), f"{_round(spent.get('eat_kcal'))} kcal"],
+        [_("Mantenimiento"), f"{_round(spent.get('maintenance_kcal'))} kcal"],
     ]
     flow.append(_table(composicion, [70 * mm, 60 * mm]))
     flow.append(
         Paragraph(
-            "Fórmulas: composición corporal por perímetros (Navy), metabolismo basal por "
-            "Katch-McArdle o Mifflin-St Jeor, y gasto por componentes (basal + actividad diaria + "
-            "ejercicio + digestión). El suelo calórico y el ritmo máximo de pérdida se comprueban "
-            "sobre las cifras finales.",
+            _(
+                "Fórmulas: composición corporal por perímetros (Navy), metabolismo basal por "
+                "Katch-McArdle o Mifflin-St Jeor, y gasto por componentes (basal + actividad "
+                "diaria + ejercicio + digestión). El suelo calórico y el ritmo máximo de "
+                "pérdida se comprueban sobre las cifras finales."
+            ),
             styles["muted"],
         )
     )
 
     avisos = plans_service.messages_of(details)
     if avisos:
-        flow.append(Paragraph("Avisos y explicaciones", styles["h3"]))
+        flow.append(Paragraph(_("Avisos y explicaciones"), styles["h3"]))
         for item in avisos:
             flow.append(Paragraph(f"• {item['text']}", styles["muted"]))
     del profile
@@ -390,22 +427,27 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
 
 def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[Any]:
     details = routine.details or {}
-    flow: list[Any] = [Paragraph("Rutina", styles["h2"]), Paragraph(routine.name, styles["h3"])]
+    flow: list[Any] = [
+        Paragraph(_("Rutina"), styles["h2"]),
+        Paragraph(routine.name, styles["h3"]),
+    ]
     rir = details.get("weekly_rir") or []
-    flow.append(
-        Paragraph(
-            f"{routine.days_per_week} días por semana · mesociclo de {routine.mesocycle_weeks} "
-            f"semanas · descarga cada {routine.deload_every_weeks}"
-            + (f" · RIR por semana: {', '.join(str(value) for value in rir)}" if rir else ""),
-            styles["muted"],
-        )
+    resumen = _(
+        "%(days)s días por semana · mesociclo de %(weeks)s semanas · descarga cada %(deload)s",
+        days=routine.days_per_week,
+        weeks=routine.mesocycle_weeks,
+        deload=routine.deload_every_weeks,
     )
+    if rir:
+        valores = ", ".join(str(value) for value in rir)
+        resumen += " · " + _("RIR por semana: %(rir)s", rir=valores)
+    flow.append(Paragraph(resumen, styles["muted"]))
 
     for day in routine.days:
-        filas = [["Ejercicio", "Series", "Reps", "RIR", "Descanso"]]
+        filas = [[_("Ejercicio"), _("Series"), _("Reps"), "RIR", _("Descanso")]]
         filas += [
             [
-                item.exercise.name_es,
+                item.exercise.display_name,
                 str(item.sets),
                 f"{item.rep_min}-{item.rep_max}",
                 f"{item.rir_start}→{item.rir_end}",
@@ -414,9 +456,13 @@ def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[
             for item in day.exercises
         ]
         bloque = [
-            Paragraph(f"Día {day.day_index} · {day.name}", styles["h3"]),
+            Paragraph(f"{_('Día %(n)s', n=day.day_index)} · {day.name}", styles["h3"]),
             Paragraph(
-                f"{len(day.exercises)} ejercicios · unos {day.estimated_minutes} minutos",
+                _(
+                    "%(n)s ejercicios · unos %(m)s minutos",
+                    n=len(day.exercises),
+                    m=day.estimated_minutes,
+                ),
                 styles["muted"],
             ),
             _table(filas, [70 * mm, 20 * mm, 25 * mm, 25 * mm, 25 * mm]),
@@ -427,19 +473,25 @@ def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[
 
     cardio = details.get("cardio")
     if isinstance(cardio, dict):
-        flow.append(Paragraph("Cardio y pasos", styles["h3"]))
-        partes = [f"{cardio.get('daily_steps_target')} pasos al día"]
+        flow.append(Paragraph(_("Cardio y pasos"), styles["h3"]))
+        partes = [_("%(n)s pasos al día", n=cardio.get("daily_steps_target"))]
         if cardio.get("liss_sessions"):
             partes.append(
-                f"{cardio['liss_sessions']} x {cardio['liss_minutes']} min de cardio suave"
+                _(
+                    "%(n)s x %(m)s min de cardio suave",
+                    n=cardio["liss_sessions"],
+                    m=cardio["liss_minutes"],
+                )
             )
         if cardio.get("hiit_sessions"):
-            partes.append(f"{cardio['hiit_sessions']} x {cardio['hiit_minutes']} min de HIIT")
+            partes.append(
+                _("%(n)s x %(m)s min de HIIT", n=cardio["hiit_sessions"], m=cardio["hiit_minutes"])
+            )
         flow.append(Paragraph(" · ".join(partes) + ".", styles["body"]))
 
     avisos = plans_service.messages_of(details)
     if avisos:
-        flow.append(Paragraph("Cómo está montada", styles["h3"]))
+        flow.append(Paragraph(_("Cómo está montada"), styles["h3"]))
         for item in avisos:
             flow.append(Paragraph(f"• {item['text']}", styles["muted"]))
     return flow
@@ -787,7 +839,11 @@ def personal_sheets(user: User) -> list[Sheet]:
     ]
 
 
-README = """Exportación de datos de Forja
+def _readme() -> str:
+    """Qué lleva el ZIP, en el idioma de quien lo descarga."""
+    # El literal va sin sangrar a propósito: el texto del fichero es ese.
+    return _(
+        """Exportación de datos de Forja
 =============================
 
 Un fichero por tipo de dato, en CSV con separador de coma y codificación
@@ -810,13 +866,14 @@ Las fechas van en formato ISO (aaaa-mm-dd) y las horas en UTC.
 Forja es una herramienta orientativa. No sustituye el consejo de un médico,
 dietista-nutricionista ni de ningún otro profesional sanitario.
 """
+    )
 
 
 def data_archive(user: User) -> bytes:
     """Every record of ``user`` as a ZIP of CSV files, with a readme."""
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr("LEEME.txt", README)
+        archive.writestr("LEEME.txt", _readme())
         for sheet in personal_sheets(user):
             text = io.StringIO(newline="")
             writer = csv.writer(text, lineterminator="\r\n")
