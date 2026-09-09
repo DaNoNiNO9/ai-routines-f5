@@ -330,7 +330,7 @@ def equipment_names() -> list[tuple[str, str]]:
     rows = db.session.scalars(
         select(Equipment).order_by(Equipment.sort_order, Equipment.name_es)
     ).all()
-    return [(row.code, row.name_es) for row in rows]
+    return [(row.code, row.display_name) for row in rows]
 
 
 def equipment_groups() -> list[tuple[str, list[tuple[str, str]]]]:
@@ -340,7 +340,7 @@ def equipment_groups() -> list[tuple[str, list[tuple[str, str]]]]:
     ).all()
     groups: list[tuple[str, list[tuple[str, str]]]] = []
     for category in EQUIPMENT_CATEGORY:
-        items = [(row.code, row.name_es) for row in rows if row.category is category]
+        items = [(row.code, row.display_name) for row in rows if row.category is category]
         if items:
             groups.append((str(EQUIPMENT_CATEGORY[category]), items))
     return groups

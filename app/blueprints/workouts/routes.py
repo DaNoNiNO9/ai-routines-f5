@@ -170,7 +170,7 @@ def substitute(session_id: int) -> WerkzeugResponse:
     else:
         db.session.commit()
         flash(
-            _("Ejercicio sustituido por %(name)s.", name=exercise.name_es)
+            _("Ejercicio sustituido por %(name)s.", name=exercise.display_name)
             if exercise
             else _("Ejercicio original restaurado."),
             "success",

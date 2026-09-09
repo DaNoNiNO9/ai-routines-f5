@@ -80,7 +80,7 @@
             <tbody>
               {% for item in day.exercises %}
                 <tr>
-                  <td>{{ item.exercise.name_es }}</td>
+                  <td>{{ item.exercise.display_name }}</td>
                   <td>{{ item.sets }} × {{ item.rep_min }}-{{ item.rep_max }}</td>
                   <td>{{ item.rir_start }}→{{ item.rir_end }}</td>
                   <td>{{ item.rest_seconds }} s</td>

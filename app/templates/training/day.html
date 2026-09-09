@@ -25,15 +25,15 @@
       {% set images = frames[item.id] %}
       {% if images %}
         <button type="button" class="exercise-media" @click="frame = 1 - frame" aria-label="{{ _('Cambiar entre posición inicial y final') }}">
-          <img src="{{ url_for('static', filename=images[0]) }}" alt="{{ _('%(name)s, posición inicial', name=item.exercise.name_es) }}" loading="lazy" :hidden="frame !== 0">
+          <img src="{{ url_for('static', filename=images[0]) }}" alt="{{ _('%(name)s, posición inicial', name=item.exercise.display_name) }}" loading="lazy" :hidden="frame !== 0">
           {% if images|length > 1 %}
-            <img src="{{ url_for('static', filename=images[1]) }}" alt="{{ _('%(name)s, posición final', name=item.exercise.name_es) }}" loading="lazy" hidden :hidden="frame !== 1">
+            <img src="{{ url_for('static', filename=images[1]) }}" alt="{{ _('%(name)s, posición final', name=item.exercise.display_name) }}" loading="lazy" hidden :hidden="frame !== 1">
           {% endif %}
         </button>
       {% endif %}
       <div class="exercise-body">
         <p class="eyebrow">{{ loop.index }} · {{ labels.label(labels.MOVEMENT_PATTERN, item.exercise.movement_pattern) }} · {{ labels.label(labels.MUSCLE_GROUP, item.exercise.primary_muscle) }}</p>
-        <h2 class="card-title">{{ item.exercise.name_es }}</h2>
+        <h2 class="card-title">{{ item.exercise.display_name }}</h2>
         <dl class="rx">
           <div><dt>{{ _('Series') }}</dt><dd>{{ item.sets }}</dd></div>
           <div><dt>{{ _('Reps') }}</dt><dd>{{ item.rep_min }}-{{ item.rep_max }}</dd></div>
@@ -55,7 +55,7 @@
           <summary>{{ _('Alternativas') }} ({{ options|length }})</summary>
           {% if options %}
             <ul class="alt-list">
-              {% for alt in options %}<li>{{ alt.name_es }} <span class="muted">· {{ alt.equipment|map(attribute='name_es')|join(', ') }}</span></li>{% endfor %}
+              {% for alt in options %}<li>{{ alt.display_name }} <span class="muted">· {{ alt.equipment|map(attribute='display_name')|join(', ') }}</span></li>{% endfor %}
             </ul>
           {% else %}
             <p class="muted">{{ _('Ninguna con tu material y tus lesiones.') }}</p>

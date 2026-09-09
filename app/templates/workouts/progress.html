@@ -19,14 +19,14 @@
   <form method="get" class="inline-fields">
     <label class="field-label" for="ejercicio">{{ _('Ejercicio') }}</label>
     <select id="ejercicio" name="ejercicio" class="field-input">
-      {% for item in exercises %}<option value="{{ item.slug }}"{% if chosen and item.id == chosen.id %} selected{% endif %}>{{ item.name_es }}</option>{% endfor %}
+      {% for item in exercises %}<option value="{{ item.slug }}"{% if chosen and item.id == chosen.id %} selected{% endif %}>{{ item.display_name }}</option>{% endfor %}
     </select>
     <button type="submit" class="button button-small button-secondary">{{ _('Ver') }}</button>
   </form>
   <section class="card">
-    <h2 class="card-title">{{ chosen.name_es }}</h2>
+    <h2 class="card-title">{{ chosen.display_name }}</h2>
     {% if chart %}
-      {{ chart_box('progress', 'lines', chart, _('Evolución de %(name)s', name=chosen.name_es), height='16rem') }}
+      {{ chart_box('progress', 'lines', chart, _('Evolución de %(name)s', name=chosen.display_name), height='16rem') }}
     {% else %}
       <p class="empty">{{ _('Con dos sesiones registradas aparecerá la gráfica.') }}</p>
     {% endif %}

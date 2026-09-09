@@ -45,6 +45,13 @@ class Equipment(TimestampMixin, db.Model):
     )
     sort_order: Mapped[int] = mapped_column(default=100, nullable=False)
 
+    @property
+    def display_name(self) -> str:
+        """El nombre en el idioma de quien lee (ver ``app.labels``)."""
+        from app.labels import catalogue_name
+
+        return catalogue_name(self)
+
     def __repr__(self) -> str:
         return f"<Equipment {self.code}>"
 
@@ -96,6 +103,13 @@ class Exercise(TimestampMixin, db.Model):
         foreign_keys="ExerciseAlternative.exercise_id",
         order_by="ExerciseAlternative.priority",
     )
+
+    @property
+    def display_name(self) -> str:
+        """El nombre en el idioma de quien lee (ver ``app.labels``)."""
+        from app.labels import catalogue_name
+
+        return catalogue_name(self)
 
     @property
     def equipment_codes(self) -> set[str]:

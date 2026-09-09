@@ -10,6 +10,8 @@ from collections.abc import Mapping
 from enum import Enum
 from typing import Any
 
+from flask import has_app_context
+from flask_babel import get_locale
 from flask_babel import lazy_gettext as _l
 
 from app.engine.enums import (
@@ -273,3 +275,16 @@ def label(mapping: Mapping[Any, Any], value: Any) -> str:
         if key == value or raw == value:
             return str(text)
     return str(value)
+
+
+def catalogue_name(row: Any) -> str:
+    """Nombre de catálogo (ejercicio o material) en el idioma de la petición.
+
+    Las semillas traen los dos idiomas. Fuera de una petición manda el
+    castellano, que es lo que esperan los scripts, los tests y el CSV de datos.
+    """
+    spanish = str(getattr(row, "name_es", "") or "")
+    english = str(getattr(row, "name_en", "") or "")
+    if english and has_app_context() and str(get_locale() or "").startswith("en"):
+        return english
+    return spanish
