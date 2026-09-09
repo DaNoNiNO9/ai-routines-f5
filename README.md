@@ -2,7 +2,7 @@
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
-**Estado actual:** Fase 1 cerrada (arquitectura: configuración por entorno, logging estructurado, errores globales, cabeceras de seguridad, i18n). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`.
+**Estado actual:** Fase 2 cerrada (esquema completo de 20 tablas, migraciones Alembic, seeds de equipamiento). Informes de cada fase en `docs/fases/`. Arquitectura en `docs/ARQUITECTURA.md`, esquema en `docs/MODELO_DATOS.md`.
 
 **Cómo funciona:** flujo objetivo; se completa por fases y lo que aún no existe lleva su fase entre paréntesis.
 
@@ -28,6 +28,8 @@ python -m pip install --upgrade pip
 pip install -r requirements-dev.txt   # incluye las dependencias de ejecución
 
 copy .env.example .env                # Linux: cp .env.example .env ; ajusta SECRET_KEY si quieres
+flask db upgrade                      # crea instance/forja.db con el esquema
+flask seed all                        # catálogo de equipamiento
 flask run                             # http://127.0.0.1:5000 (configuración en .flaskenv)
 ```
 
@@ -56,6 +58,9 @@ Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del en
 |---|---|
 | `flask run` | Servidor de desarrollo con recarga automática |
 | `flask run --no-reload` | Un solo proceso (útil para pruebas con `curl`) |
+| `flask db upgrade` / `flask db downgrade -1` | Aplicar o deshacer migraciones |
+| `flask db migrate -m "descripción"` | Autogenerar una migración tras cambiar modelos (revisar el fichero) |
+| `flask seed equipment` / `flask seed all` | Cargar datos de referencia (idempotente) |
 | `pytest` | Suite de tests |
 | `pytest --cov` | Tests con cobertura de `app/`, ramas incluidas (`--cov-report=html` genera `htmlcov/`) |
 | `ruff check .` | Linter |
@@ -103,6 +108,10 @@ Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `servi
 
 **Ficheros (raíz):**
 - `app/` — capa web. Su `README.md` explica factory, configuración, errores, logging y seguridad.
+- `app/models/` — esquema SQLAlchemy 2.0 (20 tablas). Su `README.md` explica tipos, mixins, cascadas y cómo migrar.
+- `app/engine/enums.py` — vocabulario de dominio compartido por motor, modelos y formularios.
+- `app/seeds/` — datos de referencia (`equipment.json`) y cargadores idempotentes; comandos en `app/cli.py`.
+- `migrations/` — Alembic (Flask-Migrate). `env.py` editado a mano: engine directo y sin silenciar loggers.
 - `config.py` — clases de configuración por entorno y validación de producción.
 - `wsgi.py` — punto de entrada para waitress o gunicorn.
 - `tests/` — `conftest.py` (fixtures `make_app`, `app`, `client`), `test_smoke.py` e `integration/`.
@@ -114,6 +123,7 @@ Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `servi
 - `docs/ENTORNO.md` — máquina de desarrollo, versiones y trampas.
 - `docs/DECISIONES.md` — decisiones de producto y técnicas, con fecha.
 - `docs/ARQUITECTURA.md` — capas, ciclo de petición, convenciones.
+- `docs/MODELO_DATOS.md` — tablas, relaciones, rangos comprobados y flujo de migraciones.
 - `docs/fases/` — informe de cierre de cada fase.
 
 **Por dónde tocar:**
@@ -124,6 +134,7 @@ Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `servi
 - Cambiar el nombre visible del producto → `APP_NAME` en `config.py`.
 
 **Ojo con:**
+- Nunca `db.create_all()` fuera de los tests: el esquema se crea y evoluciona solo con `flask db upgrade`.
 - `requirements*.txt` están generados: editar los `.in` y recompilar, nunca el `.txt`.
 - En PowerShell, `curl` es un alias de `Invoke-WebRequest`; usa `curl.exe`.
 - Con `FLASK_DEBUG=1` un error 500 muestra el depurador de Werkzeug, no la página de error de la app. Para ver la página real: `$env:FLASK_DEBUG="0"; flask run --no-reload`.

@@ -45,3 +45,16 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-14 | Rutas de diagnóstico | Blueprint `debug` bajo `/_debug` solo con `ENABLE_DEBUG_ROUTES`; producción no arranca si está activo | Poder provocar 500, CSRF y 429 a mano y en tests sin dejar puertas abiertas |
 | T-15 | Id de petición | Cabecera `X-Request-ID` (se respeta la entrante, truncada a 64, o se generan 12 hex); aparece en logs, respuestas y páginas de error | Correlacionar lo que ve el usuario con la línea del log |
 | T-16 | Textos | Los mensajes de error viven en Python con `lazy_gettext` y tildes correctas; el resto de textos en plantillas con `_()` | Preparado para pybabel desde el principio (D-05) |
+
+## 2026-09-09 — Fase 2 (modelo de datos)
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-17 | Estilo ORM | SQLAlchemy 2.0 con `Mapped[...]` y `mapped_column`, `Base` declarativa con convención de nombres para todos los constraints | Alembic en modo batch (SQLite) exige nombres deterministas; PostgreSQL agradece nombres únicos |
+| T-18 | Enums | VARCHAR(32) + CHECK con los valores de `app/engine/enums.py` (`StrEnum`), sin tipos nativos de PostgreSQL | Portable entre SQLite y PostgreSQL; el vocabulario vive en un módulo sin Flask que comparten motor, modelos y formularios |
+| T-19 | Fechas | `UTCDateTime`: solo fechas-hora *aware*, normalizadas a UTC; `date` para registros diarios | SQLite pierde el offset; así ningún dato ambiguo llega a la base |
+| T-20 | Decimales | `Float` en pesos, medidas y macros | SQLite no tiene decimal nativo (SQLAlchemy avisa en cada consulta); la precisión de float sobra para kg y gramos |
+| T-21 | JSON | Columnas JSON (JSONB en PostgreSQL) para listas y estructuras que no se filtran por SQL: prioridades, aversiones, contraindicaciones, instantáneas del motor | Evita tablas satélite sin valor de consulta; la validación la hace el código |
+| T-22 | Borrado | Físico en cascada desde `users` (GDPR); lógico en `plans`, `routines`, `workout_sessions` y `users`; `RESTRICT` en ejercicios referenciados | Derecho al olvido completo y posibilidad de deshacer en el día a día |
+| T-23 | Registro de ingesta | Tabla `intake_logs` (kcal, macros, adherencia 0-100) y `activity_logs` (pasos, cardio), una fila por día | Alimentan el TDEE observado del motor de ajuste (D-07) |
+| T-24 | Migraciones | Flask-Migrate con `render_as_batch=True` y `render_item` propio: los ficheros de migración usan solo tipos estándar; test que compara migración y modelos | Migraciones independientes del código de la app y sin deriva silenciosa |
