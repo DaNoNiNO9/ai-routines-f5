@@ -4,6 +4,12 @@ Daily weights swing by 1-2 % with water and glycogen, so single days are never
 compared (§3.8). Each day gets the average of the weigh-ins in the trailing
 7-day window, and the trend is the least-squares slope of those smoothed
 values over the review window, expressed in kg per week.
+
+Weighing daily is not a requirement. With one weigh-in a week (or a month)
+there is nothing to smooth, so the slope is fitted over the raw points across
+a longer window: the same noise is there, but spread over enough weeks that
+the signal beats it. That trend is marked as low confidence and ``smoothed``
+False, and the rules act on it more slowly and more gently.
 """
 
 from __future__ import annotations
@@ -11,7 +17,14 @@ from __future__ import annotations
 from collections.abc import Sequence
 from datetime import date, timedelta
 
-from app.engine.adjustment.types import MIN_SPAN_DAYS, MIN_WEIGHT_DAYS, TrendEstimate, WeightPoint
+from app.engine.adjustment.types import (
+    MIN_SPAN_DAYS,
+    MIN_WEIGHT_DAYS,
+    SPARSE_MIN_POINTS,
+    SPARSE_MIN_SPAN_DAYS,
+    TrendEstimate,
+    WeightPoint,
+)
 from app.engine.enums import Confidence
 
 WINDOW_DAYS = 7
@@ -74,13 +87,17 @@ def estimate_trend(weights: Sequence[WeightPoint], start: date, end: date) -> Tr
     weight_days = len({point.day for point in in_window})
     coverage = weight_days / span if span > 0 else 0.0
 
-    slope = (
-        slope_per_day(smoothed)
-        if weight_days >= MIN_WEIGHT_DAYS and span >= MIN_SPAN_DAYS
-        else None
-    )
+    smoothed_enough = weight_days >= MIN_WEIGHT_DAYS and span >= MIN_SPAN_DAYS
+    slope = slope_per_day(smoothed) if smoothed_enough else None
+    from_raw = False
+    if slope is None and weight_days >= SPARSE_MIN_POINTS and span >= SPARSE_MIN_SPAN_DAYS:
+        # Sin media móvil posible: la pendiente sale de los pesajes tal cual.
+        raw = sorted((point.day, point.weight_kg) for point in in_window)
+        slope = slope_per_day(raw)
+        from_raw = slope is not None
+
     weekly = round(slope * 7, 2) if slope is not None else None
-    if weekly is None:
+    if weekly is None or from_raw:
         confidence = Confidence.LOW
     elif coverage >= GOOD_COVERAGE and span >= 2 * MIN_SPAN_DAYS - 6:
         confidence = Confidence.HIGH
@@ -95,4 +112,5 @@ def estimate_trend(weights: Sequence[WeightPoint], start: date, end: date) -> Tr
         end_average_kg=smoothed[-1][1] if smoothed else None,
         weekly_change_kg=weekly,
         confidence=confidence,
+        smoothed=not from_raw,
     )

@@ -28,6 +28,7 @@ from app.engine import safety
 from app.engine.adjustment.energy_balance import KCAL_PER_KG, estimate_tdee, mean_adherence
 from app.engine.adjustment.smoothing import estimate_trend
 from app.engine.adjustment.types import (
+    SPARSE_REVIEW_INTERVAL_DAYS,
     AdjustmentDecision,
     AdjustmentInputs,
     TdeeEstimate,
@@ -37,6 +38,8 @@ from app.engine.enums import AdjustmentReason
 from app.engine.types import Note
 
 MAX_CUT_FRACTION = 0.05
+# Con pocos pesajes, por debajo de esto no se distingue el cambio real del agua.
+SPARSE_NOISE_KG = 0.2
 MAX_RAISE_FRACTION = 0.10
 ADHERENCE_THRESHOLD = 85.0
 SLOW_FRACTION = 0.5
@@ -73,9 +76,24 @@ class Review:
         """Expected weekly change from the plan."""
         return self.inputs.expected_weekly_change_kg
 
+    @property
+    def sparse(self) -> bool:
+        """Whether the trend came from loose weigh-ins instead of a smoothed series."""
+        return not self.trend.smoothed
+
+    @property
+    def step_limit(self) -> float:
+        """Cap for one step; halved when the trend is built on few weigh-ins."""
+        return MAX_CUT_FRACTION / 2 if self.sparse else MAX_CUT_FRACTION
+
     def next_review(self) -> date:
-        """Date of the following review after acting today."""
-        return self.inputs.today + timedelta(days=self.inputs.review_interval_days)
+        """Date of the following review after acting today.
+
+        Con pocos pesajes hay que mirar más lejos: en dos semanas el ruido
+        del agua pesa más que el cambio real, en cuatro ya no.
+        """
+        days = SPARSE_REVIEW_INTERVAL_DAYS if self.sparse else self.inputs.review_interval_days
+        return self.inputs.today + timedelta(days=max(days, self.inputs.review_interval_days))
 
     def decision(
         self,
@@ -150,8 +168,21 @@ def decide(inputs: AdjustmentInputs) -> AdjustmentDecision:
         )
 
     review.notes.append(
-        Note("adjust.trend", params={"observed": review.observed, "expected": review.expected})
+        Note(
+            "adjust.trend_raw" if review.sparse else "adjust.trend",
+            params={"observed": review.observed, "expected": review.expected},
+        )
     )
+    if review.sparse:
+        review.notes.append(
+            Note(
+                "adjust.sparse_trend",
+                params={"weight_days": trend.weight_days, "span_days": trend.span_days},
+            )
+        )
+        if abs(review.observed - review.expected) < SPARSE_NOISE_KG:
+            review.notes.append(Note("adjust.keep"))
+            return review.decision("keep", AdjustmentReason.SCHEDULED_REVIEW)
     if tdee.observed_kcal is not None:
         review.notes.append(
             Note(
@@ -229,11 +260,11 @@ def _deficit_rules(review: Review) -> AdjustmentDecision:
             )
             return review.decision("adherence", AdjustmentReason.LOSS_TOO_SLOW)
         needed = (expected_loss - loss) * KCAL_PER_KG / 7
-        max_cut = inputs.plan_calories * MAX_CUT_FRACTION
+        max_cut = inputs.plan_calories * review.step_limit
         delta = min(needed, max_cut)
         if delta < needed:
             review.notes.append(
-                Note("adjust.capped_step", params={"pct": round(MAX_CUT_FRACTION * 100)})
+                Note("adjust.capped_step", params={"pct": round(review.step_limit * 100)})
             )
         new_calories = _round_smaller_cut(inputs.plan_calories - delta)
         # Never below the floor, never faster than the weekly cap after the cut.
@@ -287,7 +318,7 @@ def _surplus_rules(review: Review) -> AdjustmentDecision:
     inputs = review.inputs
     weight = inputs.current_weight_kg
     if review.observed > weight * SURPLUS_FAST_FRACTION and review.observed > review.expected:
-        wanted = _round_smaller_cut(inputs.plan_calories * (1 - MAX_CUT_FRACTION))
+        wanted = _round_smaller_cut(inputs.plan_calories * (1 - review.step_limit))
         return _reduce_or_steps(review, wanted, AdjustmentReason.GAIN_TOO_FAST)
     if review.observed < review.expected * SLOW_FRACTION:
         if review.adherence is not None and review.adherence < ADHERENCE_THRESHOLD:
@@ -299,7 +330,7 @@ def _surplus_rules(review: Review) -> AdjustmentDecision:
                 )
             )
             return review.decision("adherence", AdjustmentReason.GAIN_TOO_SLOW)
-        new_calories = _round_smaller_raise(inputs.plan_calories * (1 + MAX_CUT_FRACTION))
+        new_calories = _round_smaller_raise(inputs.plan_calories * (1 + review.step_limit))
         review.notes.append(
             _change_note("adjust.increase_calories", inputs.plan_calories, new_calories)
         )

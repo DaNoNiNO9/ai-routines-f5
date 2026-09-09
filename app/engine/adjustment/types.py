@@ -12,6 +12,12 @@ from app.engine.types import InputError, Note, _jsonable
 DEFAULT_REVIEW_INTERVAL_DAYS = 14
 MIN_WEIGHT_DAYS = 8
 MIN_SPAN_DAYS = 10
+# Quien se pesa una vez a la semana o una vez al mes también entrena. Con esos
+# datos no se puede suavizar, pero sí ver la pendiente de varias semanas: se
+# mira más lejos, se dice que la confianza es baja y se ajusta la mitad.
+SPARSE_MIN_POINTS = 3
+SPARSE_MIN_SPAN_DAYS = 21
+SPARSE_REVIEW_INTERVAL_DAYS = 28
 
 
 @dataclass(frozen=True)
@@ -91,6 +97,8 @@ class TrendEstimate:
     end_average_kg: float | None
     weekly_change_kg: float | None
     confidence: Confidence
+    # False cuando la pendiente sale de los pesajes sueltos, sin media móvil.
+    smoothed: bool = True
 
 
 @dataclass(frozen=True)

@@ -242,9 +242,18 @@ TEMPLATES: dict[str, str] = {
         "registrando el peso a diario."
     ),
     "adjust.too_early": "La próxima revisión toca el %(next_review)s.",
+    "adjust.sparse_trend": (
+        "Con %(weight_days)s pesajes en %(span_days)s días la tendencia se ve, pero con "
+        "margen: se mira un mes entero y se ajusta la mitad. Pesándote más a menudo se "
+        "afina antes."
+    ),
     "adjust.trend": (
         "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado (media móvil de 7 "
         "días)."
+    ),
+    "adjust.trend_raw": (
+        "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado, sobre los "
+        "pesajes que has ido apuntando."
     ),
     "adjust.tdee_observed": (
         "Gasto observado por balance energético: %(observed)s kcal/día (teórico %(theoretical)s; "
