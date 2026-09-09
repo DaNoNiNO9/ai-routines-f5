@@ -218,3 +218,20 @@ def _profile_values() -> dict[str, Any]:
     from tests.factories import PROFILE_DEFAULTS
 
     return dict(PROFILE_DEFAULTS)
+
+
+def test_today_falls_back_to_utc_with_a_broken_time_zone(database: SQLAlchemy) -> None:
+    """La zona la escribe la persona: si un día deja de existir, no se rompe el día."""
+    user = make_user(database.session, timezone="Marte/Olimpo")
+    database.session.commit()
+    assert user.today() == datetime.now(UTC).date()
+
+
+def test_the_current_profile_is_the_one_not_superseded(database: SQLAlchemy) -> None:
+    user = make_user(database.session)
+    assert user.current_profile is None
+    old = make_profile(database.session, user, version=1)
+    old.superseded_at = datetime.now(UTC)
+    current = make_profile(database.session, user, version=2)
+    database.session.commit()
+    assert user.current_profile is current

@@ -376,3 +376,28 @@ def test_a_cut_that_would_break_the_floor_moves_steps_instead() -> None:
     assert decision.calorie_delta == 0
     assert decision.steps_delta > 0
     assert "adjust.floor_reached" in [note.code for note in decision.notes]
+
+
+def test_the_routine_engine_rejects_impossible_numbers() -> None:
+    base: dict[str, object] = {
+        "sex": Sex.FEMALE,
+        "goal": Goal.FAT_LOSS,
+        "training_experience": TrainingExperience.NONE,
+        "training_days_per_week": 3,
+        "session_minutes": 60,
+        "training_location": TrainingLocation.FULL_GYM,
+        "equipment": frozenset(EQUIPMENT_PRESETS[TrainingLocation.FULL_GYM]),
+    }
+    for field, value in (
+        ("training_days_per_week", 8),
+        ("training_days_per_week", -1),
+        ("session_minutes", 241),
+        ("weight_kg", 24.0),
+        ("weight_kg", 351.0),
+        ("daily_steps", 60001),
+        ("reported_fatigue", 6),
+        ("extra_deficit_kcal_per_day", -1.0),
+        ("priority_muscles", (MuscleGroup.GLUTES, MuscleGroup.SHOULDERS, MuscleGroup.BACK)),
+    ):
+        with pytest.raises(InputError):
+            RoutineInputs(**{**base, field: value})  # type: ignore[arg-type]
