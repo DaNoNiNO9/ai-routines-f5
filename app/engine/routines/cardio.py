@@ -8,6 +8,12 @@ prescription is the same whether or not the user stuck to the diet.
 
 Energy per session: (MET - 1) x kg x hours with LISS at 5 METs (brisk walk,
 easy cycling) and HIIT at 9 METs (Ainsworth et al. 2011).
+
+Saying "two 30-minute LISS sessions" and stopping there leaves the person
+guessing. The prescription also says what to do it on, picked from the
+equipment they ticked and from the joints they declared: the machine list
+when there is a cardio machine, low-impact options when a knee, ankle, hip or
+lower back is not fine, and outdoor options otherwise.
 """
 
 from __future__ import annotations
@@ -32,6 +38,8 @@ MAX_STEPS_TARGET = 12000
 HEALTH_MIN_STEPS = 7000
 HEALTH_LISS_SESSIONS = 2
 HIIT_UNSAFE_AREAS = {InjuryArea.KNEE, InjuryArea.ANKLE, InjuryArea.HIP, InjuryArea.LOWER_BACK}
+CARDIO_MACHINE = "cardio_machine"
+LOW_IMPACT_AREAS = HIIT_UNSAFE_AREAS
 
 
 def steps_target(current: int | None, goal: Goal) -> int:
@@ -62,6 +70,23 @@ def hiit_allowed(inputs: RoutineInputs) -> bool:
     )
 
 
+def wants_low_impact(inputs: RoutineInputs) -> bool:
+    """Whether a declared joint makes running and jumping a bad idea."""
+    return any(
+        injury.area in LOW_IMPACT_AREAS and injury.severity is not Severity.MILD
+        for injury in inputs.injuries
+    )
+
+
+def modality_note(inputs: RoutineInputs, kind: str) -> Note:
+    """Which machines or activities to use, given the equipment and the joints."""
+    if wants_low_impact(inputs):
+        return Note(f"cardio.{kind}_low_impact")
+    if CARDIO_MACHINE in inputs.equipment:
+        return Note(f"cardio.{kind}_machine")
+    return Note(f"cardio.{kind}_outdoor")
+
+
 def cardio_prescription(inputs: RoutineInputs) -> CardioPrescription:
     """Steps plus LISS/HIIT sessions sized to the deficit the diet could not cover."""
     notes: list[Note] = [Note("cardio.not_punishment")]
@@ -89,6 +114,11 @@ def cardio_prescription(inputs: RoutineInputs) -> CardioPrescription:
     if weekly_needed == 0 and liss == 0:
         liss = HEALTH_LISS_SESSIONS
         notes.append(Note("cardio.health_sessions", params={"sessions": liss}))
+
+    if liss:
+        notes.append(modality_note(inputs, "liss"))
+    if hiit:
+        notes.append(modality_note(inputs, "hiit"))
 
     weekly_estimate = covered + liss * liss_kcal + hiit * hiit_kcal
     notes.append(

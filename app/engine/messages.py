@@ -166,6 +166,10 @@ TEMPLATES: dict[str, str] = {
     ),
     "routine.push_pull": "Series de empuje %(push)s y de tracción %(pull)s (ratio %(ratio)s).",
     "routine.time_trimmed": "%(day)s: series recortadas para encajar en %(minutes)s minutos.",
+    "routine.exercises_dropped_for_time": (
+        "%(day)s: %(n)s ejercicio(s) de aislamiento fuera para caber en %(minutes)s minutos. "
+        "El descanso entre series no se recorta: manda el trabajo básico."
+    ),
     "routine.session_too_long": (
         "%(day)s: aun recortando, la sesión estimada dura %(estimated)s min y tienes %(budget)s; "
         "añade minutos o un día."
@@ -205,6 +209,29 @@ TEMPLATES: dict[str, str] = {
     ),
     "cardio.health_sessions": (
         "%(sessions)s sesiones suaves de cardio a la semana por salud cardiovascular (opcionales)."
+    ),
+    "cardio.liss_machine": (
+        "El cardio suave, en la máquina que prefieras: cinta a ritmo vivo, bici, elíptica o "
+        "remo. Ritmo de poder hablar sin quedarte sin aire."
+    ),
+    "cardio.liss_outdoor": (
+        "El cardio suave: andar rápido, bici o trote cómodo. Ritmo de poder hablar sin "
+        "quedarte sin aire."
+    ),
+    "cardio.liss_low_impact": (
+        "Por lo que has contado de tus articulaciones, el cardio suave mejor sin impacto: "
+        "bici, elíptica, remo o andar. Nada de correr ni saltar."
+    ),
+    "cardio.hiit_machine": (
+        "El HIIT, en bici estática, remo o cinta en cuesta: 30 segundos fuertes y 90 suaves, "
+        "con 10 minutos de calentamiento y vuelta a la calma."
+    ),
+    "cardio.hiit_outdoor": (
+        "El HIIT: cuestas, comba o sprints en bici. 30 segundos fuertes y 90 suaves, con "
+        "10 minutos de calentamiento y vuelta a la calma."
+    ),
+    "cardio.hiit_low_impact": (
+        "El HIIT, sin impacto: bici o remo, 30 segundos fuertes y 90 suaves."
     ),
     "cardio.summary": (
         "Objetivo de %(steps)s pasos al día, %(liss)s sesiones LISS y %(hiit)s HIIT (unas %(kcal)s "
