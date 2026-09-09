@@ -47,7 +47,7 @@ convention = "google"
 "migrations/**" = ["D", "E501"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["app"]
+known-first-party = ["app", "config", "tests"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -55,6 +55,7 @@ docstring-code-format = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra --strict-markers --strict-config --import-mode=importlib"
 markers = [
   "slow: slow tests (performance, long simulated time series)",
