@@ -32,3 +32,4 @@ python-json-logger==4.2.0
 # WSGI server (works on Windows and Linux)
 waitress==3.0.2
 tzdata==2025.2  # IANA zones for zoneinfo on Windows (user time zones)
+reportlab==4.4.4  # PDF del plan (BSD, Python puro, sin librerías del sistema)

@@ -23,6 +23,7 @@
           <li><a href="{{ url_for('nutrition.plan') }}"{% if request.blueprint == 'nutrition' %} aria-current="page"{% endif %}>{{ icon('apple') }}<span class="nav-label">{{ _('Nutrición') }}</span></a></li>
           <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint in ('training', 'workouts') %} aria-current="page"{% endif %}>{{ icon('dumbbell') }}<span class="nav-label">{{ _('Entrenamiento') }}</span></a></li>
           <li><a href="{{ url_for('tracking.diary') }}"{% if request.blueprint in ('tracking', 'review') %} aria-current="page"{% endif %}>{{ icon('notebook-pen') }}<span class="nav-label">{{ _('Diario') }}</span></a></li>
+          <li><a href="{{ url_for('account.index') }}"{% if request.blueprint == 'account' %} aria-current="page"{% endif %}>{{ icon('circle-check') }}<span class="nav-label">{{ _('Cuenta') }}</span></a></li>
           <li>
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

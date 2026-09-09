@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% from "components/icons.html" import icon %}
+{% from "components/forms.html" import field %}
+
+{% block title %}{{ _('Cuenta') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">{{ _('Cuenta') }}</p>
+  <h1>{{ _('Tus datos y tu cuenta') }}</h1>
+  <p class="lead">{{ _('Aquí cambias cómo entras, te llevas todo lo tuyo o lo borras.') }}</p>
+</section>
+
+<div class="grid-cards">
+  <section class="card">
+    <h2 class="card-title">{{ icon('info') }}{{ _('Datos de la cuenta') }}</h2>
+    <form method="post" action="{{ url_for('account.save_profile') }}" class="form" novalidate>
+      {{ profile_form.hidden_tag() }}
+      {{ field(profile_form.display_name, autocomplete="name") }}
+      {{ field(profile_form.locale) }}
+      {{ field(profile_form.timezone, list="zonas", autocomplete="off") }}
+      <datalist id="zonas">
+        {% for zona in timezones %}<option value="{{ zona }}">{% endfor %}
+      </datalist>
+      <p class="help">{{ _('La zona horaria decide a qué día va cada pesaje y cada sesión.') }}</p>
+      <button type="submit" class="button button-block">{{ _('Guardar') }}</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">{{ icon('log-out') }}{{ _('Correo y contraseña') }}</h2>
+    <p class="meta">{{ _('Entras con %(email)s.', email=current_user.email) }}</p>
+    <form method="post" action="{{ url_for('account.change_email') }}" class="form" novalidate>
+      {{ email_form.hidden_tag() }}
+      {{ field(email_form.email, autocomplete="email") }}
+      {{ field(email_form.current_password, autocomplete="current-password") }}
+      <button type="submit" class="button button-block button-secondary">{{ _('Cambiar el correo') }}</button>
+    </form>
+    <hr class="separador">
+    <form method="post" action="{{ url_for('account.change_password') }}" class="form" novalidate>
+      {{ password_form.hidden_tag() }}
+      {{ field(password_form.current_password, autocomplete="current-password") }}
+      {{ field(password_form.password, autocomplete="new-password") }}
+      <p class="help">{{ _('Mínimo %(n)s caracteres.', n=password_min_length) }}</p>
+      {{ field(password_form.password_confirm, autocomplete="new-password") }}
+      <button type="submit" class="button button-block button-secondary">{{ _('Cambiar la contraseña') }}</button>
+    </form>
+  </section>
+
+  <section class="card card-span">
+    <h2 class="card-title">{{ icon('arrow-right') }}{{ _('Llévate tus datos') }}</h2>
+    <div class="grid-2">
+      <div>
+        <h3 class="h3">{{ _('Plan en PDF') }}</h3>
+        <p>{{ _('Tu plan de nutrición y tu rutina, con las fórmulas que se han usado y los avisos del motor. Para imprimirlo o enseñárselo a un profesional.') }}</p>
+        {% if has_profile %}
+          <p><a class="button" href="{{ url_for('account.plan_pdf') }}">{{ icon('arrow-right') }}{{ _('Descargar el plan') }}</a></p>
+        {% else %}
+          <p class="empty">{{ _('Todavía no hay plan: completa el cuestionario.') }}</p>
+        {% endif %}
+      </div>
+      <div>
+        <h3 class="h3">{{ _('Todos tus datos en CSV') }}</h3>
+        <p>{{ _('Un ZIP con un CSV por tipo de dato: cuestionarios, pesajes, ingestas, actividad, perímetros, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo.') }}</p>
+        <p><a class="button button-secondary" href="{{ url_for('account.data_archive') }}">{{ icon('arrow-right') }}{{ _('Descargar mis datos') }}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card card-span card-peligro">
+    <h2 class="card-title">{{ icon('triangle-alert') }}{{ _('Borrar la cuenta') }}</h2>
+    <p>{{ _('Se borra todo: cuestionarios, planes, rutinas, entrenos y registros. No hay copia ni forma de recuperarlo. Si quieres conservar algo, descárgalo antes.') }}</p>
+    <form method="post" action="{{ url_for('account.delete_account') }}" class="form" novalidate>
+      {{ delete_form.hidden_tag() }}
+      <div class="grid-2">
+        {{ field(delete_form.current_password, autocomplete="current-password") }}
+        {{ field(delete_form.confirmation, autocomplete="off") }}
+      </div>
+      <button type="submit" class="button button-peligro">{{ icon('trash-2') }}{{ _('Borrar mi cuenta y mis datos') }}</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

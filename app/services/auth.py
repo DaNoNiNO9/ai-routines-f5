@@ -199,6 +199,56 @@ def verify_reset_token(token: str) -> User:
     return user
 
 
+def change_password(user: User, current_password: str, new_password: str) -> None:
+    """Replace the password after checking the current one.
+
+    Raises:
+        InvalidCredentialsError: If the current password is wrong.
+        WeakPasswordError: If the new one violates the policy.
+    """
+    if not verify_password(user.password_hash, current_password):
+        logger.info("Failed password change for user %s", user.id)
+        raise InvalidCredentialsError
+    reset_password(user, new_password)
+
+
+def change_email(user: User, current_password: str, new_email: str) -> None:
+    """Move the account to another email address.
+
+    Raises:
+        InvalidCredentialsError: If the password is wrong.
+        EmailTakenError: If someone else already uses that address.
+    """
+    if not verify_password(user.password_hash, current_password):
+        logger.info("Failed email change for user %s", user.id)
+        raise InvalidCredentialsError
+    normalised = new_email.strip().lower()
+    existing = find_by_email(normalised)
+    if existing is not None and existing.id != user.id:
+        raise EmailTakenError(normalised)
+    user.email = normalised
+    user.email_verified_at = None
+    try:
+        db.session.commit()
+    except IntegrityError as exc:
+        db.session.rollback()
+        logger.warning("Email change race for an existing address")
+        raise EmailTakenError(normalised) from exc
+    logger.info("User %s changed their email", user.id)
+
+
+def delete_account(user: User) -> None:
+    """Erase the account and everything hanging from it (RGPD, artículo 17).
+
+    This is a real delete, not a flag: the cascades take profiles, plans,
+    routines, sessions, sets and every log with them.
+    """
+    user_id = user.id
+    db.session.delete(user)
+    db.session.commit()
+    logger.info("Account %s deleted at the owner's request", user_id)
+
+
 def reset_password(user: User, new_password: str) -> None:
     """Replace the password (invalidating outstanding tokens).
 

@@ -40,7 +40,8 @@ PASSWORD_PROBLEM_TEXTS = {
 }
 
 
-def _password_messages(problems: list[str]) -> list[str]:
+def password_messages(problems: list[str]) -> list[str]:
+    """Spanish text for the policy codes the service returns."""
     messages: list[str] = []
     for code in problems:
         if code.startswith("min_length:"):
@@ -65,7 +66,7 @@ def register() -> str | WerkzeugResponse:
                 form.email.data or "", form.password.data or "", form.display_name.data or ""
             )
         except auth_service.WeakPasswordError as exc:
-            for message in _password_messages(exc.problems):
+            for message in password_messages(exc.problems):
                 form.password.errors.append(message)
         except auth_service.EmailTakenError:
             form.email.errors.append(_("Ya existe una cuenta con ese correo."))
@@ -150,7 +151,7 @@ def reset_password(token: str) -> str | WerkzeugResponse:
         try:
             auth_service.reset_password(user, form.password.data or "")
         except auth_service.WeakPasswordError as exc:
-            for message in _password_messages(exc.problems):
+            for message in password_messages(exc.problems):
                 form.password.errors.append(message)
         else:
             flash(_("Contraseña actualizada. Ya puedes entrar."), "success")

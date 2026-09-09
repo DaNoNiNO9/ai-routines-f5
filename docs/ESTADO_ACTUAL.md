@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 11 cerrada.** Siguiente: Fase 12 (exportación, cuenta y borrado RGPD), sin empezar.
+**Fase 12 — Exportación, cuenta y borrado RGPD.** En curso.
 
 ## Terminado
 
@@ -27,7 +27,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 543 tests en verde |
+| Suite | 562 tests en verde |
 | Cobertura de `app/` | 98,5 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -35,18 +35,11 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Nada en curso. La Fase 11 quedó cerrada con su informe.
+Librería de PDF elegida por el usuario: **ReportLab** (BSD, Python puro, sin librerías del sistema).
 
-## Siguiente paso
+Hecho: `services/exports.py` con el PDF del plan (nutrición, cómo se ha calculado, rutina día a día y el aviso en cada página) y el ZIP con un CSV por tipo de dato; blueprint `account` (`/cuenta`) con datos de la cuenta, cambio de correo y contraseña con la contraseña actual por delante, las dos descargas y el borrado con doble confirmación; borrado real en cascada, no una marca.
 
-**Fase 12: exportación, cuenta y borrado RGPD.** Contenido previsto:
-
-- PDF del plan (nutrición y rutina) y CSV de los datos registrados.
-- Página de cuenta: cambiar contraseña y correo, elegir idioma y zona horaria.
-- Exportación completa de los datos personales y borrado de la cuenta (RGPD), con confirmación explícita.
-- Decisión abierta: qué librería de PDF. Sin dependencias pesadas ni binarios externos; la opción razonable en este stack es generar HTML e imprimirlo desde el navegador, o usar una librería pura de Python. Lo consulto antes de elegir.
-
-Después: Fase 13 (auditoría final, §7 del prompt) y los catálogos de traducción con pybabel.
+Pendiente: verificación con el servidor levantado abriendo el PDF de verdad, `docs/DECISIONES.md`, READMEs e informe de fase.
 
 ## Detalles menores heredados
 
