@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 {% from "components/charts.html" import chart as chart_box %}
 
 {% block title %}{{ _('Progreso') }} · {{ app_name }}{% endblock %}
@@ -42,8 +43,11 @@
   </section>
 {% else %}
   <section class="card">
-    <p class="empty">{{ _('Aún no hay series registradas en sesiones completadas.') }}</p>
-    <p><a class="button" href="{{ url_for('training.routine') }}">{{ _('Ver la rutina') }}</a></p>
+    <div class="empty-state">
+      {{ icon('chart-line') }}
+      <p>{{ _('Aún no hay series registradas en sesiones completadas.') }}</p>
+      <a class="button" href="{{ url_for('training.routine') }}">{{ icon('dumbbell') }}{{ _('Ver la rutina') }}</a>
+    </div>
   </section>
 {% endif %}
 {% endblock %}

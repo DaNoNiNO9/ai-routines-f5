@@ -41,7 +41,7 @@ def test_dashboard_shows_today_next_session_weight_and_review(
     assert "64.0" in page  # today's weigh-in from the questionnaire
     assert 'id="weight-data"' not in page  # one point: no chart yet
     assert "Revisión" in page
-    assert 'aria-current="page">Panel' in page
+    assert 'href="/panel" aria-current="page"' in page
     assert "chart-4.5.1.umd.js" not in page
 
     user = seeded.session.scalar(select(User))
@@ -71,7 +71,7 @@ def test_nutrition_page_explains_the_plan(client: FlaskClient, seeded: SQLAlchem
         'id="macros-data"',
         'id="tdee-data"',
         "chart-4.5.1.umd.js",
-        'aria-current="page">Nutrición',
+        'href="/nutricion" aria-current="page"',
     ):
         assert text in page, text
 
@@ -144,3 +144,28 @@ def test_alpine_loads_after_the_components_it_needs(
     assert "forja.js" in page
     assert "alpine-3.17.2.min.js" in page
     assert page.index("forja.js") < page.index("alpine-3.17.2.min.js")
+
+
+def test_the_theme_starts_dark_and_can_be_switched(
+    client: FlaskClient, database: SQLAlchemy
+) -> None:
+    dark = client.get("/").get_data(as_text=True)
+    assert 'data-theme="dark"' in dark
+    assert "Cambiar al tema claro" in dark
+
+    switched = client.post("/tema", data={"next": "/"}, follow_redirects=True)
+    light = switched.get_data(as_text=True)
+    assert 'data-theme="light"' in light
+    assert "Cambiar al tema oscuro" in light
+
+    back = client.post("/tema", data={"next": "/"}, follow_redirects=True)
+    assert 'data-theme="dark"' in back.get_data(as_text=True)
+
+
+def test_the_theme_switch_never_redirects_off_site(
+    client: FlaskClient, database: SQLAlchemy
+) -> None:
+    for target in ("https://evil.example.com/", "//evil.example.com", "javascript:alert(1)"):
+        response = client.post("/tema", data={"next": target})
+        assert response.headers["Location"].endswith("/"), target
+        assert "evil" not in response.headers["Location"], target

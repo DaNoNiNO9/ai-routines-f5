@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 
 {% block title %}{{ _('Resumen de la sesión') }} · {{ app_name }}{% endblock %}
 
@@ -26,7 +27,7 @@
         <tbody>
           {% for item in summary.exercises %}
             <tr>
-              <td>{{ item.exercise.name_es }}{% if item.is_pr %} <span class="badge status-ok">PR</span>{% endif %}</td>
+              <td>{{ item.exercise.name_es }}{% if item.is_pr %} <span class="badge status-ok">{{ icon('trophy') }}PR</span>{% endif %}</td>
               <td>{{ item.sets }}</td>
               <td>{{ item.top_weight|round(2)|string|replace('.0', '') }} kg × {{ item.top_reps }}</td>
               <td>{{ item.est_1rm }} kg{% if item.previous_1rm %} <span class="muted">({{ _('antes') }} {{ item.previous_1rm }})</span>{% endif %}</td>

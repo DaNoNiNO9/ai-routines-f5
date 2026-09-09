@@ -218,3 +218,26 @@
     });
   });
 })();
+
+/* Estado de carga: el botón pulsado deja de estarlo hasta que llega la página nueva. */
+(function () {
+  "use strict";
+
+  document.addEventListener("submit", function (event) {
+    var form = event.target;
+    if (!(form instanceof HTMLFormElement) || form.hasAttribute("data-sin-carga")) {
+      return;
+    }
+    var button = form.querySelector("button[type='submit'], button:not([type])");
+    if (button && !button.classList.contains("is-loading")) {
+      button.classList.add("is-loading");
+    }
+  });
+
+  /* Al volver atrás el navegador restaura el DOM: el botón no puede quedarse girando. */
+  window.addEventListener("pageshow", function () {
+    document.querySelectorAll(".button.is-loading").forEach(function (button) {
+      button.classList.remove("is-loading");
+    });
+  });
+})();

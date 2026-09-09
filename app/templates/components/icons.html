@@ -1,0 +1,7 @@
+{# Un icono del sprite de Lucide (app/static/img/icons.svg).
+
+   Decorativo por defecto (`aria-hidden`): el texto de al lado ya lo explica.
+   Si el icono va solo, pásale `label` y se anuncia como imagen con nombre. #}
+{% macro icon(name, label=None, extra="") %}
+<svg class="icon {{ extra }}"{% if label %} role="img" aria-label="{{ label }}"{% else %} aria-hidden="true"{% endif %} focusable="false"><use href="{{ url_for('static', filename='img/icons.svg') }}#i-{{ name }}"></use></svg>
+{%- endmacro %}

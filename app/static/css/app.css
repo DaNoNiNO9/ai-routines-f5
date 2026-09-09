@@ -1,11 +1,17 @@
-/* Forja base stylesheet (Phase 1). Design tokens first; the full visual design
-   (fonts, iconography, components) arrives in Phase 11. Dark theme by default. */
+/* Forja stylesheet. Tokens primero, luego base, luego componentes.
+   Tema oscuro por defecto (se entrena con el móvil en la mano y poca luz);
+   el claro se elige desde la cabecera. Paleta y tipografía: docs/DISEÑO.md. */
 
 :root {
-  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
   --radius: 10px;
+  --radius-lg: 16px;
   --container: 64rem;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --transition: 140ms ease;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 1rem;
@@ -14,34 +20,42 @@
   --space-6: 4rem;
 }
 
+/* Paleta A "Forja": naranja fundido sobre carbón. Contrastes comprobados en
+   tests/unit/test_design_tokens.py; ningún par de texto baja de 4.5:1. */
 :root, [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0f1115;
-  --bg-elevated: #171a21;
-  --border: #262b36;
-  --text: #e8eaf0;
-  --text-muted: #9aa3b5;
-  --accent: #ff7a1a;
+  --bg: #0e1013;
+  --bg-elevated: #171a20;
+  --border: #2b313d;
+  --border-strong: #626b7d;
+  --text: #e9ecf2;
+  --text-muted: #a3adc0;
+  --accent: #ff8a34;
   --accent-contrast: #14100a;
-  --success: #3ccf8e;
-  --warning: #f5c542;
-  --danger: #ff5c6c;
-  --focus: #7cc4ff;
+  --accent-soft: rgba(255, 138, 52, 0.14);
+  --success: #4dd39b;
+  --warning: #f7cf5c;
+  --danger: #ff7080;
+  --focus: #8cc9ff;
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #f7f7f9;
+  --bg: #f6f6f8;
   --bg-elevated: #ffffff;
-  --border: #dcdfe6;
-  --text: #16181d;
-  --text-muted: #5b6270;
-  --accent: #d95f00;
+  --border: #d7dae2;
+  --border-strong: #7b818e;
+  --text: #15171c;
+  --text-muted: #5a6170;
+  --accent: #b34b00;
   --accent-contrast: #ffffff;
-  --success: #1f9d64;
-  --warning: #a86f00;
-  --danger: #c8323f;
-  --focus: #1f6fd0;
+  --accent-soft: rgba(179, 75, 0, 0.1);
+  --success: #0f7a4d;
+  --warning: #8a5a00;
+  --danger: #b3242f;
+  --focus: #1a5fc0;
+  --shadow-card: 0 1px 2px rgba(16, 20, 30, 0.08);
+  --shadow-lift: 0 10px 26px rgba(16, 20, 30, 0.12);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -367,3 +381,145 @@ fieldset.choices legend { padding: 0; }
 .rest-timer-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
 .rest-timer-value { font-size: 2rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
 .rest-timer-actions { display: flex; gap: var(--space-2); }
+
+/* ===== Fase 11: tipografía, iconos, estados y micro-interacciones ===== */
+
+h1, h2, h3, .brand, .big-number, .stat-value, .rest-timer-value, .error-code {
+  font-family: var(--font-display);
+  letter-spacing: 0.005em;
+}
+h1 { font-size: clamp(1.9rem, 1.4rem + 2.4vw, 2.6rem); line-height: 1.1; font-weight: 700; }
+h2 { font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.7rem); line-height: 1.15; font-weight: 700; }
+h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
+.card-title { font-family: var(--font-display); letter-spacing: 0.01em; }
+.eyebrow { letter-spacing: 0.12em; font-weight: 600; }
+.lead { font-size: 1.05rem; }
+
+/* Los datos se leen en columna: cifras de ancho fijo. */
+.table, .kv dd, .set-values, .rx dd, .summary dd, .big-number, .stat-value,
+.rest-timer-value, .chip, input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Iconos: heredan color y tamaño del texto que los rodea. */
+.icon {
+  display: inline-block;
+  vertical-align: -0.135em;
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+  color: inherit;
+}
+.icon-lg { width: 1.6em; height: 1.6em; }
+.nav-links a, .link-button, .button { display: inline-flex; align-items: center; gap: 0.45em; }
+.nav-links a, .link-button { justify-content: center; }
+.button { justify-content: center; }
+
+/* Estados vacíos: un icono, una frase y la salida. */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-3);
+  color: var(--text-muted);
+}
+.empty-state .icon { width: 2.5rem; height: 2.5rem; color: var(--border-strong); }
+.empty-state p { margin: 0; max-width: 34ch; }
+.empty-state .button { margin-top: var(--space-2); }
+
+/* Cambio de tema, en la cabecera. */
+.theme-toggle {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--border); }
+
+/* Micro-interacciones: cortas y sin rebotes. */
+.button, .card, .choice, .chip, .theme-toggle, .nav-links a, .field-input {
+  transition: background-color var(--transition), border-color var(--transition),
+    color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.card { box-shadow: var(--shadow-card); }
+.button:active { transform: translateY(1px); }
+.card-accent { box-shadow: var(--shadow-lift); }
+.field-input:focus-visible, .choice-input:focus-visible, .button:focus-visible,
+.link-button:focus-visible, .theme-toggle:focus-visible, a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@keyframes forja-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes forja-marca { 0% { background: var(--accent-soft); } 100% { background: transparent; } }
+@keyframes forja-gira { to { transform: rotate(360deg); } }
+
+.set-done.set-nueva { animation: forja-marca 900ms ease-out; }
+.stat-grid .stat { animation: forja-entra 260ms ease-out both; }
+.stat-grid .stat:nth-child(2) { animation-delay: 60ms; }
+.stat-grid .stat:nth-child(3) { animation-delay: 120ms; }
+.stat-grid .stat:nth-child(4) { animation-delay: 180ms; }
+.rest-timer { animation: forja-entra 200ms ease-out; }
+.rest-timer.rest-done { border-color: var(--success); }
+.rest-timer.rest-done .rest-timer-value { color: var(--success); }
+
+/* Carga: el botón pulsado dice que está trabajando y no se puede pulsar dos veces. */
+.button.is-loading { pointer-events: none; opacity: 0.8; }
+.button.is-loading::after {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: forja-gira 700ms linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .button:active { transform: none; }
+}
+
+/* Bordes de los controles: WCAG 2.1 pide 3:1 para lo interactivo. */
+.field-input, .choice, .button-secondary, .panel, .theme-toggle:hover { border-color: var(--border-strong); }
+.choice { border-color: var(--border); }
+.field-input:hover { border-color: var(--text-muted); }
+
+/* Portada */
+.landing-hero {
+  display: grid;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-5);
+}
+@media (min-width: 52rem) { .landing-hero { grid-template-columns: 1.15fr 1fr; } }
+.landing-hero h1 { margin: 0 0 var(--space-3); }
+.landing-hero .lead { max-width: 46ch; }
+.landing-acciones { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+.landing-tira { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+.landing-tira img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.85;
+}
+.landing-tira img:nth-child(2) { margin-top: var(--space-4); }
+.card-title .icon { color: var(--accent); }
+.flash { display: flex; align-items: flex-start; gap: var(--space-2); }
+.flash .icon { margin-top: 0.15em; flex: none; }
+.flash-success .icon { color: var(--success); }
+.flash-error .icon, .flash-danger .icon { color: var(--danger); }
+.flash-warning .icon { color: var(--warning); }
+.flash-info .icon { color: var(--focus); }

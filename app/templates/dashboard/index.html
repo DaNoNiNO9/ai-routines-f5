@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 {% from "components/charts.html" import chart %}
 
 {% block title %}{{ _('Panel') }} · {{ app_name }}{% endblock %}
@@ -18,14 +19,17 @@
 
 {% if profile is none %}
   <section class="card">
-    <h2 class="card-title">{{ _('Empecemos') }}</h2>
-    <p>{{ _('Para calcular tu plan de nutrición y tu rutina necesitamos unos minutos de preguntas. Se guardan en cada paso.') }}</p>
-    <p><a class="button" href="{{ url_for('onboarding.index') }}">{% if draft %}{{ _('Continuar el cuestionario') }}{% else %}{{ _('Empezar el cuestionario') }}{% endif %}</a></p>
+    <div class="empty-state">
+      {{ icon('notebook-pen') }}
+      <h2 class="card-title">{{ _('Empecemos') }}</h2>
+      <p>{{ _('Para calcular tu plan de nutrición y tu rutina necesitamos unos minutos de preguntas. Se guardan en cada paso.') }}</p>
+      <a class="button" href="{{ url_for('onboarding.index') }}">{{ icon('arrow-right') }}{% if draft %}{{ _('Continuar el cuestionario') }}{% else %}{{ _('Empezar el cuestionario') }}{% endif %}</a>
+    </div>
   </section>
 {% else %}
   <div class="grid-cards">
     <article class="card">
-      <h2 class="card-title">{{ _('Hoy') }}</h2>
+      <h2 class="card-title">{{ icon('flame') }}{{ _('Hoy') }}</h2>
       {% if plan %}
         {% if targets.cycle %}
           <div class="stat-row">
@@ -57,14 +61,14 @@
     </article>
 
     <article class="card">
-      <h2 class="card-title">{{ _('Próxima sesión') }}</h2>
+      <h2 class="card-title">{{ icon('dumbbell') }}{{ _('Próxima sesión') }}</h2>
       {% if next_day %}
         <p class="big-number">{{ _('Día %(n)s', n=next_day.day_index) }} <small>{{ next_day.name }}</small></p>
         <ul class="chips" aria-label="{{ _('Grupos musculares') }}">
           {% for muscle in next_day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}
         </ul>
         <p class="meta">{{ _('%(n)s ejercicios · unos %(m)s minutos', n=next_day.exercises|length, m=next_day.estimated_minutes) }}</p>
-        <p><a class="button button-small" href="{{ url_for('training.day', index=next_day.day_index) }}">{{ _('Ver la sesión') }}</a></p>
+        <p><a class="button button-small" href="{{ url_for('training.day', index=next_day.day_index) }}">{{ icon('arrow-right') }}{{ _('Ver la sesión') }}</a></p>
       {% elif routine %}
         <p class="empty">{{ _('La rutina no tiene días.') }}</p>
       {% else %}
@@ -74,7 +78,7 @@
     </article>
 
     <article class="card card-span">
-      <h2 class="card-title">{{ _('Peso') }}</h2>
+      <h2 class="card-title">{{ icon('scale') }}{{ _('Peso') }}</h2>
       {% if weights.latest %}
         <p class="big-number">{{ weights.latest[1] }} <small>kg · {{ weights.latest[0].strftime('%d/%m') }}</small></p>
         {% if weights.change_kg is not none %}
@@ -86,13 +90,13 @@
           {{ chart('weight', 'weight', weight_chart, _('Evolución del peso'), height='16rem') }}
         {% endif %}
       {% else %}
-        <p class="empty">{{ _('Todavía no hay pesajes.') }}</p>
+        <div class="empty-state">{{ icon('scale') }}<p>{{ _('Todavía no hay pesajes. Anota el de hoy en el diario.') }}</p><a class="button button-small" href="{{ url_for('tracking.diary') }}">{{ icon('plus') }}{{ _('Registrar peso') }}</a></div>
       {% endif %}
       <p class="help">{{ _('Pésate por la mañana, tras ir al baño y antes de comer. Los días sueltos no importan: la media de 7 días sí.') }}</p>
     </article>
 
     <article class="card">
-      <h2 class="card-title">{{ _('Revisión') }}</h2>
+      <h2 class="card-title">{{ icon('calendar-check') }}{{ _('Revisión') }}</h2>
       {% if next_review %}
         {% set days_left = (next_review - today).days %}
         <p class="big-number">{{ next_review.strftime('%d/%m') }} <small>{% if days_left > 0 %}{{ _('en %(n)s días', n=days_left) }}{% else %}{{ _('pendiente') }}{% endif %}</small></p>

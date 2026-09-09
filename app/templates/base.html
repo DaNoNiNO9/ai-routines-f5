@@ -1,34 +1,46 @@
 <!doctype html>
-<html lang="{{ current_locale }}" data-theme="dark">
+<html lang="{{ current_locale }}" data-theme="{{ current_theme }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark light">
+  <meta name="color-scheme" content="{{ current_theme }}">
+  <meta name="theme-color" content="{{ '#0e1013' if current_theme == 'dark' else '#f6f6f8' }}">
   <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   {% block head %}{% endblock %}
 </head>
 <body>
+  {% from "components/icons.html" import icon %}
   <a class="skip-link" href="#main">{{ _('Saltar al contenido') }}</a>
   <header class="site-header">
     <nav class="container nav" aria-label="{{ _('Navegación principal') }}">
       <a class="brand" href="{{ url_for('main.index') }}">{{ app_name }}</a>
       <ul class="nav-links">
         {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('dashboard.index') }}"{% if request.blueprint == 'dashboard' %} aria-current="page"{% endif %}>{{ _('Panel') }}</a></li>
-          <li><a href="{{ url_for('nutrition.plan') }}"{% if request.blueprint == 'nutrition' %} aria-current="page"{% endif %}>{{ _('Nutrición') }}</a></li>
-          <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint in ('training', 'workouts') %} aria-current="page"{% endif %}>{{ _('Entrenamiento') }}</a></li>
-          <li><a href="{{ url_for('tracking.diary') }}"{% if request.blueprint in ('tracking', 'review') %} aria-current="page"{% endif %}>{{ _('Diario') }}</a></li>
+          <li><a href="{{ url_for('dashboard.index') }}"{% if request.blueprint == 'dashboard' %} aria-current="page"{% endif %}>{{ icon('layout-dashboard') }}{{ _('Panel') }}</a></li>
+          <li><a href="{{ url_for('nutrition.plan') }}"{% if request.blueprint == 'nutrition' %} aria-current="page"{% endif %}>{{ icon('apple') }}{{ _('Nutrición') }}</a></li>
+          <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint in ('training', 'workouts') %} aria-current="page"{% endif %}>{{ icon('dumbbell') }}{{ _('Entrenamiento') }}</a></li>
+          <li><a href="{{ url_for('tracking.diary') }}"{% if request.blueprint in ('tracking', 'review') %} aria-current="page"{% endif %}>{{ icon('notebook-pen') }}{{ _('Diario') }}</a></li>
           <li>
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <button type="submit" class="link-button">{{ _('Salir') }}</button>
+              <button type="submit" class="link-button">{{ icon('log-out') }}{{ _('Salir') }}</button>
             </form>
           </li>
         {% else %}
           <li><a href="{{ url_for('auth.login') }}">{{ _('Entrar') }}</a></li>
           <li><a class="button button-small" href="{{ url_for('auth.register') }}">{{ _('Crear cuenta') }}</a></li>
         {% endif %}
+        <li>
+          <form method="post" action="{{ url_for('main.toggle_theme') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="next" value="{{ request.full_path if request.query_string else request.path }}">
+            <button type="submit" class="theme-toggle" title="{{ _('Cambiar de tema') }}">
+              {% if current_theme == 'dark' %}{{ icon('sun', label=_('Cambiar al tema claro')) }}{% else %}{{ icon('moon', label=_('Cambiar al tema oscuro')) }}{% endif %}
+            </button>
+          </form>
+        </li>
         {% block nav_links %}{% endblock %}
       </ul>
     </nav>
@@ -39,7 +51,10 @@
       {% if messages %}
         <ul class="flashes" role="status" aria-live="polite">
           {% for category, message in messages %}
-            <li class="flash flash-{{ category }}">{{ message }}</li>
+            <li class="flash flash-{{ category }}">
+              {% if category == 'success' %}{{ icon('circle-check') }}{% elif category == 'error' %}{{ icon('triangle-alert') }}{% else %}{{ icon('info') }}{% endif %}
+              <span>{{ message }}</span>
+            </li>
           {% endfor %}
         </ul>
       {% endif %}

@@ -6,7 +6,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Fase actual
 
-**Fase 10 cerrada.** Siguiente: Fase 11 (diseño visual completo), sin empezar.
+**Fase 11 — Diseño visual.** En curso.
 
 ## Terminado
 
@@ -26,7 +26,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 511 tests en verde |
+| Suite | 542 tests en verde |
 | Cobertura de `app/` | 98,5 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -34,7 +34,11 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Nada en curso. La Fase 10 quedó cerrada con su informe.
+Paleta y tipografía elegidas por el usuario: **A "Forja"** (naranja `#FF8A34` sobre carbón `#0E1013`) y **Barlow Condensed + Inter**.
+
+Hecho: tipografías descargadas al proyecto (`app/static/fonts/`, OFL), sprite de iconos de Lucide con solo los 28 que se usan (`scripts/build_icons.py`), tokens de la paleta con borde reforzado para controles, escala tipográfica, cifras tabulares, estados vacíos con icono, micro-interacciones con `prefers-reduced-motion`, estado de carga en los botones, resalte de la serie recién guardada, cambio de tema oscuro/claro sin JavaScript y portada nueva.
+
+Pendiente: revisión a 320, 768 y 1440 px, `docs/DISEÑO.md` con las referencias, créditos de las nuevas licencias e informe de fase.
 
 ## Siguiente paso
 

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 
 {% block title %}{{ _('Sesión') }} · {{ session.routine_day.name if session.routine_day else '' }} · {{ app_name }}{% endblock %}
 
@@ -6,7 +7,7 @@
 <section class="page-head">
   <p class="eyebrow">{{ _('Sesión en marcha') }}{% if session.mesocycle_week %} · {{ _('semana %(n)s del mesociclo', n=session.mesocycle_week) }}{% endif %}</p>
   <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión libre') }}{% endif %}</h1>
-  <p class="meta" x-data="elapsed({{ started_epoch }})">{{ _('Tiempo:') }} <span x-text="text">—</span></p>
+  <p class="meta" x-data="elapsed({{ started_epoch }})">{{ icon('clock') }} {{ _('Tiempo:') }} <span x-text="text">—</span></p>
   <p><a class="button button-small button-secondary" href="#cierre">{{ _('Terminar sesión') }}</a></p>
 </section>
 
@@ -45,12 +46,12 @@
         {% for row in block.rows %}
           {% if row.log %}
             {% set ns.last_kg = row.log.weight_kg %}{% set ns.last_reps = row.log.reps %}
-            <li class="set-row set-done">
+            <li class="set-row set-done{% if row.log.id == just_logged %} set-nueva{% endif %}">
               <span class="set-index">{{ row.index }}</span>
               <span class="set-values">{{ row.log.weight_kg|round(2)|string|replace('.0', '') }} kg × {{ row.log.reps }}{% if row.log.rir is not none %} · RIR {{ row.log.rir }}{% endif %}{% if row.log.set_type.value == 'warmup' %} · {{ _('calentamiento') }}{% endif %}</span>
               <form method="post" action="{{ url_for('workouts.delete_set', session_id=session.id, set_id=row.log.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="link-button" aria-label="{{ _('Borrar la serie %(n)s', n=row.index) }}">✕</button>
+                <button type="submit" class="link-button" aria-label="{{ _('Borrar la serie %(n)s', n=row.index) }}">{{ icon('x') }}</button>
               </form>
             </li>
           {% else %}
@@ -64,7 +65,7 @@
                 <label class="set-field"><span>kg</span><input class="field-input" type="number" name="weight_kg" step="0.25" min="0" max="1000" inputmode="decimal" required value="{{ ns.last_kg if ns.last_kg is not none else '' }}"></label>
                 <label class="set-field"><span>reps</span><input class="field-input" type="number" name="reps" min="0" max="200" inputmode="numeric" required value="{{ ns.last_reps }}"></label>
                 <label class="set-field"><span>RIR</span><input class="field-input" type="number" name="rir" min="0" max="10" inputmode="numeric" placeholder="{{ item.rir_start }}"></label>
-                <button type="submit" class="button set-submit" aria-label="{{ _('Guardar la serie %(n)s', n=row.index) }}">✓</button>
+                <button type="submit" class="button set-submit" aria-label="{{ _('Guardar la serie %(n)s', n=row.index) }}">{{ icon('check') }}</button>
               </form>
             </li>
           {% endif %}
@@ -72,7 +73,7 @@
       </ol>
       {% if block.alternatives and block.done == 0 %}
         <details class="panel">
-          <summary>{{ _('Cambiar por una alternativa') }} ({{ block.alternatives|length }})</summary>
+          <summary>{{ icon('repeat') }} {{ _('Cambiar por una alternativa') }} ({{ block.alternatives|length }})</summary>
           <form method="post" action="{{ url_for('workouts.substitute', session_id=session.id) }}" class="inline-fields">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="routine_exercise_id" value="{{ item.id }}">

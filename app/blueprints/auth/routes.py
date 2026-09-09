@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-from urllib.parse import urlsplit
 
 from flask import (
     Blueprint,
@@ -28,6 +27,7 @@ from app.blueprints.auth.forms import (
 )
 from app.email import EmailDeliveryError, send_email
 from app.extensions import limiter
+from app.security import safe_redirect_target
 from app.services import auth as auth_service
 
 logger = logging.getLogger(__name__)
@@ -50,15 +50,6 @@ def _password_messages(problems: list[str]) -> list[str]:
             text = PASSWORD_PROBLEM_TEXTS.get(code)
             messages.append(text() if text else code)
     return messages
-
-
-def _safe_next(target: str | None) -> str:
-    """Only relative paths inside this site are accepted as ``next``."""
-    if target:
-        parts = urlsplit(target)
-        if not parts.scheme and not parts.netloc and target.startswith("/"):
-            return target
-    return url_for("dashboard.index")
 
 
 @bp.route("/registro", methods=["GET", "POST"])
@@ -101,7 +92,7 @@ def login() -> str | WerkzeugResponse:
             flash(_("Esta cuenta está desactivada."), "error")
         else:
             login_user(user, remember=bool(form.remember.data))
-            return redirect(_safe_next(request.args.get("next")))
+            return redirect(safe_redirect_target(request.args.get("next"), "dashboard.index"))
     return render_template("auth/login.html", form=form)
 
 

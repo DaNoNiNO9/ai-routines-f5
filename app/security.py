@@ -11,7 +11,9 @@ development hosts.
 
 from __future__ import annotations
 
-from flask import Flask, Response, current_app
+from urllib.parse import urlsplit
+
+from flask import Flask, Response, current_app, url_for
 
 CSP_DIRECTIVES: dict[str, str] = {
     "default-src": "'self'",
@@ -45,3 +47,16 @@ def _apply_security_headers(response: Response) -> Response:
     if current_app.config["ENABLE_HSTS"]:
         headers.setdefault("Strict-Transport-Security", HSTS_VALUE)
     return response
+
+
+def safe_redirect_target(target: str | None, fallback_endpoint: str) -> str:
+    """A relative path inside this site, or the fallback endpoint.
+
+    Anything with a scheme or a host (``//evil.example``, ``https://evil``) is
+    thrown away: a redirect the visitor did not ask for is a phishing tool.
+    """
+    if target:
+        parts = urlsplit(target)
+        if not parts.scheme and not parts.netloc and target.startswith("/"):
+            return target
+    return url_for(fallback_endpoint)

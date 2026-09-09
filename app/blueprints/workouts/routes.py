@@ -91,6 +91,7 @@ def session(session_id: int) -> str | WerkzeugResponse:
         blocks=blocks,
         rest_seconds=request.args.get("descanso", type=int),
         rest_started=request.args.get("t", type=int),
+        just_logged=request.args.get("hecha", type=int),
         finish_form=FinishForm(),
         fatigue_labels=FATIGUE_LABELS,
         labels=labels,
@@ -129,6 +130,7 @@ def log_set(session_id: int) -> WerkzeugResponse:
         session_id=current.id,
         descanso=item.rest_seconds,
         t=int(row.completed_at.timestamp()),
+        hecha=row.id,
     )
     return redirect(f"{target}#ex-{item.id}")
 

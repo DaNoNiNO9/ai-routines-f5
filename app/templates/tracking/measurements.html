@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 {% from "components/forms.html" import field %}
 
 {% block title %}{{ _('Perímetros') }} · {{ app_name }}{% endblock %}
@@ -58,7 +59,7 @@
         </table>
       </div>
     {% else %}
-      <p class="empty">{{ _('Todavía no hay mediciones.') }}</p>
+      <div class="empty-state">{{ icon('scale') }}<p>{{ _('Todavía no hay mediciones. Con cuello, cintura y cadera estimamos la grasa corporal.') }}</p></div>
     {% endif %}
   </section>
 </div>

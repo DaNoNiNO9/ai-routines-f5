@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 
 {% block title %}{{ _('Historial de entrenos') }} · {{ app_name }}{% endblock %}
 
@@ -33,8 +34,11 @@
   </div>
 {% else %}
   <section class="card">
-    <p class="empty">{{ _('Todavía no hay sesiones registradas. Empieza la próxima desde el panel o desde la rutina.') }}</p>
-    <p><a class="button" href="{{ url_for('training.routine') }}">{{ _('Ver la rutina') }}</a></p>
+    <div class="empty-state">
+      {{ icon('clock') }}
+      <p>{{ _('Todavía no hay sesiones registradas. Empieza la próxima desde el panel o desde la rutina.') }}</p>
+      <a class="button" href="{{ url_for('training.routine') }}">{{ icon('dumbbell') }}{{ _('Ver la rutina') }}</a>
+    </div>
   </section>
 {% endif %}
 {% endblock %}

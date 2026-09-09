@@ -14,7 +14,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from flask import Flask, current_app
+from flask import Flask, current_app, session
 from flask_babel import get_locale
 from flask_babel import lazy_gettext as _l
 
@@ -146,4 +146,5 @@ def _template_context() -> dict[str, Any]:
         "current_locale": str(get_locale()),
         "current_year": datetime.now(tz=UTC).year,
         "password_min_length": current_app.config["PASSWORD_MIN_LENGTH"],
+        "current_theme": session.get("theme", "dark"),
     }

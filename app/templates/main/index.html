@@ -1,12 +1,47 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 
 {% block content %}
-<section class="hero">
-  <p class="eyebrow">{{ _('Entrenamiento y nutrición') }}</p>
-  <h1>{{ _('Tu plan, calculado. No inventado.') }}</h1>
-  <p class="lead">
-    {{ _('Responde a un cuestionario guiado y obtén calorías, macros y una rutina de gimnasio completa que se ajusta con tus datos reales, semana a semana.') }}
-  </p>
-  <p class="meta">{{ _('Fase 1: arquitectura base. El cuestionario llega en la Fase 8.') }}</p>
+<section class="landing-hero">
+  <div class="landing-texto">
+    <p class="eyebrow">{{ _('Entrenamiento y nutrición') }}</p>
+    <h1>{{ _('Tu plan, calculado.') }}<br>{{ _('No inventado.') }}</h1>
+    <p class="lead">
+      {{ _('Responde a un cuestionario guiado y obtén calorías, macros y una rutina de gimnasio completa. Cada número sale de una fórmula publicada, y el plan se ajusta con tus datos reales cada dos semanas.') }}
+    </p>
+    <p class="landing-acciones">
+      {% if current_user.is_authenticated %}
+        <a class="button" href="{{ url_for('dashboard.index') }}">{{ icon('layout-dashboard') }}{{ _('Ir a mi panel') }}</a>
+      {% else %}
+        <a class="button" href="{{ url_for('auth.register') }}">{{ icon('arrow-right') }}{{ _('Empezar') }}</a>
+        <a class="button button-secondary" href="{{ url_for('auth.login') }}">{{ _('Entrar') }}</a>
+      {% endif %}
+    </p>
+  </div>
+  <div class="landing-tira" aria-hidden="true">
+    <img src="{{ url_for('static', filename='img/exercises/barbell-squat/0.jpg') }}" alt="" loading="lazy">
+    <img src="{{ url_for('static', filename='img/exercises/barbell-bench-press-medium-grip/0.jpg') }}" alt="" loading="lazy">
+    <img src="{{ url_for('static', filename='img/exercises/pullups/0.jpg') }}" alt="" loading="lazy">
+  </div>
+</section>
+
+<section class="grid-cards">
+  <article class="card">
+    <h2 class="card-title">{{ icon('flame') }}{{ _('Nutrición con fórmulas, no con reglas del pulgar') }}</h2>
+    <p>{{ _('Composición corporal por perímetros, metabolismo basal por Katch-McArdle o Mifflin-St Jeor y gasto por componentes. El déficit se escala a tu porcentaje de grasa y nunca baja del suelo calórico.') }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card-title">{{ icon('dumbbell') }}{{ _('Una rutina que cabe en tu semana') }}</h2>
+    <p>{{ _('El reparto sale de tus días y minutos reales, con el material que tienes y sin los ejercicios que tu lesión desaconseja. Volumen por músculo, progresión doble y descargas programadas.') }}</p>
+  </article>
+  <article class="card">
+    <h2 class="card-title">{{ icon('chart-line') }}{{ _('Se corrige con lo que pasa de verdad') }}</h2>
+    <p>{{ _('Registras peso, comida y series. Cada dos semanas se compara tu cambio real con el esperado, se estima tu gasto observado y se ajusta en escalones pequeños. Nada cambia sin que lo aceptes.') }}</p>
+  </article>
+</section>
+
+<section class="card">
+  <h2 class="card-title">{{ icon('info') }}{{ _('Los límites están puestos a propósito') }}</h2>
+  <p>{{ _('No hay planes por debajo del mínimo seguro de calorías, ni pérdidas por encima del 1 %% del peso por semana. Si estás embarazada, en periodo de lactancia o tienes antecedentes de un trastorno de la conducta alimentaria, la app no genera plan de nutrición y te dice por qué.') }}</p>
 </section>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/icons.html" import icon %}
 
 {% block title %}{{ _('Revisión') }} · {{ app_name }}{% endblock %}
 
@@ -11,8 +12,11 @@
 
 {% if error %}
   <section class="card">
-    <p class="empty">{{ error }}</p>
-    <p><a class="button button-secondary" href="{{ url_for('tracking.diary') }}">{{ _('Ir al diario') }}</a></p>
+    <div class="empty-state">
+      {{ icon('calendar-check') }}
+      <p>{{ error }}</p>
+      <a class="button" href="{{ url_for('tracking.diary') }}">{{ icon('notebook-pen') }}{{ _('Ir al diario') }}</a>
+    </div>
   </section>
 {% else %}
   {% set decision = preview.decision %}
