@@ -82,9 +82,9 @@
       {% if weights.latest %}
         <p class="big-number">{{ weights.latest[1] }} <small>kg · {{ weights.latest[0].strftime('%d/%m') }}</small></p>
         {% if weights.change_kg is not none %}
-          <p class="meta">{{ _('Media de 7 días: %(delta)s kg en el periodo.', delta=('%+.2f'|format(weights.change_kg))) }}</p>
+          <p class="meta">{{ _('%(delta)s kg desde que empezaste, en media semanal.', delta=('%+.2f'|format(weights.change_kg))) }}</p>
         {% else %}
-          <p class="meta">{{ _('Con al menos tres pesajes por semana calculamos la media de 7 días, que es la que cuenta.') }}</p>
+          <p class="meta">{{ _('Con tres pesajes seguidos ya se ve la tendencia. Si te pesas menos, se mira mes a mes.') }}</p>
         {% endif %}
         {% if weight_chart %}
           {{ chart('weight', 'weight', weight_chart, _('Evolución del peso'), height='16rem') }}
@@ -92,7 +92,7 @@
       {% else %}
         <div class="empty-state">{{ icon('scale') }}<p>{{ _('Todavía no hay pesajes. Anota el de hoy en el diario.') }}</p><a class="button button-small" href="{{ url_for('tracking.diary') }}">{{ icon('plus') }}{{ _('Registrar peso') }}</a></div>
       {% endif %}
-      <p class="help">{{ _('Pésate por la mañana, tras ir al baño y antes de comer. Los días sueltos no importan: la media de 7 días sí.') }}</p>
+      <p class="help">{{ _('Pésate al levantarte, después del baño y antes de desayunar. Un día suelto no dice nada: el peso sube y baja con el agua y la sal.') }}</p>
     </article>
 
     <article class="card">
@@ -100,7 +100,7 @@
       {% if next_review %}
         {% set days_left = (next_review - today).days %}
         <p class="big-number">{{ next_review.strftime('%d/%m') }} <small>{% if days_left > 0 %}{{ _('en %(n)s días', n=days_left) }}{% else %}{{ _('pendiente') }}{% endif %}</small></p>
-        <p class="meta">{{ _('Cada 14 días comparamos tu cambio de peso real con el esperado y ajustamos calorías o pasos en pequeños escalones.') }}</p>
+        <p class="meta">{{ _('Cada dos semanas se mira si el peso se está moviendo como debería. Si no, se tocan calorías o pasos, poco a poco.') }}</p>
       {% else %}
         <p class="empty">{{ _('Sin plan que revisar.') }}</p>
       {% endif %}
