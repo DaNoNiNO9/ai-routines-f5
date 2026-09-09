@@ -146,20 +146,24 @@ def compute_macros(
         calories = needed
         fat = max(fat, fat_minimum_g(calories, body.weight_kg))
         carbs = _carbs_for(calories, protein, fat)
+    protein_g = math.ceil(protein - 1e-9)
+    fat_g = round(fat)
+    floor_g = round(floor)
+    calories_int = int(math.ceil(calories / 5) * 5) if added > 0 else int(round(calories / 5) * 5)
+    carbs_g = max(0, round(_carbs_for(calories_int, protein_g, fat_g)))
+    # Rounding protein up, fat to the nearest gram and calories to 5 kcal can
+    # leave the carbs a gram or two under the floor: 5 kcal steps restore it.
+    while carbs_g < floor_g:
+        calories_int += 5
+        added += 5
+        carbs_g = max(0, round(_carbs_for(calories_int, protein_g, fat_g)))
     if added > 0:
         code = (
             "macros.deficit_reduced_for_carbs"
             if mode == "deficit"
             else "macros.calories_raised_for_carbs"
         )
-        notes.append(
-            Note(code, level="warning", params={"kcal": round(added), "floor": round(floor)})
-        )
-
-    protein_g = math.ceil(protein - 1e-9)
-    fat_g = round(fat)
-    calories_int = int(math.ceil(calories / 5) * 5) if added > 0 else int(round(calories / 5) * 5)
-    carbs_g = max(0, round(_carbs_for(calories_int, protein_g, fat_g)))
+        notes.append(Note(code, level="warning", params={"kcal": round(added), "floor": floor_g}))
     return Macros(
         calories=calories_int,
         protein_g=protein_g,
@@ -169,7 +173,7 @@ def compute_macros(
         protein_per_kg=per_kg,
         protein_basis=basis,
         fat_fraction=round(9 * fat_g / calories_int, 3),
-        carb_floor_g=round(floor),
+        carb_floor_g=floor_g,
         calories_added_for_carb_floor=round(added),
         notes=tuple(notes),
     )

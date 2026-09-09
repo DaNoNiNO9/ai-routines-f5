@@ -308,4 +308,6 @@ def _jsonable(value: Any) -> Any:
         return {_jsonable(k) if isinstance(k, Enum) else k: _jsonable(v) for k, v in value.items()}
     if isinstance(value, list | tuple):
         return [_jsonable(item) for item in value]
+    if isinstance(value, set | frozenset):
+        return sorted(_jsonable(item) for item in value)
     return value
