@@ -235,3 +235,28 @@ def test_routine_inputs_validation() -> None:
         make_routine_inputs(priority_muscles=(MuscleGroup.CHEST, MuscleGroup.BACK, MuscleGroup.ABS))
     with pytest.raises(InputError, match="extra_deficit"):
         make_routine_inputs(extra_deficit_kcal_per_day=-1)
+
+
+def test_the_cardio_says_what_to_do_it_on() -> None:
+    """Decir "dos sesiones LISS" y callarse deja a la persona adivinando."""
+    con_maquina = make_routine_inputs(
+        training_location=TrainingLocation.FULL_GYM, extra_deficit_kcal_per_day=250
+    )
+    codigos = [note.code for note in cardio_prescription(con_maquina).notes]
+    assert "cardio.liss_machine" in codigos
+
+    sin_maquina = make_routine_inputs(
+        training_location=TrainingLocation.HOME_EQUIPMENT, extra_deficit_kcal_per_day=250
+    )
+    codigos = [note.code for note in cardio_prescription(sin_maquina).notes]
+    assert "cardio.liss_outdoor" in codigos
+
+    con_rodilla = make_routine_inputs(
+        training_location=TrainingLocation.FULL_GYM,
+        extra_deficit_kcal_per_day=250,
+        injuries=(InjuryInput(area=InjuryArea.KNEE, severity=Severity.MODERATE),),
+    )
+    prescripcion = cardio_prescription(con_rodilla)
+    codigos = [note.code for note in prescripcion.notes]
+    assert "cardio.liss_low_impact" in codigos
+    assert prescripcion.hiit_sessions == 0  # nada de impacto con la rodilla así

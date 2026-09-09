@@ -31,6 +31,7 @@ from app.engine.enums import (
 )
 from app.engine.equipment_presets import EQUIPMENT_PRESETS
 from app.engine.nutrition import build_nutrition_plan
+from app.engine.routines import prescription as rx
 from app.engine.routines.generator import build_routine
 from app.engine.routines.types import InjuryInput, RoutineInputs
 from app.engine.types import InputError, NutritionInputs, NutritionPlan
@@ -169,8 +170,10 @@ def _check_routine(inputs: RoutineInputs, problems: list[str]) -> None:
         for item in day.exercises:
             if item.sets <= 0 or item.rep_min <= 0 or item.rep_max < item.rep_min:
                 problems.append(f"prescripción imposible: {item.slug}")
-            if item.rir_start < item.rir_end or item.rest_seconds <= 0:
-                problems.append(f"progresión o descanso imposibles: {item.slug}")
+            if item.rir_start < item.rir_end:
+                problems.append(f"progresión imposible: {item.slug}")
+            if item.rest_seconds < rx.MIN_REST_SECONDS:
+                problems.append(f"descanso de {item.rest_seconds} s en {item.slug}")
             entry = next(row for row in CATALOGUE if row.slug == item.slug)
             if not entry.equipment <= set(inputs.equipment):
                 problems.append(f"{item.slug} pide material que no hay")
@@ -401,3 +404,15 @@ def test_the_routine_engine_rejects_impossible_numbers() -> None:
     ):
         with pytest.raises(InputError):
             RoutineInputs(**{**base, field: value})  # type: ignore[arg-type]
+
+
+def test_no_exercise_ever_rests_under_two_minutes() -> None:
+    """El suelo manda sobre la tabla: nadie descansa un minuto entre series."""
+    assert rx.MIN_REST_SECONDS == 120
+    assert min(rx.REST_SECONDS.values()) >= rx.MIN_REST_SECONDS
+    assert min(rx.BODYWEIGHT_REST_SECONDS.values()) >= rx.MIN_REST_SECONDS
+
+    catalogue = {row.slug: row for row in CATALOGUE}
+    fondos = catalogue["dips-chest-version"] if "dips-chest-version" in catalogue else CATALOGUE[0]
+    for role in ("main", "secondary", "accessory", "isolation"):
+        assert rx.rest_seconds(fondos, role) >= rx.MIN_REST_SECONDS

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from flask.testing import FlaskClient
@@ -46,8 +47,6 @@ STEP_ANSWERS: dict[int, dict[str, Any]] = {
         "equipment": sorted(preset_for("basic_gym")),
         "priority_muscles": ["glutes", "shoulders"],
         "injury_knee": "mild",
-        "disliked_exercises": "Press de banca con barra",
-        "preferred_exercises": "",
     },
     5: {
         "goal": "fat_loss",
@@ -137,19 +136,25 @@ def _user(database: SQLAlchemy) -> Any:
     return user
 
 
-def test_equipment_step_presets_and_resolves_names(client: FlaskClient, seeded: SQLAlchemy) -> None:
+def test_the_equipment_step_starts_solved_and_asks_less(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    """El paso 4 llega resuelto: el material del sitio marcado y lo demás plegado."""
     _signup(client)
     for number in (1, 2, 3):
         _post_step(client, number)
     page = client.get("/cuestionario/paso/4").get_data(as_text=True)
-    assert 'value="barbell" checked' in page
-    assert 'value="hack_squat" checked' not in page  # not in the basic-gym preset
-    assert 'id="exercise-names"' in page
-    assert "Press de banca con barra" in page
 
-    unknown = _post_step(client, 4, disliked_exercises="Press de banca con barra, Saltos de rana")
-    assert unknown.status_code == 200
-    assert "No reconocemos: Saltos de rana" in unknown.get_data(as_text=True)
+    assert 'value="barbell" checked' in page
+    assert 'value="hack_squat" checked' not in page  # no está en el preset de gimnasio básico
+    assert "Gimnasio básico" in page  # el resumen dice de dónde sale
+    assert "Ajustar lo que tengo" in page
+    assert "La barra corta con ondulaciones" in page  # la ayuda de la barra EZ
+    # Ni texto libre de ejercicios ni ocho desplegables de lesiones a la vista.
+    assert 'name="disliked_exercises"' not in page
+    assert 'id="exercise-names"' not in page
+    assert 'name="has_injuries"' in page
+
     too_many = _post_step(client, 4, priority_muscles=["glutes", "shoulders", "chest"])
     assert "como mucho dos" in too_many.get_data(as_text=True)
     nothing = _post_step(client, 4, equipment=[])
@@ -157,11 +162,11 @@ def test_equipment_step_presets_and_resolves_names(client: FlaskClient, seeded: 
 
     assert _post_step(client, 4).status_code == 302
     draft = onboarding.get_draft(_user(seeded))
-    assert draft.data["disliked_exercises"] == ["barbell-bench-press-medium-grip"]
     assert draft.data["injuries"] == {"knee": "mild"}
     assert draft.data["equipment_for_location"] == "basic_gym"
+    assert "has_injuries" not in draft.data  # solo abre el bloque, no es una respuesta
 
-    # Changing the location resets the equipment to the new preset.
+    # Al cambiar de sitio, el material vuelve al preset nuevo.
     _post_step(client, 3, training_location="home_bodyweight")
     page = client.get("/cuestionario/paso/4").get_data(as_text=True)
     assert 'value="body_only" checked' in page
@@ -189,7 +194,6 @@ def test_review_blocks_until_complete_and_shows_the_answers(
         "hígado, coles",
     ):
         assert text in page, text
-    assert "Press de banca con barra" in page
     assert "Generar mi plan" in page
 
 
@@ -217,7 +221,6 @@ def test_completing_generates_plan_and_routine(client: FlaskClient, seeded: SQLA
     assert f"{plan.calorie_target}" in page
     assert routine.name in page
     assert "Día 1" in page
-    assert "Press de banca con barra" not in page  # disliked exercise never programmed
 
     panel = client.get("/panel").get_data(as_text=True)
     assert "Ver plan de nutrición" in panel
@@ -315,20 +318,15 @@ def test_saved_answers_are_shown_again_on_every_step(
     _fill_all(client)
     equipment_page = client.get("/cuestionario/paso/4").get_data(as_text=True)
     assert 'value="barbell" checked' in equipment_page
-    assert 'value="Press de banca con barra"' in equipment_page  # disliked, by name
     assert (
         '<option selected value="mild">' in equipment_page
         or 'value="mild" selected' in equipment_page
     )
+    marca = re.search(r'<input[^>]*name="has_injuries"[^>]*>', equipment_page)
+    assert marca is not None
+    assert "checked" in marca.group(0)  # la lesión declarada abre el bloque
     nutrition_page = client.get("/cuestionario/paso/6").get_data(as_text=True)
     assert 'value="hígado, coles"' in nutrition_page
-    duplicated = _post_step(
-        client, 4, disliked_exercises="Press de banca con barra, press de banca con barra"
-    )
-    assert duplicated.status_code == 302
-    assert onboarding.get_draft(_user(seeded)).data["disliked_exercises"] == [
-        "barbell-bench-press-medium-grip"
-    ]
 
 
 def test_impossible_equipment_keeps_the_nutrition_plan(
