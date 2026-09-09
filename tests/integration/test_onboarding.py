@@ -220,7 +220,7 @@ def test_completing_generates_plan_and_routine(client: FlaskClient, seeded: SQLA
     assert "Press de banca con barra" not in page  # disliked exercise never programmed
 
     panel = client.get("/panel").get_data(as_text=True)
-    assert "Ver mi plan" in panel
+    assert "Ver plan de nutrición" in panel
     assert f"{plan.calorie_target}" in panel
 
 
@@ -255,7 +255,7 @@ def test_hard_stop_saves_the_profile_but_no_plan(client: FlaskClient, seeded: SQ
     assert seeded.session.scalar(select(Profile)) is not None
     assert seeded.session.scalar(select(Plan)) is None
     panel = client.get("/panel").get_data(as_text=True)
-    assert "sin plan de nutrición" in panel
+    assert "Sin plan de nutrición" in panel
 
 
 def test_engine_failure_keeps_the_draft_and_explains(
