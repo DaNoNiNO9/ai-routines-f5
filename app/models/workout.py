@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.engine.enums import SetType, WorkoutStatus
 from app.extensions import db
-from app.models.base import SoftDeleteMixin, TimestampMixin, UTCDateTime, enum_column
+from app.models.base import JSONType, SoftDeleteMixin, TimestampMixin, UTCDateTime, enum_column
 
 if TYPE_CHECKING:
     from app.models.exercise import Exercise
@@ -43,6 +43,8 @@ class WorkoutSession(TimestampMixin, SoftDeleteMixin, db.Model):
     mesocycle_week: Mapped[int | None] = mapped_column()
     perceived_fatigue: Mapped[int | None] = mapped_column()
     notes: Mapped[str | None] = mapped_column(Text)
+    # {routine_exercise_id (as str): exercise_id} chosen for this session only.
+    substitutions: Mapped[dict[str, int] | None] = mapped_column(JSONType)
 
     user: Mapped[User] = relationship(back_populates="workout_sessions")
     routine_day: Mapped[RoutineDay | None] = relationship()

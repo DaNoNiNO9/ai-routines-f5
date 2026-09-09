@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Historial de entrenos') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">{{ _('Entrenamiento') }}</p>
+  <h1>{{ _('Historial') }}</h1>
+  <p class="auth-links">
+    <a class="button button-small button-secondary" href="{{ url_for('workouts.progress') }}">{{ _('Progreso por ejercicio') }}</a>
+    <a class="button button-small button-secondary" href="{{ url_for('training.routine') }}">{{ _('Rutina') }}</a>
+  </p>
+</section>
+
+{% if items %}
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>{{ _('Fecha') }}</th><th>{{ _('Sesión') }}</th><th>{{ _('Series') }}</th><th>{{ _('kg') }}</th><th>{{ _('Min') }}</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+          {% set session = item.session %}
+          <tr>
+            <td>{{ session.started_at.strftime('%d/%m/%y') }}</td>
+            <td>{% if session.routine_day %}{{ session.routine_day.name }}{% else %}—{% endif %}{% if session.status.value == 'abandoned' %} <span class="badge">{{ _('abandonada') }}</span>{% endif %}{% if item.prs %} <span class="badge status-ok">PR ×{{ item.prs }}</span>{% endif %}</td>
+            <td>{{ item.working_sets }}</td>
+            <td>{{ item.tonnage_kg|int }}</td>
+            <td>{{ item.duration_minutes }}</td>
+            <td><a href="{{ url_for('workouts.summary', session_id=session.id) }}">{{ _('Ver') }}</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <section class="card">
+    <p class="empty">{{ _('Todavía no hay sesiones registradas. Empieza la próxima desde el panel o desde la rutina.') }}</p>
+    <p><a class="button" href="{{ url_for('training.routine') }}">{{ _('Ver la rutina') }}</a></p>
+  </section>
+{% endif %}
+{% endblock %}

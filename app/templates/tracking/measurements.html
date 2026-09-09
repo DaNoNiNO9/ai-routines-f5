@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field %}
+
+{% block title %}{{ _('Perímetros') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('tracking.diary') }}">{{ _('Registro') }}</a></p>
+  <h1>{{ _('Perímetros') }}</h1>
+  <p class="lead">{{ _('Una vez por semana, misma hora, cinta sin apretar. Con cuello, cintura y cadera estimamos la grasa corporal.') }}</p>
+</section>
+
+<div class="grid-cards">
+  <section class="card">
+    <h2 class="card-title">{{ _('Nueva medición') }}</h2>
+    <form method="post" class="form" novalidate>
+      {{ form.hidden_tag() }}
+      {{ field(form.day) }}
+      <div class="grid-3">
+        {{ field(form.neck_cm, step="0.5", inputmode="decimal") }}
+        {{ field(form.waist_cm, step="0.5", inputmode="decimal") }}
+        {{ field(form.hip_cm, step="0.5", inputmode="decimal") }}
+        {{ field(form.chest_cm, step="0.5", inputmode="decimal") }}
+        {{ field(form.arm_cm, step="0.5", inputmode="decimal") }}
+        {{ field(form.thigh_cm, step="0.5", inputmode="decimal") }}
+        {{ field(form.calf_cm, step="0.5", inputmode="decimal") }}
+      </div>
+      <div class="grid-2">
+        {{ field(form.body_fat_pct, step="0.5", inputmode="decimal") }}
+        {{ field(form.body_fat_method) }}
+      </div>
+      {{ field(form.notes) }}
+      <button type="submit" class="button button-block">{{ _('Guardar medidas') }}</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">{{ _('Historial') }}</h2>
+    {% if rows %}
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>{{ _('Día') }}</th><th>{{ _('Cuello') }}</th><th>{{ _('Cintura') }}</th><th>{{ _('Cadera') }}</th><th>{{ _('Pecho') }}</th><th>{{ _('Brazo') }}</th><th>{{ _('Muslo') }}</th><th>{{ _('Gemelo') }}</th><th>% {{ _('grasa') }}</th></tr></thead>
+          <tbody>
+            {% for row in rows %}
+              <tr>
+                <td>{{ row.measured_on.strftime('%d/%m/%y') }}</td>
+                <td>{{ row.neck_cm if row.neck_cm is not none else '—' }}</td>
+                <td>{{ row.waist_cm if row.waist_cm is not none else '—' }}</td>
+                <td>{{ row.hip_cm if row.hip_cm is not none else '—' }}</td>
+                <td>{{ row.chest_cm if row.chest_cm is not none else '—' }}</td>
+                <td>{{ row.arm_cm if row.arm_cm is not none else '—' }}</td>
+                <td>{{ row.thigh_cm if row.thigh_cm is not none else '—' }}</td>
+                <td>{{ row.calf_cm if row.calf_cm is not none else '—' }}</td>
+                <td>{% if row.body_fat_pct is not none %}{{ row.body_fat_pct }}{% else %}—{% endif %}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="empty">{{ _('Todavía no hay mediciones.') }}</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field %}
+
+{% block title %}{{ _('Diario') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">{{ _('Registro') }}</p>
+  <h1>{{ _('Diario') }}</h1>
+  <form method="get" class="inline-fields" aria-label="{{ _('Elegir día') }}">
+    <label class="field-label" for="fecha">{{ _('Día') }}</label>
+    <input class="field-input" type="date" id="fecha" name="fecha" value="{{ day.isoformat() }}" max="{{ today.isoformat() }}">
+    <button type="submit" class="button button-small button-secondary">{{ _('Cambiar') }}</button>
+    {% if day != today %}<a class="button button-small button-secondary" href="{{ url_for('tracking.diary') }}">{{ _('Hoy') }}</a>{% endif %}
+  </form>
+  <p class="auth-links">
+    <a class="button button-small button-secondary" href="{{ url_for('tracking.measurements') }}">{{ _('Perímetros') }}</a>
+    <a class="button button-small button-secondary" href="{{ url_for('review.index') }}">{{ _('Revisión') }}</a>
+    <a class="button button-small button-secondary" href="{{ url_for('workouts.history') }}">{{ _('Entrenos') }}</a>
+  </p>
+</section>
+
+<div class="grid-cards">
+  <section class="card">
+    <h2 class="card-title">{{ _('Peso') }}</h2>
+    <form method="post" action="{{ url_for('tracking.save_weight') }}" class="form" novalidate>
+      {{ weight_form.hidden_tag() }}
+      {{ field(weight_form.weight_kg, step="0.1", inputmode="decimal", autofocus=true) }}
+      {{ field(weight_form.notes) }}
+      <button type="submit" class="button button-block">{{ _('Guardar peso') }}</button>
+    </form>
+    <p class="help">{{ _('Por la mañana, tras ir al baño, antes de comer.') }}</p>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">{{ _('Ingesta') }}</h2>
+    <form method="post" action="{{ url_for('tracking.save_intake') }}" class="form" novalidate>
+      {{ intake_form.hidden_tag() }}
+      {{ field(intake_form.calories, inputmode="numeric") }}
+      <div class="grid-3">
+        {{ field(intake_form.protein_g, inputmode="decimal") }}
+        {{ field(intake_form.carbs_g, inputmode="decimal") }}
+        {{ field(intake_form.fat_g, inputmode="decimal") }}
+      </div>
+      {{ field(intake_form.adherence_pct, inputmode="numeric") }}
+      <p class="help">{{ _('Adherencia: qué parte del plan has cumplido hoy, del 0 al 100. Sé sincero: manda en la revisión.') }}</p>
+      <button type="submit" class="button button-block">{{ _('Guardar ingesta') }}</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">{{ _('Pasos y cardio') }}</h2>
+    <form method="post" action="{{ url_for('tracking.save_activity') }}" class="form" novalidate>
+      {{ activity_form.hidden_tag() }}
+      {{ field(activity_form.steps, inputmode="numeric") }}
+      <div class="grid-2">
+        {{ field(activity_form.cardio_kind) }}
+        {{ field(activity_form.cardio_minutes, inputmode="numeric") }}
+      </div>
+      <button type="submit" class="button button-block">{{ _('Guardar actividad') }}</button>
+    </form>
+    {% if steps_target %}<p class="help">{{ _('Objetivo: %(n)s pasos al día.', n=steps_target) }}</p>{% endif %}
+  </section>
+</div>
+
+<section class="card">
+  <h2 class="card-title">{{ _('Últimos 14 días') }}</h2>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>{{ _('Día') }}</th><th>kg</th><th>kcal</th><th>P/C/G</th><th>{{ _('Adh.') }}</th><th>{{ _('Pasos') }}</th><th>{{ _('Cardio') }}</th></tr></thead>
+      <tbody>
+        {% for row in rows %}
+          <tr{% if row.day == day %} class="row-selected"{% endif %}>
+            <td><a href="{{ url_for('tracking.diary', fecha=row.day.isoformat()) }}">{{ row.day.strftime('%d/%m') }}</a></td>
+            <td>{{ row.weight_kg if row.weight_kg is not none else '—' }}</td>
+            <td>{{ row.calories if row.calories is not none else '—' }}</td>
+            <td>{% if row.protein_g is not none or row.carbs_g is not none or row.fat_g is not none %}{{ row.protein_g|int if row.protein_g is not none else '·' }}/{{ row.carbs_g|int if row.carbs_g is not none else '·' }}/{{ row.fat_g|int if row.fat_g is not none else '·' }}{% else %}—{% endif %}</td>
+            <td>{% if row.adherence_pct is not none %}{{ row.adherence_pct }} %{% else %}—{% endif %}</td>
+            <td>{{ row.steps if row.steps is not none else '—' }}</td>
+            <td>{% if row.cardio_minutes %}{{ row.cardio_kind.value|upper }} {{ row.cardio_minutes }} min{% else %}—{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

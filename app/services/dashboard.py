@@ -5,6 +5,7 @@ Everything here only reads; the dashboard never changes state.
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Any
@@ -30,6 +31,8 @@ from app.models import (
     WorkoutSession,
 )
 from app.services.plans import exercise_info
+
+logger = logging.getLogger(__name__)
 
 # Same default as ``AdjustmentInputs.review_interval_days`` (checked by a test).
 REVIEW_INTERVAL_DAYS = 14
@@ -106,6 +109,13 @@ def next_review_on(plan: Plan) -> date:
         .where(PlanAdjustment.plan_id == plan.id)
         .order_by(PlanAdjustment.created_at.desc(), PlanAdjustment.id.desc())
     )
+    if last is not None and isinstance(last.data, dict):
+        scheduled = last.data.get("next_review_on")
+        if isinstance(scheduled, str):
+            try:
+                return date.fromisoformat(scheduled)
+            except ValueError:
+                logger.warning("Ignoring malformed next_review_on %r", scheduled)
     anchor = last.created_at.date() if last is not None else plan.starts_on
     anchor = max(anchor, plan.starts_on)
     return anchor + timedelta(days=REVIEW_INTERVAL_DAYS)

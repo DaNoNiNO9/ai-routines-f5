@@ -334,3 +334,34 @@ fieldset.choices legend { padding: 0; }
   .table th, .table td { padding: var(--space-1) var(--space-2); font-size: 0.9rem; }
   .badge { font-size: 0.8rem; padding-inline: 0.45rem; }
 }
+
+/* Diary, live session and review (Phase 10) */
+.inline-fields { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-bottom: var(--space-3); }
+.inline-fields .field-input { width: auto; min-width: 10rem; }
+.set-list { list-style: none; padding: 0; margin: var(--space-2) 0; }
+.set-row { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-1) 0; border-bottom: 1px solid var(--border); }
+.set-index { flex: none; width: 1.5rem; color: var(--text-muted); font-weight: 700; text-align: center; }
+.set-form { display: grid; grid-template-columns: 1.5rem repeat(3, minmax(0, 1fr)) auto; gap: var(--space-2); align-items: end; width: 100%; }
+.set-field span { display: block; font-size: 0.75rem; color: var(--text-muted); }
+.set-field .field-input { min-height: 2.75rem; padding-inline: var(--space-2); }
+.set-submit { min-width: 3rem; min-height: 2.75rem; padding-inline: var(--space-3); }
+.set-done .set-values { flex: 1; font-variant-numeric: tabular-nums; }
+.set-done { background: color-mix(in srgb, var(--success) 10%, transparent); }
+.rest-timer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 0 var(--space-3);
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
+}
+.rest-timer-label { display: block; font-size: 0.8rem; color: var(--text-muted); }
+.rest-timer-value { font-size: 2rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.rest-timer-actions { display: flex; gap: var(--space-2); }

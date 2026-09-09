@@ -32,6 +32,7 @@ from app.engine.enums import (
     TrainingTime,
 )
 from app.engine.nutrition import build_nutrition_plan
+from app.engine.routines.cardio import steps_target as default_steps_target
 from app.engine.routines.catalog import exercise_from_dict
 from app.engine.routines.generator import build_routine
 from app.engine.routines.types import ExerciseInfo, InjuryInput, RoutineInputs, RoutinePlan
@@ -227,9 +228,25 @@ def _join_notes(notes: tuple[Note, ...], limit: int) -> str | None:
 
 
 def persist_plan(
-    user: User, profile: Profile, inputs: NutritionInputs, nutrition: NutritionPlan, today: date
+    user: User,
+    profile: Profile,
+    inputs: NutritionInputs,
+    nutrition: NutritionPlan,
+    today: date,
+    *,
+    reason: AdjustmentReason | None = None,
+    explanation: str | None = None,
+    data: dict[str, Any] | None = None,
+    steps_target: int | None = None,
+    observed_weekly_change_kg: float | None = None,
+    observed_tdee_kcal: float | None = None,
+    steps_delta: int | None = None,
 ) -> Plan:
-    """Store a finished nutrition plan as the new active version (previous one superseded)."""
+    """Store a finished nutrition plan as the new active version (previous one superseded).
+
+    Without ``reason`` the audit row says ``initial`` (first plan) or
+    ``profile_change``; the review passes the engine's reason and decision.
+    """
     if (
         nutrition.is_blocked
         or nutrition.bmr is None
@@ -242,6 +259,10 @@ def persist_plan(
     previous = active_plan(user)
     details = nutrition.to_dict()
     details["messages"] = messages_for(nutrition.all_notes())
+    if steps_target is not None:
+        details["steps_target"] = steps_target
+    elif previous is not None and isinstance(previous.details.get("steps_target"), int):
+        details["steps_target"] = previous.details["steps_target"]
     plan = Plan(
         user=user,
         profile=profile,
@@ -282,7 +303,7 @@ def persist_plan(
     db.session.flush()
 
     target = nutrition.target
-    explanation = messages.render(
+    default_explanation = messages.render(
         Note(f"target.{target.mode}", params={"pct": round(target.fraction * 100, 1)})
     )
     db.session.add(
@@ -290,15 +311,17 @@ def persist_plan(
             user=user,
             plan=plan,
             previous_plan=previous,
-            reason=AdjustmentReason.INITIAL
-            if previous is None
-            else AdjustmentReason.PROFILE_CHANGE,
+            reason=reason
+            or (AdjustmentReason.INITIAL if previous is None else AdjustmentReason.PROFILE_CHANGE),
             expected_weekly_change_kg=target.expected_weekly_change_kg,
-            calorie_delta=None
-            if previous is None
-            else plan.calorie_target - previous.calorie_target,
-            explanation=f"{plan.calorie_target} kcal. {explanation}",
-            data={"mode": target.mode, "fraction": target.fraction},
+            observed_weekly_change_kg=observed_weekly_change_kg,
+            observed_tdee_kcal=observed_tdee_kcal,
+            calorie_delta=(
+                None if previous is None else plan.calorie_target - previous.calorie_target
+            ),
+            steps_delta=steps_delta,
+            explanation=explanation or f"{plan.calorie_target} kcal. {default_explanation}",
+            data=data or {"mode": target.mode, "fraction": target.fraction},
         )
     )
     logger.info("Plan v%s stored for user %s (%s kcal)", plan.version, user.id, plan.calorie_target)
@@ -404,6 +427,12 @@ def generate_for_profile(user: User, profile: Profile, today: date) -> Generatio
     else:
         routine = persist_routine(user, profile, r_inputs, routine_plan, today, by_slug)
         plan.routine = routine
+    steps = (
+        routine_plan.cardio.daily_steps_target
+        if routine_plan.cardio is not None
+        else default_steps_target(profile.daily_steps, profile.goal)
+    )
+    plan.details = {**plan.details, "steps_target": steps}
     return GenerationResult(profile, nutrition, plan, routine_plan, routine)
 
 

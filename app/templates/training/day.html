@@ -12,6 +12,10 @@
     <p class="meta">{{ _('RIR por semana:') }} {% for rir in weekly_rir %}{{ _('S%(n)s', n=loop.index) }} {{ rir }}{% if not loop.last %} · {% endif %}{% endfor %}. {{ _('Sube la carga cuando llegues al máximo de repeticiones en todas las series.') }}</p>
   {% endif %}
   {% if day.notes %}<p class="help">{{ day.notes }}</p>{% endif %}
+  <form method="post" action="{{ url_for('workouts.start', day_index=day.day_index) }}" class="inline-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="button">{{ _('Empezar esta sesión') }}</button>
+  </form>
 </section>
 
 <ol class="exercise-cards">

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "components/charts.html" import chart as chart_box %}
+
+{% block title %}{{ _('Progreso') }} · {{ app_name }}{% endblock %}
+
+{% block scripts %}
+  {% if chart %}<script defer src="{{ url_for('static', filename='vendor/chart-4.5.1.umd.js') }}"></script>{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">{{ _('Entrenamiento') }}</p>
+  <h1>{{ _('Progreso') }}</h1>
+  <p class="meta">{{ _('Mejor serie de cada sesión: carga máxima y 1RM estimado (Epley: kg × (1 + reps/30)).') }}</p>
+</section>
+
+{% if exercises %}
+  <form method="get" class="inline-fields">
+    <label class="field-label" for="ejercicio">{{ _('Ejercicio') }}</label>
+    <select id="ejercicio" name="ejercicio" class="field-input">
+      {% for item in exercises %}<option value="{{ item.slug }}"{% if chosen and item.id == chosen.id %} selected{% endif %}>{{ item.name_es }}</option>{% endfor %}
+    </select>
+    <button type="submit" class="button button-small button-secondary">{{ _('Ver') }}</button>
+  </form>
+  <section class="card">
+    <h2 class="card-title">{{ chosen.name_es }}</h2>
+    {% if chart %}
+      {{ chart_box('progress', 'lines', chart, _('Evolución de %(name)s', name=chosen.name_es), height='16rem') }}
+    {% else %}
+      <p class="empty">{{ _('Con dos sesiones registradas aparecerá la gráfica.') }}</p>
+    {% endif %}
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>{{ _('Fecha') }}</th><th>{{ _('Mejor serie') }}</th><th>{{ _('1RM est.') }}</th></tr></thead>
+        <tbody>
+          {% for point in points|reverse %}
+            <tr><td>{{ point.day.strftime('%d/%m/%y') }}</td><td>{{ point.top_weight|round(2)|string|replace('.0', '') }} kg × {{ point.top_reps }}</td><td>{{ point.est_1rm }} kg</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% else %}
+  <section class="card">
+    <p class="empty">{{ _('Aún no hay series registradas en sesiones completadas.') }}</p>
+    <p><a class="button" href="{{ url_for('training.routine') }}">{{ _('Ver la rutina') }}</a></p>
+  </section>
+{% endif %}
+{% endblock %}

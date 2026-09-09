@@ -17,7 +17,8 @@
         {% if current_user.is_authenticated %}
           <li><a href="{{ url_for('dashboard.index') }}"{% if request.blueprint == 'dashboard' %} aria-current="page"{% endif %}>{{ _('Panel') }}</a></li>
           <li><a href="{{ url_for('nutrition.plan') }}"{% if request.blueprint == 'nutrition' %} aria-current="page"{% endif %}>{{ _('Nutrición') }}</a></li>
-          <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint == 'training' %} aria-current="page"{% endif %}>{{ _('Entrenamiento') }}</a></li>
+          <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint in ('training', 'workouts') %} aria-current="page"{% endif %}>{{ _('Entrenamiento') }}</a></li>
+          <li><a href="{{ url_for('tracking.diary') }}"{% if request.blueprint in ('tracking', 'review') %} aria-current="page"{% endif %}>{{ _('Diario') }}</a></li>
           <li>
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
