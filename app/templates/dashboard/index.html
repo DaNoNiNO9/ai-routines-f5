@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Panel') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">{{ _('Panel') }}</p>
+  <h1>{{ _('Hola, %(name)s.', name=user.display_name) }}</h1>
+  <p class="lead">{{ _('Tu cuenta está lista. El cuestionario para generar tu plan llega en la Fase 8; después verás aquí tu nutrición, tu rutina y tu progreso.') }}</p>
+  <p class="meta">{{ _('Cuenta creada el %(date)s.', date=user.created_at.strftime('%d/%m/%Y')) }}</p>
+</section>
+{% endblock %}

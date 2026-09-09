@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field %}
+
+{% block title %}{{ _('Recuperar contraseña') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+  <h1>{{ _('Recuperar contraseña') }}</h1>
+  <p class="lead">{{ _('Te enviaremos un enlace para elegir una contraseña nueva.') }}</p>
+  <form method="post" novalidate class="form">
+    {{ form.hidden_tag() }}
+    {{ field(form.email, autocomplete="email", autofocus=true) }}
+    <button type="submit" class="button button-block">{{ _('Enviar enlace') }}</button>
+  </form>
+  <p class="meta"><a href="{{ url_for('auth.login') }}">{{ _('Volver a entrar') }}</a></p>
+</section>
+{% endblock %}

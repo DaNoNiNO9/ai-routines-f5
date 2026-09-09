@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field %}
+
+{% block title %}{{ _('Nueva contraseña') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+  <h1>{{ _('Nueva contraseña') }}</h1>
+  <form method="post" action="{{ url_for('auth.reset_password', token=token) }}" novalidate class="form">
+    {{ form.hidden_tag() }}
+    {{ field(form.password, autocomplete="new-password", autofocus=true) }}
+    <p class="help">{{ _('Mínimo %(n)s caracteres.', n=password_min_length) }}</p>
+    {{ field(form.password_confirm, autocomplete="new-password") }}
+    <button type="submit" class="button button-block">{{ _('Guardar contraseña') }}</button>
+  </form>
+</section>
+{% endblock %}

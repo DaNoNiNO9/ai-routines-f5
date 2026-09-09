@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field, checkbox %}
+
+{% block title %}{{ _('Entrar') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card auth-card">
+  <h1>{{ _('Entrar') }}</h1>
+  <form method="post" novalidate class="form">
+    {{ form.hidden_tag() }}
+    {{ field(form.email, autocomplete="email", autofocus=true) }}
+    {{ field(form.password, autocomplete="current-password") }}
+    {{ checkbox(form.remember) }}
+    <button type="submit" class="button button-block">{{ _('Entrar') }}</button>
+  </form>
+  <p class="meta auth-links">
+    <a href="{{ url_for('auth.forgot_password') }}">{{ _('¿Has olvidado la contraseña?') }}</a>
+    <a href="{{ url_for('auth.register') }}">{{ _('Crear cuenta') }}</a>
+  </p>
+</section>
+{% endblock %}

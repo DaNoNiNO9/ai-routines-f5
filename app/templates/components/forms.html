@@ -1,0 +1,25 @@
+{% macro field(f, autocomplete="on", autofocus=false) %}
+<div class="field{% if f.errors %} field-invalid{% endif %}">
+  {{ f.label(class_="field-label") }}
+  {% if autofocus %}
+    {{ f(class_="field-input", autocomplete=autocomplete, autofocus=true) }}
+  {% else %}
+    {{ f(class_="field-input", autocomplete=autocomplete) }}
+  {% endif %}
+  {% for error in f.errors %}
+    <p class="field-error" role="alert">{{ error }}</p>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro checkbox(f) %}
+<div class="field field-check{% if f.errors %} field-invalid{% endif %}">
+  <label class="check-label">
+    {{ f(class_="check-input") }}
+    <span>{{ f.label.text }}</span>
+  </label>
+  {% for error in f.errors %}
+    <p class="field-error" role="alert">{{ error }}</p>
+  {% endfor %}
+</div>
+{% endmacro %}

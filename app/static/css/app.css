@@ -183,3 +183,42 @@ h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 var(-
   margin: 0;
   color: var(--border);
 }
+
+/* Forms and cards (Phase 7) */
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+}
+.auth-card { max-width: 28rem; margin-inline: auto; }
+.field { margin-bottom: var(--space-3); }
+.field-label { display: block; font-weight: 600; margin-bottom: var(--space-1); }
+.field-input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+.field-invalid .field-input { border-color: var(--danger); }
+.check-label { display: flex; gap: var(--space-2); align-items: flex-start; cursor: pointer; }
+.check-input { margin-top: 0.3rem; }
+.help { color: var(--text-muted); font-size: 0.9rem; margin: calc(-1 * var(--space-2)) 0 var(--space-3); }
+.button-block { display: block; width: 100%; text-align: center; margin-top: var(--space-3); }
+.button-small { min-height: 2.25rem; padding: var(--space-1) var(--space-3); font-size: 0.95rem; }
+.inline-form { display: inline; }
+.link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--text-muted);
+  font: inherit;
+  cursor: pointer;
+}
+.link-button:hover { color: var(--text); }
+.flash-info { border-color: var(--focus); }
+.auth-links { display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
