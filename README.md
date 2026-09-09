@@ -125,12 +125,13 @@ Regla de dependencia: `engine/` no importa nada de Flask ni de `models/`. `servi
 - `app/engine/` — motor de cálculo. Su `README.md` recorre cada etapa con sus fórmulas y fuentes y dice qué constante tocar para cambiar cada regla.
 - `app/engine/enums.py` — vocabulario de dominio compartido por motor, modelos y formularios.
 - `app/seeds/` — datos de referencia (`equipment.json`, `exercises.json` generado) y cargadores idempotentes; comandos en `app/cli.py`. Su `README.md` explica cómo se genera el catálogo.
-- `scripts/` — `exercise_catalogue.py` (curación de 190 ejercicios) y `build_exercises.py` (generador con descarga de imágenes).
+- `scripts/` — `exercise_catalogue.py` (curación de 190 ejercicios), `build_exercises.py` (generador con descarga de imágenes), `build_icons.py` e `inline_icons.py` (sprite de iconos) y `babel_engine.py` (extractor de los textos del motor para pybabel).
+- `app/translations/` — catálogos de traducción (`.po` y `.mo` versionados); ver «Traducciones».
 - `app/static/img/exercises/` — 380 ilustraciones de dominio público (ver `docs/CREDITOS.md`).
 - `migrations/` — Alembic (Flask-Migrate). `env.py` editado a mano: engine directo y sin silenciar loggers.
 - `config.py` — clases de configuración por entorno y validación de producción.
 - `wsgi.py` — punto de entrada para waitress o gunicorn.
-- `tests/` — `conftest.py` (fixtures `make_app`, `app`, `client`), `test_smoke.py` e `integration/`.
+- `tests/` — `conftest.py` (fixtures `make_app`, `app`, `client`, `database`, `seeded`; el cliente limpia entre peticiones lo que Flask-Login y Flask-Babel cachean en `g`), `test_smoke.py`, `unit/` e `integration/` (incluidos los `test_audit_*` de la Fase 13).
 - `pyproject.toml` — configuración de ruff, pytest y coverage.
 - `requirements.in` / `requirements-dev.in` — dependencias directas fijadas (fuente).
 - `requirements.txt` / `requirements-dev.txt` — árbol completo compilado. Generados: no editar a mano.
