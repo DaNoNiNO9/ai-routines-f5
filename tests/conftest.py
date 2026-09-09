@@ -25,7 +25,9 @@ def make_app(tmp_path: Path) -> AppFactory:
 
     def _make(**overrides: Any) -> Flask:
         overrides.setdefault("LOG_DIR", str(tmp_path / "logs"))
-        return create_app("testing", overrides)
+        instance = create_app("testing", overrides)
+        instance.test_client_class = FreshClient
+        return instance
 
     return _make
 
@@ -51,9 +53,7 @@ class FreshClient(FlaskClient):
 @pytest.fixture
 def app(make_app: AppFactory) -> Flask:
     """Application instance configured for testing."""
-    instance = make_app()
-    instance.test_client_class = FreshClient
-    return instance
+    return make_app()
 
 
 @pytest.fixture
