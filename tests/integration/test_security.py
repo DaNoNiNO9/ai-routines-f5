@@ -28,8 +28,8 @@ def test_hsts_only_when_enabled(make_app: AppFactory) -> None:
 def test_session_cookie_is_httponly_and_samesite(make_app: AppFactory) -> None:
     app = make_app(WTF_CSRF_ENABLED=True)
     response = app.test_client().get("/_debug/echo")
-    cookie = response.headers.get("Set-Cookie", "")
-    assert "session=" in cookie
+    cookies = response.headers.getlist("Set-Cookie")
+    cookie = next(c for c in cookies if c.startswith("session="))
     assert "HttpOnly" in cookie
     assert "SameSite=Lax" in cookie
 

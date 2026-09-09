@@ -49,6 +49,7 @@ def test_production_refuses_missing_secret_and_database() -> None:
 def test_production_refuses_debug_flags() -> None:
     overrides = {
         **NO_FILE_LOG,
+        **PRODUCTION_MAIL,
         "SECRET_KEY": "x" * MIN_SECRET_KEY_LENGTH,
         "SQLALCHEMY_DATABASE_URI": "sqlite://",
         "DEBUG": True,
@@ -60,9 +61,26 @@ def test_production_refuses_debug_flags() -> None:
         create_app("production", overrides)
 
 
+PRODUCTION_MAIL = {"MAIL_BACKEND": "smtp", "MAIL_SERVER": "smtp.example.com", "MAIL_FROM": "a@b.c"}
+
+
+def test_production_requires_smtp_mail() -> None:
+    overrides = {
+        **NO_FILE_LOG,
+        "SECRET_KEY": "s" * MIN_SECRET_KEY_LENGTH,
+        "SQLALCHEMY_DATABASE_URI": "sqlite://",
+        "MAIL_BACKEND": "log",
+    }
+    with pytest.raises(RuntimeError, match="MAIL_BACKEND must be smtp"):
+        create_app("production", overrides)
+    with pytest.raises(RuntimeError, match="MAIL_SERVER and MAIL_FROM"):
+        create_app("production", {**overrides, "MAIL_BACKEND": "smtp", "MAIL_SERVER": ""})
+
+
 def test_production_boots_with_valid_configuration() -> None:
     overrides = {
         **NO_FILE_LOG,
+        **PRODUCTION_MAIL,
         "SECRET_KEY": "s" * MIN_SECRET_KEY_LENGTH,
         "SQLALCHEMY_DATABASE_URI": "sqlite://",
     }
