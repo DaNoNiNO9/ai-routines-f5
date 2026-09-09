@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ code }} · {{ title }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <p class="error-code" aria-hidden="true">{{ code }}</p>
+  <h1>{{ title }}</h1>
+  <p class="lead">{{ message }}</p>
+  <p><a class="button" href="{{ url_for('main.index') }}">{{ _('Volver al inicio') }}</a></p>
+  <p class="meta">{{ _('Referencia') }}: <code>{{ request_id }}</code></p>
+</section>
+{% endblock %}

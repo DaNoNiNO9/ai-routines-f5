@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="{{ current_locale }}" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">{{ _('Saltar al contenido') }}</a>
+  <header class="site-header">
+    <nav class="container nav" aria-label="{{ _('Navegación principal') }}">
+      <a class="brand" href="{{ url_for('main.index') }}">{{ app_name }}</a>
+      <ul class="nav-links">
+        {% block nav_links %}{% endblock %}
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes" role="status" aria-live="polite">
+          {% for category, message in messages %}
+            <li class="flash flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="disclaimer">
+        <strong>{{ app_name }}</strong>
+        {{ _('es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario.') }}
+      </p>
+      <p class="meta">v{{ app_version }} · {{ current_year }}</p>
+    </div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

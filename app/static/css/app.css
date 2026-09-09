@@ -1,0 +1,185 @@
+/* Forja base stylesheet (Phase 1). Design tokens first; the full visual design
+   (fonts, iconography, components) arrives in Phase 11. Dark theme by default. */
+
+:root {
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+  --radius: 10px;
+  --container: 64rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+}
+
+:root, [data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1115;
+  --bg-elevated: #171a21;
+  --border: #262b36;
+  --text: #e8eaf0;
+  --text-muted: #9aa3b5;
+  --accent: #ff7a1a;
+  --accent-contrast: #14100a;
+  --success: #3ccf8e;
+  --warning: #f5c542;
+  --danger: #ff5c6c;
+  --focus: #7cc4ff;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f7f9;
+  --bg-elevated: #ffffff;
+  --border: #dcdfe6;
+  --text: #16181d;
+  --text-muted: #5b6270;
+  --accent: #d95f00;
+  --accent-contrast: #ffffff;
+  --success: #1f9d64;
+  --warning: #a86f00;
+  --danger: #c8323f;
+  --focus: #1f6fd0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+code { font-family: var(--font-mono); font-size: 0.95em; }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: var(--space-2);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  z-index: 100;
+}
+.skip-link:focus { left: var(--space-2); }
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.5rem;
+}
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a { color: var(--text-muted); text-decoration: none; }
+.nav-links a:hover { color: var(--text); }
+
+main { flex: 1; padding-block: var(--space-5); }
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+  padding-block: var(--space-4);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.disclaimer { margin: 0 0 var(--space-2); }
+.meta { color: var(--text-muted); font-size: 0.9rem; }
+
+.hero { max-width: 40rem; }
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin: 0 0 var(--space-2);
+}
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; margin: 0 0 var(--space-3); }
+.lead { font-size: 1.15rem; color: var(--text-muted); }
+
+.button {
+  display: inline-block;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:hover { filter: brightness(1.08); }
+
+.flashes { list-style: none; margin: 0 0 var(--space-4); padding: 0; }
+.flash {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  margin-bottom: var(--space-2);
+}
+.flash-success { border-color: var(--success); }
+.flash-warning { border-color: var(--warning); }
+.flash-error, .flash-danger { border-color: var(--danger); }
+
+.form input[type="text"] {
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+.field-error { color: var(--danger); margin: 0 0 var(--space-2); }
+
+.error-page { text-align: center; padding-block: var(--space-5); }
+.error-code {
+  font-size: clamp(4rem, 15vw, 8rem);
+  font-weight: 900;
+  line-height: 1;
+  margin: 0;
+  color: var(--border);
+}

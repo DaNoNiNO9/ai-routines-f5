@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Echo (debug) · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section>
+  <h1>Echo (debug)</h1>
+  <form method="post" class="form">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.message.label }}
+      {{ form.message(size=40) }}
+    </p>
+    {% for error in form.message.errors %}
+      <p class="field-error">{{ error }}</p>
+    {% endfor %}
+    <button type="submit" class="button">Enviar</button>
+  </form>
+  {% if echoed %}
+    <p class="echoed">{{ echoed }}</p>
+  {% endif %}
+</section>
+{% endblock %}
