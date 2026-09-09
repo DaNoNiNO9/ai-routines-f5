@@ -34,6 +34,7 @@ from reportlab.platypus import (
 from sqlalchemy import select
 
 from app.extensions import db
+from app.labels import BMR_METHOD, BODY_FAT_METHOD, GOAL, label
 from app.models import (
     ActivityLog,
     BodyMeasurement,
@@ -143,7 +144,7 @@ def _table(data: list[list[Any]], widths: list[float], *, numeric_from: int = 1)
                 ("FONTSIZE", (0, 0), (-1, -1), 8.5),
                 ("TEXTCOLOR", (0, 0), (-1, 0), MUTED),
                 ("TEXTCOLOR", (0, 1), (-1, -1), INK),
-                ("ALIGN", (numeric_from, 1), (-1, -1), "RIGHT"),
+                ("ALIGN", (numeric_from, 0), (-1, -1), "RIGHT"),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LINEBELOW", (0, 0), (-1, 0), 0.75, RULE),
                 ("LINEBELOW", (0, 1), (-1, -2), 0.25, RULE),
@@ -240,7 +241,7 @@ def plan_pdf(
     flow.append(
         Paragraph(
             f"Generado el {today.strftime('%d/%m/%Y')} · cuestionario v{profile.version} · "
-            f"objetivo: {profile.goal.value.replace('_', ' ')}",
+            f"objetivo: {label(GOAL, profile.goal).lower()}",
             styles["muted"],
         )
     )
@@ -347,18 +348,22 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
         ["IMC", _round(body.get("bmi"), 1)],
         [
             "Grasa corporal",
-            f"{_round(body.get('body_fat_pct'), 1)} % ({body.get('body_fat_source', '—')})"
+            f"{_round(body.get('body_fat_pct'), 1)} %"
             if body.get("body_fat_pct") is not None
             else "sin estimación",
+        ],
+        [
+            "Método",
+            label(BODY_FAT_METHOD, body.get("body_fat_source"))
+            if body.get("body_fat_pct") is not None
+            else "—",
         ],
         [
             "Masa magra",
             f"{_round(body.get('lean_mass_kg'), 1)} kg" if body.get("lean_mass_kg") else "—",
         ],
-        [
-            "Metabolismo basal",
-            f"{_round(bmr.get('selected_kcal'))} kcal ({bmr.get('method', '—')})",
-        ],
+        ["Metabolismo basal", f"{_round(bmr.get('selected_kcal'))} kcal"],
+        ["Fórmula del basal", label(BMR_METHOD, bmr.get("method"))],
         ["Gasto por actividad diaria", f"{_round(spent.get('neat_kcal'))} kcal"],
         ["Gasto por ejercicio", f"{_round(spent.get('eat_kcal'))} kcal"],
         ["Mantenimiento", f"{_round(spent.get('maintenance_kcal'))} kcal"],
