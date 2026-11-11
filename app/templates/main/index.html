@@ -11,7 +11,7 @@
     </p>
     <p class="landing-acciones">
       {% if current_user.is_authenticated %}
-        <a class="button" href="{{ url_for('dashboard.index') }}">{{ icon('layout-dashboard') }}{{ _('Ir a mi panel') }}</a>
+        <a class="button" href="{{ url_for('dashboard.index') }}">{{ icon('layout-dashboard') }}{{ _('Ir a mi inicio') }}</a>
       {% else %}
         <a class="button" href="{{ url_for('auth.register') }}">{{ icon('arrow-right') }}{{ _('Empezar') }}</a>
         <a class="button button-secondary" href="{{ url_for('auth.login') }}">{{ _('Entrar') }}</a>

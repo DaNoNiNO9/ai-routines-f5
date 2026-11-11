@@ -10,21 +10,25 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   {% block head %}{% endblock %}
 </head>
-<body>
+<body{% if current_user.is_authenticated %} class="has-tabs"{% endif %}>
   {% from "components/icons.html" import icon %}
   {% include "components/sprite.html" %}
   <a class="skip-link" href="#main">{{ _('Saltar al contenido') }}</a>
   <header class="site-header">
     <nav class="container nav" aria-label="{{ _('Navegación principal') }}">
       <a class="brand" href="{{ url_for('main.index') }}">{{ app_name }}</a>
-      <ul class="nav-links">
-        {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('dashboard.index') }}"{% if request.blueprint == 'dashboard' %} aria-current="page"{% endif %}>{{ icon('layout-dashboard') }}<span class="nav-label">{{ _('Panel') }}</span></a></li>
+      {% if current_user.is_authenticated %}
+        <ul class="nav-links app-tabs">
+          <li><a href="{{ url_for('dashboard.index') }}"{% if request.blueprint == 'dashboard' %} aria-current="page"{% endif %}>{{ icon('layout-dashboard') }}<span class="nav-label">{{ _('Inicio') }}</span></a></li>
           <li><a href="{{ url_for('nutrition.plan') }}"{% if request.blueprint == 'nutrition' %} aria-current="page"{% endif %}>{{ icon('apple') }}<span class="nav-label">{{ _('Nutrición') }}</span></a></li>
-          <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint in ('training', 'workouts') %} aria-current="page"{% endif %}>{{ icon('dumbbell') }}<span class="nav-label">{{ _('Entrenamiento') }}</span></a></li>
+          <li><a href="{{ url_for('training.routine') }}"{% if request.blueprint in ('training', 'workouts') %} aria-current="page"{% endif %}>{{ icon('dumbbell') }}<span class="nav-label">{{ _('Entreno') }}</span></a></li>
           <li><a href="{{ url_for('tracking.diary') }}"{% if request.blueprint in ('tracking', 'review') %} aria-current="page"{% endif %}>{{ icon('notebook-pen') }}<span class="nav-label">{{ _('Diario') }}</span></a></li>
           <li><a href="{{ url_for('account.index') }}"{% if request.blueprint == 'account' %} aria-current="page"{% endif %}>{{ icon('circle-check') }}<span class="nav-label">{{ _('Cuenta') }}</span></a></li>
-          <li>
+        </ul>
+      {% endif %}
+      <ul class="nav-links nav-tools">
+        {% if current_user.is_authenticated %}
+          <li class="nav-logout">
             <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit" class="link-button">{{ icon('log-out') }}<span class="nav-label">{{ _('Salir') }}</span></button>
