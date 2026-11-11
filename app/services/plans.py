@@ -23,6 +23,7 @@ from app.engine.enums import (
     AdjustmentReason,
     Aggressiveness,
     BodyFatMethod,
+    DietPattern,
     Goal,
     JobActivity,
     MuscleGroup,
@@ -109,6 +110,8 @@ def nutrition_inputs(profile: Profile, today: date) -> NutritionInputs:
         today=today,
         training_time=TrainingTime(profile.training_time),
         wants_carb_cycling=profile.wants_carb_cycling,
+        diet_pattern=DietPattern(profile.diet_pattern),
+        alcohol_drinks_per_week=profile.alcohol_drinks_per_week,
         is_pregnant_or_breastfeeding=profile.is_pregnant_or_breastfeeding,
         has_eating_disorder_history=profile.has_eating_disorder_history,
     )

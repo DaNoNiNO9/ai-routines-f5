@@ -8,6 +8,7 @@ from app.engine.body_composition import assess_body_composition
 from app.engine.enums import (
     Aggressiveness,
     BodyFatMethod,
+    DietPattern,
     Goal,
     MealTiming,
     Sex,
@@ -86,6 +87,56 @@ def test_lean_basis_never_drops_below_point_eight_per_kg() -> None:
     assert basis == "lean"
     assert per_kg >= 0.8
     assert grams >= 240
+
+
+def test_a_vegan_diet_adds_protein_on_top_of_the_cap() -> None:
+    body = assess_body_composition(make_inputs(weight_kg=80))
+    omnivore = protein_target(make_inputs(weight_kg=80), body, "deficit")
+    vegan = protein_target(
+        make_inputs(weight_kg=80, diet_pattern=DietPattern.VEGAN), body, "deficit"
+    )
+    assert vegan[1] == pytest.approx(omnivore[1] + 0.2)
+    assert vegan[0] == pytest.approx(omnivore[0] + 16)
+
+    capped = make_inputs(
+        weight_kg=80,
+        diet_pattern=DietPattern.VEGAN,
+        training_experience=TrainingExperience.YEARS_2_TO_5,
+        aggressiveness=Aggressiveness.AGGRESSIVE,
+    )
+    assert protein_target(capped, body, "deficit")[1] == pytest.approx(2.4)
+
+    vegetarian = make_inputs(weight_kg=80, diet_pattern=DietPattern.VEGETARIAN)
+    assert protein_target(vegetarian, body, "deficit") == omnivore
+
+
+def test_a_vegan_diet_adds_protein_on_the_lean_basis_too() -> None:
+    values = {
+        "sex": Sex.FEMALE,
+        "weight_kg": 90,
+        "height_cm": 165,
+        "body_fat_pct": 40,
+        "body_fat_method": BodyFatMethod.SCALE,
+    }
+    body = assess_body_composition(make_inputs(**values))
+    omnivore = protein_target(make_inputs(**values), body, "deficit")
+    vegan = protein_target(make_inputs(**values, diet_pattern=DietPattern.VEGAN), body, "deficit")
+    assert vegan[2] == "lean"
+    assert vegan[0] == pytest.approx(omnivore[0] + 0.2 * 90)
+
+
+def test_vegan_and_alcohol_notes() -> None:
+    inputs = make_inputs(weight_kg=80, diet_pattern=DietPattern.VEGAN, alcohol_drinks_per_week=7)
+    macros = compute_macros(inputs, assess_body_composition(inputs), 2000, "deficit")
+    notes = {note.code: note.params for note in macros.notes}
+    assert notes["macros.protein_vegan"] == {"extra": 0.2}
+    assert notes["macros.alcohol"] == {"drinks": 7, "kcal": 700, "pct": 5}
+
+    sober = make_inputs(weight_kg=80)
+    codes = {
+        n.code for n in compute_macros(sober, assess_body_composition(sober), 2000, "deficit").notes
+    }
+    assert not codes & {"macros.protein_vegan", "macros.alcohol"}
 
 
 def test_fat_target_bounded_by_20_and_35_percent() -> None:

@@ -12,6 +12,12 @@ Sources:
   1000 kcal.
 - EFSA (2010) and common sports-nutrition practice: 30-40 mL water per kg
   plus extra around training.
+- van Vliet, S., Burd, N. A. & van Loon, L. J. C. (2015). *The skeletal muscle
+  anabolic response to plant- versus animal-based protein consumption*.
+  J Nutr 145:1981-1991; Rogerson, D. (2017). *Vegan diets: practical advice for
+  athletes and exercisers*. JISSN 14:36 (1.7-2.0 g/kg): plant protein is less
+  digestible and poorer in leucine, so a vegan diet gets +0.2 g/kg.
+- One alcoholic drink is counted as ~100 kcal (a beer or a glass of wine).
 
 Carbohydrates take what remains. When they fall below a functional floor the
 engine first lowers fat towards its minimum and then, in a deficit, reduces the
@@ -22,7 +28,7 @@ from __future__ import annotations
 
 import math
 
-from app.engine.enums import Confidence, Goal, Sex, TrainingExperience
+from app.engine.enums import Confidence, DietPattern, Goal, Sex, TrainingExperience
 from app.engine.types import (
     BodyComposition,
     CarbCycle,
@@ -47,6 +53,8 @@ PROTEIN_AGGRESSIVE_DEFICIT_BONUS = 0.2
 PROTEIN_PER_KG_LEAN_DEFICIT = 2.6
 PROTEIN_PER_KG_LEAN_OTHER = 2.3
 PROTEIN_FLOOR_PER_KG = 0.8
+PROTEIN_VEGAN_BONUS = 0.2
+KCAL_PER_ALCOHOLIC_DRINK = 100
 LEAN_BASIS_BODY_FAT: dict[Sex, float] = {Sex.MALE: 25.0, Sex.FEMALE: 32.0}
 ADVANCED = {TrainingExperience.YEARS_2_TO_5, TrainingExperience.OVER_5_YEARS}
 
@@ -70,8 +78,11 @@ def protein_target(
     """Daily protein in grams, plus the g/kg used and the basis (``bodyweight`` or ``lean``).
 
     Lean-mass basis is used when body fat is known with at least medium confidence
-    and is high, because bodyweight-based targets overshoot in that case.
+    and is high, because bodyweight-based targets overshoot in that case. A vegan
+    diet adds ``PROTEIN_VEGAN_BONUS`` g per kg of bodyweight on either basis,
+    after the usual cap.
     """
+    vegan_extra = PROTEIN_VEGAN_BONUS if inputs.diet_pattern is DietPattern.VEGAN else 0.0
     lean_basis = (
         body.lean_mass_kg is not None
         and body.body_fat_pct is not None
@@ -83,6 +94,7 @@ def protein_target(
             PROTEIN_PER_KG_LEAN_DEFICIT if mode == "deficit" else PROTEIN_PER_KG_LEAN_OTHER
         )
         grams = max(body.lean_mass_kg * per_kg_lean, PROTEIN_FLOOR_PER_KG * body.weight_kg)
+        grams += vegan_extra * body.weight_kg
         return grams, round(grams / body.weight_kg, 2), "lean"
 
     per_kg = PROTEIN_PER_KG_BY_GOAL[inputs.goal]
@@ -90,7 +102,7 @@ def protein_target(
         per_kg += PROTEIN_ADVANCED_BONUS
     if mode == "deficit" and inputs.aggressiveness.value == "aggressive":
         per_kg += PROTEIN_AGGRESSIVE_DEFICIT_BONUS
-    per_kg = min(PROTEIN_MAX_PER_KG, max(PROTEIN_MIN_PER_KG, per_kg))
+    per_kg = min(PROTEIN_MAX_PER_KG, max(PROTEIN_MIN_PER_KG, per_kg)) + vegan_extra
     return body.weight_kg * per_kg, round(per_kg, 2), "bodyweight"
 
 
@@ -126,6 +138,20 @@ def compute_macros(
     protein, per_kg, basis = protein_target(inputs, body, mode)
     if basis == "lean":
         notes.append(Note("macros.protein_lean_basis", params={"per_kg": per_kg}))
+    if inputs.diet_pattern is DietPattern.VEGAN:
+        notes.append(Note("macros.protein_vegan", params={"extra": PROTEIN_VEGAN_BONUS}))
+    if inputs.alcohol_drinks_per_week > 0:
+        weekly = inputs.alcohol_drinks_per_week * KCAL_PER_ALCOHOLIC_DRINK
+        notes.append(
+            Note(
+                "macros.alcohol",
+                params={
+                    "drinks": inputs.alcohol_drinks_per_week,
+                    "kcal": weekly,
+                    "pct": round(100 * weekly / (7 * target_kcal)),
+                },
+            )
+        )
 
     calories = float(target_kcal)
     fat = fat_target_g(calories, body.weight_kg)

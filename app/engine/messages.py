@@ -89,6 +89,14 @@ TEMPLATES: dict[str, str] = {
     "macros.protein_lean_basis": (
         "Proteína calculada sobre masa magra (%(per_kg)s g/kg de peso total)."
     ),
+    "macros.protein_vegan": (
+        "Proteína %(extra)s g/kg más alta por ser vegana: la proteína vegetal se aprovecha algo "
+        "peor. Combina legumbres con cereales o tira de soja, tofu y seitán."
+    ),
+    "macros.alcohol": (
+        "Tus %(drinks)s bebidas a la semana son unas %(kcal)s kcal, el %(pct)s %% de tu semana. "
+        "Van dentro del total, no aparte: apúntalas en el diario."
+    ),
     "macros.fat_lowered_for_carbs": (
         "Grasa bajada al mínimo para no dejar los carbohidratos por debajo de %(floor)s g."
     ),

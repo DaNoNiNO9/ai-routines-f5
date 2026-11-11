@@ -19,6 +19,7 @@ from app.engine.enums import (
     BmrMethod,
     BodyFatMethod,
     Confidence,
+    DietPattern,
     Goal,
     JobActivity,
     MealTiming,
@@ -77,6 +78,8 @@ class NutritionInputs:
     today: date = field(default_factory=date.today)
     training_time: TrainingTime = TrainingTime.NONE
     wants_carb_cycling: bool = False
+    diet_pattern: DietPattern = DietPattern.OMNIVORE
+    alcohol_drinks_per_week: int = 0
     is_pregnant_or_breastfeeding: bool = False
     has_eating_disorder_history: bool = False
 
