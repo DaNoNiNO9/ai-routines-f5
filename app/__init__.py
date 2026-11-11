@@ -78,6 +78,9 @@ def create_app(
     register_error_handlers(app)
     register_security_headers(app)
     app.context_processor(_template_context)
+    from app import formatting
+
+    formatting.register(app)
 
     app.logger.info("Application created (env=%s, debug=%s)", name, app.debug)
     return app
