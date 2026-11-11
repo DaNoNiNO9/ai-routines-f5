@@ -9,6 +9,7 @@ from typing import Any
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as _l
+from flask_babel import ngettext
 from flask_login import current_user, login_required
 from werkzeug.wrappers import Response as WerkzeugResponse
 
@@ -60,10 +61,6 @@ def _form_defaults(number: int, data: dict[str, Any]) -> dict[str, Any]:
         for area, name in INJURY_FIELDS.items():
             defaults[name] = (data.get("injuries") or {}).get(area.value, "none")
         defaults["has_injuries"] = bool(data.get("injuries"))
-    if number == 6:
-        for key in ("food_aversions", "allergies"):
-            if isinstance(data.get(key), list):
-                defaults[key] = ", ".join(data[key])
     return defaults
 
 
@@ -238,13 +235,15 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
     rows_nutrition = [
         (_("Comidas al día"), data.get("meals_per_day")),
         (_("Patrón"), labels.label(labels.DIET_PATTERN, data.get("diet_pattern"))),
-        (_("Alimentos que evitar"), ", ".join(data.get("food_aversions", [])) or _("ninguno")),
-        (_("Alergias"), ", ".join(data.get("allergies", [])) or _("ninguna")),
-        (_("Presupuesto"), labels.label(labels.LEVEL, data.get("budget_level"))),
-        (_("Tiempo para cocinar"), labels.label(labels.COOKING_TIME, data.get("cooking_time"))),
         (_("Ciclado de carbohidratos"), yes_no(data.get("wants_carb_cycling"))),
-        (_("Alcohol"), _("%(n)s bebidas/semana", n=data.get("alcohol_drinks_per_week") or 0)),
-        (_("Cafeína"), _("%(n)s al día", n=data.get("caffeine_cups_per_day") or 0)),
+        (
+            _("Alcohol"),
+            ngettext(
+                "%(num)s bebida a la semana",
+                "%(num)s bebidas a la semana",
+                int(data.get("alcohol_drinks_per_week") or 0),
+            ),
+        ),
     ]
     rows_health = [
         (_("Embarazo o lactancia"), yes_no(data.get("is_pregnant_or_breastfeeding"))),

@@ -285,7 +285,12 @@ class GoalForm(StepForm):
 
 
 class NutritionForm(StepForm):
-    """Block E: nutrition habits and constraints."""
+    """Block E: nutrition habits.
+
+    Only what the engine uses today. Food dislikes, allergies, budget and cooking
+    time belong to the meal planner and will be asked there, in context; the
+    profile columns stay so earlier answers are not lost.
+    """
 
     meals_per_day = SelectField(
         _l("Comidas al día"),
@@ -300,26 +305,6 @@ class NutritionForm(StepForm):
         default="omnivore",
         validators=[InputRequired()],
     )
-    food_aversions = StringField(
-        _l("Alimentos que no quieres (separados por comas)"),
-        validators=[Optional(), Length(max=300)],
-    )
-    allergies = StringField(
-        _l("Alergias o intolerancias (separadas por comas)"),
-        validators=[Optional(), Length(max=300)],
-    )
-    budget_level = RadioField(
-        _l("Presupuesto para comida"),
-        choices=labels.choices(labels.LEVEL),
-        default="medium",
-        validators=[InputRequired()],
-    )
-    cooking_time = RadioField(
-        _l("Tiempo para cocinar"),
-        choices=labels.choices(labels.COOKING_TIME),
-        default="medium",
-        validators=[InputRequired()],
-    )
     wants_carb_cycling = BooleanField(
         _l("Quiero ciclar carbohidratos (más en días de entreno, menos en descanso)")
     )
@@ -328,18 +313,6 @@ class NutritionForm(StepForm):
         default=0,
         validators=[InputRequired(), NumberRange(min=0, max=50)],
     )
-    caffeine_cups_per_day = IntegerField(
-        _l("Cafés o bebidas con cafeína al día"),
-        default=0,
-        validators=[InputRequired(), NumberRange(min=0, max=20)],
-    )
-
-    def to_data(self) -> dict[str, Any]:
-        """Comma-separated free text becomes lists."""
-        data = super().to_data()
-        data["food_aversions"] = split_list(self.food_aversions.data)
-        data["allergies"] = split_list(self.allergies.data)
-        return data
 
 
 class HealthForm(StepForm):

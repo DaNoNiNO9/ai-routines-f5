@@ -57,12 +57,7 @@ STEP_ANSWERS: dict[int, dict[str, Any]] = {
     6: {
         "meals_per_day": "4",
         "diet_pattern": "omnivore",
-        "food_aversions": "hígado, coles",
-        "allergies": "",
-        "budget_level": "medium",
-        "cooking_time": "medium",
-        "alcohol_drinks_per_week": "1",
-        "caffeine_cups_per_day": "2",
+        "alcohol_drinks_per_week": "3",
     },
     7: {"notes": "Nada más."},
 }
@@ -191,7 +186,7 @@ def test_review_blocks_until_complete_and_shows_the_answers(
         "Gimnasio básico",
         "Perder grasa",
         "Rodilla",
-        "hígado, coles",
+        "3 bebidas a la semana",
     ):
         assert text in page, text
     assert "Generar mi plan" in page
@@ -326,7 +321,10 @@ def test_saved_answers_are_shown_again_on_every_step(
     assert marca is not None
     assert "checked" in marca.group(0)  # la lesión declarada abre el bloque
     nutrition_page = client.get("/cuestionario/paso/6").get_data(as_text=True)
-    assert 'value="hígado, coles"' in nutrition_page
+    assert re.search(r'name="alcohol_drinks_per_week"[^>]*value="3"', nutrition_page)
+    # Solo se pregunta lo que el motor usa: lo de la comida se pedirá con el menú.
+    for unused in ("food_aversions", "allergies", "budget_level", "cooking_time", "caffeine"):
+        assert f'name="{unused}' not in nutrition_page, unused
 
 
 def test_impossible_equipment_keeps_the_nutrition_plan(
