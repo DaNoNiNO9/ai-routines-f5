@@ -15,7 +15,11 @@ from typing import Any
 from sqlalchemy import case, func, select
 from sqlalchemy.orm import selectinload
 
-from app.engine.enums import SetType, WorkoutStatus
+from app import formatting
+from app.engine.enums import SetType, Sex, TrainingExperience, WorkoutStatus
+from app.engine.routines.loads import loads_weight, next_set_load, starting_load
+from app.engine.routines.prescription import weekly_rir
+from app.engine.routines.types import ExerciseInfo
 from app.extensions import db
 from app.models import (
     Exercise,
@@ -28,7 +32,7 @@ from app.models import (
     WorkoutSession,
 )
 from app.models.base import utcnow
-from app.services import dashboard
+from app.services import dashboard, plans
 
 EXTRA_SETS_ALLOWED = 2
 EPLEY_DIVISOR = 30
@@ -60,20 +64,21 @@ class Performance:
         weights = {kg for _reps, kg in self.sets}
         reps = ", ".join(str(reps) for reps, _kg in self.sets)
         if len(weights) == 1:
-            return f"{_fmt(self.top_weight)} kg x {reps}"
-        return " · ".join(f"{_fmt(kg)}x{reps}" for reps, kg in self.sets)
-
-
-def _fmt(value: float) -> str:
-    return f"{value:g}"
+            return f"{formatting.kg(self.top_weight, 2)} {formatting.TIMES} {reps}"
+        return " · ".join(
+            f"{formatting.kg(kg, 2)} {formatting.TIMES} {reps}" for reps, kg in self.sets
+        )
 
 
 @dataclass
 class SetRow:
-    """One prescribed (or extra) set and what was logged for it."""
+    """One prescribed (or extra) set, what was logged for it and what to pre-fill."""
 
     index: int
     log: SetLog | None
+    prefill_kg: float | None = None
+    prefill_reps: int = 0
+    adjusted: bool = False  # the load moved because of the set before
 
 
 @dataclass
@@ -87,6 +92,10 @@ class ExerciseBlock:
     previous: Performance | None
     suggested_kg: float | None
     alternatives: list[Exercise] = field(default_factory=list)
+    first_time: bool = False  # suggested_kg is an estimate, not last session's load
+    target_rir: int = 0
+    takes_load: bool = True
+    per_hand: bool = False
 
     @property
     def done(self) -> int:
@@ -335,13 +344,63 @@ def last_performance(user: User, exercise: Exercise, before: WorkoutSession) -> 
 
 
 def suggest_load(item: RoutineExercise, previous: Performance | None) -> float | None:
-    """Double progression: same load until every set reaches the top of the range."""
+    """Double progression: same load until every set reaches the top of the range.
+
+    ``None`` without a previous session; :func:`first_load` covers that case.
+    """
     if previous is None:
         return None
     top = previous.top_weight
     if all(reps >= item.rep_max for reps, _kg in previous.sets):
         return round(top + (item.load_increment_kg or 0), 2)
     return top
+
+
+def _info(exercise: Exercise) -> ExerciseInfo:
+    return plans.exercise_info(exercise, {})
+
+
+def first_load(exercise: Exercise, profile: Profile) -> float | None:
+    """Estimated working load for an exercise never done before (``None`` if it takes no load)."""
+    return starting_load(
+        _info(exercise),
+        Sex(profile.sex),
+        profile.weight_kg,
+        TrainingExperience(profile.training_experience),
+    )
+
+
+def target_rir(session: WorkoutSession, item: RoutineExercise) -> int:
+    """RIR this week asks for, never below the exercise's floor for the block."""
+    day = session.routine_day
+    weeks = day.routine.mesocycle_weeks if day is not None else 4
+    schedule = weekly_rir(weeks)
+    week = min(max(session.mesocycle_week or 1, 1), len(schedule))
+    return max(item.rir_end, min(item.rir_start, schedule[week - 1]))
+
+
+def _prefill(
+    info: ExerciseInfo,
+    rows: list[SetRow],
+    item: RoutineExercise,
+    start_kg: float | None,
+    rir: int,
+) -> None:
+    """Fill the open rows: the first from the suggestion, the rest from the set before."""
+    target_reps = (item.rep_min + item.rep_max) // 2
+    kg, reps, adjusted = start_kg, item.rep_min, False
+    for row in rows:
+        if row.log is not None:
+            done = row.log
+            kg = (
+                next_set_load(info, done.weight_kg, done.reps, done.rir, target_reps, rir)
+                if done.weight_kg > 0
+                else done.weight_kg
+            )
+            adjusted = kg != done.weight_kg
+            reps = done.reps
+            continue
+        row.prefill_kg, row.prefill_reps, row.adjusted = kg, reps, adjusted
 
 
 def session_blocks(
@@ -362,6 +421,13 @@ def session_blocks(
         count = max(item.sets, *(logged.keys() or [0]))
         rows = [SetRow(index=index, log=logged.get(index)) for index in range(1, count + 1)]
         previous = last_performance(user, exercise, session)
+        info = _info(exercise)
+        suggested = suggest_load(item, previous)
+        first_time = previous is None
+        if first_time:
+            suggested = first_load(exercise, profile)
+        rir = target_rir(session, item)
+        _prefill(info, rows, item, suggested, rir)
         blocks.append(
             ExerciseBlock(
                 item=item,
@@ -369,8 +435,13 @@ def session_blocks(
                 is_substituted=exercise.id != item.exercise_id,
                 rows=rows,
                 previous=previous,
-                suggested_kg=suggest_load(item, previous),
+                suggested_kg=suggested,
                 alternatives=dashboard.usable_alternatives(item, profile, equipment),
+                first_time=first_time and suggested is not None,
+                target_rir=rir,
+                takes_load=loads_weight(info),
+                per_hand=bool({"dumbbells", "kettlebell"} & info.equipment)
+                and not {"barbell", "ez_bar", "trap_bar", "smith_machine"} & info.equipment,
             )
         )
     return blocks

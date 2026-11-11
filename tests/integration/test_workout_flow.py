@@ -86,7 +86,7 @@ def test_logging_sets_shows_the_rest_timer_and_persists(
     after = client.get(location.split("#")[0]).get_data(as_text=True)
     assert "restTimer" in after
     assert "Descanso" in after
-    assert "62.5 kg × 9" in after  # noqa: RUF001 - the page really shows a multiplication sign
+    assert "62,5 kg × 9" in after  # noqa: RUF001 - the page really shows a multiplication sign
     assert f"1/{item.sets}" in after
 
     # Logging the same index again corrects it instead of duplicating.

@@ -217,6 +217,56 @@ def test_suggested_load_holds_when_the_range_was_not_completed(seeded: SQLAlchem
     assert workouts.suggest_load(item, None) is None
 
 
+def test_a_first_session_never_shows_an_empty_load(seeded: SQLAlchemy) -> None:
+    user, profile, routine = _setup(seeded)
+    session = workouts.start_session(user, routine, routine.days[0], TODAY)
+    seeded.session.commit()
+    for block in workouts.session_blocks(user, session, profile, _equipment(user)):
+        assert block.previous is None
+        first_row = block.rows[0]
+        if block.takes_load:
+            assert block.first_time is True
+            assert block.suggested_kg is not None
+            assert block.suggested_kg > 0
+            assert first_row.prefill_kg == block.suggested_kg
+        else:
+            assert block.suggested_kg is None
+        assert block.target_rir == workouts.target_rir(session, block.item)
+
+
+def test_the_next_set_is_prefilled_from_the_one_just_done(seeded: SQLAlchemy) -> None:
+    user, profile, routine = _setup(seeded)
+    session = workouts.start_session(user, routine, routine.days[0], TODAY)
+    blocks = workouts.session_blocks(user, session, profile, _equipment(user))
+    block = next(b for b in blocks if b.takes_load)
+    item = block.item
+    # Far more in reserve than asked: the next set goes up.
+    workouts.log_set(session, item, 1, item.rep_max, 40.0, 6)
+    seeded.session.commit()
+    block = next(
+        b
+        for b in workouts.session_blocks(user, session, profile, _equipment(user))
+        if b.item.id == item.id
+    )
+    second = block.rows[1]
+    assert second.prefill_kg is not None
+    assert second.prefill_kg > 40.0
+    assert second.adjusted is True
+    assert second.prefill_reps == item.rep_max
+
+    # Without a reserve there is nothing to learn: the load stays.
+    workouts.log_set(session, item, 2, item.rep_min, 50.0, None)
+    seeded.session.commit()
+    block = next(
+        b
+        for b in workouts.session_blocks(user, session, profile, _equipment(user))
+        if b.item.id == item.id
+    )
+    if len(block.rows) > 2:
+        assert block.rows[2].prefill_kg == 50.0
+        assert block.rows[2].adjusted is False
+
+
 def test_finish_without_sets_counts_as_abandoned(seeded: SQLAlchemy) -> None:
     user, _profile, routine = _setup(seeded)
     session = workouts.start_session(user, routine, routine.days[0], TODAY)

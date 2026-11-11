@@ -5,9 +5,10 @@
 
 {% block content %}
 <section class="page-head">
-  <p class="eyebrow">{{ _('Sesión en marcha') }}{% if session.mesocycle_week %} · {{ _('semana %(n)s del mesociclo', n=session.mesocycle_week) }}{% endif %}</p>
+  <p class="eyebrow">{{ _('Sesión en marcha') }}{% if session.mesocycle_week and session.routine_day %} · {{ _('semana %(n)s de %(total)s', n=session.mesocycle_week, total=session.routine_day.routine.mesocycle_weeks) }}{% endif %}</p>
   <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión libre') }}{% endif %}</h1>
   <p class="meta" x-data="elapsed({{ started_epoch }})">{{ icon('clock') }} {{ _('Tiempo:') }} <span x-text="text">—</span></p>
+  <p class="meta">{{ _('Reserva: las repeticiones que aún podrías hacer al acabar la serie. Apúntala y la siguiente serie se ajusta sola.') }}</p>
   <p><a class="button button-small button-secondary" href="#cierre">{{ _('Terminar sesión') }}</a></p>
 </section>
 
@@ -35,20 +36,25 @@
         </div>
         <span class="badge">{{ block.done }}/{{ item.sets }}</span>
       </div>
-      <p class="meta">{{ item.sets }} × {{ item.rep_min }}-{{ item.rep_max }} · RIR {{ item.rir_start }}→{{ item.rir_end }} · {{ _('descanso') }} {{ item.rest_seconds }} s{% if item.load_increment_kg %} · +{{ item.load_increment_kg }} kg {{ _('cuando llegues al máximo') }}{% endif %}</p>
+      <p class="meta">{{ ngettext('%(num)s serie', '%(num)s series', item.sets) }} {{ _('de %(min)s a %(max)s repeticiones', min=item.rep_min, max=item.rep_max) }} · {{ _('deja %(n)s en reserva', n=block.target_rir) }} · {{ _('descanso %(time)s', time=item.rest_seconds|duration) }}</p>
+      {% if block.takes_load and item.load_increment_kg %}
+        <p class="meta">{{ _('Cuando hagas %(max)s en todas las series, sube %(kg)s.', max=item.rep_max, kg=item.load_increment_kg|kg(2)) }}</p>
+      {% endif %}
       {% if block.previous %}
-        <p class="meta">{{ _('Última vez (%(date)s): %(sets)s.', date=block.previous.day.strftime('%d/%m'), sets=block.previous.summary()) }}
-          {% if block.suggested_kg %}<strong>{{ _('Sugerido: %(kg)s kg.', kg=block.suggested_kg) }}</strong>{% endif %}
+        <p class="meta">{{ _('Última vez (%(date)s): %(sets)s.', date=block.previous.day|fdate('day'), sets=block.previous.summary()) }}
+          {% if block.suggested_kg is not none and block.takes_load %}<strong>{{ _('Hoy: %(kg)s.', kg=block.suggested_kg|kg(2)) }}</strong>{% endif %}
         </p>
+      {% elif block.first_time %}
+        <p class="meta"><strong>{{ _('Primera vez: empieza con %(kg)s', kg=block.suggested_kg|kg(2)) }}{% if block.per_hand %} {{ _('por mancuerna') }}{% endif %}.</strong> {{ _('Es una estimación prudente; tras la primera serie se ajusta.') }}</p>
+      {% elif not block.takes_load %}
+        <p class="meta">{{ _('Con tu peso corporal. Si añades lastre, apúntalo en kg.') }}</p>
       {% endif %}
       <ol class="set-list">
-        {% set ns = namespace(last_kg=block.suggested_kg, last_reps=item.rep_min) %}
         {% for row in block.rows %}
           {% if row.log %}
-            {% set ns.last_kg = row.log.weight_kg %}{% set ns.last_reps = row.log.reps %}
             <li class="set-row set-done{% if row.log.id == just_logged %} set-nueva{% endif %}">
               <span class="set-index">{{ row.index }}</span>
-              <span class="set-values">{{ row.log.weight_kg|round(2)|string|replace('.0', '') }} kg × {{ row.log.reps }}{% if row.log.rir is not none %} · RIR {{ row.log.rir }}{% endif %}{% if row.log.set_type.value == 'warmup' %} · {{ _('calentamiento') }}{% endif %}</span>
+              <span class="set-values">{{ row.log.weight_kg|kg(2) }} × {{ row.log.reps }}{% if row.log.rir is not none %} · {{ _('reserva %(n)s', n=row.log.rir) }}{% endif %}{% if row.log.set_type.value == 'warmup' %} · {{ _('calentamiento') }}{% endif %}</span>
               <form method="post" action="{{ url_for('workouts.delete_set', session_id=session.id, set_id=row.log.id) }}" class="inline-form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="link-button" aria-label="{{ _('Borrar la serie %(n)s', n=row.index) }}">{{ icon('x') }}</button>
@@ -62,10 +68,11 @@
                 <input type="hidden" name="set_index" value="{{ row.index }}">
                 <input type="hidden" name="set_type" value="working">
                 <span class="set-index">{{ row.index }}</span>
-                <label class="set-field"><span>kg</span><input class="field-input" type="number" name="weight_kg" step="0.25" min="0" max="1000" inputmode="decimal" required value="{{ ns.last_kg if ns.last_kg is not none else '' }}"></label>
-                <label class="set-field"><span>reps</span><input class="field-input" type="number" name="reps" min="0" max="200" inputmode="numeric" required value="{{ ns.last_reps }}"></label>
-                <label class="set-field"><span>RIR</span><input class="field-input" type="number" name="rir" min="0" max="10" inputmode="numeric" placeholder="{{ item.rir_start }}"></label>
+                <label class="set-field"><span>{% if block.takes_load %}kg{% else %}{{ _('lastre') }}{% endif %}</span><input class="field-input" type="number" name="weight_kg" step="0.25" min="0" max="1000" inputmode="decimal" required value="{{ row.prefill_kg if row.prefill_kg is not none else (0 if not block.takes_load else '') }}"></label>
+                <label class="set-field"><span>reps</span><input class="field-input" type="number" name="reps" min="0" max="200" inputmode="numeric" required value="{{ row.prefill_reps or item.rep_min }}"></label>
+                <label class="set-field"><span>{{ _('reserva') }}</span><input class="field-input" type="number" name="rir" min="0" max="10" inputmode="numeric" placeholder="{{ block.target_rir }}"></label>
                 <button type="submit" class="button set-submit" aria-label="{{ _('Guardar la serie %(n)s', n=row.index) }}">{{ icon('check') }}</button>
+                {% if row.adjusted %}<p class="set-hint">{{ _('Peso ajustado por cómo fue la serie anterior.') }}</p>{% endif %}
               </form>
             </li>
           {% endif %}
