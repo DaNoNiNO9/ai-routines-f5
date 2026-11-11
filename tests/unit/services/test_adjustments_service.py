@@ -206,7 +206,7 @@ def test_poor_adherence_is_reported_before_touching_calories(seeded: SQLAlchemy)
     assert current.decision.action == "adherence"
     assert current.decision.adherence_pct == pytest.approx(60.0)
     assert current.intake_days == PLAN_DAYS + 1
-    assert any("adherencia" in item["text"].lower() for item in current.messages)
+    assert any("constante" in item["text"].lower() for item in current.messages)
 
     result = adjustments.apply(user, TODAY)
     seeded.session.commit()

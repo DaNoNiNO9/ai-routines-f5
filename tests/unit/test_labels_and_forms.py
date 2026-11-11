@@ -62,13 +62,13 @@ def test_note_params_show_dates_and_decimals_the_local_way(app: Flask) -> None:
         assert params == {"date": "25/11/2026", "per_kg": "2,2", "flag": True}
 
         volume = labels.note_params("routine.volume_low", {"muscle": "calves"})
-        assert volume["muscle"] == "Gemelos"
+        assert volume["muscle"] == "gemelos"  # va a mitad de frase
 
         priority = labels.note_params("routine.priority_applied", {"muscles": "glutes, shoulders"})
         assert priority["muscles"] == "glúteos, hombros"
 
         missing = labels.note_params("routine.pattern_missing", {"pattern": "vertical_pull"})
-        assert missing["pattern"] == "Tracción vertical"
+        assert missing["pattern"] == "tracción vertical"  # va a mitad de frase
         assert missing["suggestion"] == "una barra de dominadas o bandas"
 
 
@@ -84,5 +84,5 @@ def test_rendered_notes_never_show_an_internal_code(app: Flask) -> None:
 
     with app.test_request_context("/"):
         text = messages.render(Note("routine.split", params={"split": "ppl_twice", "days": 6}))
-        assert text == "Split Empuje / tracción / pierna, dos veces de 6 días."
+        assert text == "Reparto Empuje / tracción / pierna, dos veces, 6 días a la semana."
         assert "ppl_twice" not in text

@@ -21,6 +21,7 @@ from app.engine.enums import (
     Aggressiveness,
     BmrMethod,
     BodyFatMethod,
+    CardioKind,
     Confidence,
     DietPattern,
     EquipmentCategory,
@@ -229,6 +230,11 @@ CONFIDENCE: Mapping[Confidence, Any] = {
     Confidence.HIGH: _l("alta"),
 }
 
+CARDIO_KIND: Mapping[CardioKind, Any] = {
+    CardioKind.LISS: _l("Cardio suave"),
+    CardioKind.HIIT: _l("Intervalos"),
+}
+
 BMR_METHOD: Mapping[BmrMethod, Any] = {
     BmrMethod.KATCH_MCARDLE: _l("Katch-McArdle (sobre masa magra)"),
     BmrMethod.MIFFLIN_ST_JEOR: _l("Mifflin-St Jeor"),
@@ -313,6 +319,7 @@ NOTE_PARAM_LABELS: Mapping[str, Mapping[Any, Any]] = {
 
 
 ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+LOWERCASE_IN_SENTENCE = ("pattern", "muscle", "job", "confidence")
 
 
 def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -328,6 +335,10 @@ def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
     for key, mapping in NOTE_PARAM_LABELS.items():
         if key in translated:
             translated[key] = label(mapping, translated[key])
+    for key in LOWERCASE_IN_SENTENCE:
+        # Van a mitad de frase: «ejercicios de empuje horizontal», no «de Empuje horizontal».
+        if key in translated:
+            translated[key] = str(translated[key]).lower()
     if "muscles" in translated:
         # El motor los junta con comas para poder guardarlos como texto.
         codes = str(translated["muscles"]).split(", ")

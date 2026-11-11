@@ -68,14 +68,14 @@ def test_account_language_beats_the_browser_header(client: FlaskClient, seeded: 
 
 def test_engine_notes_render_in_the_language_of_the_request(app: Flask) -> None:
     with app.test_request_context("/?lang=en"):
-        assert messages.render(DEFICIT) == "Deficit of 20 % below expenditure."
+        assert messages.render(DEFICIT) == "You eat 20 % less than you burn."
     with app.test_request_context("/"):
-        assert messages.render(DEFICIT) == "Déficit del 20 % sobre el gasto."
+        assert messages.render(DEFICIT) == "Comes un 20 % menos de lo que gastas."
 
 
 def test_engine_notes_stay_in_spanish_outside_the_application() -> None:
     """Los scripts y los tests del motor no tienen app a la que preguntar."""
-    assert messages.render(DEFICIT) == "Déficit del 20 % sobre el gasto."
+    assert messages.render(DEFICIT) == "Comes un 20 % menos de lo que gastas."
 
 
 def test_stored_plan_explanations_are_rendered_again_in_english(
@@ -90,7 +90,7 @@ def test_stored_plan_explanations_are_rendered_again_in_english(
     assert "Basal metabolic rate by Katch-McArdle" in english
     assert "Metabolismo basal por Katch-McArdle" not in english
     assert "Your nutrition plan" in english
-    assert "Notes and explanations" in english
+    assert "Worth knowing" in english
 
 
 def test_routine_pages_are_translated_too(client: FlaskClient, seeded: SQLAlchemy) -> None:
@@ -98,7 +98,7 @@ def test_routine_pages_are_translated_too(client: FlaskClient, seeded: SQLAlchem
     html = client.get("/entrenamiento?lang=en").get_data(as_text=True)
     assert "Weekly volume" in html
     assert "How it is put together" in html
-    assert "Double progression" in html  # aviso del motor, no plantilla
+    assert "How to progress" in html  # aviso del motor, no plantilla
 
 
 def test_the_pdf_is_exported_in_english(client: FlaskClient, seeded: SQLAlchemy) -> None:

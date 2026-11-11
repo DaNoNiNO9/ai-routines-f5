@@ -61,19 +61,19 @@ TEMPLATES: dict[str, str] = {
         "Gasto por actividad reducido un %(pct)s %% por sueño corto o estrés alto."
     ),
     "tdee.divergence": (
-        "El gasto por componentes (%(components)s kcal) difiere un %(pct)s %% del método clásico "
-        "(%(classic)s kcal): revisa pasos, trabajo o sesiones."
+        "Tu gasto calculado (%(components)s kcal) se aleja un %(pct)s %% de la estimación "
+        "clásica (%(classic)s kcal): revisa pasos, trabajo o sesiones."
     ),
-    "target.deficit": "Déficit del %(pct)s %% sobre el gasto.",
-    "target.surplus": "Superávit del %(pct)s %% sobre el gasto.",
-    "target.maintenance": "Calorías de mantenimiento.",
+    "target.deficit": "Comes un %(pct)s %% menos de lo que gastas.",
+    "target.surplus": "Comes un %(pct)s %% más de lo que gastas.",
+    "target.maintenance": "Comes lo mismo que gastas.",
     "target.recomposition_not_ideal": (
         "La recomposición no encaja con tu experiencia y grasa actual: se usan calorías de "
         "mantenimiento; valora perder grasa o ganar músculo como objetivo."
     ),
     "target.raised_to_floor": "Calorías subidas al mínimo seguro (%(floor)s kcal).",
     "target.capped_by_max_loss": (
-        "Ritmo limitado a %(max_weekly_kg)s kg por semana (1 %% del peso)."
+        "El ritmo se limita a %(max_weekly_kg)s kg por semana, el 1 %% de tu peso."
     ),
     "target.date_in_past": "La fecha objetivo ya ha pasado.",
     "target.date_direction_mismatch": (
@@ -87,11 +87,11 @@ TEMPLATES: dict[str, str] = {
         "Fecha objetivo alcanzable: unas %(weeks_needed)s semanas de %(weeks_available)s."
     ),
     "macros.protein_lean_basis": (
-        "Proteína calculada sobre masa magra (%(per_kg)s g/kg de peso total)."
+        "Proteína calculada sobre tu masa magra (%(per_kg)s g por kg de peso total)."
     ),
     "macros.protein_vegan": (
-        "Proteína %(extra)s g/kg más alta por ser vegana: la proteína vegetal se aprovecha algo "
-        "peor. Combina legumbres con cereales o tira de soja, tofu y seitán."
+        "Como sigues una dieta vegana, la proteína sube %(extra)s g por kg: la vegetal se "
+        "aprovecha algo peor. Combina legumbres con cereales o tira de soja, tofu y seitán."
     ),
     "macros.alcohol": (
         "Tus %(drinks)s bebidas a la semana son unas %(kcal)s kcal, el %(pct)s %% de tu semana. "
@@ -111,10 +111,10 @@ TEMPLATES: dict[str, str] = {
         "Con este número de comidas tocan %(per_meal)s g de proteína por toma; con "
         "%(recommended_meals)s comidas cada toma superaría los 0,4 g/kg."
     ),
-    "cycle.enabled": (
-        "Ciclado de carbohidratos: %(high)s g los días de entreno y %(low)s g los de descanso."
+    "cycle.enabled": "Más hidratos los días de entreno: %(high)s g, y %(low)s g los de descanso.",
+    "cycle.low_day_at_floor": (
+        "Los días de descanso se quedan en el mínimo de %(floor)s g de hidratos."
     ),
-    "cycle.low_day_at_floor": "Los días bajos se quedan en el mínimo de %(floor)s g.",
     "safety.minor": "Menores de 18 años: no se genera plan; consulta con un profesional sanitario.",
     "safety.pregnancy": (
         "Embarazo o lactancia: no se genera plan; consulta con un profesional sanitario."
@@ -132,8 +132,10 @@ TEMPLATES: dict[str, str] = {
         "peso consulta con un profesional sanitario."
     ),
     "safety.below_floor": "Calorías (%(calories)s) por debajo del mínimo (%(floor)s).",
-    "safety.loss_too_fast": "Pérdida prevista %(weekly)s kg/semana por encima del máximo %(max)s.",
-    "safety.deficit_while_underweight": "Déficit con IMC bajo.",
+    "safety.loss_too_fast": (
+        "Pérdida prevista de %(weekly)s kg a la semana, por encima del máximo de %(max)s."
+    ),
+    "safety.deficit_while_underweight": "Déficit con un IMC bajo.",
     "safety.protein_out_of_range": "Proteína fuera de rango (%(per_kg)s g/kg).",
     "safety.fat_too_low": "Grasa demasiado baja (%(fat_g)s g).",
     "safety.negative_macro": "Macronutriente negativo.",
@@ -147,36 +149,36 @@ TEMPLATES: dict[str, str] = {
     ),
     "routine.days_capped": "Se planifican 6 días como máximo; el séptimo es descanso.",
     "routine.days_dropped": (
-        "%(dropped)s día(s) se quedaron sin ningún ejercicio posible con tu material y tus "
-        "limitaciones: la semana queda en %(days)s días de entrenamiento."
+        "Con tu material y tus limitaciones no hay ejercicios posibles para algunos días "
+        "(%(dropped)s): la semana queda en %(days)s días de entrenamiento."
     ),
-    "routine.split": "Split %(split)s de %(days)s días.",
+    "routine.split": "Reparto %(split)s, %(days)s días a la semana.",
     "routine.mesocycle": (
-        "Mesociclo de %(weeks)s semanas, descarga cada %(deload)s semanas; RIR por semana %(rir)s."
+        "Bloques de %(weeks)s semanas, con una semana suave cada %(deload)s. Reserva de cada "
+        "semana: %(rir)s."
     ),
     "routine.double_progression": (
-        "Progresión doble: al completar el máximo del rango en todas las series con el RIR "
-        "previsto, añade el incremento indicado y vuelve al mínimo del rango."
+        "Cómo progresar: cuando hagas el máximo de repeticiones en todas las series dejando la "
+        "reserva que toca, sube el peso indicado y vuelve al mínimo de repeticiones."
     ),
     "routine.level_relaxed": (
         "%(exercise)s: exige más técnica de la habitual para tu experiencia; empieza ligero."
     ),
     "routine.slot_unfilled": (
-        "En %(day)s no hay ejercicio disponible para el patrón %(pattern)s con tu material y "
+        "En %(day)s no hay ningún ejercicio de %(pattern)s posible con tu material y tus "
         "limitaciones."
     ),
     "routine.pattern_missing": (
-        "El patrón %(pattern)s no se puede cubrir con tu material: añadir %(suggestion)s lo "
-        "resolvería."
+        "No hay ejercicios de %(pattern)s con tu material: con %(suggestion)s se resolvería."
     ),
     "routine.pull_bias": (
-        "Con historial de hombro se programa un 30 %% más de tracción que de empuje."
+        "Por tu historial de hombro hay un 30 %% más de series de tirar que de empujar."
     ),
-    "routine.push_pull": "Series de empuje %(push)s y de tracción %(pull)s (ratio %(ratio)s).",
+    "routine.push_pull": "Series de empujar: %(push)s. Series de tirar: %(pull)s.",
     "routine.time_trimmed": "%(day)s: series recortadas para encajar en %(minutes)s minutos.",
     "routine.exercises_dropped_for_time": (
-        "%(day)s: %(n)s ejercicio(s) de aislamiento fuera para caber en %(minutes)s minutos. "
-        "El descanso entre series no se recorta: manda el trabajo básico."
+        "%(day)s: se quitan ejercicios de aislamiento (%(n)s) para caber en %(minutes)s "
+        "minutos. El descanso entre series no se recorta: manda el trabajo básico."
     ),
     "routine.session_too_long": (
         "%(day)s: aun recortando, la sesión estimada dura %(estimated)s min y tienes %(budget)s; "
@@ -187,25 +189,25 @@ TEMPLATES: dict[str, str] = {
         "minutos permitirían más series."
     ),
     "routine.pattern_trimmed": (
-        "El patrón %(pattern)s ha quedado fuera esta semana por falta de tiempo."
+        "Los ejercicios de %(pattern)s quedan fuera esta semana por falta de tiempo."
     ),
     "routine.pattern_not_scheduled": (
-        "El patrón %(pattern)s no entra en esta distribución de días; rota en el siguiente "
-        "mesociclo."
+        "Los ejercicios de %(pattern)s no entran en este reparto de días; vuelven en el "
+        "siguiente bloque."
     ),
     "routine.pattern_blocked_by_injury": (
-        "El patrón %(pattern)s se omite por las lesiones o limitaciones declaradas."
+        "Los ejercicios de %(pattern)s se omiten por las lesiones o molestias que has indicado."
     ),
     "routine.push_pull_unbalanced": (
-        "Con tu material no hay suficientes ejercicios de tracción para equilibrar el empuje."
+        "Con tu material no hay suficientes ejercicios de tirar para equilibrar los de empujar."
     ),
     "routine.priority_applied": "Volumen extra (+27 %%) para %(muscles)s, compensado en el resto.",
     "routine.priority_slot_added": (
-        "Añadido un ejercicio de %(muscle)s en %(day)s por ser prioritario."
+        "Se añade un ejercicio de %(muscle)s en %(day)s porque es prioritario para ti."
     ),
     "routine.volume_low": (
-        "%(muscle)s: %(planned)s series efectivas, por debajo de las %(target_min)s objetivo (lo "
-        "limita el material o el tiempo)."
+        "Para %(muscle)s salen %(planned)s series efectivas, por debajo de las %(target_min)s "
+        "recomendadas: lo limita el material o el tiempo."
     ),
     "cardio.not_punishment": (
         "El cardio se programa por su efecto sobre el gasto y la salud, nunca como castigo por "
@@ -231,23 +233,23 @@ TEMPLATES: dict[str, str] = {
         "bici, elíptica, remo o andar. Nada de correr ni saltar."
     ),
     "cardio.hiit_machine": (
-        "El HIIT, en bici estática, remo o cinta en cuesta: 30 segundos fuertes y 90 suaves, "
-        "con 10 minutos de calentamiento y vuelta a la calma."
+        "Los intervalos, en bici estática, remo o cinta en cuesta: 30 segundos fuertes y 90 "
+        "suaves, con 10 minutos de calentamiento y vuelta a la calma."
     ),
     "cardio.hiit_outdoor": (
-        "El HIIT: cuestas, comba o sprints en bici. 30 segundos fuertes y 90 suaves, con "
-        "10 minutos de calentamiento y vuelta a la calma."
+        "Los intervalos: cuestas, comba o sprints en bici. 30 segundos fuertes y 90 suaves, con"
+        " 10 minutos de calentamiento y vuelta a la calma."
     ),
     "cardio.hiit_low_impact": (
-        "El HIIT, sin impacto: bici o remo, 30 segundos fuertes y 90 suaves."
+        "Los intervalos, sin impacto: bici o remo, 30 segundos fuertes y 90 suaves."
     ),
     "cardio.summary": (
-        "Objetivo de %(steps)s pasos al día, %(liss)s sesiones LISS y %(hiit)s HIIT (unas %(kcal)s "
-        "kcal/semana)."
+        "Objetivo de %(steps)s pasos al día, %(liss)s sesiones de cardio suave y %(hiit)s de "
+        "intervalos (unas %(kcal)s kcal a la semana)."
     ),
     "adjust.insufficient_data": (
-        "Todavía no hay datos suficientes (%(weight_days)s pesajes en %(span_days)s días): sigue "
-        "registrando el peso a diario."
+        "Todavía no hay datos suficientes (%(weight_days)s pesajes en %(span_days)s días): "
+        "sigue apuntando tu peso; con tres pesajes repartidos ya se puede revisar."
     ),
     "adjust.too_early": "La próxima revisión toca el %(next_review)s.",
     "adjust.sparse_trend": (
@@ -256,20 +258,19 @@ TEMPLATES: dict[str, str] = {
         "afina antes."
     ),
     "adjust.trend": (
-        "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado (media móvil de 7 "
-        "días)."
+        "Tu peso cambia %(observed)s kg a la semana; se esperaba %(expected)s (media de 7 días)."
     ),
     "adjust.trend_raw": (
-        "Cambio observado %(observed)s kg/semana frente a %(expected)s esperado, sobre los "
-        "pesajes que has ido apuntando."
+        "Tu peso cambia %(observed)s kg a la semana; se esperaba %(expected)s, contando los "
+        "pesajes que has apuntado."
     ),
     "adjust.tdee_observed": (
-        "Gasto observado por balance energético: %(observed)s kcal/día (teórico %(theoretical)s; "
-        "se usa %(blended)s, con %(days)s días de datos)."
+        "Con lo que has apuntado, gastas unas %(observed)s kcal al día (estimábamos "
+        "%(theoretical)s). Se usa %(blended)s, con %(days)s días de datos."
     ),
     "adjust.adherence_first": (
-        "La pérdida va lenta pero la adherencia media es del %(adherence)s %%: antes de tocar "
-        "calorías, revisa el registro y la constancia."
+        "Vas más lento de lo previsto, pero has seguido el plan un %(adherence)s %% de los "
+        "días: antes de tocar calorías, intenta ser más constante y apuntarlo todo."
     ),
     "adjust.keep": "Vas según lo previsto: sin cambios hasta la próxima revisión.",
     "adjust.reduce_calories": (
@@ -282,16 +283,16 @@ TEMPLATES: dict[str, str] = {
         "Las calorías ya están en el mínimo seguro: se suman %(steps)s pasos diarios en su lugar."
     ),
     "adjust.loss_too_fast": (
-        "Pierdes %(observed)s kg/semana, por encima del máximo de %(max_weekly)s kg (1 %% del "
-        "peso): se suben calorías."
+        "Pierdes %(observed)s kg a la semana, más del máximo de %(max_weekly)s kg (el 1 %% de "
+        "tu peso): suben las calorías."
     ),
     "adjust.diet_break": (
-        "Llevas %(weeks)s semanas en déficit y el peso está estancado: descanso de dieta de 2 "
-        "semanas a mantenimiento (%(calories)s kcal) antes de seguir."
+        "Llevas %(weeks)s semanas en déficit y el peso está estancado: pausa de dieta de 2 "
+        "semanas comiendo lo que gastas (%(calories)s kcal) antes de seguir."
     ),
     "adjust.refeed": (
-        "Estancamiento tras %(weeks)s semanas de déficit: día de recarga a mantenimiento "
-        "(%(calories)s kcal) esta semana, priorizando carbohidratos."
+        "Estancamiento tras %(weeks)s semanas de déficit: un día de recarga comiendo lo que "
+        "gastas (%(calories)s kcal) esta semana, sobre todo hidratos."
     ),
     "adjust.floor_reached": "No se baja de %(floor)s kcal (mínimo seguro).",
     "adjust.capped_step": "Cambio limitado al %(pct)s %% por revisión.",
