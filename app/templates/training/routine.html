@@ -68,8 +68,8 @@
             {% for entry in d.volume %}
               <tr>
                 <td>{{ labels.label(labels.MUSCLE_GROUP, entry.muscle) }}{% if entry.is_priority %} <span class="badge">{{ _('prioridad') }}</span>{% endif %}</td>
-                <td>{{ entry.planned_sets }}</td>
-                <td>{{ entry.target_min }}-{{ entry.target_max }}</td>
+                <td>{{ entry.planned_sets|num }}</td>
+                <td>{{ entry.target_min|num }}-{{ entry.target_max|num }}</td>
                 <td><span class="badge status-{{ entry.status }}">{{ labels.label(labels.VOLUME_STATUS, entry.status) }}</span></td>
               </tr>
             {% endfor %}
