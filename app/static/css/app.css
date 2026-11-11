@@ -125,8 +125,8 @@ code { font-family: var(--font-mono); font-size: 0.95em; }
   margin: 0;
   padding: 0;
 }
-.nav-links a { color: var(--text-muted); text-decoration: none; }
-.nav-links a:hover { color: var(--text); }
+.nav-links a:not(.button) { color: var(--text-muted); text-decoration: none; }
+.nav-links a:not(.button):hover { color: var(--text); }
 
 main { flex: 1; padding-block: var(--space-5); }
 

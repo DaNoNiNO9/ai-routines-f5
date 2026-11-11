@@ -102,3 +102,17 @@ def test_the_embedded_sprite_matches_the_source() -> None:
     )
     fuente = ICONS.read_text(encoding="utf-8")
     assert plantilla.endswith(fuente), "sprite.html no está al día: python scripts/inline_icons.py"
+
+
+def test_nav_link_colour_never_reaches_buttons() -> None:
+    """A button inside the navigation keeps the accent's text colour.
+
+    ``.nav-links a`` is more specific than ``.button``: written without
+    ``:not(.button)`` it painted "Crear cuenta" muted grey on orange (about 1:1).
+    """
+    rules = re.findall(r"(\.nav-links a[^{,]*)\{[^}]*\bcolor:", CSS)
+    assert rules, "no encuentro la regla de color de los enlaces de navegación"
+    for selector in rules:
+        if "aria-current" in selector:
+            continue
+        assert ":not(.button)" in selector, selector
