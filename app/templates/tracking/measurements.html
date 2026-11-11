@@ -6,7 +6,7 @@
 
 {% block content %}
 <section class="page-head">
-  <p class="eyebrow"><a href="{{ url_for('tracking.diary') }}">{{ _('Registro') }}</a></p>
+  <p class="eyebrow"><a href="{{ url_for('tracking.diary') }}">{{ _('Diario') }}</a></p>
   <h1>{{ _('Perímetros') }}</h1>
   <p class="lead">{{ _('Una vez por semana, a la misma hora y con la cinta sin apretar. De cuello, cintura y cadera sale tu porcentaje de grasa.') }}</p>
 </section>
@@ -44,15 +44,15 @@
           <tbody>
             {% for row in rows %}
               <tr>
-                <td>{{ row.measured_on.strftime('%d/%m/%y') }}</td>
-                <td>{{ row.neck_cm if row.neck_cm is not none else '—' }}</td>
-                <td>{{ row.waist_cm if row.waist_cm is not none else '—' }}</td>
-                <td>{{ row.hip_cm if row.hip_cm is not none else '—' }}</td>
-                <td>{{ row.chest_cm if row.chest_cm is not none else '—' }}</td>
-                <td>{{ row.arm_cm if row.arm_cm is not none else '—' }}</td>
-                <td>{{ row.thigh_cm if row.thigh_cm is not none else '—' }}</td>
-                <td>{{ row.calf_cm if row.calf_cm is not none else '—' }}</td>
-                <td>{% if row.body_fat_pct is not none %}{{ row.body_fat_pct }}{% else %}—{% endif %}</td>
+                <td>{{ row.measured_on|fdate }}</td>
+                <td>{{ row.neck_cm|num }}</td>
+                <td>{{ row.waist_cm|num }}</td>
+                <td>{{ row.hip_cm|num }}</td>
+                <td>{{ row.chest_cm|num }}</td>
+                <td>{{ row.arm_cm|num }}</td>
+                <td>{{ row.thigh_cm|num }}</td>
+                <td>{{ row.calf_cm|num }}</td>
+                <td>{{ row.body_fat_pct|num }}</td>
               </tr>
             {% endfor %}
           </tbody>

@@ -6,15 +6,15 @@
 {% block content %}
 {% set session = summary.session %}
 <section class="page-head">
-  <p class="eyebrow">{{ session.started_at.strftime('%d/%m/%Y') }} · {% if session.status.value == 'completed' %}{{ _('completada') }}{% else %}{{ _('abandonada') }}{% endif %}</p>
+  <p class="eyebrow">{{ session.started_at|fdate('long') }} · {% if session.status.value == 'completed' %}{{ _('completada') }}{% else %}{{ _('abandonada') }}{% endif %}</p>
   <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión') }}{% endif %}</h1>
-  {% if summary.prs %}<p class="lead">{{ _('%(n)s marcas nuevas. Buen trabajo.', n=summary.prs) }}</p>{% endif %}
+  {% if summary.prs %}<p class="lead">{{ ngettext('Una marca nueva. Buen trabajo.', '%(num)s marcas nuevas. Buen trabajo.', summary.prs) }}</p>{% endif %}
 </section>
 
 <div class="stat-grid">
   <div class="stat"><span class="stat-value">{{ summary.working_sets }}</span><span class="stat-label">{{ _('series efectivas') }}</span></div>
   <div class="stat"><span class="stat-value">{{ summary.total_reps }}</span><span class="stat-label">{{ _('repeticiones') }}</span></div>
-  <div class="stat"><span class="stat-value">{{ summary.tonnage_kg|int }}</span><span class="stat-label">{{ _('kg movidos') }}</span></div>
+  <div class="stat"><span class="stat-value">{{ summary.tonnage_kg|num(0) }}</span><span class="stat-label">{{ _('kg movidos') }}</span></div>
   <div class="stat"><span class="stat-value">{{ summary.duration_minutes }}</span><span class="stat-label">{{ _('minutos') }}</span></div>
 </div>
 
@@ -23,14 +23,14 @@
     <h2 class="card-title">{{ _('Mejor serie por ejercicio') }}</h2>
     <div class="table-wrap">
       <table class="table">
-        <thead><tr><th>{{ _('Ejercicio') }}</th><th>{{ _('Series') }}</th><th>{{ _('Mejor serie') }}</th><th>{{ _('1RM est.') }}</th></tr></thead>
+        <thead><tr><th>{{ _('Ejercicio') }}</th><th>{{ _('Series') }}</th><th>{{ _('Mejor serie') }}</th><th>{{ _('Máximo estimado') }}</th></tr></thead>
         <tbody>
           {% for item in summary.exercises %}
             <tr>
-              <td>{{ item.exercise.display_name }}{% if item.is_pr %} <span class="badge status-ok">{{ icon('trophy') }}PR</span>{% endif %}</td>
+              <td>{{ item.exercise.display_name }}{% if item.is_pr %} <span class="badge status-ok">{{ icon('trophy') }}{{ _('marca') }}</span>{% endif %}</td>
               <td>{{ item.sets }}</td>
-              <td>{{ item.top_weight|round(2)|string|replace('.0', '') }} kg × {{ item.top_reps }}</td>
-              <td>{{ item.est_1rm }} kg{% if item.previous_1rm %} <span class="muted">({{ _('antes') }} {{ item.previous_1rm }})</span>{% endif %}</td>
+              <td>{{ item.top_weight|kg(2) }} × {{ item.top_reps }}</td>
+              <td>{{ item.est_1rm|kg }}{% if item.previous_1rm %} <span class="muted">({{ _('antes, %(kg)s', kg=item.previous_1rm|kg) }})</span>{% endif %}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -51,7 +51,7 @@
 
 <p class="auth-links">
   <a class="button" href="{{ url_for('dashboard.index') }}">{{ _('Ir al panel') }}</a>
-  <a class="button button-secondary" href="{{ url_for('workouts.history') }}">{{ _('Historial') }}</a>
+  <a class="button button-secondary" href="{{ url_for('workouts.history') }}">{{ _('Tus entrenos') }}</a>
   <a class="button button-secondary" href="{{ url_for('workouts.progress') }}">{{ _('Progreso') }}</a>
 </p>
 {% endblock %}

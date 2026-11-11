@@ -12,13 +12,16 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from typing import Any
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from babel.dates import format_skeleton
-from flask import Flask
+from flask import Flask, has_request_context
 from flask_babel import format_date, format_decimal, get_locale, gettext, ngettext
+from flask_login import current_user
 
 TRIM_ZEROS = {0: "#,##0", 1: "#,##0.#", 2: "#,##0.##"}
 FIXED = {0: "#,##0", 1: "#,##0.0", 2: "#,##0.00"}
+DEFAULT_ZONE = "Europe/Madrid"
 MINUS = chr(0x2212)  # typographic minus, not the hyphen
 TIMES = chr(0xD7)  # the multiplication sign of 60 kg x 8
 
@@ -73,11 +76,28 @@ def fdate(value: date | datetime | str | None, style: str = "short") -> str:
     if isinstance(value, str):
         value = date.fromisoformat(value[:10])
     if isinstance(value, datetime):
-        value = value.date()
+        value = _local(value).date()
     if style == "long":
         return format_date(value, format="long")
     skeleton = {"day": "dM", "medium": "MMMd"}.get(style, "yMd")
     return format_skeleton(skeleton, value, locale=get_locale())
+
+
+def _local(moment: datetime) -> datetime:
+    """An aware datetime in the reader's time zone (Madrid when unknown).
+
+    Events are stored in UTC; a session at 00:30 in Madrid belongs to that day,
+    not to the evening before.
+    """
+    if moment.tzinfo is None:
+        return moment
+    zone = DEFAULT_ZONE
+    if has_request_context() and current_user.is_authenticated:
+        zone = current_user.timezone or DEFAULT_ZONE
+    try:
+        return moment.astimezone(ZoneInfo(zone))
+    except (ZoneInfoNotFoundError, ValueError):
+        return moment.astimezone(ZoneInfo(DEFAULT_ZONE))
 
 
 def days_from_now(value: date, today: date) -> str:
@@ -92,6 +112,28 @@ def days_from_now(value: date, today: date) -> str:
     return ngettext("en %(num)s día", "en %(num)s días", delta)
 
 
+def tempo(code: str | None) -> str:
+    """``2-0-1-0`` in words: ``Baja en 2 s y sube en 1 s``.
+
+    The four figures are seconds lowering, paused at the bottom, lifting and
+    paused at the top. A malformed code is shown as it came, never hidden.
+    """
+    if not code:
+        return ""
+    try:
+        down, bottom, up, _top = (int(part) for part in code.split("-"))
+    except ValueError:
+        return code
+    if bottom:
+        return gettext(
+            "Baja en %(down)s s, para %(pause)s s abajo y sube en %(up)s s",
+            down=down,
+            pause=bottom,
+            up=up,
+        )
+    return gettext("Baja en %(down)s s y sube en %(up)s s", down=down, up=up)
+
+
 def register(app: Flask) -> None:
     """Expose the helpers as Jinja filters."""
     app.add_template_filter(num, "num")
@@ -99,3 +141,5 @@ def register(app: Flask) -> None:
     app.add_template_filter(kg, "kg")
     app.add_template_filter(duration, "duration")
     app.add_template_filter(fdate, "fdate")
+    app.add_template_filter(tempo, "tempo")
+    app.add_template_global(days_from_now, "days_from_now")

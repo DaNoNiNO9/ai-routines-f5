@@ -12,7 +12,7 @@
 <section class="page-head">
   <p class="eyebrow">{{ _('Entrenamiento') }}</p>
   <h1>{{ _('Progreso') }}</h1>
-  <p class="meta">{{ _('Mejor serie de cada sesión: carga máxima y 1RM estimado (Epley: kg × (1 + reps/30)).') }}</p>
+  <p class="meta">{{ _('La mejor serie de cada sesión y tu máximo estimado: el peso que podrías levantar una sola vez, calculado con la fórmula de Epley a partir de esa serie.') }}</p>
 </section>
 
 {% if exercises %}
@@ -32,10 +32,10 @@
     {% endif %}
     <div class="table-wrap">
       <table class="table">
-        <thead><tr><th>{{ _('Fecha') }}</th><th>{{ _('Mejor serie') }}</th><th>{{ _('1RM est.') }}</th></tr></thead>
+        <thead><tr><th>{{ _('Fecha') }}</th><th>{{ _('Mejor serie') }}</th><th>{{ _('Máximo estimado') }}</th></tr></thead>
         <tbody>
           {% for point in points|reverse %}
-            <tr><td>{{ point.day.strftime('%d/%m/%y') }}</td><td>{{ point.top_weight|round(2)|string|replace('.0', '') }} kg × {{ point.top_reps }}</td><td>{{ point.est_1rm }} kg</td></tr>
+            <tr><td>{{ point.day|fdate }}</td><td>{{ point.top_weight|kg(2) }} × {{ point.top_reps }}</td><td>{{ point.est_1rm|kg }}</td></tr>
           {% endfor %}
         </tbody>
       </table>

@@ -7,10 +7,11 @@
   <p class="eyebrow">{{ _('Entrenamiento') }}</p>
   {% if routine %}
     <h1>{{ routine.name }}</h1>
-    <p class="lead">{{ _('Mesociclo de %(w)s semanas, descarga cada %(d)s · versión %(v)s desde el %(date)s.', w=routine.mesocycle_weeks, d=routine.deload_every_weeks, v=routine.version, date=routine.starts_on.strftime('%d/%m/%Y')) }}</p>
+    <p class="lead">{{ _('Bloques de %(w)s semanas, con una semana suave cada %(d)s. Vigente desde el %(date)s.', w=routine.mesocycle_weeks, d=routine.deload_every_weeks, date=routine.starts_on|fdate('long')) }}</p>
     {% if d.weekly_rir %}
-      <ul class="chips" aria-label="{{ _('RIR por semana') }}">
-        {% for rir in d.weekly_rir %}<li class="chip">{{ _('Semana %(n)s', n=loop.index) }} · RIR {{ rir }}</li>{% endfor %}
+      <p class="meta">{{ _('Cada semana aprietas un poco más: la reserva es cuántas repeticiones te deberían sobrar al acabar cada serie.') }}</p>
+      <ul class="chips" aria-label="{{ _('Reserva por semana') }}">
+        {% for rir in d.weekly_rir %}<li class="chip">{{ _('Semana %(n)s', n=loop.index) }} · {{ _('reserva %(n)s', n=rir) }}</li>{% endfor %}
       </ul>
     {% endif %}
   {% else %}
@@ -22,12 +23,12 @@
   <section class="card">
     {% if not has_plan %}
       <h2 class="card-title">{{ _('Sin rutina') }}</h2>
-      <p>{{ _('No generamos rutina cuando la seguridad impide el plan de nutrición. Actualiza el cuestionario si tu situación cambia.') }}</p>
+      <p>{{ _('No generamos rutina cuando la seguridad impide el plan de nutrición. Si tu situación cambia, actualiza tus datos.') }}</p>
     {% else %}
       <h2 class="card-title">{{ _('No pudimos montar una rutina con ese material') }}</h2>
       <ul class="notes">{% for reason in reasons %}<li class="note-error">{{ reason }}</li>{% endfor %}</ul>
     {% endif %}
-    <p><a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar cuestionario') }}</a></p>
+    <p><a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar mis datos') }}</a></p>
   </section>
 {% else %}
   {% if next_day %}
@@ -48,9 +49,9 @@
         <h2 class="card-title">{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }}</h2>
         <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
         <ol class="exercise-list">
-          {% for item in day.exercises %}<li>{{ item.exercise.display_name }} <span class="muted">{{ item.sets }}×{{ item.rep_min }}-{{ item.rep_max }}</span></li>{% endfor %}
+          {% for item in day.exercises %}<li>{{ item.exercise.display_name }} <span class="muted">{{ item.sets }} × {{ item.rep_min }}-{{ item.rep_max }}</span></li>{% endfor %}
         </ol>
-        <p class="meta">{{ _('%(n)s ejercicios · unos %(m)s minutos', n=day.exercises|length, m=day.estimated_minutes) }}</p>
+        <p class="meta">{{ ngettext('%(num)s ejercicio', '%(num)s ejercicios', day.exercises|length) }} · {{ _('unos %(m)s minutos', m=day.estimated_minutes) }}</p>
         <p><a class="button button-small button-secondary" href="{{ url_for('training.day', index=day.day_index) }}">{{ _('Ver día') }}</a></p>
       </article>
     {% endfor %}
@@ -59,9 +60,10 @@
   <div class="grid-cards">
     <section class="card">
       <h2 class="card-title">{{ _('Volumen semanal') }}</h2>
+      <p class="help">{{ _('Series a la semana por músculo, frente a lo que funciona para crecer.') }}</p>
       <div class="table-wrap">
         <table class="table">
-          <thead><tr><th>{{ _('Músculo') }}</th><th>{{ _('Series') }}</th><th>{{ _('Rango') }}</th><th></th></tr></thead>
+          <thead><tr><th>{{ _('Músculo') }}</th><th>{{ _('Series') }}</th><th>{{ _('Recomendado') }}</th><th></th></tr></thead>
           <tbody>
             {% for entry in d.volume %}
               <tr>
@@ -74,17 +76,17 @@
           </tbody>
         </table>
       </div>
-      <p class="meta">{{ _('Empuje %(push)s series · tracción %(pull)s series · ratio %(ratio)s.', push=d.push_sets, pull=d.pull_sets, ratio=d.pull_to_push_ratio) }}</p>
+      <p class="meta">{{ _('%(push)s series de empujar y %(pull)s de tirar a la semana.', push=d.push_sets, pull=d.pull_sets) }}</p>
     </section>
 
     <section class="card">
       <h2 class="card-title">{{ _('Cardio y pasos') }}</h2>
       {% if d.cardio %}
-        <p class="big-number">{{ d.cardio.daily_steps_target }} <small>{{ _('pasos al día') }}</small></p>
+        <p class="big-number">{{ d.cardio.daily_steps_target|num(0) }} <small>{{ _('pasos al día') }}</small></p>
         <dl class="kv">
-          <dt>{{ _('Cardio suave (LISS)') }}</dt><dd>{% if d.cardio.liss_sessions %}{{ d.cardio.liss_sessions }} × {{ d.cardio.liss_minutes }} min{% else %}—{% endif %}</dd>
-          <dt>HIIT</dt><dd>{% if d.cardio.hiit_sessions %}{{ d.cardio.hiit_sessions }} × {{ d.cardio.hiit_minutes }} min{% else %}—{% endif %}</dd>
-          <dt>{{ _('Gasto semanal estimado') }}</dt><dd>{{ d.cardio.weekly_kcal_estimate }} kcal</dd>
+          <dt>{{ _('Cardio suave') }}</dt><dd>{% if d.cardio.liss_sessions %}{{ _('%(n)s × %(m)s min a la semana', n=d.cardio.liss_sessions, m=d.cardio.liss_minutes) }}{% else %}—{% endif %}</dd>
+          <dt>{{ _('Intervalos') }}</dt><dd>{% if d.cardio.hiit_sessions %}{{ _('%(n)s × %(m)s min a la semana', n=d.cardio.hiit_sessions, m=d.cardio.hiit_minutes) }}{% else %}—{% endif %}</dd>
+          <dt>{{ _('Gasto a la semana') }}</dt><dd>{{ _('unas %(kcal)s kcal', kcal=d.cardio.weekly_kcal_estimate|num(0)) }}</dd>
         </dl>
       {% else %}
         <p class="empty">{{ _('Sin prescripción de cardio.') }}</p>
@@ -94,7 +96,7 @@
     {% if set_aside %}
       <section class="card card-span">
         <h2 class="card-title">{{ _('Ejercicios apartados') }} ({{ set_aside|length }})</h2>
-        <p class="help">{{ _('Los que marcaste como "no me gusta". No se programan; devuélvelos cuando quieras.') }}</p>
+        <p class="help">{{ _('Los que marcaste con «no me gusta». No se programan; devuélvelos cuando quieras.') }}</p>
         <ul class="alt-list">
           {% for exercise in set_aside %}
             <li>

@@ -187,7 +187,7 @@ def test_finishing_the_session_shows_totals_and_records(
     summary = client.get(f"/entreno/{session.id}/resumen").get_data(as_text=True)
     assert "2" in summary
     assert "960" in summary  # 2 x 8 x 60 kg
-    assert "PR" in summary
+    assert "marca" in summary
     assert "Buen día" in summary
     assert "4 · Cansado" in summary
 
@@ -196,7 +196,7 @@ def test_finishing_the_session_shows_totals_and_records(
 
     history = client.get("/entreno/historial").get_data(as_text=True)
     assert session.routine_day.name in history
-    assert "PR ×1" in history  # noqa: RUF001 - as rendered
+    assert "1 marca" in history
 
     progress = client.get("/entreno/progreso").get_data(as_text=True)
     assert item.exercise.name_es in progress

@@ -10,10 +10,10 @@
 
 {% block content %}
 <section class="page-head">
-  <p class="eyebrow">{{ _('Panel') }} · {{ today.strftime('%d/%m/%Y') }}</p>
+  <p class="eyebrow">{{ today|fdate('long') }}</p>
   <h1>{{ _('Hola, %(name)s.', name=user.display_name) }}</h1>
   {% if profile %}
-    <p class="lead">{{ _('Objetivo: %(goal)s · cuestionario v%(v)s.', goal=labels.label(labels.GOAL, profile.goal), v=profile.version) }}</p>
+    <p class="lead">{{ _('Objetivo: %(goal)s.', goal=labels.label(labels.GOAL, profile.goal)) }}</p>
   {% endif %}
 </section>
 
@@ -36,12 +36,12 @@
             <div class="stat">
               <span class="stat-label">{{ _('Día de entreno') }}</span>
               <span class="stat-value">{{ targets.cycle.high.calories }} <small>kcal</small></span>
-              <span class="stat-label">P {{ targets.cycle.high.protein_g }} · C {{ targets.cycle.high.carbs_g }} · G {{ targets.cycle.high.fat_g }}</span>
+              <span class="stat-label">{{ _('%(p)s g proteína · %(c)s g carbohidratos · %(g)s g grasa', p=targets.cycle.high.protein_g, c=targets.cycle.high.carbs_g, g=targets.cycle.high.fat_g) }}</span>
             </div>
             <div class="stat">
               <span class="stat-label">{{ _('Día de descanso') }}</span>
               <span class="stat-value">{{ targets.cycle.low.calories }} <small>kcal</small></span>
-              <span class="stat-label">P {{ targets.cycle.low.protein_g }} · C {{ targets.cycle.low.carbs_g }} · G {{ targets.cycle.low.fat_g }}</span>
+              <span class="stat-label">{{ _('%(p)s g proteína · %(c)s g carbohidratos · %(g)s g grasa', p=targets.cycle.low.protein_g, c=targets.cycle.low.carbs_g, g=targets.cycle.low.fat_g) }}</span>
             </div>
           </div>
         {% else %}
@@ -52,7 +52,7 @@
             <li class="chip">{{ _('Grasa') }} {{ targets.base.fat_g }} g</li>
           </ul>
         {% endif %}
-        <p class="meta">{{ _('Agua: %(l)s l (más en días de entreno) · fibra %(f)s g', l=(plan.water_ml / 1000)|round(1), f=plan.fiber_g|int) }}</p>
+        <p class="meta">{{ _('Agua: %(l)s l (más en días de entreno) · fibra %(f)s g', l=(plan.water_ml / 1000)|num, f=plan.fiber_g|int) }}</p>
         <p><a class="button button-small button-secondary" href="{{ url_for('nutrition.plan') }}">{{ _('Ver plan de nutrición') }}</a></p>
       {% else %}
         <p class="empty">{{ _('Sin plan de nutrición: las respuestas de salud u objetivo lo impiden.') }}</p>
@@ -67,7 +67,7 @@
         <ul class="chips" aria-label="{{ _('Grupos musculares') }}">
           {% for muscle in next_day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}
         </ul>
-        <p class="meta">{{ _('%(n)s ejercicios · unos %(m)s minutos', n=next_day.exercises|length, m=next_day.estimated_minutes) }}</p>
+        <p class="meta">{{ ngettext('%(num)s ejercicio', '%(num)s ejercicios', next_day.exercises|length) }} · {{ _('unos %(m)s minutos', m=next_day.estimated_minutes) }}</p>
         <p><a class="button button-small" href="{{ url_for('training.day', index=next_day.day_index) }}">{{ icon('arrow-right') }}{{ _('Ver la sesión') }}</a></p>
       {% elif routine %}
         <p class="empty">{{ _('La rutina no tiene días.') }}</p>
@@ -80,9 +80,9 @@
     <article class="card card-span">
       <h2 class="card-title">{{ icon('scale') }}{{ _('Peso') }}</h2>
       {% if weights.latest %}
-        <p class="big-number">{{ weights.latest[1] }} <small>kg · {{ weights.latest[0].strftime('%d/%m') }}</small></p>
+        <p class="big-number">{{ weights.latest[1]|num }} <small>kg · {{ weights.latest[0]|fdate('day') }}</small></p>
         {% if weights.change_kg is not none %}
-          <p class="meta">{{ _('%(delta)s kg desde que empezaste, en media semanal.', delta=('%+.2f'|format(weights.change_kg))) }}</p>
+          <p class="meta">{{ _('%(delta)s kg desde que empezaste, comparando medias de 7 días.', delta=weights.change_kg|signed(2)) }}</p>
         {% else %}
           <p class="meta">{{ _('Con tres pesajes seguidos ya se ve la tendencia. Si te pesas menos, se mira mes a mes.') }}</p>
         {% endif %}
@@ -98,13 +98,13 @@
     <article class="card">
       <h2 class="card-title">{{ icon('calendar-check') }}{{ _('Revisión') }}</h2>
       {% if next_review %}
-        {% set days_left = (next_review - today).days %}
-        <p class="big-number">{{ next_review.strftime('%d/%m') }} <small>{% if days_left > 0 %}{{ _('en %(n)s días', n=days_left) }}{% else %}{{ _('pendiente') }}{% endif %}</small></p>
+        {% set due = next_review <= today %}
+        <p class="big-number">{% if due %}{{ _('Toca hoy') }}{% else %}{{ next_review|fdate('day') }} <small>{{ days_from_now(next_review, today) }}</small>{% endif %}</p>
         <p class="meta">{{ _('Cada dos semanas se mira si el peso se está moviendo como debería. Si no, se tocan calorías o pasos, poco a poco.') }}</p>
+        <p><a class="button button-small{% if not due %} button-secondary{% endif %}" href="{{ url_for('review.index') }}">{% if due %}{{ _('Revisar ahora') }}{% else %}{{ _('Ver la revisión') }}{% endif %}</a></p>
       {% else %}
         <p class="empty">{{ _('Sin plan que revisar.') }}</p>
       {% endif %}
-      <p><a class="button button-small button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar cuestionario') }}</a></p>
     </article>
   </div>
 {% endif %}

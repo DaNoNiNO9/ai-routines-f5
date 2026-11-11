@@ -18,8 +18,8 @@ from app.engine.enums import BodyFatMethod, CardioKind
 
 CARDIO_CHOICES = [
     ("", _l("—")),
-    (CardioKind.LISS.value, _l("Cardio suave (LISS)")),
-    (CardioKind.HIIT.value, _l("HIIT")),
+    (CardioKind.LISS.value, _l("Cardio suave")),
+    (CardioKind.HIIT.value, _l("Intervalos")),
 ]
 
 
@@ -57,7 +57,7 @@ class IntakeForm(DayForm):
     )
     fat_g = FloatField(_l("Grasa (g)"), validators=[Optional(), NumberRange(min=0, max=1000)])
     adherence_pct = IntegerField(
-        _l("Adherencia (%)"), validators=[Optional(), NumberRange(min=0, max=100)]
+        _l("Cuánto has seguido el plan (%)"), validators=[Optional(), NumberRange(min=0, max=100)]
     )
     notes = StringField(_l("Nota (opcional)"), validators=[Optional(), Length(max=200)])
 

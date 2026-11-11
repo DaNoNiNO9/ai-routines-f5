@@ -7,10 +7,10 @@
 <section class="page-head">
   <p class="eyebrow"><a href="{{ url_for('training.routine') }}">{{ routine.name }}</a></p>
   <h1>{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }}</h1>
-  <p class="lead">{{ _('%(n)s ejercicios · unos %(m)s minutos', n=day.exercises|length, m=day.estimated_minutes) }}</p>
+  <p class="lead">{{ ngettext('%(num)s ejercicio', '%(num)s ejercicios', day.exercises|length) }} · {{ _('unos %(m)s minutos', m=day.estimated_minutes) }}</p>
   <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
   {% if weekly_rir %}
-    <p class="meta">{{ _('RIR por semana:') }} {% for rir in weekly_rir %}{{ _('S%(n)s', n=loop.index) }} {{ rir }}{% if not loop.last %} · {% endif %}{% endfor %}. {{ _('Sube la carga cuando llegues al máximo de repeticiones en todas las series.') }}</p>
+    <p class="meta">{{ _('Reserva por semana:') }} {% for rir in weekly_rir %}{{ _('semana %(n)s, %(rir)s', n=loop.index, rir=rir) }}{% if not loop.last %} · {% endif %}{% endfor %}. {{ _('Sube el peso cuando hagas el máximo de repeticiones en todas las series.') }}</p>
   {% endif %}
   {% if day.notes %}<p class="help">{{ day.notes }}</p>{% endif %}
   <form method="post" action="{{ url_for('workouts.start', day_index=day.day_index) }}" class="inline-form">
@@ -36,12 +36,12 @@
         <h2 class="card-title">{{ item.exercise.display_name }}</h2>
         <dl class="rx">
           <div><dt>{{ _('Series') }}</dt><dd>{{ item.sets }}</dd></div>
-          <div><dt>{{ _('Reps') }}</dt><dd>{{ item.rep_min }}-{{ item.rep_max }}</dd></div>
-          <div><dt>RIR</dt><dd>{{ item.rir_start }}→{{ item.rir_end }}</dd></div>
-          <div><dt>{{ _('Descanso') }}</dt><dd>{{ item.rest_seconds }} s</dd></div>
-          {% if item.tempo %}<div><dt>{{ _('Tempo') }}</dt><dd>{{ item.tempo }}</dd></div>{% endif %}
-          {% if item.load_increment_kg %}<div><dt>{{ _('Progresión') }}</dt><dd>+{{ item.load_increment_kg }} kg</dd></div>{% endif %}
+          <div><dt>{{ _('Repeticiones') }}</dt><dd>{{ item.rep_min }}-{{ item.rep_max }}</dd></div>
+          <div><dt>{{ _('Reserva') }}</dt><dd>{{ _('de %(a)s a %(b)s', a=item.rir_start, b=item.rir_end) }}</dd></div>
+          <div><dt>{{ _('Descanso') }}</dt><dd>{{ item.rest_seconds|duration }}</dd></div>
+          {% if item.load_increment_kg %}<div><dt>{{ _('Para subir') }}</dt><dd>+{{ item.load_increment_kg|kg(2) }}</dd></div>{% endif %}
         </dl>
+        {% if item.tempo %}<p class="meta">{{ item.tempo|tempo }}.</p>{% endif %}
         {% if item.exercise.is_unilateral %}<p class="meta">{{ _('Unilateral: las series son por lado.') }}</p>{% endif %}
         {% if item.notes %}<p class="help">{{ item.notes }}</p>{% endif %}
         {% if item.exercise.instructions_es or item.exercise.instructions_en %}
@@ -64,7 +64,7 @@
             </form>
             <p class="help">{{ _('Se queda fuera de esta rutina y de las siguientes. Puedes deshacerlo desde la rutina.') }}</p>
           {% else %}
-            <p class="muted">{{ _('Ninguna con tu material y tus lesiones.') }}</p>
+            <p class="muted">{{ _('Ninguna con tu material y tus molestias.') }}</p>
           {% endif %}
         </details>
         {% if item.exercise.video_url %}

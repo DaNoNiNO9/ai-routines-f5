@@ -48,20 +48,26 @@
   </section>
 
   <section class="card card-span">
+    <h2 class="card-title">{{ icon('notebook-pen') }}{{ _('Tus datos para el plan') }}</h2>
+    <p>{{ _('Peso, objetivo, días de entreno, material, molestias… Si algo cambia, actualízalo y el plan y la rutina se vuelven a calcular. Tus registros no se pierden.') }}</p>
+    <p><a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar mis datos') }}</a></p>
+  </section>
+
+  <section class="card card-span">
     <h2 class="card-title">{{ icon('arrow-right') }}{{ _('Llévate tus datos') }}</h2>
     <div class="grid-2">
       <div>
         <h3 class="h3">{{ _('Plan en PDF') }}</h3>
-        <p>{{ _('Tu plan de nutrición y tu rutina, con las fórmulas que se han usado y los avisos del motor. Para imprimirlo o enseñárselo a un profesional.') }}</p>
+        <p>{{ _('Tu plan de nutrición y tu rutina, con cómo se han calculado. Para imprimirlo o enseñárselo a un profesional.') }}</p>
         {% if has_profile %}
           <p><a class="button" href="{{ url_for('account.plan_pdf') }}">{{ icon('arrow-right') }}{{ _('Descargar el plan') }}</a></p>
         {% else %}
-          <p class="empty">{{ _('Todavía no hay plan: completa el cuestionario.') }}</p>
+          <p class="empty">{{ _('Todavía no hay plan: completa tus datos.') }}</p>
         {% endif %}
       </div>
       <div>
         <h3 class="h3">{{ _('Todos tus datos en CSV') }}</h3>
-        <p>{{ _('Un ZIP con un CSV por tipo de dato: cuestionarios, pesajes, ingestas, actividad, perímetros, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo.') }}</p>
+        <p>{{ _('Un ZIP con un CSV por tipo de dato: respuestas, pesajes, comidas, actividad, perímetros, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo.') }}</p>
         <p><a class="button button-secondary" href="{{ url_for('account.data_archive') }}">{{ icon('arrow-right') }}{{ _('Descargar mis datos') }}</a></p>
       </div>
     </div>
@@ -69,7 +75,7 @@
 
   <section class="card card-span card-peligro">
     <h2 class="card-title">{{ icon('triangle-alert') }}{{ _('Borrar la cuenta') }}</h2>
-    <p>{{ _('Se borra todo: cuestionarios, planes, rutinas, entrenos y registros. No hay copia ni forma de recuperarlo. Si quieres conservar algo, descárgalo antes.') }}</p>
+    <p>{{ _('Se borra todo: respuestas, planes, rutinas, entrenos y registros. No hay copia ni forma de recuperarlo. Si quieres conservar algo, descárgalo antes.') }}</p>
     <form method="post" action="{{ url_for('account.delete_account') }}" class="form" novalidate>
       {{ delete_form.hidden_tag() }}
       <div class="grid-2">
