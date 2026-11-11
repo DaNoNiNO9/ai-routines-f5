@@ -13,7 +13,7 @@ from flask_babel import ngettext
 from flask_login import current_user, login_required
 from werkzeug.wrappers import Response as WerkzeugResponse
 
-from app import labels
+from app import formatting, labels
 from app.blueprints.onboarding.forms import INJURY_FIELDS, STEP_FORMS
 from app.engine.enums import TrainingLocation
 from app.engine.equipment_presets import preset_for
@@ -135,13 +135,13 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
     injuries = data.get("injuries") or {}
     rows_body = [
         (_("Sexo"), labels.label(labels.SEX, data.get("sex"))),
-        (_("Fecha de nacimiento"), data.get("birth_date")),
-        (_("Altura"), f"{data.get('height_cm')} cm"),
-        (_("Peso"), f"{data.get('weight_kg')} kg"),
+        (_("Fecha de nacimiento"), formatting.fdate(data.get("birth_date"), "long")),
+        (_("Altura"), f"{formatting.num(data.get('height_cm'))} cm"),
+        (_("Peso"), formatting.kg(data.get("weight_kg"))),
         (
             _("Perímetros"),
             ", ".join(
-                f"{label}: {data[key]} cm"
+                f"{label}: {formatting.num(data[key])} cm"
                 for key, label in (
                     ("neck_cm", _("cuello")),
                     ("waist_cm", _("cintura")),
@@ -154,7 +154,7 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
         (
             _("Grasa corporal"),
             (
-                f"{data['body_fat_pct']} % · "
+                f"{formatting.num(data['body_fat_pct'])} % · "
                 f"{labels.label(labels.BODY_FAT_METHOD, data.get('body_fat_method'))}"
                 if data.get("body_fat_pct")
                 else _("no indicada")
@@ -164,13 +164,18 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
     other = data.get("other_activity_sessions_per_week") or 0
     rows_activity = [
         (_("Trabajo"), labels.label(labels.JOB_ACTIVITY, data.get("job_activity"))),
-        (_("Pasos diarios"), data.get("daily_steps") or _("no indicados")),
-        (_("Sueño"), f"{data.get('sleep_hours')} h"),
+        (
+            _("Pasos diarios"),
+            formatting.num(data["daily_steps"], 0)
+            if data.get("daily_steps")
+            else _("no indicados"),
+        ),
+        (_("Sueño"), f"{formatting.num(data.get('sleep_hours'))} h"),
         (_("Estrés"), labels.label(labels.STRESS_LEVEL, data.get("stress_level"))),
         (
             _("Otra actividad"),
             (
-                f"{data.get('other_activity_type') or _('actividad')}: {other} x "
+                f"{data.get('other_activity_type') or _('actividad')}: {other} {formatting.TIMES} "
                 f"{data.get('other_activity_minutes')} min, "
                 f"{labels.label(labels.ACTIVITY_INTENSITY, data.get('other_activity_intensity'))}"
                 if other
@@ -185,9 +190,10 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
         ),
         (
             _("Frecuencia"),
-            _(
-                "%(days)s días x %(minutes)s min",
-                days=data.get("training_days_per_week"),
+            ngettext(
+                "%(num)s día a la semana, %(minutes)s min",
+                "%(num)s días a la semana, %(minutes)s min",
+                int(data.get("training_days_per_week") or 0),
                 minutes=data.get("session_minutes"),
             ),
         ),
@@ -207,7 +213,7 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
             or _("ninguna"),
         ),
         (
-            _("Lesiones"),
+            _("Molestias o lesiones"),
             ", ".join(
                 f"{labels.label(labels.INJURY_AREA, area)} ({labels.label(labels.SEVERITY, sev)})"
                 for area, sev in injuries.items()
@@ -228,14 +234,21 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
         (_("Ritmo"), labels.label(labels.AGGRESSIVENESS, data.get("aggressiveness"))),
         (
             _("Peso objetivo"),
-            f"{data['target_weight_kg']} kg" if data.get("target_weight_kg") else _("no indicado"),
+            formatting.kg(data["target_weight_kg"])
+            if data.get("target_weight_kg")
+            else _("no indicado"),
         ),
-        (_("Fecha objetivo"), data.get("target_date") or _("sin fecha")),
+        (
+            _("Fecha objetivo"),
+            formatting.fdate(data["target_date"], "long")
+            if data.get("target_date")
+            else _("sin fecha"),
+        ),
     ]
     rows_nutrition = [
         (_("Comidas al día"), data.get("meals_per_day")),
-        (_("Patrón"), labels.label(labels.DIET_PATTERN, data.get("diet_pattern"))),
-        (_("Ciclado de carbohidratos"), yes_no(data.get("wants_carb_cycling"))),
+        (_("Alimentación"), labels.label(labels.DIET_PATTERN, data.get("diet_pattern"))),
+        (_("Más hidratos los días de entreno"), yes_no(data.get("wants_carb_cycling"))),
         (
             _("Alcohol"),
             ngettext(
@@ -247,8 +260,10 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
     ]
     rows_health = [
         (_("Embarazo o lactancia"), yes_no(data.get("is_pregnant_or_breastfeeding"))),
-        (_("Antecedentes de TCA"), yes_no(data.get("has_eating_disorder_history"))),
-        (_("Notas"), data.get("notes") or _("ninguna")),
+        (
+            _("Antecedentes de trastorno alimentario"),
+            yes_no(data.get("has_eating_disorder_history")),
+        ),
     ]
     rows = (
         rows_body,

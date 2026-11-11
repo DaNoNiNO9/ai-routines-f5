@@ -59,7 +59,7 @@ STEP_ANSWERS: dict[int, dict[str, Any]] = {
         "diet_pattern": "omnivore",
         "alcohol_drinks_per_week": "3",
     },
-    7: {"notes": "Nada más."},
+    7: {},
 }
 
 
@@ -182,7 +182,7 @@ def test_review_blocks_until_complete_and_shows_the_answers(
     page = client.get("/cuestionario/revisar").get_data(as_text=True)
     for text in (
         "Mujer",
-        "1992-05-20",
+        "20 de mayo de 1992",
         "Gimnasio básico",
         "Perder grasa",
         "Rodilla",

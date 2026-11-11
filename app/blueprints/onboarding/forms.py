@@ -17,7 +17,6 @@ from wtforms import (
     SelectField,
     SelectMultipleField,
     StringField,
-    TextAreaField,
     widgets,
 )
 from wtforms.validators import InputRequired, Length, NumberRange, Optional, ValidationError
@@ -306,7 +305,7 @@ class NutritionForm(StepForm):
         validators=[InputRequired()],
     )
     wants_carb_cycling = BooleanField(
-        _l("Quiero ciclar carbohidratos (más en días de entreno, menos en descanso)")
+        _l("Quiero más hidratos los días de entreno y menos los de descanso")
     )
     alcohol_drinks_per_week = IntegerField(
         _l("Bebidas alcohólicas por semana"),
@@ -321,9 +320,6 @@ class HealthForm(StepForm):
     is_pregnant_or_breastfeeding = BooleanField(_l("Estoy embarazada o en periodo de lactancia"))
     has_eating_disorder_history = BooleanField(
         _l("Tengo o he tenido un trastorno de la conducta alimentaria")
-    )
-    notes = TextAreaField(
-        _l("Algo más que debamos saber (opcional)"), validators=[Optional(), Length(max=500)]
     )
 
 

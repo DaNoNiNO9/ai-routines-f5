@@ -4,13 +4,13 @@
 
 {% block content %}
 <section class="hero">
-  <p class="eyebrow">{{ _('Cuestionario v%(v)s', v=profile.version) }}</p>
+  <p class="eyebrow">{{ _('Listo') }}</p>
   <h1>{{ _('Tu plan') }}</h1>
   <p class="lead">
-    {{ _('Objetivo: %(goal)s · %(days)s días de entrenamiento · %(minutes)s min por sesión.', goal=labels.label(labels.GOAL, profile.goal), days=profile.training_days_per_week, minutes=profile.session_minutes) }}
+    {{ _('Objetivo: %(goal)s', goal=labels.label(labels.GOAL, profile.goal)) }} · {{ ngettext('%(num)s día de entrenamiento', '%(num)s días de entrenamiento', profile.training_days_per_week) }} · {{ _('%(minutes)s min por sesión.', minutes=profile.session_minutes) }}
   </p>
   <p class="auth-links">
-    <a class="button button-small button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar cuestionario') }}</a>
+    <a class="button button-small button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Cambiar mis datos') }}</a>
     <a class="button button-small" href="{{ url_for('dashboard.index') }}">{{ _('Ir al panel') }}</a>
   </p>
 </section>
@@ -21,7 +21,7 @@
     <ul class="notes">
       {% for reason in blocked_reasons %}<li class="note-error">{{ reason }}</li>{% endfor %}
     </ul>
-    <p>{{ _('Hemos guardado tus respuestas. Si cambia tu situación u objetivo, actualiza el cuestionario.') }}</p>
+    <p>{{ _('Hemos guardado tus respuestas. Si cambia tu situación u objetivo, actualiza tus datos.') }}</p>
   </section>
 {% else %}
   <section class="card">
@@ -30,20 +30,20 @@
       <span class="badge">{{ _('confianza %(c)s', c=labels.label(labels.CONFIDENCE, plan.confidence)) }}</span>
     </div>
     <div class="stat-grid">
-      <div class="stat"><span class="stat-value">{{ plan.calorie_target }}</span><span class="stat-label">{{ _('kcal / día') }}</span></div>
+      <div class="stat"><span class="stat-value">{{ plan.calorie_target }}</span><span class="stat-label">{{ _('kcal al día') }}</span></div>
       <div class="stat"><span class="stat-value">{{ plan.protein_g|int }} g</span><span class="stat-label">{{ _('proteína') }}</span></div>
       <div class="stat"><span class="stat-value">{{ plan.carbs_g|int }} g</span><span class="stat-label">{{ _('carbohidratos') }}</span></div>
       <div class="stat"><span class="stat-value">{{ plan.fat_g|int }} g</span><span class="stat-label">{{ _('grasa') }}</span></div>
       <div class="stat"><span class="stat-value">{{ plan.fiber_g|int }} g</span><span class="stat-label">{{ _('fibra') }}</span></div>
-      <div class="stat"><span class="stat-value">{{ (plan.water_ml / 1000)|round(1) }} l</span><span class="stat-label">{{ _('agua (más en días de entreno)') }}</span></div>
+      <div class="stat"><span class="stat-value">{{ (plan.water_ml / 1000)|num }} l</span><span class="stat-label">{{ _('agua (más en días de entreno)') }}</span></div>
     </div>
     <p class="meta">
-      {{ _('Metabolismo basal %(bmr)s kcal (%(method)s) · mantenimiento estimado %(tdee)s kcal.', bmr=plan.bmr_kcal|int, method=labels.label(labels.BMR_METHOD, plan.bmr_method), tdee=plan.tdee_kcal|int) }}
+      {{ _('En reposo gastas unas %(bmr)s kcal (%(method)s) y en total, unas %(tdee)s kcal al día.', bmr=plan.bmr_kcal|int, method=labels.label(labels.BMR_METHOD, plan.bmr_method), tdee=plan.tdee_kcal|int) }}
     </p>
     {% if plan.meals %}
       <div class="table-wrap">
         <table class="table">
-          <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>{{ _('Proteína') }}</th><th>{{ _('Carbos') }}</th><th>{{ _('Grasa') }}</th></tr></thead>
+          <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>{{ _('Proteína') }}</th><th>{{ _('Carbohidratos') }}</th><th>{{ _('Grasa') }}</th></tr></thead>
           <tbody>
             {% for meal in plan.meals %}
               <tr><td>{{ meal.name }}</td><td>{{ meal.calories }}</td><td>{{ meal.protein_g|int }} g</td><td>{{ meal.carbs_g|int }} g</td><td>{{ meal.fat_g|int }} g</td></tr>
@@ -54,7 +54,7 @@
     {% endif %}
     {% set cycle = plan.details.get('carb_cycle') %}
     {% if cycle %}
-      <p>{{ _('Ciclado: días de entreno %(hc)s g de carbohidratos (%(hk)s kcal); días de descanso %(lc)s g (%(lk)s kcal).', hc=cycle.high_day.carbs_g, hk=cycle.high_day.calories, lc=cycle.low_day.carbs_g, lk=cycle.low_day.calories) }}</p>
+      <p>{{ _('Más hidratos los días de entreno: %(hc)s g (%(hk)s kcal); los de descanso, %(lc)s g (%(lk)s kcal).', hc=cycle.high_day.carbs_g, hk=cycle.high_day.calories, lc=cycle.low_day.carbs_g, lk=cycle.low_day.calories) }}</p>
     {% endif %}
     {% if plan_messages %}
       <ul class="notes">
@@ -71,19 +71,19 @@
         {% for reason in routine_reasons %}<li class="note-error">{{ reason }}</li>{% endfor %}
       </ul>
     {% else %}
-      <p class="lead">{{ routine.name }} · {{ _('mesociclo de %(w)s semanas, descarga cada %(d)s', w=routine.mesocycle_weeks, d=routine.deload_every_weeks) }}</p>
+      <p class="lead">{{ routine.name }} · {{ _('bloques de %(w)s semanas, con una semana suave cada %(d)s', w=routine.mesocycle_weeks, d=routine.deload_every_weeks) }}</p>
       {% for day in routine.days %}
         <h3 class="h3">{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }} <span class="badge">{{ day.estimated_minutes }} min</span></h3>
         <div class="table-wrap">
           <table class="table">
-            <thead><tr><th>{{ _('Ejercicio') }}</th><th>{{ _('Series × reps') }}</th><th>RIR</th><th>{{ _('Descanso') }}</th></tr></thead>
+            <thead><tr><th>{{ _('Ejercicio') }}</th><th>{{ _('Series × repeticiones') }}</th><th>{{ _('Reserva') }}</th><th>{{ _('Descanso') }}</th></tr></thead>
             <tbody>
               {% for item in day.exercises %}
                 <tr>
                   <td>{{ item.exercise.display_name }}</td>
                   <td>{{ item.sets }} × {{ item.rep_min }}-{{ item.rep_max }}</td>
-                  <td>{{ item.rir_start }}→{{ item.rir_end }}</td>
-                  <td>{{ item.rest_seconds }} s</td>
+                  <td>{{ _('de %(a)s a %(b)s', a=item.rir_start, b=item.rir_end) }}</td>
+                  <td>{{ item.rest_seconds|duration }}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -93,9 +93,9 @@
       {% endfor %}
       {% set cardio = routine.details.get('cardio') %}
       {% if cardio %}
-        <p>{{ _('Pasos objetivo: %(steps)s al día.', steps=cardio.daily_steps_target) }}
-          {% if cardio.liss_sessions %}{{ _('%(n)s sesiones de cardio suave de %(m)s min.', n=cardio.liss_sessions, m=cardio.liss_minutes) }}{% endif %}
-          {% if cardio.hiit_sessions %}{{ _('%(n)s sesión HIIT de %(m)s min.', n=cardio.hiit_sessions, m=cardio.hiit_minutes) }}{% endif %}
+        <p>{{ _('Objetivo: %(steps)s pasos al día.', steps=cardio.daily_steps_target|num(0)) }}
+          {% if cardio.liss_sessions %}{{ ngettext('%(num)s sesión de cardio suave de %(m)s min a la semana.', '%(num)s sesiones de cardio suave de %(m)s min a la semana.', cardio.liss_sessions, m=cardio.liss_minutes) }}{% endif %}
+          {% if cardio.hiit_sessions %}{{ ngettext('%(num)s sesión de intervalos de %(m)s min a la semana.', '%(num)s sesiones de intervalos de %(m)s min a la semana.', cardio.hiit_sessions, m=cardio.hiit_minutes) }}{% endif %}
         </p>
       {% endif %}
       {% if routine_messages %}
