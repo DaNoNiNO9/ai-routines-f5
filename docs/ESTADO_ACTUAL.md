@@ -38,7 +38,23 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-Cambios salidos de probar la app (T-104 a T-111): el paso de material y lesiones deja de ser un muro, los ejercicios que no gustan se marcan desde la rutina, el descanso entre series nunca baja de dos minutos, el cardio dice con qué se hace y pesarse a diario deja de ser un requisito.
+**Pausa el 2026-11-11 por la noche, a mitad del barrido de coherencia.** Encargo: arreglar los fallos de la auditoría de producto, que no quede ninguna incoherencia ni jerga, y cambiar la marca a **Alza** (dominio `alza.fit`). Después vendrán las funcionalidades nuevas (ver la auditoría en el artifact «Rumbo de Forja»).
+
+Hecho y con commit:
+
+- Los seis fallos de la auditoría: contraste de «Crear cuenta», preguntas que no se usaban (fuera aversiones, alergias, presupuesto, cocina, cafeína y la nota de salud; la dieta vegana sube la proteína y el alcohol sale como aviso), peso sugerido desde la primera serie y ajuste entre series (`app/engine/routines/loads.py`), revisión sin fecha repetida, «Katch-McArdle».
+- `app/formatting.py`: filtros `num`, `signed`, `kg`, `duration`, `fdate`, `tempo` y `days_from_now`; fechas en la zona horaria de la persona.
+- Barrido de lenguaje en todas las plantillas, los avisos del motor y el PDF (reserva en vez de RIR, intervalos en vez de HIIT, bloques en vez de mesociclo, «Inicio» en vez de «Panel»…).
+- Historial del plan reconstruido desde los códigos guardados (`adjustments.describe`).
+- Barra de navegación inferior con nombres en el móvil.
+- `tests/integration/test_coherence.py` vigila fechas ISO, códigos internos, `None` y decimales con punto en todas las pantallas.
+
+Pendiente, en este orden:
+
+1. **Catálogo inglés**: extraer, traducir los textos nuevos y compilar. Hasta entonces fallan 3 tests de `tests/integration/test_i18n.py`, y es lo esperado (ya esperan el inglés nuevo: «You eat 20 % less than you burn.», «Worth knowing», «How to progress»).
+2. **Marca Alza**: `APP_NAME`, logo en la cabecera, favicon, PDF, LEEME del ZIP, nombre de los ficheros exportados, «Forja es solo para mayores de 18 años» en `onboarding/forms.py`, portada y docs.
+3. **Pasada real**: cuenta nueva y capturas a 390 y 1440 px de todas las pantallas (sobre todo la barra inferior y la sesión), y suite completa en verde.
+4. Decisiones nuevas en `docs/DECISIONES.md` (T-112 en adelante) y subir a GitHub.
 
 ## Siguiente paso
 
