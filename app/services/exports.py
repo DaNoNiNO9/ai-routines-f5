@@ -18,6 +18,7 @@ from datetime import date
 from typing import Any
 
 from flask_babel import gettext as _
+from flask_babel import ngettext
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import A4
@@ -34,8 +35,11 @@ from reportlab.platypus import (
 )
 from sqlalchemy import select
 
+from app import formatting
+from app.engine import messages
+from app.engine.types import Note
 from app.extensions import db
-from app.labels import BMR_METHOD, BODY_FAT_METHOD, GOAL, label
+from app.labels import BMR_METHOD, BODY_FAT_METHOD, GOAL, MEAL_TIMING, label
 from app.models import (
     ActivityLog,
     BodyMeasurement,
@@ -207,7 +211,7 @@ def _round(value: Any, digits: int = 0) -> str:
         number = float(value)
     except (TypeError, ValueError):
         return "—"
-    return f"{number:.{digits}f}" if digits else f"{number:.0f}"
+    return formatting.num(number, digits)
 
 
 def plan_pdf(
@@ -259,7 +263,7 @@ def plan_pdf(
         flow.append(Paragraph(_("No hay plan de nutrición"), styles["h2"]))
         flow.append(
             Paragraph(
-                _("Las respuestas del cuestionario impiden calcular un plan con seguridad:"),
+                _("Con tus respuestas no se puede calcular un plan con seguridad:"),
                 styles["body"],
             )
         )
@@ -278,10 +282,8 @@ def plan_pdf(
 
 def _meal_name(meal: Any) -> str:
     """El nombre de la comida, marcando las que rodean al entrenamiento."""
-    if meal.timing.value == "pre_workout":
-        return _("%(name)s (pre)", name=meal.name)
-    if meal.timing.value == "post_workout":
-        return _("%(name)s (post)", name=meal.name)
+    if meal.timing.value in ("pre_workout", "post_workout"):
+        return f"{meal.name} ({label(MEAL_TIMING, meal.timing).lower()})"
     return str(meal.name)
 
 
@@ -320,28 +322,26 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
         )
     )
     flow.append(Spacer(1, 6))
-    # La primera frase es la del motor: misma redacción y traducción ya hecha.
-    pct = _round(float(target.get("fraction", 0)) * 100, 1)
+    # La primera frase es la del motor: misma redacción que en la pantalla.
     modo = target.get("mode")
-    if modo == "deficit":
-        cabeza = _("Déficit del %(pct)s %% sobre el gasto.", pct=pct)
-    elif modo == "surplus":
-        cabeza = _("Superávit del %(pct)s %% sobre el gasto.", pct=pct)
-    else:
-        cabeza = _("Calorías de mantenimiento.")
+    cabeza = messages.render(
+        Note(
+            f"target.{modo if modo in ('deficit', 'surplus') else 'maintenance'}",
+            params={"pct": round(float(target.get("fraction", 0)) * 100, 1)},
+        )
+    )
     detalle = _(
-        "Mantenimiento estimado %(tdee)s kcal, balance diario %(balance)s kcal, cambio "
-        "esperado %(change)s kg por semana. En días de entrenamiento, %(water)s l de agua.",
+        "Para mantenerte gastas unas %(tdee)s kcal al día; con este plan el cambio previsto es "
+        "de %(change)s kg a la semana. Los días de entreno, %(water)s l de agua.",
         tdee=_round(target.get("maintenance_kcal")),
-        balance=_round(target.get("daily_balance_kcal")),
-        change=_round(target.get("expected_weekly_change_kg"), 2),
-        water=f"{hydration.get('training_day_ml', 0) / 1000:.1f}",
+        change=formatting.signed(target.get("expected_weekly_change_kg"), 2),
+        water=formatting.num(hydration.get("training_day_ml", 0) / 1000),
     )
     flow.append(Paragraph(f"{cabeza} {detalle}", styles["body"]))
 
     if plan.meals:
         flow.append(Paragraph(_("Reparto por comidas"), styles["h2"]))
-        filas = [[_("Comida"), "kcal", _("Proteína"), _("Carbos"), _("Grasa")]]
+        filas = [[_("Comida"), "kcal", _("Proteína"), _("Carbohidratos"), _("Grasa")]]
         filas += [
             [
                 _meal_name(meal),
@@ -357,13 +357,13 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
     cycle = details.get("carb_cycle")
     if isinstance(cycle, dict):
         alto, bajo = cycle.get("high_day", {}), cycle.get("low_day", {})
-        flow.append(Paragraph(_("Ciclado de carbohidratos"), styles["h3"]))
+        flow.append(Paragraph(_("Más hidratos los días de entreno"), styles["h3"]))
         flow.append(
             Paragraph(
                 _(
                     "%(td)s días de entreno con %(hc)s g de carbohidratos (%(hk)s kcal) y "
-                    "%(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media semanal es la "
-                    "del plan.",
+                    "%(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media de la semana es "
+                    "la del plan.",
                     td=cycle.get("training_days"),
                     hc=alto.get("carbs_g"),
                     hk=alto.get("calories"),
@@ -407,10 +407,10 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
     flow.append(
         Paragraph(
             _(
-                "Fórmulas: composición corporal por perímetros (Navy), metabolismo basal por "
-                "Katch-McArdle o Mifflin-St Jeor, y gasto por componentes (basal + actividad "
-                "diaria + ejercicio + digestión). El suelo calórico y el ritmo máximo de "
-                "pérdida se comprueban sobre las cifras finales."
+                "Grasa por perímetros con la fórmula de la Marina de EE. UU.; metabolismo basal "
+                "por Katch-McArdle o Mifflin-St Jeor; gasto sumando el basal, lo que caminas, el "
+                "ejercicio y la digestión. El plan nunca baja del mínimo seguro de calorías ni "
+                "hace perder más del 1 %% del peso a la semana."
             ),
             styles["muted"],
         )
@@ -418,7 +418,7 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
 
     avisos = plans_service.messages_of(details)
     if avisos:
-        flow.append(Paragraph(_("Avisos y explicaciones"), styles["h3"]))
+        flow.append(Paragraph(_("A tener en cuenta"), styles["h3"]))
         for item in avisos:
             flow.append(Paragraph(f"• {item['text']}", styles["muted"]))
     del profile
@@ -432,35 +432,39 @@ def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[
         Paragraph(routine.name, styles["h3"]),
     ]
     rir = details.get("weekly_rir") or []
-    resumen = _(
-        "%(days)s días por semana · mesociclo de %(weeks)s semanas · descarga cada %(deload)s",
-        days=routine.days_per_week,
+    resumen = ngettext(
+        "%(num)s día a la semana · bloques de %(weeks)s semanas con una semana suave cada "
+        "%(deload)s",
+        "%(num)s días a la semana · bloques de %(weeks)s semanas con una semana suave cada "
+        "%(deload)s",
+        routine.days_per_week,
         weeks=routine.mesocycle_weeks,
         deload=routine.deload_every_weeks,
     )
     if rir:
         valores = ", ".join(str(value) for value in rir)
-        resumen += " · " + _("RIR por semana: %(rir)s", rir=valores)
+        resumen += " · " + _("reserva por semana: %(rir)s", rir=valores)
     flow.append(Paragraph(resumen, styles["muted"]))
 
     for day in routine.days:
-        filas = [[_("Ejercicio"), _("Series"), _("Reps"), "RIR", _("Descanso")]]
+        filas = [[_("Ejercicio"), _("Series"), _("Repeticiones"), _("Reserva"), _("Descanso")]]
         filas += [
             [
                 item.exercise.display_name,
                 str(item.sets),
                 f"{item.rep_min}-{item.rep_max}",
-                f"{item.rir_start}→{item.rir_end}",
-                f"{item.rest_seconds} s",
+                _("de %(a)s a %(b)s", a=item.rir_start, b=item.rir_end),
+                formatting.duration(item.rest_seconds),
             ]
             for item in day.exercises
         ]
         bloque = [
             Paragraph(f"{_('Día %(n)s', n=day.day_index)} · {day.name}", styles["h3"]),
             Paragraph(
-                _(
-                    "%(n)s ejercicios · unos %(m)s minutos",
-                    n=len(day.exercises),
+                ngettext(
+                    "%(num)s ejercicio · unos %(m)s minutos",
+                    "%(num)s ejercicios · unos %(m)s minutos",
+                    len(day.exercises),
                     m=day.estimated_minutes,
                 ),
                 styles["muted"],
@@ -474,18 +478,22 @@ def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[
     cardio = details.get("cardio")
     if isinstance(cardio, dict):
         flow.append(Paragraph(_("Cardio y pasos"), styles["h3"]))
-        partes = [_("%(n)s pasos al día", n=cardio.get("daily_steps_target"))]
+        partes = [_("%(n)s pasos al día", n=_round(cardio.get("daily_steps_target")))]
         if cardio.get("liss_sessions"):
             partes.append(
                 _(
-                    "%(n)s x %(m)s min de cardio suave",
+                    "%(n)s × %(m)s min de cardio suave a la semana",  # noqa: RUF001
                     n=cardio["liss_sessions"],
                     m=cardio["liss_minutes"],
                 )
             )
         if cardio.get("hiit_sessions"):
             partes.append(
-                _("%(n)s x %(m)s min de HIIT", n=cardio["hiit_sessions"], m=cardio["hiit_minutes"])
+                _(
+                    "%(n)s × %(m)s min de intervalos a la semana",  # noqa: RUF001
+                    n=cardio["hiit_sessions"],
+                    m=cardio["hiit_minutes"],
+                )
             )
         flow.append(Paragraph(" · ".join(partes) + ".", styles["body"]))
 
