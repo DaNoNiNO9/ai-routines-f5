@@ -13,6 +13,7 @@ import logging
 from dataclasses import dataclass
 from datetime import date, timedelta
 
+from flask_babel import gettext as _
 from sqlalchemy import select
 
 from app.engine import messages, safety
@@ -29,7 +30,7 @@ from app.engine.meals import distribute_meals
 from app.engine.nutrition import build_nutrition_plan
 from app.engine.routines.cardio import steps_target as default_steps_target
 from app.engine.targets import with_calories
-from app.engine.types import NutritionInputs, NutritionPlan
+from app.engine.types import Note, NutritionInputs, NutritionPlan
 from app.extensions import db
 from app.models import IntakeLog, Plan, PlanAdjustment, Profile, User, WeightLog
 from app.services import plans
@@ -127,6 +128,38 @@ def review_records(plan: Plan) -> list[PlanAdjustment]:
         .order_by(PlanAdjustment.created_at, PlanAdjustment.id)
     ).all()
     return [row for row in rows if row.reason in REVIEW_REASONS or row.data.get("review")]
+
+
+SILENT_IN_HISTORY = frozenset({"adjust.next_review", "adjust.too_early"})
+
+
+def describe(adjustment: PlanAdjustment) -> str:
+    """Why a plan version exists, worded and formatted for today's reader.
+
+    The ``explanation`` column keeps the text as it was written (for exports and
+    audits); pages rebuild it from the stored codes, so a change of wording or
+    language reaches old entries too.
+    """
+    data = adjustment.data or {}
+    if data.get("review") and data.get("notes"):
+        notes = [
+            Note(code=item["code"], level=item.get("level", "info"), params=item.get("params", {}))
+            for item in data["notes"]
+            if item.get("code") not in SILENT_IN_HISTORY
+        ]
+        return " ".join(messages.render(note) for note in notes)
+    if adjustment.reason in (AdjustmentReason.INITIAL, AdjustmentReason.PROFILE_CHANGE):
+        lead = (
+            _("Plan inicial.")
+            if adjustment.reason is AdjustmentReason.INITIAL
+            else _("Actualizaste tus datos.")
+        )
+        mode, fraction = data.get("mode"), data.get("fraction")
+        if mode in ("deficit", "surplus", "maintenance") and fraction is not None:
+            target = Note(f"target.{mode}", params={"pct": round(fraction * 100, 1)})
+            return f"{lead} {messages.render(target)}"
+        return str(lead)
+    return adjustment.explanation
 
 
 def build_inputs(user: User, plan: Plan, profile: Profile, today: date) -> AdjustmentInputs:

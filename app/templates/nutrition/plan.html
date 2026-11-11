@@ -12,7 +12,7 @@
   <p class="eyebrow">{{ _('Nutrición') }}</p>
   <h1>{{ _('Tu plan de nutrición') }}</h1>
   {% if plan %}
-    <p class="lead">{{ _('Versión %(v)s · desde el %(date)s · confianza %(c)s.', v=plan.version, date=plan.starts_on.strftime('%d/%m/%Y'), c=labels.label(labels.CONFIDENCE, plan.confidence)) }}</p>
+    <p class="lead">{{ _('Vigente desde el %(date)s · estimación de confianza %(c)s.', date=plan.starts_on|fdate('long'), c=labels.label(labels.CONFIDENCE, plan.confidence)|lower) }}</p>
   {% endif %}
 </section>
 
@@ -22,24 +22,25 @@
     <ul class="notes">
       {% for reason in blocked_reasons %}<li class="note-error">{{ reason }}</li>{% endfor %}
     </ul>
-    <p>{{ _('Si cambia tu situación u objetivo, actualiza el cuestionario y volveremos a calcular.') }}</p>
-    <p><a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar cuestionario') }}</a></p>
+    <p>{{ _('Si cambia tu situación u objetivo, actualiza tus datos y volveremos a calcular.') }}</p>
+    <p><a class="button button-secondary" href="{{ url_for('onboarding.index') }}">{{ _('Actualizar mis datos') }}</a></p>
   </section>
 {% else %}
+  {% set balance = d.target.daily_balance_kcal|round|int %}
   <div class="grid-cards">
     <section class="card card-span">
       <h2 class="card-title">{{ _('Objetivo diario') }}</h2>
       <div class="stat-grid">
         <div class="stat"><span class="stat-value">{{ plan.calorie_target }}</span><span class="stat-label">{{ _('kcal al día') }}</span></div>
-        <div class="stat"><span class="stat-value">{{ d.target.maintenance_kcal|round|int }}</span><span class="stat-label">{{ _('mantenimiento estimado') }}</span></div>
-        <div class="stat"><span class="stat-value">{{ '%+d'|format(d.target.daily_balance_kcal|round|int) }}</span><span class="stat-label">{{ _('balance diario (kcal)') }}</span></div>
-        <div class="stat"><span class="stat-value">{{ '%+.2f'|format(d.target.expected_weekly_change_kg) }}</span><span class="stat-label">{{ _('kg por semana esperados') }}</span></div>
+        <div class="stat"><span class="stat-value">{{ d.target.maintenance_kcal|round|int }}</span><span class="stat-label">{{ _('kcal para mantenerte') }}</span></div>
+        <div class="stat"><span class="stat-value">{{ balance|abs }}</span><span class="stat-label">{% if balance < 0 %}{{ _('kcal de déficit al día') }}{% elif balance > 0 %}{{ _('kcal de superávit al día') }}{% else %}{{ _('kcal de diferencia') }}{% endif %}</span></div>
+        <div class="stat"><span class="stat-value">{{ d.target.expected_weekly_change_kg|signed(2) }}</span><span class="stat-label">{{ _('kg a la semana, previsto') }}</span></div>
       </div>
       <p class="meta">
-        {% if d.target.mode == 'deficit' %}{{ _('Déficit del %(pct)s %% sobre el gasto.', pct=(d.target.fraction * 100)|round(1)) }}
-        {% elif d.target.mode == 'surplus' %}{{ _('Superávit del %(pct)s %% sobre el gasto.', pct=(d.target.fraction * 100)|round(1)) }}
-        {% else %}{{ _('Calorías de mantenimiento.') }}{% endif %}
-        {{ _('El suelo calórico y el ritmo máximo de pérdida (1 %% del peso por semana) se han comprobado sobre las cifras finales.') }}
+        {% if d.target.mode == 'deficit' %}{{ _('Comes un %(pct)s %% menos de lo que gastas.', pct=(d.target.fraction * 100)|num) }}
+        {% elif d.target.mode == 'surplus' %}{{ _('Comes un %(pct)s %% más de lo que gastas.', pct=(d.target.fraction * 100)|num) }}
+        {% else %}{{ _('Comes lo mismo que gastas.') }}{% endif %}
+        {{ _('El plan nunca baja del mínimo seguro de calorías ni te hace perder más del 1 %% de tu peso a la semana.') }}
       </p>
     </section>
 
@@ -48,37 +49,46 @@
       {{ chart('macros', 'doughnut', macro_chart, _('Reparto calórico de los macronutrientes'), height='14rem') }}
       <div class="table-wrap">
         <table class="table">
-          <thead><tr><th>{{ _('Macro') }}</th><th>g</th><th>g/kg</th><th>kcal</th></tr></thead>
+          <thead><tr><th></th><th>{{ _('gramos') }}</th><th>{{ _('g por kg') }}</th><th>kcal</th></tr></thead>
           <tbody>
-            <tr><td>{{ _('Proteína') }}</td><td>{{ plan.protein_g|int }}</td><td>{{ (plan.protein_g / profile.weight_kg)|round(2) }}</td><td>{{ (plan.protein_g * 4)|int }}</td></tr>
-            <tr><td>{{ _('Carbohidratos') }}</td><td>{{ plan.carbs_g|int }}</td><td>{{ (plan.carbs_g / profile.weight_kg)|round(2) }}</td><td>{{ (plan.carbs_g * 4)|int }}</td></tr>
-            <tr><td>{{ _('Grasa') }}</td><td>{{ plan.fat_g|int }}</td><td>{{ (plan.fat_g / profile.weight_kg)|round(2) }}</td><td>{{ (plan.fat_g * 9)|int }}</td></tr>
+            <tr><td>{{ _('Proteína') }}</td><td>{{ plan.protein_g|int }}</td><td>{{ (plan.protein_g / profile.weight_kg)|num(1) }}</td><td>{{ (plan.protein_g * 4)|int }}</td></tr>
+            <tr><td>{{ _('Carbohidratos') }}</td><td>{{ plan.carbs_g|int }}</td><td>{{ (plan.carbs_g / profile.weight_kg)|num(1) }}</td><td>{{ (plan.carbs_g * 4)|int }}</td></tr>
+            <tr><td>{{ _('Grasa') }}</td><td>{{ plan.fat_g|int }}</td><td>{{ (plan.fat_g / profile.weight_kg)|num(1) }}</td><td>{{ (plan.fat_g * 9)|int }}</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="meta">{{ _('Fibra %(f)s g · agua %(w)s l al día, %(t)s l los días de entreno.', f=plan.fiber_g|int, w=(plan.water_ml / 1000)|round(1), t=(d.hydration.training_day_ml / 1000)|round(1)) }}</p>
+      <p class="meta">{{ _('Fibra %(f)s g · agua %(w)s l al día, %(t)s l los días de entreno.', f=plan.fiber_g|int, w=(plan.water_ml / 1000)|num, t=(d.hydration.training_day_ml / 1000)|num) }}</p>
     </section>
 
     <section class="card">
       <h2 class="card-title">{{ _('Comidas') }}</h2>
       <div class="table-wrap">
         <table class="table">
-          <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>P</th><th>C</th><th>G</th></tr></thead>
+          <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>{{ _('Prot.') }}</th><th>{{ _('Carb.') }}</th><th>{{ _('Grasa') }}</th></tr></thead>
           <tbody>
             {% for meal in plan.meals %}
               <tr>
                 <td>{{ meal.name }}{% if meal.timing.value != 'regular' %} <span class="badge">{{ labels.label(labels.MEAL_TIMING, meal.timing) }}</span>{% endif %}</td>
-                <td>{{ meal.calories }}</td><td>{{ meal.protein_g|int }}</td><td>{{ meal.carbs_g|int }}</td><td>{{ meal.fat_g|int }}</td>
+                <td>{{ meal.calories }}</td><td>{{ meal.protein_g|int }} g</td><td>{{ meal.carbs_g|int }} g</td><td>{{ meal.fat_g|int }} g</td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
       {% if d.carb_cycle %}
-        <h3 class="h3">{{ _('Ciclado de carbohidratos') }}</h3>
-        <p>{{ _('%(td)s días de entreno con %(hc)s g de carbohidratos (%(hk)s kcal) y %(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media semanal es la del plan.', td=d.carb_cycle.training_days, hc=d.carb_cycle.high_day.carbs_g, hk=d.carb_cycle.high_day.calories, rd=d.carb_cycle.rest_days, lc=d.carb_cycle.low_day.carbs_g, lk=d.carb_cycle.low_day.calories) }}</p>
+        <h3 class="h3">{{ _('Más hidratos los días de entreno') }}</h3>
+        <p>{{ _('%(td)s días de entreno con %(hc)s g de carbohidratos (%(hk)s kcal) y %(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media de la semana es la del plan.', td=d.carb_cycle.training_days, hc=d.carb_cycle.high_day.carbs_g, hk=d.carb_cycle.high_day.calories, rd=d.carb_cycle.rest_days, lc=d.carb_cycle.low_day.carbs_g, lk=d.carb_cycle.low_day.calories) }}</p>
       {% endif %}
     </section>
+
+    {% if messages %}
+      <section class="card card-span">
+        <h2 class="card-title">{{ _('A tener en cuenta') }}</h2>
+        <ul class="notes">
+          {% for item in messages %}<li class="note-{{ item.level }}">{{ item.text }}</li>{% endfor %}
+        </ul>
+      </section>
+    {% endif %}
 
     <section class="card card-span">
       <h2 class="card-title">{{ _('Cómo lo calculamos') }}</h2>
@@ -86,11 +96,12 @@
         <div>
           <h3 class="h3">{{ _('Composición corporal') }}</h3>
           <dl class="kv">
-            <dt>{{ _('IMC') }}</dt><dd>{{ d.body.bmi|round(1) }}</dd>
-            <dt>{{ _('Grasa corporal') }}</dt><dd>{% if d.body.body_fat_pct is not none %}{{ d.body.body_fat_pct|round(1) }} % · {{ labels.label(labels.BODY_FAT_METHOD, d.body.body_fat_source) }}{% else %}{{ _('sin estimación') }}{% endif %}</dd>
-            {% if d.body.lean_mass_kg %}<dt>{{ _('Masa magra') }}</dt><dd>{{ d.body.lean_mass_kg|round(1) }} kg</dd>{% endif %}
+            <dt>{{ _('IMC') }}</dt><dd>{{ d.body.bmi|num }}</dd>
+            <dt>{{ _('Grasa corporal') }}</dt><dd>{% if d.body.body_fat_pct is not none %}{{ d.body.body_fat_pct|num }} % · {{ labels.label(labels.BODY_FAT_METHOD, d.body.body_fat_source) }}{% else %}{{ _('sin estimación') }}{% endif %}</dd>
+            {% if d.body.lean_mass_kg %}<dt>{{ _('Masa magra') }}</dt><dd>{{ d.body.lean_mass_kg|kg }}</dd>{% endif %}
           </dl>
           <h3 class="h3">{{ _('Metabolismo basal') }}</h3>
+          <p class="help">{{ _('Lo que gasta tu cuerpo en reposo. Se calcula con tres fórmulas y se usa la más fiable para tus datos.') }}</p>
           <div class="table-wrap">
             <table class="table">
               <thead><tr><th>{{ _('Fórmula') }}</th><th>kcal</th></tr></thead>
@@ -106,51 +117,41 @@
           <h3 class="h3">{{ _('Gasto energético') }}</h3>
           {{ chart('tdee', 'bars', tdee_chart, _('Componentes del gasto energético'), height='13rem') }}
           <dl class="kv">
-            <dt>{{ _('Pasos usados') }}</dt><dd>{{ d.expenditure.steps_used }}{% if d.expenditure.steps_estimated %} ({{ _('estimados por tu trabajo') }}){% endif %}</dd>
-            <dt>{{ _('Sueño y estrés') }}</dt><dd>×{{ d.expenditure.lifestyle_modifier|round(3) }}</dd>
-            <dt>{{ _('Método clásico') }}</dt><dd>BMR × {{ d.expenditure.classic_factor }} = {{ d.expenditure.classic_kcal|round|int }} kcal ({{ '%+.1f'|format(d.expenditure.divergence_pct) }} %)</dd>
-            <dt>{{ _('Proteína') }}</dt><dd>{{ d.macros.protein_per_kg }} g/kg {% if d.macros.protein_basis == 'lean' %}{{ _('de masa magra') }}{% else %}{{ _('de peso corporal') }}{% endif %}</dd>
-            <dt>{{ _('Suelo de carbohidratos') }}</dt><dd>{{ d.macros.carb_floor_g }} g</dd>
+            <dt>{{ _('Pasos al día') }}</dt><dd>{{ d.expenditure.steps_used|num(0) }}{% if d.expenditure.steps_estimated %} ({{ _('estimados por tu trabajo') }}){% endif %}</dd>
+            <dt>{{ _('Ajuste por sueño y estrés') }}</dt><dd>{{ ((d.expenditure.lifestyle_modifier - 1) * 100)|signed }} %</dd>
+            <dt>{{ _('Comparado con el método clásico') }}</dt><dd>{{ d.expenditure.classic_kcal|round|int }} kcal ({{ d.expenditure.divergence_pct|signed }} %)</dd>
+            <dt>{{ _('Proteína') }}</dt><dd>{{ d.macros.protein_per_kg|num }} g/kg {% if d.macros.protein_basis == 'lean' %}{{ _('de masa magra') }}{% else %}{{ _('de peso corporal') }}{% endif %}</dd>
+            <dt>{{ _('Mínimo de carbohidratos') }}</dt><dd>{{ d.macros.carb_floor_g }} g</dd>
           </dl>
         </div>
       </div>
-      <p class="help">{{ _('Fórmulas: Navy (perímetros), Katch-McArdle o Mifflin-St Jeor (BMR), gasto por componentes (BMR + NEAT por pasos + ejercicio por MET + termogénesis del 10 %%), déficit o superávit escalado por %% graso y experiencia, macros con suelo de carbohidratos. Cada una está citada en el código del motor.') }}</p>
+      <p class="help">{{ _('Grasa por perímetros con la fórmula de la Marina de EE. UU.; metabolismo basal por Katch-McArdle o Mifflin-St Jeor; gasto sumando el basal, lo que caminas, el ejercicio según su intensidad y la digestión (10 %%). El déficit o el superávit dependen de tu grasa corporal y tu experiencia. Cada fórmula está citada en el código.') }}</p>
     </section>
 
-    {% if messages %}
-      <section class="card card-span">
-        <h2 class="card-title">{{ _('Avisos y explicaciones') }}</h2>
-        <ul class="notes">
-          {% for item in messages %}<li class="note-{{ item.level }}">{{ item.text }}</li>{% endfor %}
-        </ul>
-      </section>
-    {% endif %}
-
     <section class="card">
-      <h2 class="card-title">{{ _('Protocolo de ajuste') }}</h2>
-      <p>{{ _('Próxima revisión: %(date)s.', date=next_review.strftime('%d/%m/%Y')) }}</p>
+      <h2 class="card-title">{{ _('Cómo se ajusta') }}</h2>
+      <p>{{ _('Próxima revisión: %(date)s.', date=next_review|fdate('long')) }}</p>
       <ul class="notes">
-        <li>{{ _('Media móvil de 7 días del peso; nunca se comparan días sueltos.') }}</li>
-        <li>{{ _('Cada 14 días se compara el cambio real con el esperado.') }}</li>
-        <li>{{ _('Si vas más lento: primero adherencia; después calorías o pasos en escalones de como mucho el 5 %%.') }}</li>
-        <li>{{ _('Si pierdes más del 1 %% semanal: se suben las calorías.') }}</li>
-        <li>{{ _('El gasto real se estima por balance energético y va sustituyendo al teórico.') }}</li>
-        <li>{{ _('Estancamiento prolongado: refeed o descanso de dieta.') }}</li>
+        <li>{{ _('Se mira la media de varios días de peso, nunca un día suelto.') }}</li>
+        <li>{{ _('Cada 14 días se compara lo que ha cambiado tu peso con lo previsto.') }}</li>
+        <li>{{ _('Si vas más lento: primero, ver si estás siguiendo el plan; después, calorías o pasos, como mucho un 5 %% cada vez.') }}</li>
+        <li>{{ _('Si pierdes más del 1 %% de tu peso a la semana, suben las calorías.') }}</li>
+        <li>{{ _('Con lo que apuntas se calcula cuánto gastas de verdad, y esa cifra va sustituyendo a la estimada.') }}</li>
+        <li>{{ _('Si te estancas mucho tiempo: un día de recarga o una pausa de dieta.') }}</li>
       </ul>
     </section>
 
     <section class="card">
-      <h2 class="card-title">{{ _('Historial') }}</h2>
+      <h2 class="card-title">{{ _('Cambios del plan') }}</h2>
       <div class="table-wrap">
         <table class="table">
-          <thead><tr><th>v</th><th>{{ _('Desde') }}</th><th>kcal</th><th>{{ _('Motivo') }}</th></tr></thead>
+          <thead><tr><th>{{ _('Desde') }}</th><th>kcal</th><th>{{ _('Motivo') }}</th></tr></thead>
           <tbody>
             {% for item, adjustment in history %}
               <tr{% if item.id == plan.id %} class="row-selected"{% endif %}>
-                <td>{{ item.version }}</td>
-                <td>{{ item.starts_on.strftime('%d/%m/%y') }}{% if item.ends_on %} – {{ item.ends_on.strftime('%d/%m/%y') }}{% endif %}</td>
+                <td>{{ item.starts_on|fdate }}{% if item.ends_on %} – {{ item.ends_on|fdate }}{% endif %}</td>
                 <td>{{ item.calorie_target }}</td>
-                <td>{% if adjustment %}{{ adjustment.explanation }}{% else %}—{% endif %}</td>
+                <td>{% if adjustment %}{{ describe(adjustment) }}{% elif loop.last %}{{ _('Plan inicial.') }}{% else %}{{ _('Actualizaste tus datos.') }}{% endif %}</td>
               </tr>
             {% endfor %}
           </tbody>

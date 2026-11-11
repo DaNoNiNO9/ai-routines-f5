@@ -5,9 +5,9 @@
 
 {% block content %}
 <section class="page-head">
-  <p class="eyebrow">{{ _('Motor de ajuste') }}</p>
+  <p class="eyebrow">{{ _('Diario') }}</p>
   <h1>{{ _('Revisión quincenal') }}</h1>
-  <p class="lead">{{ _('Cada dos semanas se mira qué ha hecho tu peso frente a lo previsto y, con lo que has comido, cuánto gastas de verdad. De ahí sale una propuesta pequeña: nunca más de un 5 %%. No cambia nada hasta que le des al botón.') }}</p>
+  <p class="lead">{{ _('Cada dos semanas se mira qué ha hecho tu peso frente a lo previsto y, con lo que has comido, cuánto gastas de verdad. De ahí sale una propuesta pequeña, nunca de más de un 5 %%, y no cambia nada hasta que la apliques.') }}</p>
 </section>
 
 {% if error %}
@@ -23,27 +23,27 @@
   <div class="grid-cards">
     <section class="card">
       <h2 class="card-title">{{ _('Estado') }}</h2>
-      <p class="big-number">{% if preview.due %}{{ _('Toca revisar') }}{% else %}{{ next_review.strftime('%d/%m') }} <small>{{ _('próxima revisión') }}</small>{% endif %}</p>
+      <p class="big-number">{% if preview.due %}{{ _('Toca revisar') }}{% else %}{{ next_review|fdate('day') }} <small>{{ days_from_now(next_review, today) }}</small>{% endif %}</p>
       <dl class="kv">
-        <dt>{{ _('Plan vigente') }}</dt><dd>v{{ preview.plan.version }} · {{ preview.plan.calorie_target }} kcal · {{ _('desde el') }} {{ preview.plan.starts_on.strftime('%d/%m/%Y') }}</dd>
-        <dt>{{ _('Pesajes') }}</dt><dd>{{ preview.weigh_ins }}</dd>
-        <dt>{{ _('Días con ingesta') }}</dt><dd>{{ preview.intake_days }}</dd>
-        {% if decision.adherence_pct is not none %}<dt>{{ _('Adherencia media') }}</dt><dd>{{ decision.adherence_pct }} %</dd>{% endif %}
+        <dt>{{ _('Plan vigente') }}</dt><dd>{{ _('%(kcal)s kcal desde el %(date)s', kcal=preview.plan.calorie_target, date=preview.plan.starts_on|fdate) }}</dd>
+        <dt>{{ _('Pesajes en este plan') }}</dt><dd>{{ preview.weigh_ins }}</dd>
+        <dt>{{ _('Días con comida apuntada') }}</dt><dd>{{ preview.intake_days }}</dd>
+        {% if decision.adherence_pct is not none %}<dt>{{ _('Cuánto has seguido el plan') }}</dt><dd>{{ decision.adherence_pct|num(0) }} %</dd>{% endif %}
         {% if decision.trend and decision.trend.weekly_change_kg is not none %}
-          <dt>{{ _('Tendencia') }}</dt><dd>{{ '%+.2f'|format(decision.trend.weekly_change_kg) }} kg/semana ({{ _('confianza %(c)s', c=labels.label(labels.CONFIDENCE, decision.trend.confidence)) }})</dd>
+          <dt>{{ _('Tendencia') }}</dt><dd>{{ _('%(kg)s kg a la semana', kg=decision.trend.weekly_change_kg|signed(2)) }} ({{ _('confianza %(c)s', c=labels.label(labels.CONFIDENCE, decision.trend.confidence)|lower) }})</dd>
         {% endif %}
         {% if decision.tdee and decision.tdee.observed_kcal %}
-          <dt>{{ _('Gasto observado') }}</dt><dd>{{ decision.tdee.observed_kcal|round|int }} kcal ({{ _('teórico') }} {{ decision.tdee.theoretical_kcal|round|int }})</dd>
+          <dt>{{ _('Lo que gastas de verdad') }}</dt><dd>{{ _('%(real)s kcal (estimábamos %(est)s)', real=decision.tdee.observed_kcal|round|int, est=decision.tdee.theoretical_kcal|round|int) }}</dd>
         {% endif %}
-        <dt>{{ _('Pasos objetivo') }}</dt><dd>{{ preview.inputs.steps_target }}</dd>
+        <dt>{{ _('Pasos al día') }}</dt><dd>{{ preview.inputs.steps_target|num(0) }}</dd>
       </dl>
     </section>
 
     <section class="card{% if preview.due %} card-accent{% endif %}">
       <h2 class="card-title">{{ _('Propuesta de hoy') }}</h2>
       <p class="big-number">{{ action_texts.get(decision.action, decision.action) }}</p>
-      {% if decision.calorie_delta %}<p class="meta">{{ preview.plan.calorie_target }} → {{ decision.new_calories }} kcal ({{ '%+d'|format(decision.calorie_delta) }})</p>{% endif %}
-      {% if decision.steps_delta %}<p class="meta">{{ _('Pasos: %(old)s → %(new)s al día', old=preview.inputs.steps_target, new=decision.new_steps_target) }}</p>{% endif %}
+      {% if decision.calorie_delta %}<p class="meta">{{ preview.plan.calorie_target }} → {{ decision.new_calories }} kcal ({{ decision.calorie_delta|signed(0) }})</p>{% endif %}
+      {% if decision.steps_delta %}<p class="meta">{{ _('Pasos: %(old)s → %(new)s al día', old=preview.inputs.steps_target|num(0), new=decision.new_steps_target|num(0)) }}</p>{% endif %}
       <ul class="notes">
         {% for item in preview.messages %}<li class="note-{{ item.level }}">{{ item.text }}</li>{% endfor %}
       </ul>
@@ -53,7 +53,7 @@
           <button type="submit" class="button button-block">{{ _('Aplicar la revisión') }}</button>
         </form>
       {% else %}
-        <p class="help">{{ _('Sigue registrando peso e ingesta; el botón aparecerá cuando toque.') }}</p>
+        <p class="help">{{ _('Sigue apuntando tu peso y lo que comes; el botón aparecerá cuando toque.') }}</p>
       {% endif %}
     </section>
 
@@ -66,9 +66,9 @@
             <tbody>
               {% for record in records %}
                 <tr>
-                  <td>{{ record.created_at.strftime('%d/%m/%y') }}</td>
-                  <td>{{ action_texts.get(record.data.get('action'), record.reason.value) }}{% if record.steps_delta %} (+{{ record.steps_delta }} {{ _('pasos') }}){% endif %}</td>
-                  <td>{{ record.explanation }}</td>
+                  <td>{{ record.created_at|fdate }}</td>
+                  <td>{{ action_texts.get(record.data.get('action'), record.reason.value) }}{% if record.steps_delta %} ({{ _('%(n)s pasos', n=record.steps_delta|signed(0)) }}){% endif %}</td>
+                  <td>{{ describe(record) }}</td>
                 </tr>
               {% endfor %}
             </tbody>

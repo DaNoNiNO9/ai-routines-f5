@@ -76,7 +76,7 @@ def test_before_the_due_date_it_only_explains_when(client: FlaskClient, seeded: 
     page = client.get("/revision").get_data(as_text=True)
     assert "próxima revisión" in page
     assert "Aplicar la revisión" not in page
-    assert "Sigue registrando peso" in page
+    assert "Sigue apuntando tu peso" in page
 
     blocked = client.post("/revision/aplicar", follow_redirects=True)
     assert "Todavía no toca" in blocked.get_data(as_text=True)
@@ -151,7 +151,7 @@ def test_the_review_shows_the_observed_expenditure_and_adherence(
     seeded.session.commit()
 
     page = client.get("/revision").get_data(as_text=True)
-    assert "Gasto observado" in page
-    assert "Adherencia media" in page
+    assert "Lo que gastas de verdad" in page
+    assert "Cuánto has seguido el plan" in page
     assert "95" in page
-    assert "Días con ingesta" in page
+    assert "Días con comida apuntada" in page

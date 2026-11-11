@@ -38,7 +38,7 @@ def test_dashboard_shows_today_next_session_weight_and_review(
     assert "Próxima sesión" in page
     assert "Día 1" in page
     assert "Ver la sesión" in page
-    assert "64.0" in page  # today's weigh-in from the questionnaire
+    assert "64 <small>kg" in page  # today's weigh-in from the questionnaire, no ".0"
     assert 'id="weight-data"' not in page  # one point: no chart yet
     assert "Revisión" in page
     assert 'href="/panel" aria-current="page"' in page
@@ -66,8 +66,9 @@ def test_nutrition_page_explains_the_plan(client: FlaskClient, seeded: SQLAlchem
         "Cómo lo calculamos",
         "Katch-McArdle",
         "usada",
-        "Protocolo de ajuste",
-        "Historial",
+        "Cómo se ajusta",
+        "Cambios del plan",
+        "Plan inicial",
         'id="macros-data"',
         'id="tdee-data"',
         "chart-4.5.1.umd.js",
@@ -93,7 +94,7 @@ def test_training_pages_show_days_volume_and_alternatives(
     assert "img/exercises/" in day
     assert "posición inicial" in day
     assert "Alternativas" in day
-    assert "RIR por semana" in day
+    assert "Reserva por semana" in day
     assert f"{first.sets}</dd>" in day
     assert "Día 2" in day  # link to the following day
     assert client.get("/entrenamiento/dia/9").status_code == 404

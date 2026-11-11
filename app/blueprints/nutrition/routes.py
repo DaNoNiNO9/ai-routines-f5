@@ -11,7 +11,7 @@ from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import labels
 from app.engine.nutrition import build_nutrition_plan
-from app.services import dashboard, onboarding, plans
+from app.services import adjustments, dashboard, onboarding, plans
 
 bp = Blueprint("nutrition", __name__, url_prefix="/nutricion")
 
@@ -68,6 +68,7 @@ def plan() -> str | WerkzeugResponse:
         messages=plans.messages_of(details) if active else [],
         blocked_reasons=blocked_reasons,
         history=dashboard.plan_history(current_user),
+        describe=adjustments.describe,
         next_review=dashboard.next_review_on(active) if active else None,
         macro_chart=_macro_chart(details) if active else None,
         tdee_chart=_tdee_chart(details) if active else None,

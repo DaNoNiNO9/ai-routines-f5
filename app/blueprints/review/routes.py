@@ -21,21 +21,21 @@ logger = logging.getLogger(__name__)
 bp = Blueprint("review", __name__, url_prefix="/revision")
 
 ACTION_TEXTS = {
-    "wait": _l("Esperar"),
+    "wait": _l("Todavía no toca"),
     "keep": _l("Mantener el plan"),
-    "adherence": _l("Revisar la adherencia antes de tocar nada"),
+    "adherence": _l("Primero, seguir el plan unos días más"),
     "reduce_calories": _l("Bajar calorías"),
     "increase_calories": _l("Subir calorías"),
     "add_steps": _l("Añadir pasos"),
     "refeed": _l("Día de recarga"),
-    "diet_break": _l("Descanso de dieta"),
+    "diet_break": _l("Pausa de dieta"),
 }
 ERROR_TEXTS = {
     "no_plan": _l("No hay un plan activo que revisar."),
-    "no_weights": _l("Sin pesajes no hay nada que revisar: registra tu peso a diario."),
+    "no_weights": _l("Sin pesajes no hay nada que revisar: apunta tu peso en el diario."),
     "not_due": _l("Todavía no toca la revisión."),
     "blocked": _l(
-        "Con tu peso actual el plan ya no es seguro; actualiza el cuestionario para revisarlo."
+        "Con tu peso actual el plan ya no es seguro; actualiza tus datos para recalcularlo."
     ),
 }
 
@@ -65,6 +65,7 @@ def index() -> str | WerkzeugResponse:
         preview=current,
         error=None,
         records=list(reversed(adjustments.review_records(current.plan))),
+        describe=adjustments.describe,
         next_review=dashboard.next_review_on(current.plan),
         today=today,
         labels=labels,
