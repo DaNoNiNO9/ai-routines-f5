@@ -86,7 +86,7 @@ Con 1000 cuentas, 4000 sesiones y 100.000 series (SQLite, portátil):
 
 ## Lo que falta para ponerlo en producción
 
-1. **Remoto de git.** El repositorio es local; falta la URL.
+1. ~~**Remoto de git.**~~ Hecho el 2026-11-11: `origin` → https://github.com/DaNoNiNO9/ai-routines-f5, rama `main` con seguimiento.
 2. **Base de datos de verdad.** El código está preparado para Postgres (`DATABASE_URL`, migraciones en modo batch), pero solo se ha ejecutado sobre SQLite.
 3. **Correo real.** El backend `smtp` está escrito y probado con un doble; falta un proveedor y verificar la dirección al cambiarla.
 4. **Exportaciones en segundo plano** si las cuentas acumulan años de datos.

@@ -59,6 +59,7 @@ Reconocimiento realizado el 2026-09-09 en la máquina de desarrollo (Fase 0). Si
 - Sin `core.autocrlf` ni `init.defaultBranch` globales. En el repo: rama `main`, `core.autocrlf=false`, `core.eol=lf` y `.gitattributes` con `* text=auto eol=lf`.
 - `D:\Proyectos` **no** es repositorio git; el proyecto tiene el suyo en `D:\Proyectos\ai-routines-f5`.
 - `gh` CLI: no instalado. El remoto de GitHub se añade a mano con `git remote add origin <url>`.
+- Remoto: `origin` → `https://github.com/DaNoNiNO9/ai-routines-f5.git` (añadido el 2026-11-11). La autenticación HTTPS la gestiona el Git Credential Manager de Git for Windows.
 
 ## Red y puertos
 

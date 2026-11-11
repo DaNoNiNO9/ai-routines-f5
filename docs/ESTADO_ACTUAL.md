@@ -2,7 +2,7 @@
 
 Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para el detalle de lo ya cerrado, ver `docs/fases/FASE_XX_INFORME.md`; para el porqué de cada decisión, `docs/DECISIONES.md`.
 
-Última actualización: 2026-09-09.
+Última actualización: 2026-11-11.
 
 ## Fase actual
 
@@ -34,7 +34,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Cobertura de `app/` | 98,6 % (motor 99,2 %) |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
-| Rama | `main`, sin remoto todavía |
+| Rama | `main`, con remoto `origin` en GitHub (https://github.com/DaNoNiNO9/ai-routines-f5) |
 
 ## Qué estoy haciendo ahora
 
@@ -44,11 +44,10 @@ Cambios salidos de probar la app (T-104 a T-111): el paso de material y lesiones
 
 Puesta en producción, cuando toque (`docs/ESTADO_FINAL.md`, "Lo que falta"):
 
-1. El remoto de GitHub, cuando pases la URL.
-2. Postgres: el código está preparado, pero solo se ha ejecutado sobre SQLite.
-3. Correo real y verificación de la dirección al cambiarla.
-4. Exportaciones en segundo plano si las cuentas acumulan años de datos.
-5. Instrucciones de los ejercicios en castellano y traducción de los nombres generados y guardados.
+1. Postgres: el código está preparado, pero solo se ha ejecutado sobre SQLite.
+2. Correo real y verificación de la dirección al cambiarla.
+3. Exportaciones en segundo plano si las cuentas acumulan años de datos.
+4. Instrucciones de los ejercicios en castellano y traducción de los nombres generados y guardados.
 
 ## Detalles menores heredados
 
