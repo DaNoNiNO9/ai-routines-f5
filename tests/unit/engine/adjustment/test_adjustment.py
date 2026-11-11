@@ -107,6 +107,10 @@ def test_review_waits_before_the_due_date_and_without_data() -> None:
     assert early.action == "wait"
     assert early.review_due is False
     assert early.next_review_on == START + timedelta(days=14)
+    codes = [note.code for note in early.notes]
+    # The date is said once: "too early" already names it.
+    assert "adjust.too_early" in codes
+    assert "adjust.next_review" not in codes
 
     few = [WeightPoint(day, 85.0) for day in _days(4)]
     late = rules.decide(make_adjustment_inputs(few, [], today=START + timedelta(days=14)))

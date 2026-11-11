@@ -51,7 +51,15 @@ def test_note_params_turn_internal_codes_into_words(app: Flask) -> None:
     with app.app_context():
         params = labels.note_params("routine.split", {"split": "upper_lower", "days": 4})
         assert params["split"] == "Torso / pierna"
-        assert params["days"] == 4
+        assert params["days"] == "4"
+
+
+def test_note_params_show_dates_and_decimals_the_local_way(app: Flask) -> None:
+    with app.test_request_context("/?lang=es"):
+        params = labels.note_params(
+            "adjust.next_review", {"date": "2026-11-25", "per_kg": 2.2, "flag": True}
+        )
+        assert params == {"date": "25/11/2026", "per_kg": "2,2", "flag": True}
 
         volume = labels.note_params("routine.volume_low", {"muscle": "calves"})
         assert volume["muscle"] == "Gemelos"

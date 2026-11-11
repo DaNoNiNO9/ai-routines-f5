@@ -6,6 +6,7 @@ the user reads comes from here, so a new language only needs a catalogue.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from enum import Enum
 from typing import Any
@@ -14,6 +15,7 @@ from flask import has_app_context
 from flask_babel import get_locale
 from flask_babel import lazy_gettext as _l
 
+from app import formatting
 from app.engine.enums import (
     ActivityIntensity,
     Aggressiveness,
@@ -310,6 +312,9 @@ NOTE_PARAM_LABELS: Mapping[str, Mapping[Any, Any]] = {
 }
 
 
+ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+
 def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
     """Los parámetros de un aviso del motor, con sus códigos ya en palabras.
 
@@ -331,6 +336,12 @@ def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
         suggestion = EQUIPMENT_SUGGESTION.get(MovementPattern(params["pattern"]))
         if suggestion is not None:
             translated["suggestion"] = str(suggestion)
+    for key, value in translated.items():
+        # Fechas y cifras con el formato del idioma: nada de 2026-11-25 ni 2.5.
+        if isinstance(value, str) and ISO_DATE.fullmatch(value):
+            translated[key] = formatting.fdate(value)
+        elif isinstance(value, float) or (isinstance(value, int) and not isinstance(value, bool)):
+            translated[key] = formatting.num(value, 2)
     return translated
 
 

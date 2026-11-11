@@ -108,7 +108,9 @@ class Review:
         """Build the final decision object."""
         calories = self.inputs.plan_calories if new_calories is None else new_calories
         when = next_review or self.next_review()
-        self.notes.append(Note("adjust.next_review", params={"date": when.isoformat()}))
+        # "Too early" already names the date; saying it twice reads like a bug.
+        if not any(note.code == "adjust.too_early" for note in self.notes):
+            self.notes.append(Note("adjust.next_review", params={"date": when.isoformat()}))
         return AdjustmentDecision(
             action=action,
             reason=reason,
