@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -11,7 +12,16 @@ from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, select
 
-from app.models import Plan, Profile, Routine, Subscription, User, WeightLog, WorkoutSession
+from app.models import (
+    ErasureRecord,
+    Plan,
+    Profile,
+    Routine,
+    Subscription,
+    User,
+    WeightLog,
+    WorkoutSession,
+)
 from app.services import privacy
 from app.services.billing.stripe_gateway import StripeGateway
 from tests.integration.test_auth import PASSWORD, _register
@@ -177,3 +187,88 @@ def test_logs_do_not_keep_what_you_search(
     with caplog.at_level("INFO"):
         client.get("/diario/alimentos?q=kebab")
     assert "kebab" not in caplog.text
+
+
+# --- Copias de seguridad: lo borrado se vuelve a borrar al restaurar ---------
+
+
+def _restore_user(database: SQLAlchemy, user_id: int, *, created: datetime) -> User:
+    """Stand-in for a restored backup: the account comes back as it was."""
+    user = User(
+        id=user_id,
+        email=f"restaurada{user_id}@example.com",
+        display_name="Restaurada",
+        password_hash="x",
+        created_at=created,
+        health_consent_at=created,
+        health_consent_version="2026-11-12",
+    )
+    database.session.add(user)
+    database.session.add(WeightLog(user_id=user_id, logged_on=created.date(), weight_kg=80))
+    database.session.commit()
+    return user
+
+
+def test_erasures_leave_only_a_number_kind_and_date(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    _with_routine(client)
+    user_id = _user(seeded).id
+    client.post("/cuenta/consentimiento/retirar", data={"current_password": PASSWORD})
+    client.post("/cuenta/borrar", data={"current_password": PASSWORD, "confirmation": "BORRAR"})
+    rows = seeded.session.scalars(select(ErasureRecord).order_by(ErasureRecord.id)).all()
+    assert [(r.user_id, r.kind) for r in rows] == [(user_id, "health"), (user_id, "account")]
+    assert set(ErasureRecord.__table__.columns.keys()) == {"id", "user_id", "kind", "erased_at"}
+
+
+def test_a_restored_backup_is_erased_again(seeded: SQLAlchemy, app: Flask) -> None:
+    before = datetime.now(UTC) - timedelta(days=3)
+    gone = _restore_user(seeded, 501, created=before)
+    withdrawn = _restore_user(seeded, 502, created=before)
+    privacy.record_erasure(gone.id, "account")
+    privacy.record_erasure(withdrawn.id, "health")
+    seeded.session.commit()
+
+    result = privacy.reapply_erasures(app.config["ERASURE_LOG_DAYS"])
+
+    assert (result.accounts, result.health) == (1, 1)
+    seeded.session.expire_all()
+    assert seeded.session.get(User, 501) is None
+    still = seeded.session.get(User, 502)
+    assert still is not None
+    assert still.health_consent_at is None
+    assert _health_rows(seeded, 502) == 0
+    # Una segunda pasada no hace nada más.
+    again = privacy.reapply_erasures(app.config["ERASURE_LOG_DAYS"])
+    assert (again.accounts, again.health) == (0, 0)
+
+
+def test_what_happened_after_the_erasure_is_respected(seeded: SQLAlchemy, app: Flask) -> None:
+    privacy.record_erasure(601, "account")
+    privacy.record_erasure(602, "health")
+    seeded.session.commit()
+    later = datetime.now(UTC) + timedelta(minutes=1)
+    _restore_user(seeded, 601, created=later)  # otra cuenta que reutiliza el número
+    _restore_user(seeded, 602, created=later)  # volvió a dar el consentimiento después
+    result = privacy.reapply_erasures(app.config["ERASURE_LOG_DAYS"])
+    assert (result.accounts, result.health) == (0, 0)
+    assert _health_rows(seeded, 602) == 1
+
+
+def test_old_erasures_are_forgotten(seeded: SQLAlchemy, app: Flask) -> None:
+    keep = app.config["ERASURE_LOG_DAYS"]
+    seeded.session.add(
+        ErasureRecord(
+            user_id=7, kind="account", erased_at=datetime.now(UTC) - timedelta(days=keep + 1)
+        )
+    )
+    privacy.record_erasure(8, "account")
+    seeded.session.commit()
+    assert privacy.purge_erasure_log(keep) == 1
+    assert [r.user_id for r in seeded.session.scalars(select(ErasureRecord))] == [8]
+
+
+def test_the_commands_exist(app: Flask, seeded: SQLAlchemy) -> None:
+    runner = app.test_cli_runner()
+    assert "accounts deleted again: 0" in runner.invoke(args=["privacy", "reapply-erasures"]).output
+    assert "old records purged: 0" in runner.invoke(args=["privacy", "purge-erasures"]).output

@@ -250,8 +250,12 @@ def delete_account(user: User) -> None:
     This is a real delete, not a flag: the cascades take profiles, plans,
     routines, sessions, sets and every log with them.
     """
+    from app.models.privacy import ERASURE_ACCOUNT
+    from app.services.privacy import record_erasure
+
     user_id = user.id
     db.session.delete(user)
+    record_erasure(user_id, ERASURE_ACCOUNT)
     db.session.commit()
     logger.info("Account %s deleted at the owner's request", user_id)
 

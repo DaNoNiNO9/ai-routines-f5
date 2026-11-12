@@ -5,6 +5,7 @@ from app.models.billing import BillingEvent, Subscription
 from app.models.exercise import Equipment, Exercise, ExerciseAlternative, exercise_equipment
 from app.models.onboarding import QuestionnaireDraft
 from app.models.plan import Meal, Plan, PlanAdjustment
+from app.models.privacy import ErasureRecord
 from app.models.profile import Injury, Profile
 from app.models.routine import Routine, RoutineDay, RoutineExercise
 from app.models.tracking import ActivityLog, BodyMeasurement, FoodEntry, IntakeLog, WeightLog
@@ -16,6 +17,7 @@ __all__ = [
     "BillingEvent",
     "BodyMeasurement",
     "Equipment",
+    "ErasureRecord",
     "Exercise",
     "ExerciseAlternative",
     "FoodEntry",

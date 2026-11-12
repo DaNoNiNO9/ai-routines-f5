@@ -14,7 +14,8 @@ the person can come back or delete the account too.
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime
+from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import delete, select
 
@@ -33,6 +34,7 @@ from app.models import (
     WeightLog,
     WorkoutSession,
 )
+from app.models.privacy import ERASURE_ACCOUNT, ERASURE_HEALTH, ErasureRecord
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +61,12 @@ def give_consent(user: User) -> None:
     logger.info("Health-data consent given by user %s (v%s)", user.id, CONSENT_VERSION)
 
 
-def withdraw_consent(user: User) -> None:
+def record_erasure(user_id: int, kind: str) -> None:
+    """Note an erasure (no personal data) so a restored backup can repeat it."""
+    db.session.add(ErasureRecord(user_id=user_id, kind=kind))
+
+
+def withdraw_consent(user: User, *, record: bool = True) -> None:
     """Delete every piece of health data and stop processing it.
 
     ORM deletes for the rows with children (sessions and their sets, routines
@@ -74,5 +81,53 @@ def withdraw_consent(user: User) -> None:
     user.equipment = []  # el material deja ver lesiones y limitaciones
     user.health_consent_at = None
     user.health_consent_version = None
+    if record:
+        record_erasure(user.id, ERASURE_HEALTH)
     db.session.commit()
     logger.info("Health-data consent withdrawn by user %s: health data deleted", user.id)
+
+
+@dataclass(frozen=True)
+class ReapplyResult:
+    """What a re-application after a restore did."""
+
+    accounts: int
+    health: int
+    purged: int
+
+
+def purge_erasure_log(keep_days: int) -> int:
+    """Forget erasures older than every backup that could still be restored."""
+    cutoff = datetime.now(UTC) - timedelta(days=keep_days)
+    result = db.session.execute(delete(ErasureRecord).where(ErasureRecord.erased_at < cutoff))
+    db.session.commit()
+    return int(result.rowcount or 0)  # type: ignore[attr-defined]
+
+
+def reapply_erasures(keep_days: int) -> ReapplyResult:
+    """After restoring a backup, erase again what was erased since it was taken.
+
+    Whatever happened after the erasure is respected: an account number now
+    belonging to an account created later is not touched, and health data is
+    kept if consent was given anew after it was withdrawn (that data is new).
+    """
+    purged = purge_erasure_log(keep_days)
+    accounts = health = 0
+    records = db.session.scalars(select(ErasureRecord).order_by(ErasureRecord.erased_at)).all()
+    for record in records:
+        user = db.session.get(User, record.user_id)
+        if user is None or user.created_at > record.erased_at:
+            continue
+        if record.kind == ERASURE_ACCOUNT:
+            db.session.delete(user)
+            db.session.commit()
+            accounts += 1
+            logger.info("Restored account %s deleted again", record.user_id)
+        elif record.kind == ERASURE_HEALTH:
+            consent = user.health_consent_at
+            if consent is None or consent > record.erased_at:
+                continue  # nada que borrar, o datos dados con un consentimiento nuevo
+            withdraw_consent(user, record=False)
+            health += 1
+            logger.info("Restored health data of user %s deleted again", record.user_id)
+    return ReapplyResult(accounts=accounts, health=health, purged=purged)

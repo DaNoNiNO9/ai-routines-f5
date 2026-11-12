@@ -71,6 +71,8 @@ class BaseConfig:
     LOG_DIR = os.environ.get("LOG_DIR", str(BASE_DIR / "logs"))
     LOG_TO_FILE = True
     LOG_RETENTION_DAYS = 30
+    # Más que lo que viven las copias de seguridad (30 días): ver app/models/privacy.py.
+    ERASURE_LOG_DAYS = 35
 
     # Email (app/email.py): "log" keeps messages in memory and in the log; "smtp" delivers.
     MAIL_BACKEND = os.environ.get("MAIL_BACKEND", "log")
