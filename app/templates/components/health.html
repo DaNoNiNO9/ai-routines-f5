@@ -1,0 +1,14 @@
+{# Aviso breve de salud donde se proponen o cambian calorías. #}
+{% from "components/icons.html" import icon %}
+{% macro health_notice(kind='plan') -%}
+<p class="health-notice" role="note">
+  {{ icon('info') }}
+  <span>
+    {% if kind == 'review' %}
+      {{ _('La revisión propone cambios pequeños y orientativos; no sustituye a un profesional sanitario. Si estás bajando muy deprisa, te encuentras mal o tienes una enfermedad, consulta antes de aplicarla.') }}
+    {% else %}
+      {{ _('Estas cifras son orientativas y no sustituyen a un médico ni a un dietista-nutricionista. Si tienes una enfermedad, tomas medicación o has tenido un trastorno de la conducta alimentaria, consulta antes de cambiar tu alimentación.') }}
+    {% endif %}
+  </span>
+</p>
+{%- endmacro %}

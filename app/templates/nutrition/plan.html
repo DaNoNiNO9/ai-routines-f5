@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/health.html" import health_notice %}
 {% from "components/charts.html" import chart %}
 
 {% block title %}{{ _('Nutrición') }} · {{ app_name }}{% endblock %}
@@ -13,6 +14,7 @@
   <h1>{{ _('Tu plan de nutrición') }}</h1>
   {% if plan %}
     <p class="lead">{{ _('Vigente desde el %(date)s · cálculo de fiabilidad %(c)s.', date=plan.starts_on|fdate('long'), c=labels.label(labels.CONFIDENCE, plan.confidence)|lower) }}</p>
+    {{ health_notice('plan') }}
   {% endif %}
 </section>
 

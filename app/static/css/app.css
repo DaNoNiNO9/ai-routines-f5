@@ -791,3 +791,20 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .shopping-list li { padding: 0.35rem 0; border-bottom: 1px solid var(--border); align-items: center; }
 .shopping-list .check-input:checked + span { text-decoration: line-through; color: var(--text-muted); }
 @media print { .site-header, .site-footer, .app-tabs { display: none !important; } }
+
+/* Atribuciones */
+.off-credit { margin: var(--space-2) 0 0; font-size: 0.82rem; color: var(--text-muted); }
+.off-credit a { color: inherit; }
+.about-card { max-width: 46rem; }
+.credits-list { padding-left: 1.2rem; display: grid; gap: var(--space-2); }
+
+.legal-card { margin-top: var(--space-3); max-width: 46rem; }
+.legal-list { padding-left: 1.2rem; display: grid; gap: var(--space-2); }
+
+.barcode-label { flex-basis: 100%; display: flex; gap: 0.4rem; align-items: center; margin: var(--space-2) 0 0; }
+
+.health-notice { display: flex; gap: 0.5rem; align-items: flex-start; margin: var(--space-2) 0 0; padding: var(--space-2); border-left: 3px solid var(--warning); border-radius: 8px; background: var(--bg-elevated); font-size: 0.88rem; color: var(--text-muted); max-width: 46rem; }
+.health-notice .icon { color: var(--warning); margin-top: 0.15em; }
+
+/* hidden siempre gana a las reglas que fijan display */
+[hidden] { display: none !important; }

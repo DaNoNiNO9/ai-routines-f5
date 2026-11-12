@@ -31,6 +31,7 @@ PUBLIC_PATHS = {
     "/sw.js",
     "/sin-conexion",
     "/precios",
+    "/acerca",
     "/entrar",
     "/registro",
     "/recuperar",

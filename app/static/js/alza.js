@@ -556,7 +556,15 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!button || !box || !("BarcodeDetector" in window) || !navigator.mediaDevices) {
     return;
   }
-  button.hidden = false;
+  /* Tener la API no basta: en Windows suele existir sin saber leer ningún formato. */
+  var wanted = ["ean_13", "ean_8", "upc_a", "upc_e"];
+  window.BarcodeDetector.getSupportedFormats().then(function (formats) {
+    if (!wanted.some(function (format) { return formats.indexOf(format) !== -1; })) {
+      return;
+    }
+    button.hidden = false;
+    document.querySelectorAll("[data-no-scan]").forEach(function (hint) { hint.hidden = true; });
+  }).catch(function () { /* sin escáner: queda la entrada a mano */ });
   var video = box.querySelector("video");
   var stream = null;
   var running = false;

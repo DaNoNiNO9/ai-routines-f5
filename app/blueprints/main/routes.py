@@ -75,6 +75,12 @@ def service_worker() -> Response:
     return response
 
 
+@bp.get("/acerca")
+def about() -> str:
+    """What Alza is, its limits, and the open projects it relies on (with their licences)."""
+    return render_template("main/about.html")
+
+
 @bp.get("/sin-conexion")
 def offline() -> str:
     """Lo que enseña el service worker cuando no hay red ni copia guardada."""

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/health.html" import health_notice %}
 {% from "components/icons.html" import icon %}
 
 {% block title %}{{ _('Revisión') }} · {{ app_name }}{% endblock %}
@@ -8,6 +9,7 @@
   <p class="eyebrow">{{ _('Diario') }}</p>
   <h1>{{ _('Revisión quincenal') }}</h1>
   <p class="lead">{{ _('Cada dos semanas se mira qué ha hecho tu peso frente a lo previsto y, con lo que has comido, cuánto gastas de verdad. De ahí sale una propuesta pequeña, nunca de más de un 5 %%, y no cambia nada hasta que la apliques.') }}</p>
+  {{ health_notice('review') }}
 </section>
 
 {% if error %}

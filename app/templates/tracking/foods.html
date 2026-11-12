@@ -39,11 +39,12 @@
   </form>
   <form method="get" class="food-barcode" data-barcode>
     <input type="hidden" name="fecha" value="{{ day.isoformat() }}">
-    <label class="visually-hidden" for="food-code">{{ _('Código de barras') }}</label>
-    <input id="food-code" class="field-input" type="text" name="codigo" value="{{ barcode }}" placeholder="{{ _('Código de barras') }}" inputmode="numeric" pattern="[0-9 ]*" autocomplete="off">
+    <label class="field-label barcode-label" for="food-code">{{ icon('scan-barcode') }}{{ _('Código de barras') }}</label>
+    <input id="food-code" class="field-input" type="text" name="codigo" value="{{ barcode }}" placeholder="{{ _('Los números de debajo de las barras') }}" inputmode="numeric" pattern="[0-9 ]*" autocomplete="off" enterkeyhint="search">
     <button type="submit" class="button button-secondary">{{ _('Buscar código') }}</button>
     <button type="button" class="button button-secondary" data-scan hidden>{{ icon('scan-barcode') }}{{ _('Escanear') }}</button>
   </form>
+  <p class="help" data-no-scan>{{ _('En este navegador no se puede escanear con la cámara (pasa en iPhone y en ordenadores): escribe los 8 o 13 números que hay debajo de las barras del envase y pulsa «Buscar código».') }}</p>
   <div class="scanner" data-scanner hidden>
     <video playsinline muted></video>
     <p class="meta">{{ _('Apunta al código de barras del envase.') }}</p>
@@ -65,7 +66,9 @@
       <ul class="food-list">
         {% for item in results %}{{ food_row(item, item.portion) }}{% endfor %}
       </ul>
-      <p class="help">{{ _('Los productos vienen de Open Food Facts, una base abierta que mantienen voluntarios: si algo no cuadra con el envase, manda el envase.') }}</p>
+      {% if results|selectattr('source', 'equalto', 'off')|list %}
+        <p class="off-credit">{{ _('Datos de productos:') }} <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer">Open Food Facts</a>, {{ _('con licencia') }} <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">ODbL</a>. {{ _('Los aportan voluntarios: si algo no cuadra con el envase, manda el envase.') }}</p>
+      {% endif %}
     {% elif not error %}
       <p class="muted">{{ _('No hay resultados. Prueba con menos palabras o con el nombre genérico.') }}</p>
     {% endif %}
@@ -80,6 +83,7 @@
 {% else %}
   <section class="card">
     <p class="muted">{{ _('Busca por nombre o por código de barras. Lo que apuntes a menudo aparecerá aquí para añadirlo con un toque.') }}</p>
+    <p class="off-credit">{{ _('Los productos del supermercado vienen de') }} <a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer">Open Food Facts</a> ({{ _('licencia') }} <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">ODbL</a>).</p>
   </section>
 {% endif %}
 {% endblock %}

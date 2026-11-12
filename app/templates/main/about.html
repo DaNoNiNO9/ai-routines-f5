@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Acerca de') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">{{ app_name }}</p>
+  <h1>{{ _('Acerca de') }}</h1>
+  <p class="lead">{{ _('Alza calcula tu plan de nutrición y tu rutina con fórmulas publicadas y los ajusta con tus datos reales. Es una herramienta orientativa: no sustituye a un médico, a un dietista-nutricionista ni a ningún otro profesional sanitario.') }}</p>
+  <p class="meta">v{{ app_version }}</p>
+</section>
+
+<section class="card about-card">
+  <h2 class="card-title">{{ _('Datos y contenidos de terceros') }}</h2>
+  <p>{{ _('Alza se apoya en proyectos abiertos. Gracias a quienes los mantienen.') }}</p>
+  <ul class="credits-list">
+    <li>
+      <strong><a href="https://world.openfoodfacts.org" target="_blank" rel="noopener noreferrer">Open Food Facts</a></strong>
+      — {{ _('los productos del buscador de alimentos y el código de barras. Base de datos con licencia') }}
+      <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener noreferrer">Open Database License (ODbL)</a>;
+      {{ _('contenidos con licencia') }}
+      <a href="https://opendatacommons.org/licenses/dbcl/1-0/" target="_blank" rel="noopener noreferrer">Database Contents License (DbCL)</a>.
+      {{ _('Los datos los aportan voluntarios: si algo no cuadra con el envase, manda el envase.') }}
+    </li>
+    <li>
+      <strong><a href="https://wger.de" target="_blank" rel="noopener noreferrer">wger</a></strong>
+      — {{ _('los vídeos de 32 ejercicios, grabados por Goulart, con licencia') }}
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.
+      {{ _('Los hemos convertido a un formato más ligero; cada vídeo enlaza a su original.') }}
+    </li>
+    <li>
+      <strong><a href="https://github.com/yuhonas/free-exercise-db" target="_blank" rel="noopener noreferrer">free-exercise-db</a></strong>
+      — {{ _('las fotos e instrucciones originales de los ejercicios, de dominio público. Los pasos en castellano son nuestros.') }}
+    </li>
+    <li>
+      <strong><a href="https://lucide.dev" target="_blank" rel="noopener noreferrer">Lucide</a></strong>
+      — {{ _('los iconos, con licencia ISC.') }}
+    </li>
+    <li>
+      <strong>Barlow Condensed</strong> {{ _('e') }} <strong>Inter</strong>
+      — {{ _('las tipografías, con licencia SIL Open Font License.') }}
+    </li>
+    <li>
+      <strong>Alpine.js</strong> {{ _('y') }} <strong>Chart.js</strong>
+      — {{ _('la interacción y las gráficas, con licencia MIT.') }}
+    </li>
+  </ul>
+  <p class="meta">{{ _('La tabla básica de alimentos son valores medios de referencia (BEDCA y USDA FoodData Central) elaborados por Alza.') }}</p>
+</section>
+{% endblock %}
