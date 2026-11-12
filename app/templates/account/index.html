@@ -54,6 +54,18 @@
   </section>
 
   <section class="card card-span">
+    <h2 class="card-title">{{ icon('info') }}{{ _('Tus datos de salud') }}</h2>
+    {% if current_user.has_health_consent %}
+      <p>{{ _('Diste tu consentimiento explícito el %(date)s para que tratemos tus datos de salud solo para tu plan. Puedes retirarlo cuando quieras: los borraremos todos.', date=current_user.health_consent_at|fdate('long')) }}</p>
+      <p><a class="button button-secondary" href="{{ url_for('privacy.withdraw') }}">{{ _('Retirar mi consentimiento') }}</a></p>
+    {% else %}
+      <p>{{ _('No has dado tu consentimiento para tratar datos de salud, así que no guardamos ninguno.') }}</p>
+      <p><a class="button" href="{{ url_for('privacy.consent') }}">{{ _('Dar mi consentimiento') }}</a></p>
+    {% endif %}
+    <p class="meta"><a href="{{ url_for('privacy.policy') }}">{{ _('Política de privacidad') }}</a></p>
+  </section>
+
+  <section class="card card-span">
     <h2 class="card-title">{{ icon('trophy') }}{{ _('Tu suscripción') }}</h2>
     {% if paywall and is_pro %}
       <p>{{ _('Tienes Alza Pro.') }}</p>

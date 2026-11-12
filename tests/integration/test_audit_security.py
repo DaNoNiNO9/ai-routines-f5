@@ -32,6 +32,7 @@ PUBLIC_PATHS = {
     "/sin-conexion",
     "/precios",
     "/acerca",
+    "/privacidad",
     "/entrar",
     "/registro",
     "/recuperar",

@@ -197,4 +197,7 @@ def delete_account() -> str | WerkzeugResponse:
     logout_user()
     auth_service.delete_account(user)
     flash(_("Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."), "success")
-    return redirect(url_for("main.index"))
+    response = redirect(url_for("main.index"))
+    # Lo que la app guardó en el móvil para funcionar sin red, también fuera.
+    response.headers["Clear-Site-Data"] = '"cache", "storage"'
+    return response

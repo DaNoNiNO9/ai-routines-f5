@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Tu consentimiento') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card legal-doc">
+  <h1>{{ _('Antes de seguir, tu consentimiento') }}</h1>
+  <p>{{ _('Para calcular y ajustar tu plan, Alza trata datos de salud: peso, medidas, sueño, comida, entrenos y molestias. Si indicas un tipo de dieta como halal o kosher, también puede revelar tus creencias. Son datos especialmente protegidos, así que necesitamos tu consentimiento explícito.') }}</p>
+  <ul>
+    <li>{{ _('Los usamos solo para tu plan: nunca para publicidad ni analítica.') }}</li>
+    <li>{{ _('No se los damos a nadie. Los pagos (Stripe) y el buscador de alimentos (Open Food Facts) no reciben ningún dato de salud.') }}</li>
+    <li>{{ _('Puedes retirarlo cuando quieras desde Cuenta: borraremos todos tus datos de salud.') }}</li>
+  </ul>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field field-check">
+      <label class="check-label">
+        <input type="checkbox" name="health_consent" value="y" class="check-input" required>
+        <span>{{ _('Doy mi consentimiento explícito para que Alza trate mis datos de salud (peso, medidas, sueño, comida, entrenos y molestias) y, si lo indico, mi tipo de dieta, solo para calcular y ajustar mi plan. Puedo retirarlo cuando quiera.') }}</span>
+      </label>
+    </div>
+    <button type="submit" class="button">{{ _('Dar mi consentimiento') }}</button>
+  </form>
+  <p class="meta"><a href="{{ url_for('privacy.policy') }}">{{ _('Política de privacidad') }}</a> · {{ _('Si prefieres no darlo, puedes descargar tus datos o borrar la cuenta desde') }} <a href="{{ url_for('account.index') }}">{{ _('Cuenta') }}</a>.</p>
+</section>
+{% endblock %}

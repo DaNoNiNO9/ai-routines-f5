@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Política de privacidad') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<article class="card legal-doc">
+  <p class="notice-test">{{ icon('triangle-alert') }}{{ _('Borrador pendiente de revisión legal. Los datos entre corchetes los completará el responsable.') }}</p>
+  {% if current_locale.startswith('en') %}<p class="meta">{{ _('Por ahora, esta política solo está en castellano.') }}</p>{% endif %}
+
+  <h1>Política de privacidad</h1>
+  <p class="meta">Versión {{ consent_version }} · Última actualización: 12 de noviembre de 2026</p>
+
+  <h2 class="h3">1. Quién trata tus datos</h2>
+  <p>Responsable: <strong>[Nombre o razón social]</strong>, NIF <strong>[NIF]</strong>, <strong>[dirección]</strong>. Contacto de privacidad: <strong>[correo de privacidad]</strong>. Delegado de protección de datos: <strong>[nombre y contacto, si se designa]</strong>.</p>
+
+  <h2 class="h3">2. Qué datos tratamos</h2>
+  <ul>
+    <li><strong>Cuenta:</strong> correo, nombre, contraseña (guardada como resumen irreversible con Argon2), idioma, zona horaria y fechas de aceptación del aviso y del consentimiento.</li>
+    <li><strong>Datos de salud (categoría especial, art. 9 RGPD):</strong> sexo, fecha de nacimiento, altura, peso, medidas, porcentaje de grasa, actividad, horas de sueño y estrés, experiencia y material de entreno, molestias y lesiones, embarazo o lactancia y antecedentes de trastorno de la conducta alimentaria (solo para bloquear el plan), lo que comes, tus entrenos y series, cómo has dormido antes de entrenar y tu plan y sus revisiones.</li>
+    <li><strong>Tipo de dieta:</strong> si indicas halal o kosher, puede revelar creencias religiosas (también categoría especial). Es opcional: puedes elegir «omnívora».</li>
+    <li><strong>Suscripción:</strong> plan, estado, fechas e identificadores de cliente y suscripción en la pasarela. <strong>No guardamos los datos de tu tarjeta</strong>: los trata Stripe.</li>
+    <li><strong>Técnicos:</strong> registros del servidor con fecha, ruta visitada (sin parámetros de búsqueda), código de respuesta e identificador de cuenta.</li>
+  </ul>
+
+  <h2 class="h3">3. Para qué y con qué base</h2>
+  <ul>
+    <li><strong>Prestarte el servicio</strong> (cuenta, plan, rutina, diario, revisión): ejecución del contrato (art. 6.1.b RGPD).</li>
+    <li><strong>Tratar tus datos de salud y tu tipo de dieta</strong> para calcular y ajustar el plan: tu <strong>consentimiento explícito</strong> (art. 9.2.a RGPD), que das aparte al registrarte y puedes retirar cuando quieras desde Cuenta.</li>
+    <li><strong>Cobrar la suscripción</strong> y cumplir obligaciones fiscales y contables: contrato y obligación legal (art. 6.1.b y 6.1.c).</li>
+    <li><strong>Seguridad</strong> (registros, límites de intentos): interés legítimo en proteger el servicio (art. 6.1.f).</li>
+  </ul>
+  <p>No hacemos perfiles con fines comerciales, ni publicidad, ni analítica de terceros, ni decisiones automatizadas con efectos jurídicos. El plan lo calcula un motor de fórmulas publicadas y siempre puedes cambiar tus datos o no seguirlo.</p>
+
+  <h2 class="h3">4. Con quién se comparten</h2>
+  <ul>
+    <li><strong>Proveedor de alojamiento</strong> <strong>[nombre]</strong>, con servidores y copias de seguridad <strong>en la Unión Europea</strong> ([país]), como encargado del tratamiento.</li>
+    <li><strong>Stripe Payments Europe, Ltd.</strong> (Irlanda), para los pagos: recibe tu correo, un identificador interno y el plan elegido; <strong>nunca datos de salud</strong>. Stripe puede transferir datos a EE. UU. al amparo del Marco de Privacidad de Datos UE-EE. UU. y de cláusulas contractuales tipo.</li>
+    <li><strong>Proveedor de correo</strong> <strong>[nombre]</strong>, para enviarte el enlace de recuperación de contraseña: recibe tu correo y el mensaje.</li>
+    <li><strong>Open Food Facts</strong> (asociación francesa): cuando buscas un alimento o escaneas un código, se le envía <strong>solo el texto buscado o el código</strong>, desde nuestro servidor y sin ningún dato que te identifique.</li>
+  </ul>
+  <p>No vendemos ni cedemos tus datos a nadie más, salvo obligación legal.</p>
+
+  <h2 class="h3">5. Cuánto tiempo</h2>
+  <ul>
+    <li><strong>Mientras tengas la cuenta.</strong> Si la borras, se elimina todo de inmediato de la base de datos.</li>
+    <li><strong>Si retiras el consentimiento</strong>, se borran de inmediato todos tus datos de salud; la cuenta y la suscripción siguen.</li>
+    <li><strong>Copias de seguridad:</strong> cifradas y en la UE; desaparecen al caducar, como mucho a los <strong>[30] días</strong>. Si hubiera que restaurar una copia, volveríamos a aplicar los borrados pedidos desde entonces.</li>
+    <li><strong>Registros del servidor:</strong> 30 días.</li>
+    <li><strong>Facturación:</strong> los datos de pago los conserva Stripe y nosotros las facturas durante los plazos que exige la ley ([6 años, Código de Comercio; 4 años, normativa tributaria]).</li>
+  </ul>
+
+  <h2 class="h3">6. Tus derechos</h2>
+  <p>Acceso, rectificación, supresión, limitación, oposición y portabilidad, y retirar el consentimiento sin que afecte a lo tratado antes. Desde la app puedes: <strong>descargar todos tus datos</strong> (ZIP con CSV), <strong>corregirlos</strong>, <strong>retirar el consentimiento</strong> y <strong>borrar la cuenta</strong>. Para lo demás, escribe a [correo de privacidad]. Si crees que no hemos atendido bien tu petición, puedes reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">Agencia Española de Protección de Datos</a>.</p>
+
+  <h2 class="h3">7. Seguridad</h2>
+  <p>Conexión cifrada (HTTPS con HSTS), contraseñas con Argon2, protección CSRF, límites de intentos, cabeceras de seguridad, sin scripts de terceros y acceso a los datos restringido. En el móvil, la app guarda copias de las pantallas que has visto y las series pendientes de enviar; se borran al cerrar sesión, al retirar el consentimiento y al borrar la cuenta.</p>
+
+  <h2 class="h3">8. Cookies y almacenamiento</h2>
+  <p>Solo técnicas e imprescindibles: la de sesión (para mantenerte dentro), la de protección CSRF y las de tema e idioma. No usamos cookies de analítica ni de publicidad, por eso no te pedimos que las aceptes.</p>
+
+  <h2 class="h3">9. Menores</h2>
+  <p>Alza es solo para mayores de 18 años y no genera planes a menores.</p>
+</article>
+{% endblock %}

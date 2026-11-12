@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Retirar el consentimiento') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card legal-doc card-peligro">
+  <h1>{{ _('Retirar tu consentimiento') }}</h1>
+  <p>{{ _('Si lo retiras, dejamos de tratar tus datos de salud y los borramos ahora mismo, para siempre:') }}</p>
+  <ul>
+    <li>{{ _('tus respuestas del cuestionario, tu plan, tu rutina y su historial;') }}</li>
+    <li>{{ _('pesajes, medidas, comida, pasos, entrenos y series;') }}</li>
+    <li>{{ _('tu material, molestias y lesiones.') }}</li>
+  </ul>
+  <p>{{ _('Tu cuenta y tu suscripción siguen: puedes volver a darlo cuando quieras y empezar de cero. Si quieres conservar algo, descarga antes tus datos desde Cuenta.') }}</p>
+  <form method="post" class="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field">
+      <label class="field-label" for="current_password">{{ _('Tu contraseña, para confirmar') }}</label>
+      <input id="current_password" class="field-input" type="password" name="current_password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="button button-peligro">{{ _('Retirar y borrar mis datos de salud') }}</button>
+  </form>
+  <p><a href="{{ url_for('account.index') }}">{{ _('Volver sin cambios') }}</a></p>
+</section>
+{% endblock %}

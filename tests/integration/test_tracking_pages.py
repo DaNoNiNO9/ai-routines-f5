@@ -196,6 +196,7 @@ def test_one_diary_never_leaks_into_another(client: FlaskClient, seeded: SQLAlch
             "password": "una contraseña larga",
             "password_confirm": "una contraseña larga",
             "consent": "y",
+            "health_consent": "y",
         },
     )
     assert other.status_code == 302

@@ -14,6 +14,8 @@
     <p class="help">{{ _('Mínimo %(n)s caracteres.', n=password_min_length) }}</p>
     {{ field(form.password_confirm, autocomplete="new-password") }}
     {{ checkbox(form.consent) }}
+    {{ checkbox(form.health_consent) }}
+    <p class="help">{{ _('Son datos de salud: los usamos solo para tu plan, nunca para publicidad ni analítica, y no se los damos a nadie.') }} <a href="{{ url_for('privacy.policy') }}">{{ _('Política de privacidad') }}</a></p>
     <button type="submit" class="button button-block">{{ _('Crear cuenta') }}</button>
   </form>
   <p class="meta">{{ _('¿Ya tienes cuenta?') }} <a href="{{ url_for('auth.login') }}">{{ _('Entrar') }}</a></p>

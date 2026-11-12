@@ -58,6 +58,11 @@ class User(UserMixin, TimestampMixin, SoftDeleteMixin, db.Model):
     consent_accepted_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
     last_login_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
 
+    # Consentimiento explícito y separado para los datos de salud (art. 9.2.a RGPD):
+    # cuándo se dio y qué versión del texto se aceptó. Se puede retirar (vuelve a None).
+    health_consent_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
+    health_consent_version: Mapped[str | None] = mapped_column(String(20))
+
     profiles: Mapped[list[Profile]] = relationship(
         back_populates="user", cascade="all, delete-orphan", order_by="Profile.version"
     )
@@ -95,6 +100,11 @@ class User(UserMixin, TimestampMixin, SoftDeleteMixin, db.Model):
     subscription: Mapped[Subscription | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )
+
+    @property
+    def has_health_consent(self) -> bool:
+        """Explicit consent to process health data (RGPD art. 9.2.a) is in force."""
+        return self.health_consent_at is not None
 
     def today(self) -> date:
         """Calendar date in the user's time zone (UTC if the zone is unknown)."""

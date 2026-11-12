@@ -593,6 +593,8 @@ def personal_sheets(user: User) -> list[Sheet]:
                 "alta",
                 "ultimo_acceso",
                 "consentimiento",
+                "consentimiento_datos_salud",
+                "version_consentimiento",
             ],
             [
                 [
@@ -603,6 +605,8 @@ def personal_sheets(user: User) -> list[Sheet]:
                     user.created_at.isoformat(),
                     user.last_login_at.isoformat() if user.last_login_at else "",
                     user.consent_accepted_at.isoformat() if user.consent_accepted_at else "",
+                    user.health_consent_at.isoformat() if user.health_consent_at else "",
+                    user.health_consent_version or "",
                 ]
             ],
         ),

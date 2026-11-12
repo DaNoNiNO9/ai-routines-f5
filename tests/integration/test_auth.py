@@ -22,6 +22,7 @@ def _register(client: FlaskClient, email: str = "ana@example.com", **overrides: 
         "password": PASSWORD,
         "password_confirm": PASSWORD,
         "consent": "y",
+        "health_consent": "y",
     }
     data.update(overrides)
     return client.post("/registro", data=data)

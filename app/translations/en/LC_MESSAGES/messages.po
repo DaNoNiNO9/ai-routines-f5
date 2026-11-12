@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 22:08+0100\n"
+"POT-Creation-Date: 2026-11-12 22:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -798,7 +798,7 @@ msgid "Repite la contraseña nueva"
 msgstr "Repeat the new password"
 
 #: app/blueprints/account/forms.py:80 app/blueprints/auth/forms.py:32
-#: app/blueprints/auth/forms.py:70
+#: app/blueprints/auth/forms.py:80
 msgid "Las contraseñas no coinciden."
 msgstr "The passwords do not match."
 
@@ -812,7 +812,7 @@ msgstr "Type %(word)s to confirm"
 msgid "Escribe %(word)s exactamente."
 msgstr "Type %(word)s exactly."
 
-#: app/blueprints/account/routes.py:31
+#: app/blueprints/account/routes.py:31 app/blueprints/privacy/routes.py:89
 msgid "La contraseña no es correcta."
 msgstr "That password is not correct."
 
@@ -820,7 +820,7 @@ msgstr "That password is not correct."
 msgid "Datos guardados."
 msgstr "Saved."
 
-#: app/blueprints/account/routes.py:90 app/blueprints/auth/routes.py:72
+#: app/blueprints/account/routes.py:90 app/blueprints/auth/routes.py:75
 msgid "Ya existe una cuenta con ese correo."
 msgstr "There is already an account with that email."
 
@@ -844,16 +844,16 @@ msgstr "We could not cancel your subscription and have not deleted anything. Try
 msgid "Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."
 msgstr "Your account and all your data have been deleted. Thanks for trying Alza."
 
-#: app/blueprints/auth/forms.py:19 app/blueprints/auth/forms.py:47
-#: app/blueprints/auth/forms.py:57
+#: app/blueprints/auth/forms.py:19 app/blueprints/auth/forms.py:57
+#: app/blueprints/auth/forms.py:67
 msgid "Correo electrónico"
 msgstr "Email"
 
-#: app/blueprints/auth/forms.py:26 app/blueprints/auth/forms.py:49
+#: app/blueprints/auth/forms.py:26 app/blueprints/auth/forms.py:59
 msgid "Contraseña"
 msgstr "Password"
 
-#: app/blueprints/auth/forms.py:29 app/blueprints/auth/forms.py:67
+#: app/blueprints/auth/forms.py:29 app/blueprints/auth/forms.py:77
 msgid "Repite la contraseña"
 msgstr "Repeat the password"
 
@@ -865,11 +865,19 @@ msgstr "I understand that Alza is a guidance tool and does not replace the advic
 msgid "Es necesario aceptar el aviso."
 msgstr "You need to accept the notice."
 
-#: app/blueprints/auth/forms.py:51
+#: app/blueprints/auth/forms.py:44 app/templates/privacy/consent.html:19
+msgid "Doy mi consentimiento explícito para que Alza trate mis datos de salud (peso, medidas, sueño, comida, entrenos y molestias) y, si lo indico, mi tipo de dieta, solo para calcular y ajustar mi plan. Puedo retirarlo cuando quiera."
+msgstr "I give my explicit consent for Alza to process my health data (weight, measurements, sleep, food, workouts and aches) and, if I state it, my type of diet, only to calculate and adjust my plan. I can withdraw it whenever I want."
+
+#: app/blueprints/auth/forms.py:49
+msgid "Sin este consentimiento no podemos calcular tu plan."
+msgstr "Without this consent we cannot calculate your plan."
+
+#: app/blueprints/auth/forms.py:61
 msgid "Mantener la sesión iniciada"
 msgstr "Keep me signed in"
 
-#: app/blueprints/auth/forms.py:64 app/templates/auth/reset.html:4
+#: app/blueprints/auth/forms.py:74 app/templates/auth/reset.html:4
 #: app/templates/auth/reset.html:8
 msgid "Nueva contraseña"
 msgstr "New password"
@@ -887,24 +895,24 @@ msgstr "That password is too common."
 msgid "La contraseña debe tener al menos %(n)s caracteres."
 msgstr "The password needs at least %(n)s characters."
 
-#: app/blueprints/auth/routes.py:75
+#: app/blueprints/auth/routes.py:78
 #, python-format
 msgid "Cuenta creada. Hola, %(name)s."
 msgstr "Account created. Hi, %(name)s."
 
-#: app/blueprints/auth/routes.py:91
+#: app/blueprints/auth/routes.py:94
 msgid "Correo o contraseña incorrectos."
 msgstr "Wrong email or password."
 
-#: app/blueprints/auth/routes.py:93
+#: app/blueprints/auth/routes.py:96
 msgid "Esta cuenta está desactivada."
 msgstr "This account is deactivated."
 
-#: app/blueprints/auth/routes.py:105
+#: app/blueprints/auth/routes.py:108
 msgid "Sesión cerrada."
 msgstr "Signed out."
 
-#: app/blueprints/auth/routes.py:122
+#: app/blueprints/auth/routes.py:125
 #, python-format
 msgid ""
 "Hola %(name)s,\n"
@@ -921,23 +929,23 @@ msgstr ""
 "\n"
 "The link expires in %(minutes)s minutes. If you did not ask for it, ignore this email."
 
-#: app/blueprints/auth/routes.py:129
+#: app/blueprints/auth/routes.py:132
 msgid "Recupera tu contraseña de Alza"
 msgstr "Recover your Alza password"
 
-#: app/blueprints/auth/routes.py:131
+#: app/blueprints/auth/routes.py:134
 msgid "No se pudo enviar el correo. Inténtalo más tarde."
 msgstr "The email could not be sent. Try again later."
 
-#: app/blueprints/auth/routes.py:135
+#: app/blueprints/auth/routes.py:138
 msgid "Si el correo existe, recibirás un enlace para restablecer la contraseña."
 msgstr "If that email exists, you will get a link to reset the password."
 
-#: app/blueprints/auth/routes.py:147
+#: app/blueprints/auth/routes.py:150
 msgid "El enlace no es válido o ha caducado. Pide uno nuevo."
 msgstr "That link is not valid or has expired. Ask for a new one."
 
-#: app/blueprints/auth/routes.py:157
+#: app/blueprints/auth/routes.py:160
 msgid "Contraseña actualizada. Ya puedes entrar."
 msgstr "Password updated. You can sign in now."
 
@@ -1455,6 +1463,18 @@ msgstr "History of an eating disorder"
 #, python-format
 msgid "Faltan respuestas en el paso %(n)s."
 msgstr "Answers are missing on step %(n)s."
+
+#: app/blueprints/privacy/routes.py:72
+msgid "Marca la casilla para dar tu consentimiento."
+msgstr "Tick the box to give your consent."
+
+#: app/blueprints/privacy/routes.py:75
+msgid "Gracias. Ya puedes seguir con tu plan."
+msgstr "Thank you. You can carry on with your plan."
+
+#: app/blueprints/privacy/routes.py:93
+msgid "Has retirado tu consentimiento: hemos borrado todos tus datos de salud."
+msgstr "You have withdrawn your consent: we have deleted all your health data."
 
 #: app/blueprints/review/routes.py:24
 msgid "Todavía no toca"
@@ -2537,7 +2557,7 @@ msgstr "%(n)s × %(m)s min of intervals a week"
 msgid "Cómo está montada"
 msgstr "How it is put together"
 
-#: app/services/exports.py:934
+#: app/services/exports.py:938
 msgid ""
 "Exportación de datos de Alza\n"
 "============================\n"
@@ -2643,6 +2663,7 @@ msgstr "Diary"
 
 #: app/templates/account/index.html:5 app/templates/account/index.html:9
 #: app/templates/base.html:34 app/templates/billing/subscription.html:7
+#: app/templates/privacy/consent.html:24
 msgid "Cuenta"
 msgstr "Account"
 
@@ -2651,13 +2672,13 @@ msgid "Salir"
 msgstr "Sign out"
 
 #: app/templates/auth/login.html:4 app/templates/auth/login.html:8
-#: app/templates/auth/login.html:14 app/templates/auth/register.html:19
+#: app/templates/auth/login.html:14 app/templates/auth/register.html:21
 #: app/templates/base.html:46 app/templates/main/index.html:17
 msgid "Entrar"
 msgstr "Sign in"
 
 #: app/templates/auth/login.html:18 app/templates/auth/register.html:4
-#: app/templates/auth/register.html:8 app/templates/auth/register.html:17
+#: app/templates/auth/register.html:8 app/templates/auth/register.html:19
 #: app/templates/base.html:47
 msgid "Crear cuenta"
 msgstr "Create account"
@@ -2687,6 +2708,10 @@ msgstr "Pricing"
 #: app/templates/main/about.html:8
 msgid "Acerca de"
 msgstr "About"
+
+#: app/templates/base.html:85
+msgid "Privacidad"
+msgstr "Privacy"
 
 #: app/templates/base.html:89
 msgid "Pendiente de enviar"
@@ -2769,90 +2794,116 @@ msgid "Actualizar mis datos"
 msgstr "Update my details"
 
 #: app/templates/account/index.html:57
+msgid "Tus datos de salud"
+msgstr "Your health data"
+
+#: app/templates/account/index.html:59
+#, python-format
+msgid "Diste tu consentimiento explícito el %(date)s para que tratemos tus datos de salud solo para tu plan. Puedes retirarlo cuando quieras: los borraremos todos."
+msgstr "You gave your explicit consent on %(date)s for us to process your health data only for your plan. You can withdraw it whenever you want: we will delete all of it."
+
+#: app/templates/account/index.html:60
+msgid "Retirar mi consentimiento"
+msgstr "Withdraw my consent"
+
+#: app/templates/account/index.html:62
+msgid "No has dado tu consentimiento para tratar datos de salud, así que no guardamos ninguno."
+msgstr "You have not given consent to process health data, so we keep none."
+
+#: app/templates/account/index.html:63 app/templates/privacy/consent.html:22
+msgid "Dar mi consentimiento"
+msgstr "Give my consent"
+
+#: app/templates/account/index.html:65 app/templates/auth/register.html:18
+#: app/templates/privacy/consent.html:24 app/templates/privacy/policy.html:3
+msgid "Política de privacidad"
+msgstr "Privacy policy"
+
+#: app/templates/account/index.html:69
 #: app/templates/billing/subscription.html:3
 #: app/templates/billing/subscription.html:8
 msgid "Tu suscripción"
 msgstr "Your subscription"
 
-#: app/templates/account/index.html:59
+#: app/templates/account/index.html:71
 msgid "Tienes Alza Pro."
 msgstr "You have Alza Pro."
 
-#: app/templates/account/index.html:61
+#: app/templates/account/index.html:73
 msgid "Usas la versión gratis: plan, rutina, sesiones y revisión sin pagar nada."
 msgstr "You use the free version: plan, routine, sessions and review without paying anything."
 
-#: app/templates/account/index.html:63 app/templates/billing/done.html:22
+#: app/templates/account/index.html:75 app/templates/billing/done.html:22
 #: app/templates/billing/prices.html:41
 msgid "Ver tu suscripción"
 msgstr "See your subscription"
 
-#: app/templates/account/index.html:67
+#: app/templates/account/index.html:79
 msgid "Alza en tu móvil"
 msgstr "Alza on your phone"
 
-#: app/templates/account/index.html:68
+#: app/templates/account/index.html:80
 msgid "Instálala y se abre como una app, con su icono, a pantalla completa. En el gimnasio sin cobertura sigue abriendo la sesión, y las series que apuntes se envían solas al volver la señal. Durante la sesión la pantalla no se apaga."
 msgstr "Install it and it opens like an app, with its icon, full screen. At a gym with no signal the session still opens, and the sets you log are sent by themselves when the signal returns. During the session the screen stays on."
 
-#: app/templates/account/index.html:70
+#: app/templates/account/index.html:82
 msgid "Instalar Alza"
 msgstr "Install Alza"
 
-#: app/templates/account/index.html:72
+#: app/templates/account/index.html:84
 msgid "En iPhone: abre Alza en Safari, toca Compartir y luego «Añadir a pantalla de inicio»."
 msgstr "On iPhone: open Alza in Safari, tap Share and then «Add to Home Screen»."
 
-#: app/templates/account/index.html:76
+#: app/templates/account/index.html:88
 msgid "Llévate tus datos"
 msgstr "Take your data with you"
 
-#: app/templates/account/index.html:79
+#: app/templates/account/index.html:91
 msgid "Plan en PDF"
 msgstr "Plan as PDF"
 
-#: app/templates/account/index.html:80
+#: app/templates/account/index.html:92
 msgid "Tu plan de nutrición y tu rutina, con cómo se han calculado. Para imprimirlo o enseñárselo a un profesional."
 msgstr "Your nutrition plan and routine, with how they were calculated. To print it or show it to a professional."
 
-#: app/templates/account/index.html:82
+#: app/templates/account/index.html:94
 msgid "Descargar el plan"
 msgstr "Download the plan"
 
-#: app/templates/account/index.html:84
+#: app/templates/account/index.html:96
 msgid "Todavía no hay plan: completa tus datos."
 msgstr "No plan yet: fill in your details."
 
-#: app/templates/account/index.html:88
+#: app/templates/account/index.html:100
 msgid "Todos tus datos en CSV"
 msgstr "All your data as CSV"
 
-#: app/templates/account/index.html:89
+#: app/templates/account/index.html:101
 msgid "Un ZIP con un CSV por tipo de dato: respuestas, pesajes, comidas, actividad, medidas, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo."
 msgstr "A ZIP with one CSV per kind of data: answers, weigh-ins, meals, activity, measurements, plans, adjustments, routines, sessions and sets. Opens in any spreadsheet."
 
-#: app/templates/account/index.html:90
+#: app/templates/account/index.html:102
 msgid "Descargar mis datos"
 msgstr "Download my data"
 
-#: app/templates/account/index.html:97
+#: app/templates/account/index.html:109
 #, python-format
 msgid "Has entrado como %(email)s."
 msgstr "Signed in as %(email)s."
 
-#: app/templates/account/index.html:100
+#: app/templates/account/index.html:112
 msgid "Cerrar sesión"
 msgstr "Sign out"
 
-#: app/templates/account/index.html:106
+#: app/templates/account/index.html:118
 msgid "Borrar la cuenta"
 msgstr "Delete the account"
 
-#: app/templates/account/index.html:107
+#: app/templates/account/index.html:119
 msgid "Se borra todo: respuestas, planes, rutinas, entrenos y registros. No hay copia ni forma de recuperarlo. Si quieres conservar algo, descárgalo antes."
 msgstr "Everything is deleted: answers, plans, routines, workouts and logs. There is no copy and no way to get it back. If you want to keep anything, download it first."
 
-#: app/templates/account/index.html:114
+#: app/templates/account/index.html:126
 msgid "Borrar mi cuenta y mis datos"
 msgstr "Delete my account and my data"
 
@@ -2876,7 +2927,11 @@ msgstr "Back to sign in"
 msgid "¿Has olvidado la contraseña?"
 msgstr "Forgotten your password?"
 
-#: app/templates/auth/register.html:19
+#: app/templates/auth/register.html:18
+msgid "Son datos de salud: los usamos solo para tu plan, nunca para publicidad ni analítica, y no se los damos a nadie."
+msgstr "This is health data: we use it only for your plan, never for advertising or analytics, and we give it to no one."
+
+#: app/templates/auth/register.html:21
 msgid "¿Ya tienes cuenta?"
 msgstr "Already have an account?"
 
@@ -2999,6 +3054,7 @@ msgid "Simular el fin de la suscripción"
 msgstr "Simulate the end of the subscription"
 
 #: app/templates/billing/fake_portal.html:22
+#: app/templates/privacy/withdraw.html:23
 msgid "Volver sin cambios"
 msgstr "Go back without changes"
 
@@ -4225,6 +4281,78 @@ msgstr "Count the real time in the gym, warm-up included."
 #: app/templates/onboarding/step_training.html:16
 msgid "Sirve para colocar más carbohidratos alrededor del entrenamiento."
 msgstr "This is used to put more carbohydrates around your training."
+
+#: app/templates/privacy/consent.html:3
+msgid "Tu consentimiento"
+msgstr "Your consent"
+
+#: app/templates/privacy/consent.html:7
+msgid "Antes de seguir, tu consentimiento"
+msgstr "Before you go on, your consent"
+
+#: app/templates/privacy/consent.html:8
+msgid "Para calcular y ajustar tu plan, Alza trata datos de salud: peso, medidas, sueño, comida, entrenos y molestias. Si indicas un tipo de dieta como halal o kosher, también puede revelar tus creencias. Son datos especialmente protegidos, así que necesitamos tu consentimiento explícito."
+msgstr "To calculate and adjust your plan, Alza processes health data: weight, measurements, sleep, food, workouts and aches. If you state a type of diet such as halal or kosher, it may also reveal your beliefs. This data has special protection, so we need your explicit consent."
+
+#: app/templates/privacy/consent.html:10
+msgid "Los usamos solo para tu plan: nunca para publicidad ni analítica."
+msgstr "We use it only for your plan: never for advertising or analytics."
+
+#: app/templates/privacy/consent.html:11
+msgid "No se los damos a nadie. Los pagos (Stripe) y el buscador de alimentos (Open Food Facts) no reciben ningún dato de salud."
+msgstr "We give it to no one. Payments (Stripe) and the food search (Open Food Facts) receive no health data at all."
+
+#: app/templates/privacy/consent.html:12
+msgid "Puedes retirarlo cuando quieras desde Cuenta: borraremos todos tus datos de salud."
+msgstr "You can withdraw it whenever you want from Account: we will delete all your health data."
+
+#: app/templates/privacy/consent.html:24
+msgid "Si prefieres no darlo, puedes descargar tus datos o borrar la cuenta desde"
+msgstr "If you prefer not to give it, you can download your data or delete the account from"
+
+#: app/templates/privacy/policy.html:7
+msgid "Borrador pendiente de revisión legal. Los datos entre corchetes los completará el responsable."
+msgstr "Draft pending legal review. The details in brackets will be completed by the controller."
+
+#: app/templates/privacy/policy.html:8
+msgid "Por ahora, esta política solo está en castellano."
+msgstr "For now, this policy is only available in Spanish."
+
+#: app/templates/privacy/withdraw.html:3
+msgid "Retirar el consentimiento"
+msgstr "Withdraw consent"
+
+#: app/templates/privacy/withdraw.html:7
+msgid "Retirar tu consentimiento"
+msgstr "Withdraw your consent"
+
+#: app/templates/privacy/withdraw.html:8
+msgid "Si lo retiras, dejamos de tratar tus datos de salud y los borramos ahora mismo, para siempre:"
+msgstr "If you withdraw it, we stop processing your health data and delete it right now, for good:"
+
+#: app/templates/privacy/withdraw.html:10
+msgid "tus respuestas del cuestionario, tu plan, tu rutina y su historial;"
+msgstr "your questionnaire answers, your plan, your routine and their history;"
+
+#: app/templates/privacy/withdraw.html:11
+msgid "pesajes, medidas, comida, pasos, entrenos y series;"
+msgstr "weigh-ins, measurements, food, steps, workouts and sets;"
+
+#: app/templates/privacy/withdraw.html:12
+msgid "tu material, molestias y lesiones."
+msgstr "your equipment, aches and injuries."
+
+#: app/templates/privacy/withdraw.html:14
+msgid "Tu cuenta y tu suscripción siguen: puedes volver a darlo cuando quieras y empezar de cero. Si quieres conservar algo, descarga antes tus datos desde Cuenta."
+msgstr "Your account and your subscription remain: you can give it again whenever you want and start from scratch. If you want to keep anything, download your data from Account first."
+
+#: app/templates/privacy/withdraw.html:18
+msgid "Tu contraseña, para confirmar"
+msgstr "Your password, to confirm"
+
+#: app/templates/privacy/withdraw.html:21
+msgid "Retirar y borrar mis datos de salud"
+msgstr "Withdraw and delete my health data"
 
 #: app/templates/review/index.html:10
 msgid "Revisión quincenal"

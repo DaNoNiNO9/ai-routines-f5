@@ -104,8 +104,10 @@ def find_by_email(email: str) -> User | None:
     return db.session.scalar(select(User).where(User.email == email.strip().lower()))
 
 
-def register_user(email: str, password: str, display_name: str) -> User:
-    """Create an account, recording consent now.
+def register_user(
+    email: str, password: str, display_name: str, health_consent: bool = False
+) -> User:
+    """Create an account, recording consent now (and the health-data consent, if given).
 
     Raises:
         WeakPasswordError: If the password violates the policy.
@@ -122,6 +124,11 @@ def register_user(email: str, password: str, display_name: str) -> User:
         display_name=display_name.strip(),
         consent_accepted_at=utcnow(),
     )
+    if health_consent:
+        from app.services.privacy import CONSENT_VERSION
+
+        user.health_consent_at = utcnow()
+        user.health_consent_version = CONSENT_VERSION
     db.session.add(user)
     try:
         db.session.commit()

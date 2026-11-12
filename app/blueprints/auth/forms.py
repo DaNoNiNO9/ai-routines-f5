@@ -39,6 +39,16 @@ class RegisterForm(FlaskForm):
         ),
         validators=[DataRequired(message=_l("Es necesario aceptar el aviso."))],
     )
+    health_consent = BooleanField(
+        _l(
+            "Doy mi consentimiento explícito para que Alza trate mis datos de salud (peso, "
+            "medidas, sueño, comida, entrenos y molestias) y, si lo indico, mi tipo de dieta, "
+            "solo para calcular y ajustar mi plan. Puedo retirarlo cuando quiera."
+        ),
+        validators=[
+            DataRequired(message=_l("Sin este consentimiento no podemos calcular tu plan."))
+        ],
+    )
 
 
 class LoginForm(FlaskForm):

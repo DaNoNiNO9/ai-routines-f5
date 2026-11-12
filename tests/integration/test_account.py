@@ -230,6 +230,7 @@ def test_deleting_the_account_erases_everything(client: FlaskClient, seeded: SQL
         follow_redirects=True,
     )
     assert "se han borrado" in done.get_data(as_text=True)
+    assert done.history[0].headers["Clear-Site-Data"] == '"cache", "storage"'
     seeded.session.expire_all()
 
     for model in (User, Profile, Plan, WeightLog, WorkoutSession, SetLog):

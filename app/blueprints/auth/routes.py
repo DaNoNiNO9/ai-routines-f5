@@ -63,7 +63,10 @@ def register() -> str | WerkzeugResponse:
     if form.validate_on_submit():
         try:
             user = auth_service.register_user(
-                form.email.data or "", form.password.data or "", form.display_name.data or ""
+                form.email.data or "",
+                form.password.data or "",
+                form.display_name.data or "",
+                health_consent=bool(form.health_consent.data),
             )
         except auth_service.WeakPasswordError as exc:
             for message in password_messages(exc.problems):
