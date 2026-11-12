@@ -100,6 +100,25 @@ Tres reglas que hay que respetar:
 
 Selección de idioma: `?lang=en` (se recuerda en la sesión) → sesión → idioma de la cuenta → `Accept-Language` → castellano.
 
+## Escáner de códigos de barras
+
+1. Si el navegador trae lector propio (`BarcodeDetector` con EAN/UPC: Chrome y Edge en Android), se usa ese.
+2. Si no, pero puede usar la cámara (`getUserMedia`: **Safari en iPhone**, escritorio), lee con **ZXing** en JavaScript (`app/static/vendor/zxing-browser-0.2.1.min.js`, MIT), que solo se descarga al pulsar «Escanear».
+3. Sin cámara, la entrada a mano con su explicación.
+
+La cámara solo funciona en un **contexto seguro**: `https://` o `localhost`. Desde el móvil, `http://192.168.x.x:5000` no la ofrece.
+
+**Probarlo en un iPhone** (5 minutos):
+
+1. Arranca la app accesible: `flask run --host 0.0.0.0`.
+2. Abre un túnel HTTPS, por ejemplo con Cloudflare (gratis y sin cuenta): `winget install Cloudflare.cloudflared` y luego `cloudflared tunnel --url http://localhost:5000`. Copia la dirección `https://….trycloudflare.com` que imprime.
+3. En el iPhone, abre esa dirección en Safari, entra con una cuenta con Pro (en modo simulado, *Precios › Empezar la prueba › Pagar (simulado)*) y ve a *Diario › Añadir alimento › Escanear*.
+4. Safari pide permiso para la cámara: acéptalo y apunta a cualquier código de un envase. Al leerlo, el formulario se envía solo.
+
+Para forzar ZXing en un navegador que sí tiene lector propio (útil para probar en Android o escritorio), añade `?lector=zxing` a la dirección del buscador.
+
+Probado en local con Edge y una cámara falsa que emite un EAN-13 real (`--use-file-for-fake-video-capture`): con `?lector=zxing` leyó el código en 0,6 s y abrió el producto.
+
 ## Pagos con Stripe
 
 Sin claves, la app usa una pasarela **simulada** (`BILLING_BACKEND=fake`): todo el flujo funciona y no se cobra nada. La real se activa por configuración; el código es el mismo.

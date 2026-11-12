@@ -37,14 +37,14 @@
     <input id="food-q" class="field-input" type="search" name="q" value="{{ query }}" placeholder="{{ _('Pollo, yogur griego, avena…') }}" autocomplete="off" {% if not (query or barcode) %}autofocus{% endif %}>
     <button type="submit" class="button">{{ _('Buscar') }}</button>
   </form>
-  <form method="get" class="food-barcode" data-barcode>
+  <form method="get" class="food-barcode" data-barcode data-zxing="{{ url_for('static', filename='vendor/zxing-browser-0.2.1.min.js') }}">
     <input type="hidden" name="fecha" value="{{ day.isoformat() }}">
     <label class="field-label barcode-label" for="food-code">{{ icon('scan-barcode') }}{{ _('Código de barras') }}</label>
     <input id="food-code" class="field-input" type="text" name="codigo" value="{{ barcode }}" placeholder="{{ _('Los números de debajo de las barras') }}" inputmode="numeric" pattern="[0-9 ]*" autocomplete="off" enterkeyhint="search">
     <button type="submit" class="button button-secondary">{{ _('Buscar código') }}</button>
     <button type="button" class="button button-secondary" data-scan hidden>{{ icon('scan-barcode') }}{{ _('Escanear') }}</button>
   </form>
-  <p class="help" data-no-scan>{{ _('En este navegador no se puede escanear con la cámara (pasa en iPhone y en ordenadores): escribe los 8 o 13 números que hay debajo de las barras del envase y pulsa «Buscar código».') }}</p>
+  <p class="help" data-no-scan>{{ _('Aquí no se puede usar la cámara (hace falta una conexión segura y dar permiso): escribe los 8 o 13 números que hay debajo de las barras del envase y pulsa «Buscar código».') }}</p>
   <div class="scanner" data-scanner hidden>
     <video playsinline muted></video>
     <p class="meta">{{ _('Apunta al código de barras del envase.') }}</p>

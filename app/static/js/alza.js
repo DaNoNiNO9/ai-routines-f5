@@ -546,46 +546,59 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/* Código de barras con la cámara (BarcodeDetector: Chrome y Edge en Android). Donde no
-   existe, el botón no aparece y el código se escribe a mano. */
+/* Código de barras con la cámara.
+   1) Lector propio del navegador (BarcodeDetector: Chrome y Edge en Android), si lee EAN/UPC.
+   2) Si no, ZXing en JavaScript con la cámara (getUserMedia): Safari en iPhone, escritorio.
+      La librería (430 KB) solo se descarga al pulsar «Escanear».
+   3) Sin cámara (por ejemplo, sin HTTPS), queda la entrada a mano con su explicación. */
 document.addEventListener("DOMContentLoaded", function () {
   "use strict";
   var form = document.querySelector("form[data-barcode]");
   var button = form && form.querySelector("[data-scan]");
   var box = document.querySelector("[data-scanner]");
-  if (!button || !box || !("BarcodeDetector" in window) || !navigator.mediaDevices) {
+  var canUseCamera = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && window.isSecureContext;
+  if (!button || !box || !canUseCamera) {
     return;
   }
-  /* Tener la API no basta: en Windows suele existir sin saber leer ningún formato. */
+  var video = box.querySelector("video");
   var wanted = ["ean_13", "ean_8", "upc_a", "upc_e"];
-  window.BarcodeDetector.getSupportedFormats().then(function (formats) {
-    if (!wanted.some(function (format) { return formats.indexOf(format) !== -1; })) {
-      return;
-    }
+  var forceZxing = /[?&]lector=zxing\b/.test(window.location.search);
+  var stopCurrent = null;
+
+  function showButton() {
     button.hidden = false;
     document.querySelectorAll("[data-no-scan]").forEach(function (hint) { hint.hidden = true; });
-  }).catch(function () { /* sin escáner: queda la entrada a mano */ });
-  var video = box.querySelector("video");
-  var stream = null;
-  var running = false;
+  }
+
+  function found(code) {
+    stop();
+    form.elements.codigo.value = code;
+    form.requestSubmit();
+  }
 
   function stop() {
-    running = false;
-    if (stream) {
-      stream.getTracks().forEach(function (track) { track.stop(); });
-      stream = null;
+    if (stopCurrent) {
+      stopCurrent();
+      stopCurrent = null;
     }
     box.hidden = true;
   }
 
-  button.addEventListener("click", function () {
-    var detector = new window.BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });
+  function startNative() {
+    var detector = new window.BarcodeDetector({ formats: wanted });
+    var running = true;
+    var stream = null;
+    stopCurrent = function () {
+      running = false;
+      if (stream) {
+        stream.getTracks().forEach(function (track) { track.stop(); });
+      }
+    };
     navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
       .then(function (media) {
         stream = media;
         video.srcObject = media;
         box.hidden = false;
-        running = true;
         return video.play();
       })
       .then(function () {
@@ -595,9 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           detector.detect(video).then(function (codes) {
             if (codes.length) {
-              form.elements.codigo.value = codes[0].rawValue;
-              stop();
-              form.requestSubmit();
+              found(codes[0].rawValue);
             } else {
               setTimeout(look, 250);
             }
@@ -605,7 +616,57 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         look();
       })
-      .catch(function () { stop(); });
+      .catch(stop);
+  }
+
+  function loadZxing() {
+    if (window.ZXingBrowser) {
+      return Promise.resolve(window.ZXingBrowser);
+    }
+    return new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.src = form.dataset.zxing;
+      script.onload = function () { resolve(window.ZXingBrowser); };
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function startZxing() {
+    box.hidden = false;
+    loadZxing().then(function (ZXing) {
+      var reader = new ZXing.BrowserMultiFormatReader();
+      return reader.decodeFromConstraints(
+        { video: { facingMode: "environment" }, audio: false },
+        video,
+        function (result, error, controls) {
+          if (result) {
+            controls.stop();
+            found(result.getText());
+          }
+        }
+      );
+    }).then(function (controls) {
+      stopCurrent = function () { controls.stop(); };
+    }).catch(stop);
+  }
+
+  var native = Promise.resolve(false);
+  if ("BarcodeDetector" in window && !forceZxing) {
+    native = window.BarcodeDetector.getSupportedFormats().then(function (formats) {
+      return wanted.some(function (format) { return formats.indexOf(format) !== -1; });
+    }).catch(function () { return false; });
+  }
+  native.then(function (hasNative) {
+    showButton();
+    button.dataset.reader = hasNative ? "native" : "zxing";
+    button.addEventListener("click", function () {
+      if (hasNative) {
+        startNative();
+      } else {
+        startZxing();
+      }
+    });
   });
   box.querySelector("[data-scan-stop]").addEventListener("click", stop);
   window.addEventListener("pagehide", stop);

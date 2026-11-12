@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 16:39+0100\n"
+"POT-Creation-Date: 2026-11-12 22:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -3588,8 +3588,8 @@ msgid "y"
 msgstr "and"
 
 #: app/templates/main/about.html:45
-msgid "la interacción y las gráficas, con licencia MIT."
-msgstr "interaction and charts, under the MIT licence."
+msgid "la interacción, las gráficas y la lectura de códigos de barras con la cámara, con licencia MIT."
+msgstr "interaction, charts and reading barcodes with the camera, under the MIT licence."
 
 #: app/templates/main/about.html:48
 msgid "La tabla básica de alimentos son valores medios de referencia (BEDCA y USDA FoodData Central) elaborados por Alza."
@@ -4472,8 +4472,8 @@ msgid "Escanear"
 msgstr "Scan"
 
 #: app/templates/tracking/foods.html:47
-msgid "En este navegador no se puede escanear con la cámara (pasa en iPhone y en ordenadores): escribe los 8 o 13 números que hay debajo de las barras del envase y pulsa «Buscar código»."
-msgstr "This browser cannot scan with the camera (it happens on iPhone and on computers): type the 8 or 13 digits under the bars on the pack and press «Look up code»."
+msgid "Aquí no se puede usar la cámara (hace falta una conexión segura y dar permiso): escribe los 8 o 13 números que hay debajo de las barras del envase y pulsa «Buscar código»."
+msgstr "The camera cannot be used here (it needs a secure connection and your permission): type the 8 or 13 digits under the bars on the pack and press «Look up code»."
 
 #: app/templates/tracking/foods.html:50
 msgid "Apunta al código de barras del envase."

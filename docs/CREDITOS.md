@@ -28,7 +28,9 @@ Los ejercicios sin vídeo se muestran con sus dos fotos alternándose.
 | Alpine.js 3.17.2 (`app/static/vendor/alpine-3.17.2.min.js`) | [alpinejs/alpine](https://github.com/alpinejs/alpine), build `dist/cdn.min.js` del paquete npm `alpinejs@3.17.2` | MIT (`app/static/vendor/LICENSE-alpinejs.txt`) | Interacciones pequeñas sin build: alternar la ilustración inicial/final de cada ejercicio. Requiere `'unsafe-eval'` en la CSP (T-06). |
 | Chart.js 4.5.1 (`app/static/vendor/chart-4.5.1.umd.js`) | [chartjs/Chart.js](https://github.com/chartjs/Chart.js), build `dist/chart.umd.js` del paquete npm `chart.js@4.5.1` | MIT (`app/static/vendor/LICENSE-chartjs.txt`) | Gráficas del panel y del plan (peso con media móvil, reparto de macros, componentes del gasto). Se carga solo en las páginas que la usan. |
 
-Ambas se descargaron de jsDelivr el 2026-09-09 y se sirven desde el propio servidor (`/static/vendor/`); nada se carga de terceros en caliente.
+| ZXing para navegador 0.2.1 (`app/static/vendor/zxing-browser-0.2.1.min.js`) | [zxing-js/browser](https://github.com/zxing-js/browser), build `umd/zxing-browser.min.js` del paquete npm `@zxing/browser@0.2.1` (incluye `@zxing/library`) | MIT (`app/static/vendor/LICENSE-zxing-browser.txt`) | Leer códigos de barras con la cámara donde el navegador no trae lector propio (Safari en iPhone, escritorio). Se descarga solo al pulsar «Escanear». Descargada el 2026-11-12. |
+
+Alpine y Chart.js se descargaron de jsDelivr el 2026-09-09 y se sirven desde el propio servidor (`/static/vendor/`); nada se carga de terceros en caliente.
 
 ## Tipografías
 

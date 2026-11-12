@@ -163,5 +163,15 @@ def test_barcode_entry_is_visible_where_scanning_is_not_possible(
     html = client.get("/diario/alimentos").get_data(as_text=True)
     assert 'class="field-label barcode-label"' in html
     assert "data-no-scan" in html
-    assert "pasa en iPhone" in html
+    assert "hace falta una conexión segura" in html
+    assert "zxing-browser-0.2.1.min.js" in html
     assert 'inputmode="numeric"' in html
+
+
+def test_the_zxing_fallback_is_served_locally(client: FlaskClient) -> None:
+    """Plan B for iPhone: same origin (the CSP allows nothing else) and only on demand."""
+    response = client.get("/static/vendor/zxing-browser-0.2.1.min.js")
+    assert response.status_code == 200
+    assert b"BrowserMultiFormatReader" in response.data
+    assert client.get("/static/vendor/LICENSE-zxing-browser.txt").status_code == 200
+    assert "zxing" not in client.get("/").get_data(as_text=True)  # no pesa en otras páginas
