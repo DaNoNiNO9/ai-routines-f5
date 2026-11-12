@@ -9,8 +9,9 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import UTC, date, datetime, time, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sqlalchemy import case, func, select
 from sqlalchemy.orm import selectinload
@@ -37,6 +38,7 @@ from app.services import dashboard, plans
 EXTRA_SETS_ALLOWED = 2
 EPLEY_DIVISOR = 30
 MAX_HISTORY = 50
+STREAK_LOOKBACK_WEEKS = 104
 
 
 class WorkoutError(Exception):
@@ -505,6 +507,100 @@ def _best_1rm_before(user: User, exercise_id: int, before: WorkoutSession) -> fl
     if not rows:
         return None
     return max(estimated_1rm(row.weight_kg, row.reps) for row in rows)
+
+
+@dataclass(frozen=True)
+class NewRecord:
+    """A set that just beat the person's best estimated max for that exercise."""
+
+    exercise: Exercise
+    weight_kg: float
+    reps: int
+    est_1rm: float
+    previous_1rm: float
+
+
+def new_record(user: User, session: WorkoutSession, row: SetLog) -> NewRecord | None:
+    """The record ``row`` sets, or ``None``.
+
+    Only against finished sessions: the first time an exercise is done there is
+    nothing to beat, so it is not celebrated. Within the session only the set
+    that goes past the others counts, so repeating it is not a second record.
+    """
+    if row.set_type != SetType.WORKING or row.reps < 1:
+        return None
+    previous = _best_1rm_before(user, row.exercise_id, session)
+    if previous is None:
+        return None
+    best = estimated_1rm(row.weight_kg, row.reps)
+    others = [
+        estimated_1rm(other.weight_kg, other.reps)
+        for other in session.sets
+        if other.id != row.id
+        and other.exercise_id == row.exercise_id
+        and other.set_type == SetType.WORKING
+        and other.reps >= 1
+    ]
+    if best <= previous + 0.01 or (others and best <= max(others) + 0.01):
+        return None
+    return NewRecord(
+        exercise=row.exercise,
+        weight_kg=row.weight_kg,
+        reps=row.reps,
+        est_1rm=best,
+        previous_1rm=previous,
+    )
+
+
+@dataclass(frozen=True)
+class Streak:
+    """Weeks in a row meeting the training days, with one day of slack."""
+
+    weeks: int
+    this_week: int
+    target: int
+
+    @property
+    def met_this_week(self) -> bool:
+        """This week already counts."""
+        return self.this_week >= self.target
+
+
+def weekly_streak(user: User, today: date, planned_days: int) -> Streak:
+    """Consecutive weeks (Monday to Sunday) with enough finished sessions.
+
+    A week counts with the planned days minus one: missing one session does not
+    break anything. The week in progress never breaks the streak; it only adds
+    to it once it is met.
+    """
+    target = max(1, planned_days - 1)
+    try:
+        zone = ZoneInfo(user.timezone)
+    except (ZoneInfoNotFoundError, ValueError):
+        zone = ZoneInfo("UTC")
+    this_monday = today - timedelta(days=today.weekday())
+    since = this_monday - timedelta(weeks=STREAK_LOOKBACK_WEEKS)
+    started = db.session.scalars(
+        select(WorkoutSession.started_at).where(
+            WorkoutSession.user_id == user.id,
+            WorkoutSession.status == WorkoutStatus.COMPLETED,
+            WorkoutSession.deleted_at.is_(None),
+            WorkoutSession.started_at >= datetime.combine(since, time.min, tzinfo=UTC),
+        )
+    ).all()
+    per_week: dict[date, int] = {}
+    for moment in started:
+        aware = moment if moment.tzinfo else moment.replace(tzinfo=UTC)
+        day = aware.astimezone(zone).date()
+        monday = day - timedelta(days=day.weekday())
+        per_week[monday] = per_week.get(monday, 0) + 1
+    this_week = per_week.get(this_monday, 0)
+    week = this_monday if this_week >= target else this_monday - timedelta(weeks=1)
+    weeks = 0
+    while per_week.get(week, 0) >= target:
+        weeks += 1
+        week -= timedelta(weeks=1)
+    return Streak(weeks=weeks, this_week=this_week, target=target)
 
 
 def summarise(

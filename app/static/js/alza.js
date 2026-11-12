@@ -536,3 +536,12 @@
     });
   });
 })();
+
+/* Marca nueva: una vibración corta para celebrarla (si el móvil vibra y no se pidió menos movimiento). */
+document.addEventListener("DOMContentLoaded", function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce && document.querySelector("[data-vibrate]") && navigator.vibrate) {
+    navigator.vibrate([80, 60, 80, 60, 160]);
+  }
+});

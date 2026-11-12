@@ -12,6 +12,16 @@
   <p><a class="button button-small button-secondary" href="#cierre">{{ _('Terminar sesión') }}</a></p>
 </section>
 
+{% if record %}
+  <div class="pr-banner" role="status" data-vibrate>
+    {{ icon('trophy') }}
+    <div>
+      <p class="pr-title">{{ _('¡Marca nueva en %(name)s!', name=record.exercise.display_name) }}</p>
+      <p class="pr-detail">{{ _('%(kg)s × %(reps)s: tu máximo estimado sube de %(before)s a %(after)s.', kg=record.weight_kg|kg(2), reps=record.reps, before=record.previous_1rm|kg, after=record.est_1rm|kg) }}</p>
+    </div>
+  </div>
+{% endif %}
+
 {% if rest_seconds %}
   <div class="rest-timer" x-data="restTimer({{ rest_seconds }}, {{ rest_started or 0 }})" x-show="visible" role="timer" aria-live="polite">
     <div class="rest-timer-main">

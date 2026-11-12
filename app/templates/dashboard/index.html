@@ -101,6 +101,23 @@
       <p class="help">{{ _('Pésate al levantarte, después del baño y antes de desayunar. Un día suelto no dice nada: el peso sube y baja con el agua y la sal.') }}</p>
     </article>
 
+    {% if streak %}
+      <article class="card streak-card">
+        <h2 class="card-title">{{ icon('flame') }}{{ _('Constancia') }}</h2>
+        {% if streak.weeks %}
+          <p class="big-number">{{ ngettext('%(num)s semana', '%(num)s semanas', streak.weeks) }}</p>
+          <p>{{ ngettext('cumpliendo tus entrenos.', 'seguidas cumpliendo tus entrenos.', streak.weeks) }}</p>
+        {% else %}
+          <p class="big-number">{{ _('Esta semana') }}</p>
+          <p>{{ ngettext('Con %(num)s sesión, la semana cuenta.', 'Con %(num)s sesiones, la semana cuenta.', streak.target) }}</p>
+        {% endif %}
+        <ol class="streak-dots" aria-label="{{ _('Sesiones de esta semana: %(done)s de %(target)s', done=streak.this_week, target=streak.target) }}">
+          {% for n in range(streak.target) %}<li class="{{ 'is-done' if n < streak.this_week else '' }}"></li>{% endfor %}
+        </ol>
+        <p class="meta">{% if streak.met_this_week %}{{ _('Esta semana ya cuenta. Cada sesión de más, mejor.') }}{% else %}{{ _('Esta semana: %(done)s de %(target)s. Saltarte un día no rompe la racha.', done=streak.this_week, target=streak.target) }}{% endif %}</p>
+      </article>
+    {% endif %}
+
     {% if arrival and arrival.arrival.status != 'no_target' %}
       {% set a = arrival.arrival %}
       <article class="card arrival-card">

@@ -85,8 +85,14 @@ def session(session_id: int) -> str | WerkzeugResponse:
     if current.status is not WorkoutStatus.IN_PROGRESS:
         return redirect(url_for("workouts.summary", session_id=current.id))
     blocks = workouts.session_blocks(current_user, current, profile, _equipment())
+    record = None
+    record_id = request.args.get("marca", type=int)
+    if record_id:
+        row = next((item for item in current.sets if item.id == record_id), None)
+        record = workouts.new_record(current_user, current, row) if row else None
     return render_template(
         "workouts/session.html",
+        record=record,
         session=current,
         blocks=blocks,
         rest_seconds=request.args.get("descanso", type=int),
@@ -125,12 +131,14 @@ def log_set(session_id: int) -> WerkzeugResponse:
         flash(str(ERROR_TEXTS.get(exc.reason, exc.reason)), "error")
         return redirect(url_for("workouts.session", session_id=current.id))
     db.session.commit()
+    record = workouts.new_record(current_user, current, row)
     target = url_for(
         "workouts.session",
         session_id=current.id,
         descanso=item.rest_seconds,
         t=int(row.completed_at.timestamp()),
         hecha=row.id,
+        marca=row.id if record else None,
     )
     return redirect(f"{target}#ex-{item.id}")
 

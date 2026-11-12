@@ -716,3 +716,24 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .set-pending { border-style: dashed; }
 .set-pending .set-values { color: var(--warning); }
 .offline-card { max-width: 36rem; margin: 0 auto; }
+
+/* Marca nueva y constancia */
+.pr-banner {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  margin: 0 0 var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  background: var(--accent-soft);
+  animation: alza-celebra 600ms ease-out;
+}
+.pr-banner > .icon { width: 2rem; height: 2rem; color: var(--accent); flex: none; }
+.pr-title { margin: 0; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
+.pr-detail { margin: 0.2rem 0 0; color: var(--text-muted); }
+@keyframes alza-celebra { 0% { transform: scale(0.96); opacity: 0; } 60% { transform: scale(1.02); opacity: 1; } 100% { transform: none; } }
+.streak-dots { list-style: none; display: flex; gap: 0.4rem; padding: 0; margin: var(--space-2) 0; }
+.streak-dots li { width: 1.1rem; height: 1.1rem; border-radius: 999px; border: 2px solid var(--border-strong); }
+.streak-dots li.is-done { background: var(--accent); border-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .pr-banner { animation: none; } }
