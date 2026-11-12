@@ -203,8 +203,8 @@ MOVEMENT_PATTERN: Mapping[MovementPattern, Any] = {
     MovementPattern.VERTICAL_PUSH: _l("Empujar hacia arriba"),
     MovementPattern.HORIZONTAL_PULL: _l("Tirar hacia ti"),
     MovementPattern.VERTICAL_PULL: _l("Tirar desde arriba"),
-    MovementPattern.KNEE_DOMINANT: _l("Sentadillas y similares"),
-    MovementPattern.HIP_DOMINANT: _l("Peso muerto y similares"),
+    MovementPattern.KNEE_DOMINANT: _l("Empujar con las piernas"),
+    MovementPattern.HIP_DOMINANT: _l("Estirar la cadera"),
     MovementPattern.CORE: _l("Abdomen y zona media"),
     MovementPattern.ISOLATION: _l("Un solo músculo"),
 }

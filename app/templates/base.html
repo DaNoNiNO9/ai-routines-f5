@@ -81,6 +81,14 @@
       <p class="meta">v{{ app_version }} · {{ current_year }}</p>
     </div>
   </footer>
+  {% if current_user.is_authenticated %}
+    <template id="sheet-template">
+      <dialog id="exercise-sheet" class="sheet-dialog" aria-label="{{ _('Ficha del ejercicio') }}">
+        <form method="dialog"><button type="submit" class="sheet-close" aria-label="{{ _('Cerrar') }}">×</button></form>
+        <div class="sheet-body"></div>
+      </dialog>
+    </template>
+  {% endif %}
   {# alza.js va primero: Alpine arranca en un microtask nada más cargar, así que
      sus componentes tienen que estar registrados antes (alpine:init no espera). #}
   <script defer src="{{ url_for('static', filename='js/alza.js') }}"></script>

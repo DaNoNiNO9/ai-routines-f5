@@ -5,12 +5,14 @@ from __future__ import annotations
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
+from sqlalchemy import select
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import labels
 from app.engine.routines.generator import build_routine
 from app.extensions import db
-from app.services import dashboard, onboarding, plans
+from app.models import Exercise
+from app.services import dashboard, exercise_media, onboarding, plans
 
 bp = Blueprint("training", __name__, url_prefix="/entrenamiento")
 
@@ -69,6 +71,9 @@ def day(index: int) -> str | WerkzeugResponse:
         for item in current.exercises
     }
     frames = {item.id: dashboard.image_frames(item.exercise) for item in current.exercises}
+    has_video = {
+        item.id: exercise_media.video_for(item.exercise) is not None for item in current.exercises
+    }
     days = active.days
     position = days.index(current)
     return render_template(
@@ -77,11 +82,34 @@ def day(index: int) -> str | WerkzeugResponse:
         day=current,
         alternatives=alternatives,
         frames=frames,
+        has_video=has_video,
         previous_day=days[position - 1] if position > 0 else None,
         following_day=days[position + 1] if position + 1 < len(days) else None,
         weekly_rir=active.details.get("weekly_rir", []),
         labels=labels,
     )
+
+
+@bp.get("/ejercicio/<slug>")
+@login_required
+def exercise(slug: str) -> str:
+    """The exercise sheet: how it is done (video or animation, steps) and your record.
+
+    With ``?parcial=1`` only the sheet is rendered, so the session and the day
+    page can open it on top without leaving; without JavaScript it is a page.
+    """
+    item = db.session.scalar(
+        select(Exercise).where(Exercise.slug == slug, Exercise.is_active.is_(True))
+    )
+    if item is None:
+        abort(404)
+    context = exercise_media.sheet(current_user, item, onboarding.current_profile(current_user))
+    template = (
+        "training/_exercise_sheet.html"
+        if request.args.get("parcial")
+        else ("training/exercise.html")
+    )
+    return render_template(template, labels=labels, **context)
 
 
 @bp.post("/dia/<int:index>/cambiar")

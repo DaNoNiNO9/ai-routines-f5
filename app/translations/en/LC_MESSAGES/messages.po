@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 10:46+0100\n"
+"POT-Creation-Date: 2026-11-12 11:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -500,12 +500,12 @@ msgid "Tirar desde arriba"
 msgstr "Pull down from above"
 
 #: app/labels.py:206
-msgid "Sentadillas y similares"
-msgstr "Squats and similar"
+msgid "Empujar con las piernas"
+msgstr "Push with the legs"
 
 #: app/labels.py:207
-msgid "Peso muerto y similares"
-msgstr "Deadlifts and similar"
+msgid "Estirar la cadera"
+msgstr "Extend the hips"
 
 #: app/labels.py:208
 msgid "Abdomen y zona media"
@@ -1286,6 +1286,7 @@ msgid "Hora"
 msgstr "Time"
 
 #: app/blueprints/onboarding/routes.py:205
+#: app/templates/training/_exercise_sheet.html:29
 msgid "Material"
 msgstr "Equipment"
 
@@ -1537,16 +1538,16 @@ msgstr "Activity saved."
 msgid "Medidas guardadas."
 msgstr "Measurements saved."
 
-#: app/blueprints/training/routes.py:114
+#: app/blueprints/training/routes.py:142
 msgid "No hay otro ejercicio para ese hueco con tu material y tus limitaciones."
 msgstr "There is no other exercise for that slot with your equipment and your limits."
 
-#: app/blueprints/training/routes.py:121
+#: app/blueprints/training/routes.py:149
 #, python-format
 msgid "%(old)s fuera: ahora toca %(new)s. No volverá a aparecer en tus rutinas."
 msgstr "%(old)s is out: %(new)s takes its place. It will not show up in your routines again."
 
-#: app/blueprints/training/routes.py:140
+#: app/blueprints/training/routes.py:168
 msgid "Vuelve a estar disponible para las próximas rutinas."
 msgstr "It is available again for the next routines."
 
@@ -1656,12 +1657,12 @@ msgid "Sesión abandonada."
 msgstr "Session dropped."
 
 #: app/blueprints/workouts/routes.py:257
-msgid "1RM estimado (kg)"
-msgstr "Estimated 1RM (kg)"
+msgid "Máximo estimado (kg)"
+msgstr "Estimated max (kg)"
 
 #: app/blueprints/workouts/routes.py:258
-msgid "Carga máxima (kg)"
-msgstr "Top load (kg)"
+msgid "Peso máximo (kg)"
+msgstr "Top weight (kg)"
 
 #. código del motor: body_fat.declared
 #: app/engine/messages.py:46
@@ -2472,7 +2473,7 @@ msgstr "Main navigation"
 msgid "Inicio"
 msgstr "Home"
 
-#: app/templates/base.html:28
+#: app/templates/base.html:28 app/templates/training/exercise.html:7
 msgid "Entreno"
 msgstr "Training"
 
@@ -2518,6 +2519,14 @@ msgstr "Switch to the dark theme"
 #: app/templates/base.html:79
 msgid "es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
 msgstr "is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
+
+#: app/templates/base.html:86
+msgid "Ficha del ejercicio"
+msgstr "Exercise sheet"
+
+#: app/templates/base.html:87
+msgid "Cerrar"
+msgstr "Close"
 
 #: app/templates/account/index.html:10
 msgid "Tus datos y tu cuenta"
@@ -2727,8 +2736,8 @@ msgstr "Next session"
 
 #: app/templates/dashboard/index.html:66
 #: app/templates/onboarding/result.html:76 app/templates/training/day.html:4
-#: app/templates/training/day.html:9 app/templates/training/day.html:82
-#: app/templates/training/day.html:84 app/templates/training/routine.html:39
+#: app/templates/training/day.html:9 app/templates/training/day.html:74
+#: app/templates/training/day.html:76 app/templates/training/routine.html:39
 #: app/templates/training/routine.html:49 app/templates/workouts/session.html:9
 #: app/templates/workouts/summary.html:10
 #, python-format
@@ -3521,6 +3530,68 @@ msgstr "Calf"
 msgid "Todavía no hay mediciones. De cuello, cintura y cadera sale tu porcentaje de grasa."
 msgstr "No measurements yet. Your body fat percentage comes from neck, waist and hip."
 
+#: app/templates/training/_exercise_sheet.html:10
+#, python-format
+msgid "Vídeo de %(name)s"
+msgstr "Video of %(name)s"
+
+#: app/templates/training/_exercise_sheet.html:11
+#, python-format
+msgid "Vídeo de %(author)s en wger"
+msgstr "Video by %(author)s on wger"
+
+#: app/templates/training/_exercise_sheet.html:11
+msgid "original"
+msgstr "original"
+
+#: app/templates/training/_exercise_sheet.html:15
+#, python-format
+msgid "%(name)s: posición inicial y final"
+msgstr "%(name)s: start and end position"
+
+#: app/templates/training/_exercise_sheet.html:23
+msgid "Músculos"
+msgstr "Muscles"
+
+#: app/templates/training/_exercise_sheet.html:35
+msgid "Cómo se hace"
+msgstr "How to do it"
+
+#: app/templates/training/_exercise_sheet.html:35
+msgid "en inglés"
+msgstr "in English"
+
+#: app/templates/training/_exercise_sheet.html:43
+msgid "Tu historial"
+msgstr "Your record"
+
+#: app/templates/training/_exercise_sheet.html:46
+msgid "mejor serie"
+msgstr "best set"
+
+#: app/templates/training/_exercise_sheet.html:47
+msgid "máximo estimado"
+msgstr "estimated max"
+
+#: app/templates/training/_exercise_sheet.html:48
+msgid "sesión"
+msgid_plural "sesiones"
+msgstr[0] "session"
+msgstr[1] "sessions"
+
+#: app/templates/training/_exercise_sheet.html:53
+msgid "Ver tu evolución"
+msgstr "See your progress"
+
+#: app/templates/training/_exercise_sheet.html:55
+msgid "Todavía no lo has hecho."
+msgstr "You have not done it yet."
+
+#: app/templates/training/_exercise_sheet.html:55
+#, python-format
+msgid "Para empezar, unos %(kg)s."
+msgstr "To start, about %(kg)s."
+
 #: app/templates/training/day.html:13 app/templates/training/routine.html:13
 msgid "Reserva por semana"
 msgstr "Reps in reserve by week"
@@ -3566,39 +3637,35 @@ msgstr "To move up"
 msgid "Unilateral: las series son por lado."
 msgstr "Unilateral: the sets are per side."
 
-#: app/templates/training/day.html:52
-msgid "Cómo se hace"
-msgstr "How to do it"
+#: app/templates/training/day.html:50
+msgid "Ver el vídeo y cómo se hace"
+msgstr "Watch the video and how it is done"
 
-#: app/templates/training/day.html:52
-msgid "en inglés"
-msgstr "in English"
+#: app/templates/training/day.html:50
+msgid "Ver cómo se hace"
+msgstr "See how it is done"
 
-#: app/templates/training/day.html:58
+#: app/templates/training/day.html:53
 msgid "Alternativas"
 msgstr "Alternatives"
 
-#: app/templates/training/day.html:66
+#: app/templates/training/day.html:61
 msgid "No me gusta: cámbialo"
 msgstr "I do not like it: swap it"
 
-#: app/templates/training/day.html:68
+#: app/templates/training/day.html:63
 msgid "Se queda fuera de esta rutina y de las siguientes. Puedes deshacerlo desde la rutina."
 msgstr "It stays out of this routine and the next ones. You can undo it from the routine."
 
-#: app/templates/training/day.html:70
+#: app/templates/training/day.html:65
 msgid "Ninguna con tu material y tus molestias."
 msgstr "None with your equipment and aches."
 
-#: app/templates/training/day.html:74
-msgid "Buscar vídeo"
-msgstr "Search for a video"
-
-#: app/templates/training/day.html:81
+#: app/templates/training/day.html:73
 msgid "Otros días"
 msgstr "Other days"
 
-#: app/templates/training/day.html:83
+#: app/templates/training/day.html:75
 msgid "Toda la rutina"
 msgstr "The whole routine"
 

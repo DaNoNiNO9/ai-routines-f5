@@ -26,7 +26,7 @@ def _with_routine(client: FlaskClient, email: str = "gustos@example.com") -> Non
 
 def _day_exercises(client: FlaskClient, index: int = 1) -> list[str]:
     page = client.get(f"/entrenamiento/dia/{index}").get_data(as_text=True)
-    return re.findall(r'<h2 class="card-title">([^<]+)</h2>', page)
+    return re.findall(r'<h2 class="card-title">(?:<a [^>]*>)?([^<]+)', page)
 
 
 def _first_item_id(client: FlaskClient, index: int = 1) -> int:

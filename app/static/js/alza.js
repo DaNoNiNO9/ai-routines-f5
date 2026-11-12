@@ -241,3 +241,85 @@
     });
   });
 })();
+
+/* Ficha de ejercicio: los enlaces con data-sheet la abren encima, sin salir de la sesión.
+   Sin JavaScript (o si algo falla) el enlace lleva a la página de la ficha. */
+(function () {
+  "use strict";
+
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function prepareVideos(root) {
+    root.querySelectorAll("video[data-pausable]").forEach(function (video) {
+      if (reduceMotion) {
+        video.removeAttribute("autoplay");
+        video.pause();
+        video.controls = true;
+        return;
+      }
+      video.addEventListener("click", function () {
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      });
+    });
+  }
+
+  function dialog() {
+    var existing = document.getElementById("exercise-sheet");
+    if (existing) {
+      return existing;
+    }
+    var template = document.getElementById("sheet-template");
+    if (!template) {
+      return null;
+    }
+    document.body.appendChild(template.content.cloneNode(true));
+    var created = document.getElementById("exercise-sheet");
+    created.addEventListener("click", function (event) {
+      if (event.target === created) {
+        created.close();
+      }
+    });
+    created.addEventListener("close", function () {
+      created.querySelectorAll("video").forEach(function (video) { video.pause(); });
+      created.querySelector(".sheet-body").innerHTML = "";
+    });
+    return created;
+  }
+
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest && event.target.closest("a[data-sheet]");
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.button !== 0) {
+      return;
+    }
+    var sheet = dialog();
+    if (!sheet || typeof sheet.showModal !== "function") {
+      return;
+    }
+    event.preventDefault();
+    var url = link.href + (link.href.indexOf("?") === -1 ? "?" : "&") + "parcial=1";
+    fetch(url, { credentials: "same-origin" })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+        return response.text();
+      })
+      .then(function (html) {
+        var body = sheet.querySelector(".sheet-body");
+        body.innerHTML = html;
+        prepareVideos(body);
+        sheet.showModal();
+      })
+      .catch(function () {
+        window.location.href = link.href;
+      });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    prepareVideos(document);
+  });
+})();

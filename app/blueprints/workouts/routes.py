@@ -254,8 +254,8 @@ def progress() -> str:
         chart = {
             "labels": [point.day.strftime("%d/%m") for point in points],
             "series": [
-                {"label": str(_("1RM estimado (kg)")), "data": [p.est_1rm for p in points]},
-                {"label": str(_("Carga máxima (kg)")), "data": [p.top_weight for p in points]},
+                {"label": str(_("Máximo estimado (kg)")), "data": [p.est_1rm for p in points]},
+                {"label": str(_("Peso máximo (kg)")), "data": [p.top_weight for p in points]},
             ],
         }
     return render_template(

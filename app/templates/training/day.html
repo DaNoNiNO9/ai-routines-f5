@@ -36,7 +36,7 @@
       {% endif %}
       <div class="exercise-body">
         <p class="eyebrow">{{ loop.index }} · {{ labels.label(labels.MOVEMENT_PATTERN, item.exercise.movement_pattern) }} · {{ labels.label(labels.MUSCLE_GROUP, item.exercise.primary_muscle) }}</p>
-        <h2 class="card-title">{{ item.exercise.display_name }}</h2>
+        <h2 class="card-title"><a class="sheet-link-title" href="{{ url_for('training.exercise', slug=item.exercise.slug) }}" data-sheet>{{ item.exercise.display_name }}</a></h2>
         <dl class="rx">
           <div><dt>{{ _('Series') }}</dt><dd>{{ item.sets }}</dd></div>
           <div><dt>{{ _('Repeticiones') }}</dt><dd>{{ item.rep_min }}-{{ item.rep_max }}</dd></div>
@@ -47,18 +47,13 @@
         {% if item.tempo %}<p class="meta">{{ item.tempo|tempo }}.</p>{% endif %}
         {% if item.exercise.is_unilateral %}<p class="meta">{{ _('Unilateral: las series son por lado.') }}</p>{% endif %}
         {% if item.notes %}<p class="help">{{ item.notes }}</p>{% endif %}
-        {% if item.exercise.instructions_es or item.exercise.instructions_en %}
-          <details class="panel">
-            <summary>{{ _('Cómo se hace') }}{% if not item.exercise.instructions_es %} <span class="muted">({{ _('en inglés') }})</span>{% endif %}</summary>
-            <p>{{ item.exercise.instructions_es or item.exercise.instructions_en }}</p>
-          </details>
-        {% endif %}
+        <p><a class="button button-secondary button-small sheet-link" href="{{ url_for('training.exercise', slug=item.exercise.slug) }}" data-sheet>{{ icon('circle-play') }}{% if has_video[item.id] %}{{ _('Ver el vídeo y cómo se hace') }}{% else %}{{ _('Ver cómo se hace') }}{% endif %}</a></p>
         {% set options = alternatives[item.id] %}
         <details class="panel">
           <summary>{{ _('Alternativas') }} ({{ options|length }})</summary>
           {% if options %}
             <ul class="alt-list">
-              {% for alt in options %}<li>{{ alt.display_name }} <span class="muted">· {{ alt.equipment|map(attribute='display_name')|join(', ') }}</span></li>{% endfor %}
+              {% for alt in options %}<li><a href="{{ url_for('training.exercise', slug=alt.slug) }}" data-sheet>{{ alt.display_name }}</a> <span class="muted">· {{ alt.equipment|map(attribute='display_name')|join(', ') }}</span></li>{% endfor %}
             </ul>
             <form method="post" action="{{ url_for('training.swap', index=day.day_index) }}" class="inline-form">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -70,9 +65,6 @@
             <p class="muted">{{ _('Ninguna con tu material y tus molestias.') }}</p>
           {% endif %}
         </details>
-        {% if item.exercise.video_url %}
-          <p><a class="link-external" href="{{ item.exercise.video_url }}" target="_blank" rel="noopener noreferrer">{{ _('Buscar vídeo') }}</a></p>
-        {% endif %}
       </div>
     </li>
   {% endfor %}

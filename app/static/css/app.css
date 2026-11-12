@@ -632,3 +632,72 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .card-peligro { border-color: var(--danger); }
 .button-peligro { background: var(--danger); color: var(--bg); }
 .button-peligro:hover { filter: brightness(1.05); }
+
+/* Ficha de ejercicio: página propia o hoja que sube desde abajo (dialog) */
+.exercise-page { max-width: 40rem; margin: 0 auto; }
+.exercise-sheet { display: grid; gap: var(--space-3); }
+.sheet-head .eyebrow { margin: 0 0 var(--space-1); }
+.sheet-title { margin: 0; font-size: clamp(1.4rem, 1.2rem + 1vw, 1.8rem); }
+.sheet-media { margin: 0; }
+.sheet-video, .sheet-anim {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius, 12px);
+  background: #000;
+  object-fit: contain;
+}
+.sheet-anim { position: relative; overflow: hidden; background: #fff; aspect-ratio: 4 / 3; }
+.sheet-anim img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.sheet-anim.is-animated .sheet-anim-end { animation: alza-movimiento 2.4s steps(1, end) infinite; }
+@keyframes alza-movimiento { 0% { opacity: 0; } 50% { opacity: 1; } }
+.credit { margin-top: var(--space-1); font-size: 0.78rem; color: var(--text-muted); }
+.credit a { color: inherit; }
+.sheet-section .h3 { margin: 0 0 var(--space-2); }
+.sheet-steps { margin: 0; padding-left: 1.3rem; display: grid; gap: var(--space-1); }
+.sheet-recent { list-style: none; padding: 0; margin: 0 0 var(--space-2); display: grid; gap: 0.2rem; font-variant-numeric: tabular-nums; }
+.sheet-recent .muted { display: inline-block; min-width: 7.5rem; }
+.chip-strong { border-color: var(--accent); color: var(--text); font-weight: 600; }
+.stat-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.sheet-link { font-weight: 600; }
+
+.sheet-dialog {
+  width: min(40rem, 100%);
+  max-height: 92vh;
+  margin: auto auto 0;
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: 18px 18px 0 0;
+  background: var(--bg-elevated);
+  color: var(--text);
+  overflow-y: auto;
+}
+.sheet-dialog::backdrop { background: rgba(0, 0, 0, 0.55); }
+.sheet-dialog[open] { animation: alza-sube 220ms ease-out; }
+@keyframes alza-sube { from { transform: translateY(24px); opacity: 0.6; } to { transform: none; opacity: 1; } }
+.sheet-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  margin: calc(var(--space-1) * -1) calc(var(--space-1) * -1) 0 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+@media (min-width: 48rem) {
+  .sheet-dialog { margin: auto; border-radius: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet-anim.is-animated .sheet-anim-end { animation: none; }
+  .sheet-anim.is-animated { aspect-ratio: auto; display: grid; grid-template-columns: 1fr 1fr; }
+  .sheet-anim.is-animated img { position: static; height: auto; }
+  .sheet-dialog[open] { animation: none; }
+}
+.sheet-link-title { color: inherit; text-decoration: none; }
+.sheet-link-title:hover, .sheet-link-title:focus-visible { text-decoration: underline; text-decoration-color: var(--accent); }

@@ -33,6 +33,7 @@ ICONS = (
     "chevron-left",
     "chevron-right",
     "circle-check",
+    "circle-play",
     "clock",
     "dumbbell",
     "flame",

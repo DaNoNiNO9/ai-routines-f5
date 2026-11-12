@@ -32,7 +32,7 @@
       <div class="section-head">
         <div>
           <p class="eyebrow">{{ loop.index }} · {{ labels.label(labels.MOVEMENT_PATTERN, block.exercise.movement_pattern) }}{% if block.is_substituted %} · <span class="badge">{{ _('sustituido') }}</span>{% endif %}</p>
-          <h2 class="card-title">{{ block.exercise.display_name }}</h2>
+          <h2 class="card-title"><a class="sheet-link-title" href="{{ url_for('training.exercise', slug=block.exercise.slug) }}" data-sheet>{{ block.exercise.display_name }}</a></h2>
         </div>
         <span class="badge">{{ block.done }}/{{ item.sets }}</span>
       </div>

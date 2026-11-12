@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ exercise.display_name }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="exercise-page">
+  <p class="eyebrow"><a href="{{ url_for('training.routine') }}">{{ _('Entreno') }}</a></p>
+  {% include "training/_exercise_sheet.html" %}
+</div>
+{% endblock %}

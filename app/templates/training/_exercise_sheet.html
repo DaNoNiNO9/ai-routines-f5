@@ -1,0 +1,58 @@
+{# Ficha de un ejercicio: se abre encima de la sesión o del día (?parcial=1) o como página. #}
+<article class="exercise-sheet" aria-labelledby="sheet-title-{{ exercise.slug }}">
+  <header class="sheet-head">
+    <p class="eyebrow">{{ labels.label(labels.MOVEMENT_PATTERN, exercise.movement_pattern) }}</p>
+    <h2 id="sheet-title-{{ exercise.slug }}" class="sheet-title">{{ exercise.display_name }}</h2>
+  </header>
+
+  {% if video %}
+    <figure class="sheet-media">
+      <video class="sheet-video" src="{{ url_for('static', filename=video.src) }}" poster="{{ url_for('static', filename=video.poster) }}" muted loop playsinline autoplay preload="metadata" aria-label="{{ _('Vídeo de %(name)s', name=exercise.display_name) }}" data-pausable></video>
+      <figcaption class="credit">{{ _('Vídeo de %(author)s en wger', author=video.author) }} · <a href="{{ video.license_url }}" target="_blank" rel="noopener noreferrer">{{ video.license }}</a> · <a href="{{ video.source }}" target="_blank" rel="noopener noreferrer">{{ _('original') }}</a></figcaption>
+    </figure>
+  {% elif frames %}
+    <figure class="sheet-media">
+      <div class="sheet-anim{% if frames|length > 1 %} is-animated{% endif %}" role="img" aria-label="{{ _('%(name)s: posición inicial y final', name=exercise.display_name) }}">
+        <img src="{{ url_for('static', filename=frames[0]) }}" alt="" loading="lazy">
+        {% if frames|length > 1 %}<img class="sheet-anim-end" src="{{ url_for('static', filename=frames[1]) }}" alt="" loading="lazy">{% endif %}
+      </div>
+    </figure>
+  {% endif %}
+
+  <section class="sheet-section">
+    <h3 class="h3">{{ _('Músculos') }}</h3>
+    <ul class="chips">
+      <li class="chip chip-strong">{{ labels.label(labels.MUSCLE_GROUP, exercise.primary_muscle) }}</li>
+      {% for muscle in exercise.secondary_muscles %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}
+    </ul>
+    {% if exercise.equipment %}
+      <p class="meta">{{ _('Material') }}: {{ exercise.equipment|map(attribute='display_name')|join(', ') }}</p>
+    {% endif %}
+  </section>
+
+  {% if steps %}
+    <section class="sheet-section">
+      <h3 class="h3">{{ _('Cómo se hace') }}{% if steps_in_english %} <span class="muted">({{ _('en inglés') }})</span>{% endif %}</h3>
+      <ol class="sheet-steps">
+        {% for line in steps %}<li>{{ line }}</li>{% endfor %}
+      </ol>
+    </section>
+  {% endif %}
+
+  <section class="sheet-section">
+    <h3 class="h3">{{ _('Tu historial') }}</h3>
+    {% if history.sessions %}
+      <div class="stat-grid stat-grid-3">
+        <div class="stat"><span class="stat-value">{{ history.best.top_weight|kg(2) }} × {{ history.best.top_reps }}</span><span class="stat-label">{{ _('mejor serie') }}</span></div>
+        <div class="stat"><span class="stat-value">{{ history.best.est_1rm|kg }}</span><span class="stat-label">{{ _('máximo estimado') }}</span></div>
+        <div class="stat"><span class="stat-value">{{ history.sessions }}</span><span class="stat-label">{{ ngettext('sesión', 'sesiones', history.sessions) }}</span></div>
+      </div>
+      <ul class="sheet-recent">
+        {% for point in history.recent %}<li><span class="muted">{{ point.day|fdate }}</span> {{ point.top_weight|kg(2) }} × {{ point.top_reps }}</li>{% endfor %}
+      </ul>
+      <p><a href="{{ url_for('workouts.progress', ejercicio=exercise.slug) }}">{{ _('Ver tu evolución') }}</a></p>
+    {% else %}
+      <p class="muted">{{ _('Todavía no lo has hecho.') }}{% if start_kg %} {{ _('Para empezar, unos %(kg)s.', kg=start_kg|kg(2)) }}{% endif %}</p>
+    {% endif %}
+  </section>
+</article>
