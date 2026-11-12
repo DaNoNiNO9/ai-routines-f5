@@ -22,8 +22,14 @@
     <div class="empty-state">
       {{ icon('notebook-pen') }}
       <h2 class="card-title">{{ _('Empecemos') }}</h2>
-      <p>{{ _('Para calcular tu plan de nutrición y tu rutina necesitamos unos minutos de preguntas. Se guardan en cada paso.') }}</p>
-      <a class="button" href="{{ url_for('onboarding.index') }}">{{ icon('arrow-right') }}{% if draft %}{{ _('Continuar el cuestionario') }}{% else %}{{ _('Empezar el cuestionario') }}{% endif %}</a>
+      {% if draft and draft.data %}
+        <p>{{ _('Tienes el cuestionario a medias. Tus respuestas están guardadas.') }}</p>
+        <a class="button" href="{{ url_for('onboarding.index') }}">{{ icon('arrow-right') }}{{ _('Continuar el cuestionario') }}</a>
+      {% else %}
+        <p>{{ _('Con unas pocas respuestas calculamos tus calorías y tu rutina. Lo demás lo afinas después.') }}</p>
+        <a class="button" href="{{ url_for('onboarding.quick') }}">{{ icon('arrow-right') }}{{ _('Tu plan en un minuto') }}</a>
+        <p class="meta"><a href="{{ url_for('onboarding.step', number=1) }}">{{ _('o el cuestionario completo, paso a paso') }}</a></p>
+      {% endif %}
     </div>
   </section>
 {% else %}

@@ -14,7 +14,7 @@ from flask_login import current_user, login_required
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import formatting, labels
-from app.blueprints.onboarding.forms import INJURY_FIELDS, STEP_FORMS
+from app.blueprints.onboarding.forms import INJURY_FIELDS, STEP_FORMS, QuickForm
 from app.engine.enums import TrainingLocation
 from app.engine.equipment_presets import preset_for
 from app.engine.nutrition import build_nutrition_plan
@@ -82,10 +82,53 @@ def _step_context(number: int, form: Any, data: dict[str, Any] | None = None) ->
 def index() -> WerkzeugResponse:
     """Continue where the person left off (or start)."""
     draft = onboarding.start_draft(current_user)
+    if not draft.data and onboarding.current_profile(current_user) is None:
+        return redirect(url_for("onboarding.quick"))
     missing = onboarding.first_incomplete_step(draft.data)
     if missing is None:
         return redirect(url_for("onboarding.review"))
     return redirect(url_for("onboarding.step", number=min(missing, draft.step + 1)))
+
+
+@bp.route("/rapido", methods=["GET", "POST"])
+@login_required
+def quick() -> str | WerkzeugResponse:
+    """The plan in a minute: one screen, the rest with prudent defaults.
+
+    Whoever has aches or injuries goes on to the full material and injuries
+    step, already filled in, because they change which exercises are possible.
+    """
+    form = QuickForm()
+    if form.validate_on_submit():
+        draft = onboarding.start_draft(current_user)
+        answers = form.to_data()
+        data = onboarding.quick_answers(answers)
+        if answers.get("has_injuries"):
+            onboarding.save_step(draft, 3, data)
+            flash(_("Cuéntanos qué te molesta y elegiremos los ejercicios con cuidado."), "info")
+            return redirect(url_for("onboarding.step", number=4))
+        onboarding.save_step(draft, LAST_STEP, data)
+        return _generate(draft)
+    return render_template("onboarding/quick.html", form=form, labels=labels)
+
+
+def _generate(draft: Any) -> WerkzeugResponse:
+    """Turn a complete draft into plan and routine, and say how it went."""
+    try:
+        result = onboarding.complete(current_user, draft, current_user.today())
+    except OnboardingError as exc:
+        flash(str(ERROR_TEXTS.get(exc.reason, ERROR_TEXTS["engine"])), "error")
+        return redirect(url_for("onboarding.review"))
+    if result.is_blocked:
+        flash(_("Hemos guardado tus respuestas, pero no podemos darte un plan."), "warning")
+    elif result.routine is None:
+        flash(
+            _("Plan de nutrición listo. No pudimos montar una rutina con ese material."),
+            "warning",
+        )
+    else:
+        flash(_("Plan y rutina generados."), "success")
+    return redirect(url_for("onboarding.result"))
 
 
 @bp.route("/paso/<int:number>", methods=["GET", "POST"])
@@ -287,21 +330,7 @@ def review() -> str | WerkzeugResponse:
         flash(_("Faltan respuestas en el paso %(n)s.", n=missing), "warning")
         return redirect(url_for("onboarding.step", number=missing))
     if request.method == "POST":
-        try:
-            result = onboarding.complete(current_user, draft, current_user.today())
-        except OnboardingError as exc:
-            flash(str(ERROR_TEXTS.get(exc.reason, ERROR_TEXTS["engine"])), "error")
-            return redirect(url_for("onboarding.review"))
-        if result.is_blocked:
-            flash(_("Hemos guardado tus respuestas, pero no podemos darte un plan."), "warning")
-        elif result.routine is None:
-            flash(
-                _("Plan de nutrición listo. No pudimos montar una rutina con ese material."),
-                "warning",
-            )
-        else:
-            flash(_("Plan y rutina generados."), "success")
-        return redirect(url_for("onboarding.result"))
+        return _generate(draft)
     return render_template(
         "onboarding/review.html",
         sections=_summary(draft.data),

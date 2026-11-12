@@ -186,12 +186,14 @@ class TrainingForm(StepForm):
         _l("Días de entrenamiento por semana"),
         choices=[(n, str(n)) for n in range(1, 7)],
         coerce=int,
+        default=3,
         validators=[InputRequired()],
     )
     session_minutes = SelectField(
         _l("Minutos por sesión"),
         choices=[(n, f"{n} min") for n in SESSION_MINUTE_OPTIONS],
         coerce=int,
+        default=60,
         validators=[InputRequired()],
     )
     training_location = RadioField(
@@ -346,3 +348,29 @@ STEP_FORMS: dict[int, type[StepForm]] = {
     6: NutritionForm,
     7: HealthForm,
 }
+
+
+class QuickForm(StepForm):
+    """The plan in a minute: only what the plan cannot do without.
+
+    The fields and their checks are the same objects as in the full
+    questionnaire (adults only, plausible ranges, the two health questions that
+    block a plan), so both roads apply the same rules. Everything else takes a
+    prudent default (``onboarding.quick_answers``) and is refined later.
+    """
+
+    sex = BodyForm.sex
+    birth_date = BodyForm.birth_date
+    height_cm = BodyForm.height_cm
+    weight_kg = BodyForm.weight_kg
+    goal = GoalForm.goal
+    target_weight_kg = GoalForm.target_weight_kg
+    training_experience = TrainingForm.training_experience
+    training_days_per_week = TrainingForm.training_days_per_week
+    session_minutes = TrainingForm.session_minutes
+    training_location = TrainingForm.training_location
+    has_injuries = BooleanField(_l("Tengo alguna molestia o lesión"))
+    is_pregnant_or_breastfeeding = HealthForm.is_pregnant_or_breastfeeding
+    has_eating_disorder_history = HealthForm.has_eating_disorder_history
+
+    validate_birth_date = BodyForm.validate_birth_date

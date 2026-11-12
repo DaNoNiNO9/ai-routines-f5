@@ -49,10 +49,7 @@ TEMPLATES: dict[str, str] = {
     "body_fat.navy_invalid": (
         "Los perímetros no permiten estimar la grasa (revisa cuello, cintura y cadera)."
     ),
-    "body_fat.unknown": (
-        "Sin tu porcentaje de grasa el cálculo es menos preciso: lo que gastas en reposo sale"
-        " de tu peso, altura, edad y sexo."
-    ),
+    "body_fat.unknown": "Sin tu porcentaje de grasa el cálculo es algo menos preciso.",
     "bmr.katch_mcardle": (
         "Lo que gastas en reposo se calcula con tu masa magra (todo lo que no es grasa): "
         "%(lean_mass_kg)s kg."

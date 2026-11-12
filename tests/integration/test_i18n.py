@@ -63,7 +63,7 @@ def test_account_language_beats_the_browser_header(client: FlaskClient, seeded: 
         as_text=True
     )
     assert '<html lang="en"' in html
-    assert "Start the questionnaire" in html
+    assert "Your plan in a minute" in html
 
 
 def test_engine_notes_render_in_the_language_of_the_request(app: Flask) -> None:

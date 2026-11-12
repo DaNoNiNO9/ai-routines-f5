@@ -122,6 +122,7 @@ def test_the_landing_and_the_questionnaire_speak_plainly(
     del seeded
     texts = {path: client.get(path) for path in ("/", "/registro", "/entrar")}
     _signup(client)
+    texts["/cuestionario/rapido"] = client.get("/cuestionario/rapido")
     for number in range(1, 8):
         texts[f"/paso/{number}"] = client.get(f"/cuestionario/paso/{number}")
         _post_step(client, number)

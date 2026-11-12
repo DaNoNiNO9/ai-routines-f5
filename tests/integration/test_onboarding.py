@@ -89,7 +89,7 @@ def test_dashboard_offers_the_questionnaire_until_there_is_a_profile(
 ) -> None:
     _signup(client)
     page = client.get("/panel").get_data(as_text=True)
-    assert "Empezar el cuestionario" in page
+    assert "Tu plan en un minuto" in page
     _post_step(client, 1)
     page = client.get("/panel").get_data(as_text=True)
     assert "Continuar el cuestionario" in page
@@ -98,7 +98,9 @@ def test_dashboard_offers_the_questionnaire_until_there_is_a_profile(
 def test_index_starts_at_the_first_pending_step(client: FlaskClient, seeded: SQLAlchemy) -> None:
     _signup(client)
     start = client.get("/cuestionario")
-    assert start.headers["Location"].endswith("/cuestionario/paso/1")
+    assert start.headers["Location"].endswith(
+        "/cuestionario/rapido"
+    )  # sin borrador: el camino corto
     assert client.get("/cuestionario/paso/1").status_code == 200
     _post_step(client, 1)
     assert client.get("/cuestionario").headers["Location"].endswith("/cuestionario/paso/2")

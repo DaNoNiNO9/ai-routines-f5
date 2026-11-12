@@ -2,6 +2,7 @@
 
 {% block intro %}
 <p class="lead">{{ _('Con esto calculamos cuánto gastas en reposo y tu grasa corporal.') }}</p>
+{% if draft.step == 0 %}<p class="meta">{{ _('¿Con prisa?') }} <a href="{{ url_for('onboarding.quick') }}">{{ _('Tu plan en un minuto') }}</a></p>{% endif %}
 {% endblock %}
 
 {% block fields %}

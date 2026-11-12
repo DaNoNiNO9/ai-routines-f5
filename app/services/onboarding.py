@@ -32,6 +32,7 @@ from app.engine.enums import (
     TrainingLocation,
     TrainingTime,
 )
+from app.engine.equipment_presets import preset_for
 from app.engine.safety import SafetyError
 from app.engine.types import InputError
 from app.extensions import db
@@ -127,6 +128,49 @@ def save_step(draft: QuestionnaireDraft, number: int, values: dict[str, Any]) ->
     draft.data = {**draft.data, **values}
     draft.step = max(draft.step, number)
     db.session.commit()
+
+
+# Lo que el camino rápido no pregunta. Cada valor es el prudente: «sedentario»
+# no sobrestima el gasto (el error, si lo hay, da un déficit más suave), sin
+# alcohol ni preferencias, cuatro comidas y el ritmo moderado. La revisión
+# quincenal corrige el gasto con los datos reales, y todo se cambia en «Tus datos».
+QUICK_DEFAULTS: dict[str, Any] = {
+    "neck_cm": None,
+    "waist_cm": None,
+    "hip_cm": None,
+    "body_fat_pct": None,
+    "body_fat_method": "none",
+    "job_activity": "sedentary",
+    "daily_steps": None,
+    "sleep_hours": 7.0,
+    "stress_level": 3,
+    "other_activity_type": "",
+    "other_activity_sessions_per_week": 0,
+    "other_activity_minutes": 0,
+    "other_activity_intensity": "",
+    "training_time": "none",
+    "priority_muscles": [],
+    "injuries": {},
+    "aggressiveness": "moderate",
+    "target_date": None,
+    "meals_per_day": 4,
+    "diet_pattern": "omnivore",
+    "wants_carb_cycling": False,
+    "alcohol_drinks_per_week": 0,
+}
+
+
+def quick_answers(answers: dict[str, Any]) -> dict[str, Any]:
+    """A complete draft from the quick form: its answers plus ``QUICK_DEFAULTS``.
+
+    The material is the preset of the place where the person trains, the same
+    one the full questionnaire starts from.
+    """
+    location = answers["training_location"]
+    data = {**QUICK_DEFAULTS, **{k: v for k, v in answers.items() if k != "has_injuries"}}
+    data["equipment"] = sorted(preset_for(location))
+    data["equipment_for_location"] = location
+    return data
 
 
 def first_incomplete_step(data: dict[str, Any]) -> int | None:

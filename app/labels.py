@@ -121,7 +121,7 @@ GOAL_HELP: Mapping[str, Any] = {
     Goal.MUSCLE_GAIN.value: _l(
         "Comer algo más de lo que gastas para ganar músculo con poca grasa."
     ),
-    Goal.MAINTENANCE.value: _l("Mantener el peso y mejorar hábitos y fuerza."),
+    Goal.MAINTENANCE.value: _l("Ni subir ni bajar: mejorar hábitos y fuerza."),
     Goal.PERFORMANCE.value: _l("Lo importante es levantar más; el peso es secundario."),
 }
 

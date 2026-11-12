@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import field, checkbox, radios %}
+
+{% block title %}{{ _('Tu plan en un minuto') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card wizard-card quick-card">
+  <p class="eyebrow">{{ _('Empecemos') }}</p>
+  <h1>{{ _('Tu plan en un minuto') }}</h1>
+  <p class="lead">{{ _('Con esto ya calculamos tus calorías y tu rutina. Lo demás tiene un valor prudente y lo afinas cuando quieras desde «Tus datos».') }}</p>
+
+  <form method="post" novalidate class="form">
+    {{ form.hidden_tag() }}
+
+    <h2 class="h3 quick-section">{{ _('Tú') }}</h2>
+    {{ radios(form.sex, compact=true) }}
+    {{ field(form.birth_date) }}
+    <div class="grid-2">
+      {{ field(form.height_cm, inputmode="decimal") }}
+      {{ field(form.weight_kg, inputmode="decimal") }}
+    </div>
+
+    <h2 class="h3 quick-section">{{ _('Tu objetivo') }}</h2>
+    {{ radios(form.goal, help=labels.GOAL_HELP) }}
+    {{ field(form.target_weight_kg, inputmode="decimal") }}
+
+    <h2 class="h3 quick-section">{{ _('Tu entreno') }}</h2>
+    {{ radios(form.training_experience, compact=true) }}
+    <div class="grid-2">
+      {{ field(form.training_days_per_week) }}
+      {{ field(form.session_minutes) }}
+    </div>
+    {{ radios(form.training_location, help=labels.TRAINING_LOCATION_HELP) }}
+
+    <h2 class="h3 quick-section">{{ _('Tu salud') }}</h2>
+    <p class="help">{{ _('Si marcas alguna de las dos primeras, no te daremos plan de nutrición y te diremos por qué: en esos casos lo tiene que llevar un profesional.') }}</p>
+    {{ checkbox(form.is_pregnant_or_breastfeeding) }}
+    {{ checkbox(form.has_eating_disorder_history) }}
+    {{ checkbox(form.has_injuries) }}
+    <p class="help">{{ _('Si tienes alguna molestia, te pediremos los detalles en una pantalla más para elegir bien los ejercicios.') }}</p>
+
+    <div class="wizard-nav">
+      <a class="button button-secondary" href="{{ url_for('onboarding.step', number=1) }}">{{ _('Prefiero el cuestionario completo') }}</a>
+      <button type="submit" class="button">{{ icon('arrow-right') }}{{ _('Ver mi plan') }}</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
