@@ -275,9 +275,8 @@ def plan_pdf(
     flow.append(
         Paragraph(
             _(
-                "Generado el %(date)s · cuestionario v%(version)s · objetivo: %(goal)s",
+                "Generado el %(date)s · objetivo: %(goal)s",
                 date=today.strftime("%d/%m/%Y"),
-                version=profile.version,
                 goal=label(GOAL, profile.goal).lower(),
             ),
             styles["muted"],
@@ -423,20 +422,20 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
             _("Masa magra"),
             f"{_round(body.get('lean_mass_kg'), 1)} kg" if body.get("lean_mass_kg") else "—",
         ],
-        [_("Metabolismo basal"), f"{_round(bmr.get('selected_kcal'))} kcal"],
+        [_("Gasto en reposo"), f"{_round(bmr.get('selected_kcal'))} kcal"],
         [_("Fórmula del basal"), label(BMR_METHOD, bmr.get("method"))],
         [_("Gasto por actividad diaria"), f"{_round(spent.get('neat_kcal'))} kcal"],
         [_("Gasto por ejercicio"), f"{_round(spent.get('eat_kcal'))} kcal"],
-        [_("Mantenimiento"), f"{_round(spent.get('maintenance_kcal'))} kcal"],
+        [_("Mantener el peso"), f"{_round(spent.get('maintenance_kcal'))} kcal"],
     ]
     flow.append(_table(composicion, [70 * mm, 60 * mm]))
     flow.append(
         Paragraph(
             _(
-                "Grasa por perímetros con la fórmula de la Marina de EE. UU.; metabolismo basal "
-                "por Katch-McArdle o Mifflin-St Jeor; gasto sumando el basal, lo que caminas, el "
-                "ejercicio y la digestión. El plan nunca baja del mínimo seguro de calorías ni "
-                "hace perder más del 1 %% del peso a la semana."
+                "Grasa por medidas de cinta con la fórmula de la Marina de EE. UU.; gasto en "
+                "reposo con Katch-McArdle o Mifflin-St Jeor; gasto total sumando el reposo, lo que "
+                "caminas, el ejercicio y la digestión. El plan nunca baja del mínimo seguro de "
+                "calorías ni hace perder más del 1 %% del peso a la semana."
             ),
             styles["muted"],
         )

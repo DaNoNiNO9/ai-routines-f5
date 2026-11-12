@@ -12,7 +12,7 @@
   <p class="eyebrow">{{ _('Nutrición') }}</p>
   <h1>{{ _('Tu plan de nutrición') }}</h1>
   {% if plan %}
-    <p class="lead">{{ _('Vigente desde el %(date)s · estimación de confianza %(c)s.', date=plan.starts_on|fdate('long'), c=labels.label(labels.CONFIDENCE, plan.confidence)|lower) }}</p>
+    <p class="lead">{{ _('Vigente desde el %(date)s · cálculo de fiabilidad %(c)s.', date=plan.starts_on|fdate('long'), c=labels.label(labels.CONFIDENCE, plan.confidence)|lower) }}</p>
   {% endif %}
 </section>
 
@@ -33,7 +33,7 @@
       <div class="stat-grid">
         <div class="stat"><span class="stat-value">{{ plan.calorie_target }}</span><span class="stat-label">{{ _('kcal al día') }}</span></div>
         <div class="stat"><span class="stat-value">{{ d.target.maintenance_kcal|round|int }}</span><span class="stat-label">{{ _('kcal para mantenerte') }}</span></div>
-        <div class="stat"><span class="stat-value">{{ balance|abs }}</span><span class="stat-label">{% if balance < 0 %}{{ _('kcal de déficit al día') }}{% elif balance > 0 %}{{ _('kcal de superávit al día') }}{% else %}{{ _('kcal de diferencia') }}{% endif %}</span></div>
+        <div class="stat"><span class="stat-value">{{ balance|abs }}</span><span class="stat-label">{% if balance < 0 %}{{ _('kcal de menos al día') }}{% elif balance > 0 %}{{ _('kcal de más al día') }}{% else %}{{ _('kcal de diferencia') }}{% endif %}</span></div>
         <div class="stat"><span class="stat-value">{{ d.target.expected_weekly_change_kg|signed(2) }}</span><span class="stat-label">{{ _('kg a la semana, previsto') }}</span></div>
       </div>
       <p class="meta">
@@ -63,7 +63,7 @@
     <section class="card">
       <h2 class="card-title">{{ _('Comidas') }}</h2>
       <div class="table-wrap">
-        <table class="table">
+        <table class="table table-meals">
           <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>{{ _('Prot.') }}</th><th>{{ _('Carb.') }}</th><th>{{ _('Grasa') }}</th></tr></thead>
           <tbody>
             {% for meal in plan.meals %}
@@ -100,7 +100,7 @@
             <dt>{{ _('Grasa corporal') }}</dt><dd>{% if d.body.body_fat_pct is not none %}{{ d.body.body_fat_pct|num }} % · {{ labels.label(labels.BODY_FAT_METHOD, d.body.body_fat_source) }}{% else %}{{ _('sin estimación') }}{% endif %}</dd>
             {% if d.body.lean_mass_kg %}<dt>{{ _('Masa magra') }}</dt><dd>{{ d.body.lean_mass_kg|kg }}</dd>{% endif %}
           </dl>
-          <h3 class="h3">{{ _('Metabolismo basal') }}</h3>
+          <h3 class="h3">{{ _('Gasto en reposo') }}</h3>
           <p class="help">{{ _('Lo que gasta tu cuerpo en reposo. Se calcula con tres fórmulas y se usa la más fiable para tus datos.') }}</p>
           <div class="table-wrap">
             <table class="table">
@@ -125,7 +125,7 @@
           </dl>
         </div>
       </div>
-      <p class="help">{{ _('Grasa por perímetros con la fórmula de la Marina de EE. UU.; metabolismo basal por Katch-McArdle o Mifflin-St Jeor; gasto sumando el basal, lo que caminas, el ejercicio según su intensidad y la digestión (10 %%). El déficit o el superávit dependen de tu grasa corporal y tu experiencia. Cada fórmula está citada en el código.') }}</p>
+      <p class="help">{{ _('Grasa por medidas de cinta con la fórmula de la Marina de EE. UU.; gasto en reposo con Katch-McArdle o Mifflin-St Jeor; gasto total sumando el reposo, lo que caminas, el ejercicio según su intensidad y la digestión (10 %%). Cuánto comes de menos o de más depende de tu grasa corporal y tu experiencia. Cada fórmula está citada en el código.') }}</p>
     </section>
 
     <section class="card">

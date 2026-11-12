@@ -1,4 +1,4 @@
-/* Forja stylesheet. Tokens primero, luego base, luego componentes.
+/* Alza stylesheet. Tokens primero, luego base, luego componentes.
    Tema oscuro por defecto (se entrena con el móvil en la mano y poca luz);
    el claro se elige desde la cabecera. Paleta y tipografía: docs/DISEÑO.md. */
 
@@ -112,15 +112,15 @@ code { font-family: var(--font-mono); font-size: 0.95em; }
   min-height: 3.5rem;
 }
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text);
   text-decoration: none;
 }
-.nav-links {
-  display: flex;
-  gap: var(--space-3);
 .brand-mark { flex: none; display: block; }
 .brand-mark-bg { fill: var(--accent); }
 .brand-mark-fg {
@@ -130,6 +130,9 @@ code { font-family: var(--font-mono); font-size: 0.95em; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.nav-links {
+  display: flex;
+  gap: var(--space-3);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -322,6 +325,12 @@ fieldset.field legend { padding: 0; }
 .table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
 .table th, .table td { padding: var(--space-2); border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
 .table th { color: var(--text-muted); font-weight: 600; }
+.table td + td { white-space: nowrap; }
+@media (max-width: 30rem) {
+  .table { font-size: 0.9rem; }
+  .table th, .table td { padding: 0.5rem 0.35rem; }
+  .table-meals td .badge { display: block; margin-top: 0.15rem; padding: 0; border: 0; background: none; white-space: normal; font-size: 0.78rem; color: var(--text-muted); }
+}
 .notes { padding-left: 1.2rem; margin: var(--space-3) 0 0; }
 .notes li { margin-bottom: var(--space-1); }
 .note-warning { color: var(--warning); }
@@ -336,6 +345,7 @@ fieldset.field legend { padding: 0; }
 .page-head h1 { margin: 0 0 var(--space-2); }
 .page-head .eyebrow a { color: inherit; }
 .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--space-3); margin-bottom: var(--space-3); }
+@media (min-width: 48rem) { .landing-cards { grid-template-columns: repeat(2, 1fr); } }
 .card-span { grid-column: 1 / -1; }
 .card-title { font-size: 1.1rem; margin: 0 0 var(--space-2); }
 .card-accent { border-color: var(--accent); margin-bottom: var(--space-3); }
@@ -552,7 +562,7 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
   opacity: 0.85;
 }
 .landing-tira img:nth-child(2) { margin-top: var(--space-4); }
-.card-title .icon { color: var(--accent); }
+.card-title .icon { color: var(--accent); margin-inline-end: 0.45em; }
 .flash { display: flex; align-items: flex-start; gap: var(--space-2); }
 .flash .icon { margin-top: 0.15em; flex: none; }
 .flash-success .icon { color: var(--success); }

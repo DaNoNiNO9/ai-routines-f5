@@ -44,7 +44,7 @@ SEX: Mapping[Sex, Any] = {Sex.MALE: _l("Hombre"), Sex.FEMALE: _l("Mujer")}
 
 BODY_FAT_METHOD: Mapping[BodyFatMethod, Any] = {
     BodyFatMethod.NONE: _l("No lo sé"),
-    BodyFatMethod.NAVY: _l("Estimado por perímetros (fórmula Navy)"),
+    BodyFatMethod.NAVY: _l("Calculado con tus medidas (fórmula de la Marina de EE. UU.)"),
     BodyFatMethod.SCALE: _l("Báscula de bioimpedancia"),
     BodyFatMethod.CALIPERS: _l("Plicómetro (pliegues)"),
     BodyFatMethod.DEXA: _l("DEXA"),
@@ -108,19 +108,21 @@ TRAINING_TIME: Mapping[TrainingTime, Any] = {
 
 GOAL: Mapping[Goal, Any] = {
     Goal.FAT_LOSS: _l("Perder grasa"),
-    Goal.RECOMPOSITION: _l("Recomposición"),
+    Goal.RECOMPOSITION: _l("Perder grasa y ganar músculo"),
     Goal.MUSCLE_GAIN: _l("Ganar músculo"),
-    Goal.MAINTENANCE: _l("Mantenimiento"),
-    Goal.PERFORMANCE: _l("Rendimiento"),
+    Goal.MAINTENANCE: _l("Mantener el peso"),
+    Goal.PERFORMANCE: _l("Ganar fuerza"),
 }
 GOAL_HELP: Mapping[str, Any] = {
-    Goal.FAT_LOSS.value: _l("Déficit calórico controlado conservando el músculo."),
+    Goal.FAT_LOSS.value: _l("Comer algo menos de lo que gastas, sin perder músculo."),
     Goal.RECOMPOSITION.value: _l(
         "Perder algo de grasa y ganar músculo a la vez; funciona mejor en principiantes."
     ),
-    Goal.MUSCLE_GAIN.value: _l("Superávit moderado para ganar masa muscular con poca grasa."),
+    Goal.MUSCLE_GAIN.value: _l(
+        "Comer algo más de lo que gastas para ganar músculo con poca grasa."
+    ),
     Goal.MAINTENANCE.value: _l("Mantener el peso y mejorar hábitos y fuerza."),
-    Goal.PERFORMANCE.value: _l("Priorizar la fuerza y el rendimiento; el peso es secundario."),
+    Goal.PERFORMANCE.value: _l("Lo importante es levantar más; el peso es secundario."),
 }
 
 AGGRESSIVENESS: Mapping[Aggressiveness, Any] = {
@@ -181,7 +183,7 @@ MUSCLE_GROUP: Mapping[MuscleGroup, Any] = {
     MuscleGroup.TRICEPS: _l("Tríceps"),
     MuscleGroup.FOREARMS: _l("Antebrazos"),
     MuscleGroup.QUADS: _l("Cuádriceps"),
-    MuscleGroup.HAMSTRINGS: _l("Isquiosurales"),
+    MuscleGroup.HAMSTRINGS: _l("Femorales"),
     MuscleGroup.GLUTES: _l("Glúteos"),
     MuscleGroup.CALVES: _l("Gemelos"),
     MuscleGroup.ABS: _l("Abdomen"),
@@ -197,14 +199,14 @@ PRIORITY_MUSCLES: Mapping[MuscleGroup, Any] = {
 }
 
 MOVEMENT_PATTERN: Mapping[MovementPattern, Any] = {
-    MovementPattern.HORIZONTAL_PUSH: _l("Empuje horizontal"),
-    MovementPattern.VERTICAL_PUSH: _l("Empuje vertical"),
-    MovementPattern.HORIZONTAL_PULL: _l("Tracción horizontal"),
-    MovementPattern.VERTICAL_PULL: _l("Tracción vertical"),
-    MovementPattern.KNEE_DOMINANT: _l("Dominante de rodilla"),
-    MovementPattern.HIP_DOMINANT: _l("Dominante de cadera"),
-    MovementPattern.CORE: _l("Core"),
-    MovementPattern.ISOLATION: _l("Aislamiento"),
+    MovementPattern.HORIZONTAL_PUSH: _l("Empujar al frente"),
+    MovementPattern.VERTICAL_PUSH: _l("Empujar hacia arriba"),
+    MovementPattern.HORIZONTAL_PULL: _l("Tirar hacia ti"),
+    MovementPattern.VERTICAL_PULL: _l("Tirar desde arriba"),
+    MovementPattern.KNEE_DOMINANT: _l("Sentadillas y similares"),
+    MovementPattern.HIP_DOMINANT: _l("Peso muerto y similares"),
+    MovementPattern.CORE: _l("Abdomen y zona media"),
+    MovementPattern.ISOLATION: _l("Un solo músculo"),
 }
 
 EQUIPMENT_CATEGORY: Mapping[EquipmentCategory, Any] = {

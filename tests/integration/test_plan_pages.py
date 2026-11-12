@@ -84,7 +84,7 @@ def test_training_pages_show_days_volume_and_alternatives(
     overview = client.get("/entrenamiento").get_data(as_text=True)
     routine = seeded.session.scalar(select(Routine))
     assert routine is not None
-    for text in (routine.name, "Volumen semanal", "Cardio y pasos", "Día 1", "Ver la sesión"):
+    for text in (routine.name, "Series por músculo", "Cardio y pasos", "Día 1", "Ver la sesión"):
         assert text in overview, text
     assert "Semana 1" in overview
 

@@ -14,7 +14,7 @@
     {% if day != today %}<a class="button button-small button-secondary" href="{{ url_for('tracking.diary') }}">{{ _('Hoy') }}</a>{% endif %}
   </form>
   <p class="auth-links">
-    <a class="button button-small button-secondary" href="{{ url_for('tracking.measurements') }}">{{ _('Perímetros') }}</a>
+    <a class="button button-small button-secondary" href="{{ url_for('tracking.measurements') }}">{{ _('Medidas') }}</a>
     <a class="button button-small button-secondary" href="{{ url_for('review.index') }}">{{ _('Revisión') }}</a>
     <a class="button button-small button-secondary" href="{{ url_for('workouts.history') }}">{{ _('Entrenos') }}</a>
   </p>

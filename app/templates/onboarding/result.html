@@ -38,7 +38,7 @@
       <div class="stat"><span class="stat-value">{{ (plan.water_ml / 1000)|num }} l</span><span class="stat-label">{{ _('agua (más en días de entreno)') }}</span></div>
     </div>
     <p class="meta">
-      {{ _('En reposo gastas unas %(bmr)s kcal (%(method)s) y en total, unas %(tdee)s kcal al día.', bmr=plan.bmr_kcal|int, method=labels.label(labels.BMR_METHOD, plan.bmr_method), tdee=plan.tdee_kcal|int) }}
+      {{ _('En reposo gastas unas %(bmr)s kcal y en total, unas %(tdee)s kcal al día.', bmr=plan.bmr_kcal|int, tdee=plan.tdee_kcal|int) }}
     </p>
     {% if plan.meals %}
       <div class="table-wrap">

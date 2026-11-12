@@ -68,7 +68,7 @@ def test_note_params_show_dates_and_decimals_the_local_way(app: Flask) -> None:
         assert priority["muscles"] == "glúteos, hombros"
 
         missing = labels.note_params("routine.pattern_missing", {"pattern": "vertical_pull"})
-        assert missing["pattern"] == "tracción vertical"  # va a mitad de frase
+        assert missing["pattern"] == "tirar desde arriba"  # va a mitad de frase
         assert missing["suggestion"] == "una barra de dominadas o bandas"
 
 

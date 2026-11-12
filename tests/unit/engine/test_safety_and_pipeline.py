@@ -327,7 +327,7 @@ def test_any_valid_inputs_produce_a_safe_plan_or_a_blocked_one(values: dict[str,
 
 
 def test_messages_render_known_and_unknown_codes() -> None:
-    assert "Navy" in render(Note("body_fat.navy", params={"value": 15.2}))
+    assert "medidas de cinta" in render(Note("body_fat.navy", params={"value": 15.2}))
     assert render(Note("nope.unknown")) == "nope.unknown"
     assert "{'x': 1}" in render(Note("nope.unknown", params={"x": 1}))
     assert render(Note("target.deficit")).startswith("target.deficit")  # missing param -> fallback

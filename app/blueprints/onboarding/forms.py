@@ -301,7 +301,7 @@ class NutritionForm(StepForm):
         validators=[InputRequired()],
     )
     diet_pattern = SelectField(
-        _l("Patrón de alimentación"),
+        _l("Tipo de alimentación"),
         choices=labels.choices(labels.DIET_PATTERN),
         default="omnivore",
         validators=[InputRequired()],

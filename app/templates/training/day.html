@@ -10,7 +10,10 @@
   <p class="lead">{{ ngettext('%(num)s ejercicio', '%(num)s ejercicios', day.exercises|length) }} · {{ _('unos %(m)s minutos', m=day.estimated_minutes) }}</p>
   <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
   {% if weekly_rir %}
-    <p class="meta">{{ _('Reserva por semana:') }} {% for rir in weekly_rir %}{{ _('semana %(n)s, %(rir)s', n=loop.index, rir=rir) }}{% if not loop.last %} · {% endif %}{% endfor %}. {{ _('Sube el peso cuando hagas el máximo de repeticiones en todas las series.') }}</p>
+    <ul class="chips" aria-label="{{ _('Reserva por semana') }}">
+      {% for rir in weekly_rir %}<li class="chip">{{ _('Semana %(n)s', n=loop.index) }} · {{ _('reserva %(n)s', n=rir) }}</li>{% endfor %}
+    </ul>
+    <p class="meta">{{ _('La reserva es cuántas repeticiones te deberían sobrar al acabar cada serie. Sube el peso cuando hagas el máximo de repeticiones en todas las series.') }}</p>
   {% endif %}
   {% if day.notes %}<p class="help">{{ day.notes }}</p>{% endif %}
   <form method="post" action="{{ url_for('workouts.start', day_index=day.day_index) }}" class="inline-form">

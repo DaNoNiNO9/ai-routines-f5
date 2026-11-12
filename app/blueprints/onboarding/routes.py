@@ -139,7 +139,7 @@ def _summary(data: dict[str, Any]) -> list[dict[str, Any]]:
         (_("Altura"), f"{formatting.num(data.get('height_cm'))} cm"),
         (_("Peso"), formatting.kg(data.get("weight_kg"))),
         (
-            _("Perímetros"),
+            _("Medidas"),
             ", ".join(
                 f"{label}: {formatting.num(data[key])} cm"
                 for key, label in (

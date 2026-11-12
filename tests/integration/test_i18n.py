@@ -86,9 +86,9 @@ def test_stored_plan_explanations_are_rendered_again_in_english(
     spanish = client.get("/nutricion").get_data(as_text=True)
     english = client.get("/nutricion?lang=en").get_data(as_text=True)
 
-    assert "Metabolismo basal por Katch-McArdle" in spanish
-    assert "Basal metabolic rate by Katch-McArdle" in english
-    assert "Metabolismo basal por Katch-McArdle" not in english
+    assert "se calcula con tu masa magra" in spanish
+    assert "worked out from your lean mass" in english
+    assert "se calcula con tu masa magra" not in english
     assert "Your nutrition plan" in english
     assert "Worth knowing" in english
 
@@ -96,7 +96,7 @@ def test_stored_plan_explanations_are_rendered_again_in_english(
 def test_routine_pages_are_translated_too(client: FlaskClient, seeded: SQLAlchemy) -> None:
     _generate(client)
     html = client.get("/entrenamiento?lang=en").get_data(as_text=True)
-    assert "Weekly volume" in html
+    assert "Sets per muscle" in html
     assert "How it is put together" in html
     assert "How to progress" in html  # aviso del motor, no plantilla
 

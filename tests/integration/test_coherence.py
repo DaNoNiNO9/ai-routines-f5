@@ -16,6 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 
 from app.models import WorkoutSession
+from tests.integration.test_onboarding import _post_step, _signup
 
 PAGES = (
     "/panel",
@@ -99,3 +100,32 @@ def test_spanish_screens_use_a_decimal_comma(lived_in: FlaskClient, seeded: SQLA
     for path, text in _pages(lived_in, seeded).items():
         assert not DECIMAL_POINT.search(text), (path, DECIMAL_POINT.findall(text))
 
+
+# Words a person should never have to look up. Formula names (Katch-McArdle,
+# Mifflin-St Jeor) stay: they only appear where the plan explains its sources.
+JARGON = re.compile(
+    r"\b(?:RIR|HIIT|LISS|TDEE|BMR|mesociclos?|descargas?|isquiosurales|metabolismo basal|Navy|"
+    r"tracción|aislamiento|series efectivas|recomposición|superávit|suelo calórico|"
+    r"progresión doble|perímetros?)\b",
+    re.IGNORECASE,
+)
+
+
+def test_spanish_screens_speak_plainly(lived_in: FlaskClient, seeded: SQLAlchemy) -> None:
+    for path, text in _pages(lived_in, seeded).items():
+        assert not JARGON.search(text), (path, JARGON.findall(text))
+
+
+def test_the_landing_and_the_questionnaire_speak_plainly(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    del seeded
+    texts = {path: client.get(path) for path in ("/", "/registro", "/entrar")}
+    _signup(client)
+    for number in range(1, 8):
+        texts[f"/paso/{number}"] = client.get(f"/cuestionario/paso/{number}")
+        _post_step(client, number)
+    for path, response in texts.items():
+        assert response.status_code == 200, path
+        text = _visible(response.get_data(as_text=True))
+        assert not JARGON.search(text), (path, JARGON.findall(text))

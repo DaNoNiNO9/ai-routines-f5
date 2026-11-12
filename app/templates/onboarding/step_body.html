@@ -1,7 +1,7 @@
 {% extends "onboarding/_wizard.html" %}
 
 {% block intro %}
-<p class="lead">{{ _('Con esto calculamos tu metabolismo basal y tu composición corporal.') }}</p>
+<p class="lead">{{ _('Con esto calculamos cuánto gastas en reposo y tu grasa corporal.') }}</p>
 {% endblock %}
 
 {% block fields %}
@@ -13,7 +13,7 @@
   </div>
   {{ field(form.weight_kg, step="0.1", inputmode="decimal") }}
 
-  <h2 class="h3">{{ _('Perímetros (opcional)') }}</h2>
+  <h2 class="h3">{{ _('Medidas (opcional)') }}</h2>
   <p class="help">{{ _('Con cuello y cintura (y cadera en mujeres) estimamos la grasa corporal por la fórmula de la Marina de EE. UU. Mide sin apretar la cinta.') }}</p>
   <div class="grid-3">
     {{ field(form.neck_cm, step="0.5", inputmode="decimal") }}

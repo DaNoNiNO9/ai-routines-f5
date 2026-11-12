@@ -1,13 +1,13 @@
-# Catálogo en inglés de Forja.
+# Catálogo en inglés de Alza.
 # Generado con pybabel; ver README > Traducciones.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Forja 0.1.0\n"
+"Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 10:06+0100\n"
+"POT-Creation-Date: 2026-11-12 10:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Forja\n"
+"Last-Translator: Alza\n"
 "Language: en\n"
 "Language-Team: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -76,49 +76,53 @@ msgstr "Session expired or invalid form"
 msgid "Recarga la página y vuelve a enviar el formulario. Si sigue fallando, inicia sesión de nuevo."
 msgstr "Reload the page and send the form again. If it keeps failing, sign in again."
 
-#: app/formatting.py:60
+#: app/fields.py:22
+msgid "Escribe un número, por ejemplo 63,5."
+msgstr "Type a number, for example 63.5."
+
+#: app/formatting.py:68
 #, python-format
 msgid "%(min)s min %(s)s s"
 msgstr "%(min)s min %(s)s s"
 
-#: app/formatting.py:62
+#: app/formatting.py:70
 #, python-format
 msgid "%(min)s min"
 msgstr "%(min)s min"
 
-#: app/formatting.py:63
+#: app/formatting.py:71
 #, python-format
 msgid "%(s)s s"
 msgstr "%(s)s s"
 
-#: app/formatting.py:107
+#: app/formatting.py:115
 msgid "hoy"
 msgstr "today"
 
-#: app/formatting.py:109
+#: app/formatting.py:117
 msgid "mañana"
 msgstr "tomorrow"
 
-#: app/formatting.py:111
+#: app/formatting.py:119
 #, python-format
 msgid "hace %(num)s día"
 msgid_plural "hace %(num)s días"
 msgstr[0] "%(num)s day ago"
 msgstr[1] "%(num)s days ago"
 
-#: app/formatting.py:112
+#: app/formatting.py:120
 #, python-format
 msgid "en %(num)s día"
 msgid_plural "en %(num)s días"
 msgstr[0] "in %(num)s day"
 msgstr[1] "in %(num)s days"
 
-#: app/formatting.py:129
+#: app/formatting.py:137
 #, python-format
 msgid "Baja en %(down)s s, para %(pause)s s abajo y sube en %(up)s s"
 msgstr "Lower in %(down)s s, pause %(pause)s s at the bottom and lift in %(up)s s"
 
-#: app/formatting.py:134
+#: app/formatting.py:142
 #, python-format
 msgid "Baja en %(down)s s y sube en %(up)s s"
 msgstr "Lower in %(down)s s and lift in %(up)s s"
@@ -136,8 +140,8 @@ msgid "No lo sé"
 msgstr "I do not know"
 
 #: app/labels.py:47
-msgid "Estimado por perímetros (fórmula Navy)"
-msgstr "Estimated from measurements (US Navy formula)"
+msgid "Calculado con tus medidas (fórmula de la Marina de EE. UU.)"
+msgstr "Worked out from your measurements (US Navy formula)"
 
 #: app/labels.py:48
 msgid "Báscula de bioimpedancia"
@@ -272,488 +276,488 @@ msgid "Perder grasa"
 msgstr "Lose fat"
 
 #: app/labels.py:111
-msgid "Recomposición"
-msgstr "Recomposition"
+msgid "Perder grasa y ganar músculo"
+msgstr "Lose fat and gain muscle"
 
 #: app/labels.py:112
 msgid "Ganar músculo"
 msgstr "Gain muscle"
 
-#: app/labels.py:113 app/services/exports.py:404
-msgid "Mantenimiento"
-msgstr "Maintenance"
+#: app/labels.py:113 app/services/exports.py:429
+msgid "Mantener el peso"
+msgstr "Keep my weight"
 
 #: app/labels.py:114
-msgid "Rendimiento"
-msgstr "Performance"
+msgid "Ganar fuerza"
+msgstr "Get stronger"
 
 #: app/labels.py:117
-msgid "Déficit calórico controlado conservando el músculo."
-msgstr "A controlled calorie deficit that keeps your muscle."
+msgid "Comer algo menos de lo que gastas, sin perder músculo."
+msgstr "Eat a little less than you burn, without losing muscle."
 
 #: app/labels.py:119
 msgid "Perder algo de grasa y ganar músculo a la vez; funciona mejor en principiantes."
 msgstr "Lose some fat and gain muscle at once; it works best for beginners."
 
-#: app/labels.py:121
-msgid "Superávit moderado para ganar masa muscular con poca grasa."
-msgstr "A moderate surplus to gain muscle with little fat."
-
 #: app/labels.py:122
+msgid "Comer algo más de lo que gastas para ganar músculo con poca grasa."
+msgstr "Eat a little more than you burn to gain muscle with little fat."
+
+#: app/labels.py:124
 msgid "Mantener el peso y mejorar hábitos y fuerza."
 msgstr "Hold your weight and improve habits and strength."
 
-#: app/labels.py:123
-msgid "Priorizar la fuerza y el rendimiento; el peso es secundario."
-msgstr "Put strength and performance first; weight comes second."
+#: app/labels.py:125
+msgid "Lo importante es levantar más; el peso es secundario."
+msgstr "What matters is lifting more; your weight comes second."
 
-#: app/labels.py:127
+#: app/labels.py:129
 msgid "Conservador"
 msgstr "Cautious"
 
-#: app/labels.py:128
+#: app/labels.py:130
 msgid "Moderado"
 msgstr "Moderate"
 
-#: app/labels.py:129
+#: app/labels.py:131
 msgid "Decidido"
 msgstr "Determined"
 
-#: app/labels.py:132
+#: app/labels.py:134
 msgid "Cambios pequeños, más fáciles de mantener."
 msgstr "Small changes, easier to keep up."
 
-#: app/labels.py:133
+#: app/labels.py:135
 msgid "El punto medio recomendado."
 msgstr "The recommended middle ground."
 
-#: app/labels.py:135
+#: app/labels.py:137
 msgid "Más rápido, más hambre y fatiga. Los límites de seguridad se aplican igual."
 msgstr "Faster, hungrier and more tiring. The safety limits still apply."
 
-#: app/labels.py:140
+#: app/labels.py:142
 msgid "Omnívora"
 msgstr "Omnivore"
 
-#: app/labels.py:141
+#: app/labels.py:143
 msgid "Vegetariana"
 msgstr "Vegetarian"
 
-#: app/labels.py:142
+#: app/labels.py:144
 msgid "Vegana"
 msgstr "Vegan"
 
-#: app/labels.py:143
+#: app/labels.py:145
 msgid "Pescetariana"
 msgstr "Pescatarian"
 
-#: app/labels.py:144
+#: app/labels.py:146
 msgid "Halal"
 msgstr "Halal"
 
-#: app/labels.py:145
+#: app/labels.py:147
 msgid "Kosher"
 msgstr "Kosher"
 
-#: app/labels.py:149
+#: app/labels.py:151
 msgid "Bajo"
 msgstr "Low"
 
-#: app/labels.py:150
+#: app/labels.py:152
 msgid "Medio"
 msgstr "Medium"
 
-#: app/labels.py:151
+#: app/labels.py:153
 msgid "Alto"
 msgstr "High"
 
-#: app/labels.py:154
+#: app/labels.py:156
 msgid "Poco (menos de 20 min al día)"
 msgstr "Little (under 20 min a day)"
 
-#: app/labels.py:155
+#: app/labels.py:157
 msgid "Normal (20-45 min)"
 msgstr "Normal (20-45 min)"
 
-#: app/labels.py:156
+#: app/labels.py:158
 msgid "Bastante (más de 45 min)"
 msgstr "Plenty (over 45 min)"
 
-#: app/labels.py:160
+#: app/labels.py:162
 msgid "Hombro"
 msgstr "Shoulder"
 
-#: app/labels.py:161
+#: app/labels.py:163
 msgid "Codo"
 msgstr "Elbow"
 
-#: app/labels.py:162
+#: app/labels.py:164
 msgid "Muñeca"
 msgstr "Wrist"
 
-#: app/labels.py:163 app/templates/tracking/measurements.html:43
+#: app/labels.py:165 app/templates/tracking/measurements.html:43
 msgid "Cuello"
 msgstr "Neck"
 
-#: app/labels.py:164
+#: app/labels.py:166
 msgid "Zona lumbar"
 msgstr "Lower back"
 
-#: app/labels.py:165 app/templates/tracking/measurements.html:43
+#: app/labels.py:167 app/templates/tracking/measurements.html:43
 msgid "Cadera"
 msgstr "Hip"
 
-#: app/labels.py:166
+#: app/labels.py:168
 msgid "Rodilla"
 msgstr "Knee"
 
-#: app/labels.py:167
+#: app/labels.py:169
 msgid "Tobillo"
 msgstr "Ankle"
 
-#: app/labels.py:171
+#: app/labels.py:173
 msgid "Leve (molesta a veces)"
 msgstr "Mild (it bothers me sometimes)"
 
-#: app/labels.py:172
+#: app/labels.py:174
 msgid "Moderada (limita algunos ejercicios)"
 msgstr "Moderate (it rules out some exercises)"
 
-#: app/labels.py:173
+#: app/labels.py:175
 msgid "Grave (en tratamiento o con dolor habitual)"
 msgstr "Severe (under treatment or in regular pain)"
 
-#: app/labels.py:177 app/templates/tracking/measurements.html:43
+#: app/labels.py:179 app/templates/tracking/measurements.html:43
 msgid "Pecho"
 msgstr "Chest"
 
-#: app/labels.py:178
+#: app/labels.py:180
 msgid "Espalda"
 msgstr "Back"
 
-#: app/labels.py:179
+#: app/labels.py:181
 msgid "Hombros"
 msgstr "Shoulders"
 
-#: app/labels.py:180
+#: app/labels.py:182
 msgid "Bíceps"
 msgstr "Biceps"
 
-#: app/labels.py:181
+#: app/labels.py:183
 msgid "Tríceps"
 msgstr "Triceps"
 
-#: app/labels.py:182
+#: app/labels.py:184
 msgid "Antebrazos"
 msgstr "Forearms"
 
-#: app/labels.py:183
+#: app/labels.py:185
 msgid "Cuádriceps"
 msgstr "Quads"
 
-#: app/labels.py:184
-msgid "Isquiosurales"
+#: app/labels.py:186
+msgid "Femorales"
 msgstr "Hamstrings"
 
-#: app/labels.py:185
+#: app/labels.py:187
 msgid "Glúteos"
 msgstr "Glutes"
 
-#: app/labels.py:186
+#: app/labels.py:188
 msgid "Gemelos"
 msgstr "Calves"
 
-#: app/labels.py:187
+#: app/labels.py:189
 msgid "Abdomen"
 msgstr "Abs"
 
-#: app/labels.py:188
+#: app/labels.py:190
 msgid "Lumbares"
 msgstr "Lower back"
 
-#: app/labels.py:189
+#: app/labels.py:191
 msgid "Trapecios"
 msgstr "Traps"
 
-#: app/labels.py:190
+#: app/labels.py:192
 msgid "Aductores"
 msgstr "Adductors"
 
-#: app/labels.py:200
-msgid "Empuje horizontal"
-msgstr "Horizontal push"
-
-#: app/labels.py:201
-msgid "Empuje vertical"
-msgstr "Vertical push"
-
 #: app/labels.py:202
-msgid "Tracción horizontal"
-msgstr "Horizontal pull"
+msgid "Empujar al frente"
+msgstr "Push forward"
 
 #: app/labels.py:203
-msgid "Tracción vertical"
-msgstr "Vertical pull"
+msgid "Empujar hacia arriba"
+msgstr "Push overhead"
 
 #: app/labels.py:204
-msgid "Dominante de rodilla"
-msgstr "Knee dominant"
+msgid "Tirar hacia ti"
+msgstr "Pull towards you"
 
 #: app/labels.py:205
-msgid "Dominante de cadera"
-msgstr "Hip dominant"
+msgid "Tirar desde arriba"
+msgstr "Pull down from above"
 
 #: app/labels.py:206
-msgid "Core"
-msgstr "Core"
+msgid "Sentadillas y similares"
+msgstr "Squats and similar"
 
 #: app/labels.py:207
-msgid "Aislamiento"
-msgstr "Isolation"
+msgid "Peso muerto y similares"
+msgstr "Deadlifts and similar"
 
-#: app/labels.py:211
+#: app/labels.py:208
+msgid "Abdomen y zona media"
+msgstr "Abs and core"
+
+#: app/labels.py:209
+msgid "Un solo músculo"
+msgstr "Single muscle"
+
+#: app/labels.py:213
 msgid "Peso corporal"
 msgstr "Body weight"
 
-#: app/labels.py:212
+#: app/labels.py:214
 msgid "Peso libre"
 msgstr "Free weights"
 
-#: app/labels.py:213
+#: app/labels.py:215
 msgid "Poleas"
 msgstr "Cables"
 
-#: app/labels.py:214
+#: app/labels.py:216
 msgid "Máquinas"
 msgstr "Machines"
 
-#: app/labels.py:215
+#: app/labels.py:217
 msgid "Accesorios"
 msgstr "Accessories"
 
-#: app/labels.py:219
+#: app/labels.py:221
 msgid "Cuerpo completo"
 msgstr "Full body"
 
-#: app/labels.py:220
+#: app/labels.py:222
 msgid "Torso / pierna"
 msgstr "Upper / lower"
 
-#: app/labels.py:221
+#: app/labels.py:223
 msgid "Empuje / tracción / pierna"
 msgstr "Push / pull / legs"
 
-#: app/labels.py:222
+#: app/labels.py:224
 msgid "Torso / pierna + empuje / tracción / pierna"
 msgstr "Upper / lower + push / pull / legs"
 
-#: app/labels.py:223
+#: app/labels.py:225
 msgid "Arnold"
 msgstr "Arnold"
 
-#: app/labels.py:224
+#: app/labels.py:226
 msgid "Empuje / tracción / pierna, dos veces"
 msgstr "Push / pull / legs, twice"
 
-#: app/labels.py:228
+#: app/labels.py:230
 msgid "baja"
 msgstr "low"
 
-#: app/labels.py:229
+#: app/labels.py:231
 msgid "media"
 msgstr "medium"
 
-#: app/labels.py:230
+#: app/labels.py:232
 msgid "alta"
 msgstr "high"
 
-#: app/blueprints/tracking/forms.py:21 app/labels.py:234
+#: app/blueprints/tracking/forms.py:22 app/labels.py:236
 #: app/templates/training/routine.html:87
 msgid "Cardio suave"
 msgstr "Easy cardio"
 
-#: app/blueprints/tracking/forms.py:22 app/labels.py:235
+#: app/blueprints/tracking/forms.py:23 app/labels.py:237
 #: app/templates/training/routine.html:88
 msgid "Intervalos"
 msgstr "Intervals"
 
-#: app/labels.py:239
+#: app/labels.py:241
 msgid "Katch-McArdle (sobre masa magra)"
 msgstr "Katch-McArdle (on lean mass)"
 
-#: app/labels.py:240
+#: app/labels.py:242
 msgid "Mifflin-St Jeor"
 msgstr "Mifflin-St Jeor"
 
-#: app/labels.py:241
+#: app/labels.py:243
 msgid "Harris-Benedict revisada"
 msgstr "Harris-Benedict, revised"
 
-#: app/labels.py:245
+#: app/labels.py:247
 msgid "normal"
 msgstr "regular"
 
-#: app/labels.py:246
+#: app/labels.py:248
 msgid "antes de entrenar"
 msgstr "pre-workout"
 
-#: app/labels.py:247
+#: app/labels.py:249
 msgid "después de entrenar"
 msgstr "post-workout"
 
-#: app/labels.py:251
+#: app/labels.py:253
 msgid "por debajo"
 msgstr "below"
 
-#: app/labels.py:252
+#: app/labels.py:254
 msgid "en rango"
 msgstr "in range"
 
-#: app/labels.py:253
+#: app/labels.py:255
 msgid "por encima"
 msgstr "above"
 
-#: app/labels.py:257
+#: app/labels.py:259
 msgid "1 · Muy bajo"
 msgstr "1 · Very low"
 
-#: app/labels.py:258
+#: app/labels.py:260
 msgid "2 · Bajo"
 msgstr "2 · Low"
 
-#: app/blueprints/workouts/forms.py:15 app/labels.py:259
+#: app/blueprints/workouts/forms.py:16 app/labels.py:261
 msgid "3 · Normal"
 msgstr "3 · Normal"
 
-#: app/labels.py:260
+#: app/labels.py:262
 msgid "4 · Alto"
 msgstr "4 · High"
 
-#: app/labels.py:261
+#: app/labels.py:263
 msgid "5 · Muy alto"
 msgstr "5 · Very high"
 
-#: app/labels.py:265
+#: app/labels.py:267
 msgid "principal"
 msgstr "main"
 
-#: app/labels.py:266
+#: app/labels.py:268
 msgid "secundario"
 msgstr "secondary"
 
-#: app/labels.py:267
+#: app/labels.py:269
 msgid "accesorio"
 msgstr "accessory"
 
-#: app/labels.py:268
+#: app/labels.py:270
 msgid "aislamiento"
 msgstr "isolation"
 
-#: app/labels.py:302
+#: app/labels.py:304
 msgid "una barra de dominadas o bandas"
 msgstr "a pull-up bar or bands"
 
-#: app/labels.py:303
+#: app/labels.py:305
 msgid "mancuernas, bandas o un TRX"
 msgstr "dumbbells, bands or a TRX"
 
-#: app/labels.py:304 app/labels.py:305
+#: app/labels.py:306 app/labels.py:307
 msgid "mancuernas o bandas"
 msgstr "dumbbells or bands"
 
-#: app/labels.py:306
+#: app/labels.py:308
 msgid "mancuernas o una kettlebell"
 msgstr "dumbbells or a kettlebell"
 
-#: app/labels.py:307
+#: app/labels.py:309
 msgid "mancuernas, kettlebell o bandas"
 msgstr "dumbbells, a kettlebell or bands"
 
-#: app/labels.py:308
+#: app/labels.py:310
 msgid "una esterilla"
 msgstr "a mat"
 
-#: app/labels.py:361
+#: app/labels.py:363
 msgid "Las cintas con asas que se cuelgan de un anclaje"
 msgstr "The straps with handles that hang from an anchor"
 
-#: app/labels.py:362
+#: app/labels.py:364
 msgid "La barra corta con ondulaciones, para bíceps y tríceps"
 msgstr "The short wavy bar, for biceps and triceps"
 
-#: app/labels.py:363
+#: app/labels.py:365
 msgid "La barra hexagonal en la que te metes dentro"
 msgstr "The hexagonal bar you stand inside"
 
-#: app/labels.py:364
+#: app/labels.py:366
 msgid "Balón con peso, para lanzamientos y abdominales"
 msgstr "A weighted ball, for throws and abs"
 
-#: app/labels.py:365
+#: app/labels.py:367
 msgid "El cajón para subirse o hacer saltos"
 msgstr "The box you step or jump onto"
 
-#: app/labels.py:366
+#: app/labels.py:368
 msgid "La pelota grande hinchable"
 msgstr "The big inflatable ball"
 
-#: app/labels.py:367
+#: app/labels.py:369
 msgid "El banco inclinado para lumbares y glúteos"
 msgstr "The angled bench for lower back and glutes"
 
-#: app/labels.py:368
+#: app/labels.py:370
 msgid "La ruedecita con dos asas"
 msgstr "The little wheel with two handles"
 
-#: app/labels.py:369
+#: app/labels.py:371
 msgid "La torre con poleas y cables regulables"
 msgstr "The tower with pulleys and adjustable cables"
 
-#: app/labels.py:370
+#: app/labels.py:372
 msgid "Sentado, tiras de una barra hacia el pecho"
 msgstr "Seated, you pull a bar down to your chest"
 
-#: app/labels.py:371
+#: app/labels.py:373
 msgid "Sentado, tiras de un agarre hacia el abdomen"
 msgstr "Seated, you pull a handle towards your belly"
 
-#: app/labels.py:372
+#: app/labels.py:374
 msgid "La barra guiada por raíles"
 msgstr "The bar that runs on rails"
 
-#: app/labels.py:373
+#: app/labels.py:375
 msgid "Sentadilla en máquina inclinada, de espaldas al respaldo"
 msgstr "Squat on an angled machine, back against the pad"
 
-#: app/labels.py:374
+#: app/labels.py:376
 msgid "Sentado, juntas los brazos por delante del pecho"
 msgstr "Seated, you bring your arms together in front of your chest"
 
-#: app/labels.py:375
+#: app/labels.py:377
 msgid "Empuje de cadera con la espalda apoyada"
 msgstr "Hip thrust with your back supported"
 
-#: app/labels.py:376
+#: app/labels.py:378
 msgid "Sentado, abres o cierras las piernas"
 msgstr "Seated, you open or close your legs"
 
-#: app/labels.py:377
+#: app/labels.py:379
 msgid "La estructura donde se apoya la barra para sentadillas"
 msgstr "The frame that holds the bar for squats"
 
-#: app/labels.py:383
+#: app/labels.py:385
 msgid "Damos por hecho que tienes de todo: barras, mancuernas, poleas y máquinas."
 msgstr "We assume you have it all: barbells, dumbbells, cables and machines."
 
-#: app/labels.py:386
+#: app/labels.py:388
 msgid "Damos por hecho lo básico: barras, mancuernas, bancos y alguna máquina."
 msgstr "We assume the basics: barbells, dumbbells, benches and a machine or two."
 
-#: app/labels.py:388
+#: app/labels.py:390
 msgid "Damos por hecho mancuernas, bandas y un banco."
 msgstr "We assume dumbbells, bands and a bench."
 
-#: app/labels.py:389
+#: app/labels.py:391
 msgid "Damos por hecho que entrenas solo con tu peso."
 msgstr "We assume you train with your body weight only."
 
@@ -833,8 +837,8 @@ msgid "Todavía no hay plan que exportar."
 msgstr "There is no plan to export yet."
 
 #: app/blueprints/account/routes.py:185
-msgid "Tu cuenta y todos tus datos se han borrado. Gracias por probar Forja."
-msgstr "Your account and all your data have been deleted. Thanks for trying Forja."
+msgid "Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."
+msgstr "Your account and all your data have been deleted. Thanks for trying Alza."
 
 #: app/blueprints/auth/forms.py:19 app/blueprints/auth/forms.py:47
 #: app/blueprints/auth/forms.py:57
@@ -850,8 +854,8 @@ msgid "Repite la contraseña"
 msgstr "Repeat the password"
 
 #: app/blueprints/auth/forms.py:37
-msgid "Entiendo que Forja es una herramienta orientativa y no sustituye el consejo de un profesional sanitario."
-msgstr "I understand that Forja is a guidance tool and does not replace the advice of a healthcare professional."
+msgid "Entiendo que Alza es una herramienta orientativa y no sustituye el consejo de un profesional sanitario."
+msgstr "I understand that Alza is a guidance tool and does not replace the advice of a healthcare professional."
 
 #: app/blueprints/auth/forms.py:40
 msgid "Es necesario aceptar el aviso."
@@ -914,8 +918,8 @@ msgstr ""
 "The link expires in %(minutes)s minutes. If you did not ask for it, ignore this email."
 
 #: app/blueprints/auth/routes.py:129
-msgid "Recupera tu contraseña de Forja"
-msgstr "Recover your Forja password"
+msgid "Recupera tu contraseña de Alza"
+msgstr "Recover your Alza password"
 
 #: app/blueprints/auth/routes.py:131
 msgid "No se pudo enviar el correo. Inténtalo más tarde."
@@ -934,7 +938,7 @@ msgid "Contraseña actualizada. Ya puedes entrar."
 msgstr "Password updated. You can sign in now."
 
 #: app/blueprints/dashboard/routes.py:43
-#: app/blueprints/onboarding/routes.py:140 app/services/exports.py:381
+#: app/blueprints/onboarding/routes.py:140 app/services/exports.py:406
 #: app/templates/dashboard/index.html:81 app/templates/tracking/diary.html:25
 msgid "Peso"
 msgstr "Weight"
@@ -943,21 +947,21 @@ msgstr "Weight"
 msgid "Media de 7 días"
 msgstr "7-day average"
 
-#: app/blueprints/nutrition/routes.py:22 app/services/exports.py:305
-#: app/services/exports.py:344 app/templates/dashboard/index.html:50
+#: app/blueprints/nutrition/routes.py:22 app/services/exports.py:330
+#: app/services/exports.py:369 app/templates/dashboard/index.html:50
 #: app/templates/nutrition/plan.html:54 app/templates/nutrition/plan.html:123
 #: app/templates/onboarding/result.html:46
 msgid "Proteína"
 msgstr "Protein"
 
-#: app/blueprints/nutrition/routes.py:22 app/services/exports.py:306
-#: app/services/exports.py:344 app/templates/dashboard/index.html:51
+#: app/blueprints/nutrition/routes.py:22 app/services/exports.py:331
+#: app/services/exports.py:369 app/templates/dashboard/index.html:51
 #: app/templates/nutrition/plan.html:55 app/templates/onboarding/result.html:46
 msgid "Carbohidratos"
 msgstr "Carbohydrates"
 
-#: app/blueprints/nutrition/routes.py:22 app/services/exports.py:307
-#: app/services/exports.py:344 app/templates/dashboard/index.html:52
+#: app/blueprints/nutrition/routes.py:22 app/services/exports.py:332
+#: app/services/exports.py:369 app/templates/dashboard/index.html:52
 #: app/templates/nutrition/plan.html:56 app/templates/nutrition/plan.html:67
 #: app/templates/onboarding/result.html:46
 msgid "Grasa"
@@ -996,170 +1000,170 @@ msgstr "Height (cm)"
 msgid "Peso actual (kg)"
 msgstr "Current weight (kg)"
 
-#: app/blueprints/onboarding/forms.py:76 app/blueprints/tracking/forms.py:104
+#: app/blueprints/onboarding/forms.py:76 app/blueprints/tracking/forms.py:105
 msgid "Cuello (cm)"
 msgstr "Neck (cm)"
 
-#: app/blueprints/onboarding/forms.py:77 app/blueprints/tracking/forms.py:105
+#: app/blueprints/onboarding/forms.py:78 app/blueprints/tracking/forms.py:107
 msgid "Cintura (cm)"
 msgstr "Waist (cm)"
 
-#: app/blueprints/onboarding/forms.py:78 app/blueprints/tracking/forms.py:106
+#: app/blueprints/onboarding/forms.py:80 app/blueprints/tracking/forms.py:109
 msgid "Cadera (cm)"
 msgstr "Hip (cm)"
 
-#: app/blueprints/onboarding/forms.py:80
+#: app/blueprints/onboarding/forms.py:82
 msgid "Porcentaje de grasa corporal"
 msgstr "Body fat percentage"
 
-#: app/blueprints/onboarding/forms.py:83
+#: app/blueprints/onboarding/forms.py:85
 msgid "¿Cómo lo has medido?"
 msgstr "How did you measure it?"
 
-#: app/blueprints/onboarding/forms.py:95
-msgid "Forja es solo para mayores de 18 años."
-msgstr "Forja is only for people aged 18 and over."
-
 #: app/blueprints/onboarding/forms.py:97
+msgid "Alza es solo para mayores de 18 años."
+msgstr "Alza is only for people aged 18 and over."
+
+#: app/blueprints/onboarding/forms.py:99
 msgid "Revisa la fecha de nacimiento."
 msgstr "Check the date of birth."
 
-#: app/blueprints/onboarding/forms.py:102 app/blueprints/tracking/forms.py:127
+#: app/blueprints/onboarding/forms.py:104 app/blueprints/tracking/forms.py:130
 msgid "Indica cómo has medido el porcentaje de grasa."
 msgstr "Tell us how you measured your body fat."
 
-#: app/blueprints/onboarding/forms.py:119
+#: app/blueprints/onboarding/forms.py:121
 msgid "Para estimar la grasa en mujeres hace falta también la cadera."
 msgstr "Estimating body fat in women needs the hip measurement too."
 
-#: app/blueprints/onboarding/forms.py:129
+#: app/blueprints/onboarding/forms.py:131
 msgid "Actividad en tu trabajo o día a día"
 msgstr "Activity at work or day to day"
 
-#: app/blueprints/onboarding/forms.py:134
+#: app/blueprints/onboarding/forms.py:136
 msgid "Pasos diarios (si los conoces)"
 msgstr "Daily steps (if you know them)"
 
-#: app/blueprints/onboarding/forms.py:138
+#: app/blueprints/onboarding/forms.py:140
 msgid "Horas de sueño por noche"
 msgstr "Hours of sleep per night"
 
-#: app/blueprints/onboarding/forms.py:141
+#: app/blueprints/onboarding/forms.py:143
 msgid "Nivel de estrés habitual"
 msgstr "Usual stress level"
 
-#: app/blueprints/onboarding/forms.py:147
+#: app/blueprints/onboarding/forms.py:149
 msgid "Otro deporte o actividad (opcional)"
 msgstr "Another sport or activity (optional)"
 
-#: app/blueprints/onboarding/forms.py:150
+#: app/blueprints/onboarding/forms.py:152
 msgid "Sesiones por semana"
 msgstr "Sessions per week"
 
-#: app/blueprints/onboarding/forms.py:155
-#: app/blueprints/onboarding/forms.py:190
+#: app/blueprints/onboarding/forms.py:157
+#: app/blueprints/onboarding/forms.py:192
 msgid "Minutos por sesión"
 msgstr "Minutes per session"
 
-#: app/blueprints/onboarding/forms.py:160
+#: app/blueprints/onboarding/forms.py:162
 msgid "Intensidad"
 msgstr "Intensity"
 
-#: app/blueprints/onboarding/forms.py:161 app/blueprints/tracking/forms.py:20
+#: app/blueprints/onboarding/forms.py:163 app/blueprints/tracking/forms.py:21
 msgid "—"
 msgstr "—"
 
-#: app/blueprints/onboarding/forms.py:170
+#: app/blueprints/onboarding/forms.py:172
 msgid "Indica cuánto dura cada sesión."
 msgstr "Tell us how long each session lasts."
 
-#: app/blueprints/onboarding/forms.py:172
+#: app/blueprints/onboarding/forms.py:174
 msgid "Indica la intensidad de esa actividad."
 msgstr "Tell us how hard that activity is."
 
-#: app/blueprints/onboarding/forms.py:179
+#: app/blueprints/onboarding/forms.py:181
 msgid "Experiencia con pesas"
 msgstr "Experience with weights"
 
-#: app/blueprints/onboarding/forms.py:184
+#: app/blueprints/onboarding/forms.py:186
 msgid "Días de entrenamiento por semana"
 msgstr "Training days per week"
 
-#: app/blueprints/onboarding/forms.py:196
+#: app/blueprints/onboarding/forms.py:198
 msgid "¿Dónde entrenas?"
 msgstr "Where do you train?"
 
-#: app/blueprints/onboarding/forms.py:201
+#: app/blueprints/onboarding/forms.py:203
 msgid "¿A qué hora sueles entrenar?"
 msgstr "When do you usually train?"
 
-#: app/blueprints/onboarding/forms.py:211
+#: app/blueprints/onboarding/forms.py:213
 msgid "Material disponible"
 msgstr "Equipment available"
 
-#: app/blueprints/onboarding/forms.py:213
+#: app/blueprints/onboarding/forms.py:215
 msgid "¿Hay algún músculo que quieras trabajar más? (opcional, máximo dos)"
 msgstr "Any muscle you want to work more? (optional, two at most)"
 
-#: app/blueprints/onboarding/forms.py:217
+#: app/blueprints/onboarding/forms.py:219
 msgid "Tengo alguna molestia o lesión"
 msgstr "I have a niggle or an injury"
 
-#: app/blueprints/onboarding/forms.py:224
+#: app/blueprints/onboarding/forms.py:226
 msgid "Marca al menos una opción; el peso corporal cuenta."
 msgstr "Tick at least one; body weight counts."
 
-#: app/blueprints/onboarding/forms.py:229
+#: app/blueprints/onboarding/forms.py:231
 msgid "Elige como mucho dos músculos."
 msgstr "Choose two muscles at most."
 
-#: app/blueprints/onboarding/forms.py:257
+#: app/blueprints/onboarding/forms.py:259
 msgid "Sin molestias"
 msgstr "No trouble"
 
-#: app/blueprints/onboarding/forms.py:267
+#: app/blueprints/onboarding/forms.py:269
 msgid "Objetivo principal"
 msgstr "Main goal"
 
-#: app/blueprints/onboarding/forms.py:270
+#: app/blueprints/onboarding/forms.py:272
 #: app/blueprints/onboarding/routes.py:234
 msgid "Ritmo"
 msgstr "Pace"
 
-#: app/blueprints/onboarding/forms.py:276
+#: app/blueprints/onboarding/forms.py:278
 msgid "Peso objetivo (kg, opcional)"
 msgstr "Target weight (kg, optional)"
 
-#: app/blueprints/onboarding/forms.py:278
+#: app/blueprints/onboarding/forms.py:280
 msgid "Fecha objetivo (opcional)"
 msgstr "Target date (optional)"
 
-#: app/blueprints/onboarding/forms.py:283
+#: app/blueprints/onboarding/forms.py:285
 msgid "La fecha objetivo tiene que ser futura."
 msgstr "The target date has to be in the future."
 
-#: app/blueprints/onboarding/forms.py:295
+#: app/blueprints/onboarding/forms.py:297
 #: app/blueprints/onboarding/routes.py:249
 msgid "Comidas al día"
 msgstr "Meals per day"
 
-#: app/blueprints/onboarding/forms.py:302
-msgid "Patrón de alimentación"
-msgstr "Eating pattern"
+#: app/blueprints/onboarding/forms.py:304
+msgid "Tipo de alimentación"
+msgstr "Type of diet"
 
-#: app/blueprints/onboarding/forms.py:308
+#: app/blueprints/onboarding/forms.py:310
 msgid "Quiero más hidratos los días de entreno y menos los de descanso"
 msgstr "I want more carbs on training days and fewer on rest days"
 
-#: app/blueprints/onboarding/forms.py:311
+#: app/blueprints/onboarding/forms.py:313
 msgid "Bebidas alcohólicas por semana"
 msgstr "Alcoholic drinks per week"
 
-#: app/blueprints/onboarding/forms.py:320
+#: app/blueprints/onboarding/forms.py:322
 msgid "Estoy embarazada o en periodo de lactancia"
 msgstr "I am pregnant or breastfeeding"
 
-#: app/blueprints/onboarding/forms.py:322
+#: app/blueprints/onboarding/forms.py:324
 msgid "Tengo o he tenido un trastorno de la conducta alimentaria"
 msgstr "I have or have had an eating disorder"
 
@@ -1196,14 +1200,14 @@ msgstr "No"
 msgid "Sexo"
 msgstr "Sex"
 
-#: app/blueprints/onboarding/routes.py:139 app/services/exports.py:382
+#: app/blueprints/onboarding/routes.py:139 app/services/exports.py:407
 msgid "Altura"
 msgstr "Height"
 
 #: app/blueprints/onboarding/routes.py:142 app/templates/tracking/diary.html:17
 #: app/templates/tracking/measurements.html:5
 #: app/templates/tracking/measurements.html:10
-msgid "Perímetros"
+msgid "Medidas"
 msgstr "Measurements"
 
 #: app/blueprints/onboarding/routes.py:146
@@ -1223,7 +1227,7 @@ msgstr "hip"
 msgid "no indicados"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:155 app/services/exports.py:385
+#: app/blueprints/onboarding/routes.py:155 app/services/exports.py:410
 #: app/templates/nutrition/plan.html:100
 msgid "Grasa corporal"
 msgstr "Body fat"
@@ -1325,7 +1329,7 @@ msgstr "no date"
 msgid "Alimentación"
 msgstr "Eating"
 
-#: app/blueprints/onboarding/routes.py:251 app/services/exports.py:360
+#: app/blueprints/onboarding/routes.py:251 app/services/exports.py:385
 #: app/templates/nutrition/plan.html:79
 msgid "Más hidratos los días de entreno"
 msgstr "More carbs on training days"
@@ -1428,90 +1432,90 @@ msgstr "Plan updated to version %(v)s: %(kcal)s kcal."
 msgid "Revisión registrada: %(text)s"
 msgstr "Review recorded: %(text)s"
 
-#: app/blueprints/tracking/forms.py:29 app/blueprints/tracking/forms.py:103
+#: app/blueprints/tracking/forms.py:30 app/blueprints/tracking/forms.py:104
 #: app/templates/tracking/diary.html:11 app/templates/tracking/diary.html:70
 #: app/templates/tracking/measurements.html:43
 msgid "Día"
 msgstr "Day"
 
-#: app/blueprints/tracking/forms.py:34 app/blueprints/tracking/forms.py:122
+#: app/blueprints/tracking/forms.py:35 app/blueprints/tracking/forms.py:125
 msgid "Ese día todavía no ha llegado."
 msgstr "That day has not arrived yet."
 
-#: app/blueprints/tracking/forms.py:41
+#: app/blueprints/tracking/forms.py:42
 msgid "Peso (kg)"
 msgstr "Weight (kg)"
 
-#: app/blueprints/tracking/forms.py:43 app/blueprints/tracking/forms.py:62
-#: app/blueprints/tracking/forms.py:73 app/blueprints/tracking/forms.py:117
+#: app/blueprints/tracking/forms.py:44 app/blueprints/tracking/forms.py:63
+#: app/blueprints/tracking/forms.py:74 app/blueprints/tracking/forms.py:120
 msgid "Nota (opcional)"
 msgstr "Note (optional)"
 
-#: app/blueprints/tracking/forms.py:50 app/services/exports.py:304
+#: app/blueprints/tracking/forms.py:51 app/services/exports.py:329
 msgid "Calorías"
 msgstr "Calories"
 
-#: app/blueprints/tracking/forms.py:53
+#: app/blueprints/tracking/forms.py:54
 msgid "Proteína (g)"
 msgstr "Protein (g)"
 
-#: app/blueprints/tracking/forms.py:56
+#: app/blueprints/tracking/forms.py:57
 msgid "Carbohidratos (g)"
 msgstr "Carbohydrates (g)"
 
-#: app/blueprints/tracking/forms.py:58
+#: app/blueprints/tracking/forms.py:59
 msgid "Grasa (g)"
 msgstr "Fat (g)"
 
-#: app/blueprints/tracking/forms.py:60
+#: app/blueprints/tracking/forms.py:61
 msgid "Cuánto has seguido el plan (%)"
 msgstr "How closely you followed the plan (%)"
 
-#: app/blueprints/tracking/forms.py:68 app/templates/tracking/diary.html:70
+#: app/blueprints/tracking/forms.py:69 app/templates/tracking/diary.html:70
 msgid "Pasos"
 msgstr "Steps"
 
-#: app/blueprints/tracking/forms.py:69
+#: app/blueprints/tracking/forms.py:70
 msgid "Tipo de cardio"
 msgstr "Kind of cardio"
 
-#: app/blueprints/tracking/forms.py:71 app/templates/workouts/history.html:19
+#: app/blueprints/tracking/forms.py:72 app/templates/workouts/history.html:19
 msgid "Minutos"
 msgstr "Minutes"
 
-#: app/blueprints/tracking/forms.py:88
+#: app/blueprints/tracking/forms.py:89
 msgid "Indica qué tipo de cardio has hecho."
 msgstr "Tell us what kind of cardio you did."
 
-#: app/blueprints/tracking/forms.py:94
+#: app/blueprints/tracking/forms.py:95
 msgid "Indica cuántos minutos han sido."
 msgstr "Tell us how many minutes it was."
 
-#: app/blueprints/tracking/forms.py:107
+#: app/blueprints/tracking/forms.py:110
 msgid "Pecho (cm)"
 msgstr "Chest (cm)"
 
-#: app/blueprints/tracking/forms.py:108
+#: app/blueprints/tracking/forms.py:111
 msgid "Brazo (cm)"
 msgstr "Arm (cm)"
 
-#: app/blueprints/tracking/forms.py:109
+#: app/blueprints/tracking/forms.py:112
 msgid "Muslo (cm)"
 msgstr "Thigh (cm)"
 
-#: app/blueprints/tracking/forms.py:110
+#: app/blueprints/tracking/forms.py:113
 msgid "Gemelo (cm)"
 msgstr "Calf (cm)"
 
-#: app/blueprints/tracking/forms.py:112
+#: app/blueprints/tracking/forms.py:115
 msgid "Grasa corporal (%)"
 msgstr "Body fat (%)"
 
-#: app/blueprints/tracking/forms.py:115 app/services/exports.py:391
+#: app/blueprints/tracking/forms.py:118 app/services/exports.py:416
 msgid "Método"
 msgstr "Method"
 
-#: app/blueprints/tracking/forms.py:143
+#: app/blueprints/tracking/forms.py:146
 msgid "Rellena al menos una medida."
 msgstr "Fill in at least one measurement."
 
@@ -1546,51 +1550,51 @@ msgstr "%(old)s is out: %(new)s takes its place. It will not show up in your rou
 msgid "Vuelve a estar disponible para las próximas rutinas."
 msgstr "It is available again for the next routines."
 
-#: app/blueprints/workouts/forms.py:13
+#: app/blueprints/workouts/forms.py:14
 msgid "1 · Fresco"
 msgstr "1 · Fresh"
 
-#: app/blueprints/workouts/forms.py:14
+#: app/blueprints/workouts/forms.py:15
 msgid "2 · Bien"
 msgstr "2 · Good"
 
-#: app/blueprints/workouts/forms.py:16
+#: app/blueprints/workouts/forms.py:17
 msgid "4 · Cansado"
 msgstr "4 · Tired"
 
-#: app/blueprints/workouts/forms.py:17
+#: app/blueprints/workouts/forms.py:18
 msgid "5 · Agotado"
 msgstr "5 · Spent"
 
-#: app/blueprints/workouts/forms.py:26
+#: app/blueprints/workouts/forms.py:27
 msgid "kg"
 msgstr "kg"
 
-#: app/blueprints/workouts/forms.py:27
+#: app/blueprints/workouts/forms.py:28 app/templates/workouts/session.html:72
 msgid "reps"
 msgstr "reps"
 
-#: app/blueprints/workouts/forms.py:28
+#: app/blueprints/workouts/forms.py:29
 msgid "RIR"
 msgstr "RIR"
 
-#: app/blueprints/workouts/forms.py:31
+#: app/blueprints/workouts/forms.py:32
 msgid "efectiva"
 msgstr "working"
 
-#: app/blueprints/workouts/forms.py:32 app/templates/workouts/session.html:57
+#: app/blueprints/workouts/forms.py:33 app/templates/workouts/session.html:57
 msgid "calentamiento"
 msgstr "warm-up"
 
-#: app/blueprints/workouts/forms.py:49
+#: app/blueprints/workouts/forms.py:50
 msgid "¿Cómo has acabado?"
 msgstr "How did you finish?"
 
-#: app/blueprints/workouts/forms.py:54
+#: app/blueprints/workouts/forms.py:55
 msgid "Notas (opcional)"
 msgstr "Notes (optional)"
 
-#: app/blueprints/workouts/forms.py:59
+#: app/blueprints/workouts/forms.py:60
 msgid "Elige un valor entre 1 y 5."
 msgstr "Choose a value between 1 and 5."
 
@@ -1660,16 +1664,16 @@ msgid "Carga máxima (kg)"
 msgstr "Top load (kg)"
 
 #. código del motor: body_fat.declared
-#: app/engine/messages.py:45
+#: app/engine/messages.py:46
 #, python-format
-msgid "Porcentaje de grasa declarado (%(value)s %%, método: %(method)s)."
-msgstr "Body fat as you reported it (%(value)s %%, method: %(method)s)."
+msgid "Porcentaje de grasa que has indicado: %(value)s %% (medido con %(method)s)."
+msgstr "Body fat percentage you gave: %(value)s %% (measured with %(method)s)."
 
 #. código del motor: body_fat.navy
-#: app/engine/messages.py:47
+#: app/engine/messages.py:48
 #, python-format
-msgid "Grasa corporal estimada por el método Navy a partir de tus perímetros: %(value)s %%."
-msgstr "Body fat estimated from your measurements with the US Navy formula: %(value)s %%."
+msgid "Tu grasa corporal, calculada con tus medidas de cinta: %(value)s %%."
+msgstr "Your body fat, worked out from your tape measurements: %(value)s %%."
 
 #. código del motor: body_fat.navy_invalid
 #: app/engine/messages.py:50
@@ -1678,509 +1682,509 @@ msgstr "Those measurements cannot give a body fat estimate (check neck, waist an
 
 #. código del motor: body_fat.unknown
 #: app/engine/messages.py:53
-msgid "Sin dato de grasa corporal: la estimación es de baja confianza y se usa Mifflin-St Jeor."
-msgstr "No body fat figure: the estimate has low confidence and Mifflin-St Jeor is used."
+msgid "Sin tu porcentaje de grasa el cálculo es menos preciso: lo que gastas en reposo sale de tu peso, altura, edad y sexo."
+msgstr "Without your body fat percentage the estimate is less precise: what you burn at rest comes from your weight, height, age and sex."
 
 #. código del motor: bmr.katch_mcardle
-#: app/engine/messages.py:55
+#: app/engine/messages.py:57
 #, python-format
-msgid "Metabolismo basal por Katch-McArdle (masa magra %(lean_mass_kg)s kg)."
-msgstr "Basal metabolic rate by Katch-McArdle (lean mass %(lean_mass_kg)s kg)."
+msgid "Lo que gastas en reposo se calcula con tu masa magra (todo lo que no es grasa): %(lean_mass_kg)s kg."
+msgstr "What you burn at rest is worked out from your lean mass (everything that is not fat): %(lean_mass_kg)s kg."
 
 #. código del motor: bmr.mifflin
-#: app/engine/messages.py:56
-msgid "Metabolismo basal por Mifflin-St Jeor."
-msgstr "Basal metabolic rate by Mifflin-St Jeor."
+#: app/engine/messages.py:60
+msgid "Lo que gastas en reposo se calcula con tu peso, altura, edad y sexo."
+msgstr "What you burn at rest is worked out from your weight, height, age and sex."
 
 #. código del motor: tdee.steps_estimated
-#: app/engine/messages.py:58
+#: app/engine/messages.py:62
 #, python-format
 msgid "Pasos diarios estimados en %(steps)s por tu tipo de trabajo (%(job)s)."
 msgstr "Daily steps estimated at %(steps)s from your kind of work (%(job)s)."
 
 #. código del motor: tdee.lifestyle_modifier
-#: app/engine/messages.py:61
+#: app/engine/messages.py:65
 #, python-format
-msgid "Gasto por actividad reducido un %(pct)s %% por sueño corto o estrés alto."
-msgstr "Activity expenditure cut by %(pct)s %% for short sleep or high stress."
+msgid "Lo que gastas moviéndote se rebaja un %(pct)s %% porque duermes poco o tienes mucho estrés."
+msgstr "What you burn moving around is lowered by %(pct)s %% because you sleep little or are very stressed."
 
 #. código del motor: tdee.divergence
-#: app/engine/messages.py:64
+#: app/engine/messages.py:69
 #, python-format
 msgid "Tu gasto calculado (%(components)s kcal) se aleja un %(pct)s %% de la estimación clásica (%(classic)s kcal): revisa pasos, trabajo o sesiones."
 msgstr "Your calculated burn (%(components)s kcal) is %(pct)s %% away from the classic estimate (%(classic)s kcal): check your steps, job or sessions."
 
 #. código del motor: target.deficit
-#: app/engine/messages.py:67 app/templates/nutrition/plan.html:40
+#: app/engine/messages.py:72 app/templates/nutrition/plan.html:40
 #, python-format
 msgid "Comes un %(pct)s %% menos de lo que gastas."
 msgstr "You eat %(pct)s %% less than you burn."
 
 #. código del motor: target.surplus
-#: app/engine/messages.py:68 app/templates/nutrition/plan.html:41
+#: app/engine/messages.py:73 app/templates/nutrition/plan.html:41
 #, python-format
 msgid "Comes un %(pct)s %% más de lo que gastas."
 msgstr "You eat %(pct)s %% more than you burn."
 
 #. código del motor: target.maintenance
-#: app/engine/messages.py:69 app/templates/nutrition/plan.html:42
+#: app/engine/messages.py:74 app/templates/nutrition/plan.html:42
 msgid "Comes lo mismo que gastas."
 msgstr "You eat as much as you burn."
 
 #. código del motor: target.recomposition_not_ideal
-#: app/engine/messages.py:71
-msgid "La recomposición no encaja con tu experiencia y grasa actual: se usan calorías de mantenimiento; valora perder grasa o ganar músculo como objetivo."
-msgstr "Recomposition does not fit your experience and current body fat: maintenance calories are used; consider losing fat or gaining muscle as the goal."
+#: app/engine/messages.py:76
+msgid "Perder grasa y ganar músculo a la vez no encaja con tu experiencia y tu grasa actual: comes lo mismo que gastas. Valora elegir solo perder grasa o solo ganar músculo."
+msgstr "Losing fat and gaining muscle at the same time does not suit your experience and current body fat: you eat as much as you burn. Consider choosing just losing fat or just gaining muscle."
 
 #. código del motor: target.raised_to_floor
-#: app/engine/messages.py:74
+#: app/engine/messages.py:80
 #, python-format
 msgid "Calorías subidas al mínimo seguro (%(floor)s kcal)."
 msgstr "Calories raised to the safe minimum (%(floor)s kcal)."
 
 #. código del motor: target.capped_by_max_loss
-#: app/engine/messages.py:76
+#: app/engine/messages.py:82
 #, python-format
 msgid "El ritmo se limita a %(max_weekly_kg)s kg por semana, el 1 %% de tu peso."
 msgstr "The pace is capped at %(max_weekly_kg)s kg a week, 1 %% of your weight."
 
 #. código del motor: target.date_in_past
-#: app/engine/messages.py:78
+#: app/engine/messages.py:84
 msgid "La fecha objetivo ya ha pasado."
 msgstr "The target date has already passed."
 
 #. código del motor: target.date_direction_mismatch
-#: app/engine/messages.py:80
+#: app/engine/messages.py:86
 msgid "El peso objetivo va en dirección contraria al objetivo elegido."
 msgstr "The target weight goes the opposite way to the goal you chose."
 
 #. código del motor: target.date_unrealistic
-#: app/engine/messages.py:83
+#: app/engine/messages.py:89
 #, python-format
 msgid "Con este ritmo necesitas %(weeks_needed)s semanas y tienes %(weeks_available)s: fecha realista aproximada %(realistic_date)s."
 msgstr "At this pace you need %(weeks_needed)s weeks and you have %(weeks_available)s: a realistic date is around %(realistic_date)s."
 
 #. código del motor: target.date_realistic
-#: app/engine/messages.py:87
+#: app/engine/messages.py:93
 #, python-format
 msgid "Fecha objetivo alcanzable: unas %(weeks_needed)s semanas de %(weeks_available)s."
 msgstr "The target date is reachable: about %(weeks_needed)s weeks out of %(weeks_available)s."
 
 #. código del motor: macros.protein_lean_basis
-#: app/engine/messages.py:90
+#: app/engine/messages.py:96
 #, python-format
-msgid "Proteína calculada sobre tu masa magra (%(per_kg)s g por kg de peso total)."
-msgstr "Protein worked out from your lean mass (%(per_kg)s g per kg of total weight)."
+msgid "Proteína calculada con tu masa magra (%(per_kg)s g por kg de tu peso)."
+msgstr "Protein worked out from your lean mass (%(per_kg)s g per kg of your weight)."
 
 #. código del motor: macros.protein_vegan
-#: app/engine/messages.py:93
+#: app/engine/messages.py:99
 #, python-format
 msgid "Como sigues una dieta vegana, la proteína sube %(extra)s g por kg: la vegetal se aprovecha algo peor. Combina legumbres con cereales o tira de soja, tofu y seitán."
 msgstr "Since you eat vegan, protein goes up %(extra)s g per kg: plant protein is absorbed a little less well. Combine pulses with grains, or lean on soy, tofu and seitan."
 
 #. código del motor: macros.alcohol
-#: app/engine/messages.py:97
+#: app/engine/messages.py:103
 #, python-format
 msgid "Tus %(drinks)s bebidas a la semana son unas %(kcal)s kcal, el %(pct)s %% de tu semana. Van dentro del total, no aparte: apúntalas en el diario."
 msgstr "Your %(drinks)s drinks a week add up to about %(kcal)s kcal, %(pct)s %% of your week. They count towards the total, not on top: log them in the diary."
 
 #. código del motor: macros.fat_lowered_for_carbs
-#: app/engine/messages.py:101
+#: app/engine/messages.py:107
 #, python-format
-msgid "Grasa bajada al mínimo para no dejar los carbohidratos por debajo de %(floor)s g."
-msgstr "Fat lowered to its minimum so carbohydrates stay above %(floor)s g."
+msgid "La grasa baja al mínimo para que los hidratos no queden por debajo de %(floor)s g."
+msgstr "Fat goes down to the minimum so carbs do not drop below %(floor)s g."
 
 #. código del motor: macros.deficit_reduced_for_carbs
-#: app/engine/messages.py:104
+#: app/engine/messages.py:110
 #, python-format
-msgid "Déficit reducido (%(kcal)s kcal más al día) para mantener al menos %(floor)s g de carbohidratos."
-msgstr "Deficit eased (%(kcal)s kcal more per day) to keep at least %(floor)s g of carbohydrates."
+msgid "Comes %(kcal)s kcal más al día de lo previsto para no bajar de %(floor)s g de hidratos."
+msgstr "You eat %(kcal)s kcal a day more than planned so carbs do not drop below %(floor)s g."
 
 #. código del motor: macros.calories_raised_for_carbs
-#: app/engine/messages.py:108
+#: app/engine/messages.py:113
 #, python-format
-msgid "Calorías subidas %(kcal)s kcal para cubrir el mínimo de carbohidratos (%(floor)s g)."
-msgstr "Calories raised by %(kcal)s kcal to reach the carbohydrate minimum (%(floor)s g)."
+msgid "Las calorías suben %(kcal)s kcal para llegar al mínimo de hidratos (%(floor)s g)."
+msgstr "Calories go up %(kcal)s kcal to reach the carb minimum (%(floor)s g)."
 
 #. código del motor: meals.protein_per_meal_low
-#: app/engine/messages.py:111
+#: app/engine/messages.py:116
 #, python-format
-msgid "Con este número de comidas tocan %(per_meal)s g de proteína por toma; con %(recommended_meals)s comidas cada toma superaría los 0,4 g/kg."
-msgstr "With this many meals each one gets %(per_meal)s g of protein; with %(recommended_meals)s meals each would clear 0.4 g/kg."
+msgid "Con este número de comidas tocan %(per_meal)s g de proteína en cada una; repartida en %(recommended_meals)s comidas se aprovecharía mejor."
+msgstr "With this number of meals each one gets %(per_meal)s g of protein; spread over %(recommended_meals)s meals it would be used better."
 
 #. código del motor: cycle.enabled
-#: app/engine/messages.py:114
+#: app/engine/messages.py:119
 #, python-format
 msgid "Más hidratos los días de entreno: %(high)s g, y %(low)s g los de descanso."
 msgstr "More carbs on training days: %(high)s g, and %(low)s g on rest days."
 
 #. código del motor: cycle.low_day_at_floor
-#: app/engine/messages.py:116
+#: app/engine/messages.py:121
 #, python-format
 msgid "Los días de descanso se quedan en el mínimo de %(floor)s g de hidratos."
 msgstr "Rest days stay at the minimum of %(floor)s g of carbs."
 
 #. código del motor: safety.minor
-#: app/engine/messages.py:118
+#: app/engine/messages.py:123
 msgid "Menores de 18 años: no se genera plan; consulta con un profesional sanitario."
 msgstr "Under 18: no plan is produced; please see a healthcare professional."
 
 #. código del motor: safety.pregnancy
-#: app/engine/messages.py:120
+#: app/engine/messages.py:125
 msgid "Embarazo o lactancia: no se genera plan; consulta con un profesional sanitario."
 msgstr "Pregnancy or breastfeeding: no plan is produced; please see a healthcare professional."
 
 #. código del motor: safety.eating_disorder
-#: app/engine/messages.py:123
+#: app/engine/messages.py:128
 msgid "Antecedentes de trastorno de la conducta alimentaria: no se genera plan; consulta con un profesional sanitario."
 msgstr "History of an eating disorder: no plan is produced; please see a healthcare professional."
 
 #. código del motor: safety.underweight
-#: app/engine/messages.py:126
+#: app/engine/messages.py:132
 #, python-format
-msgid "IMC %(bmi)s, por debajo de 18,5: no se genera un plan de déficit."
-msgstr "BMI %(bmi)s, below 18.5: no deficit plan is produced."
+msgid "Tu IMC es %(bmi)s, por debajo de 18,5 (bajo peso): no se genera un plan para perder peso."
+msgstr "Your BMI is %(bmi)s, below 18.5 (underweight): no weight-loss plan is generated."
 
 #. código del motor: safety.essential_fat
-#: app/engine/messages.py:128
+#: app/engine/messages.py:135
 #, python-format
-msgid "Grasa corporal en niveles esenciales (%(body_fat)s %%): perder más no es seguro."
-msgstr "Body fat at essential levels (%(body_fat)s %%): losing more is not safe."
+msgid "Tu grasa corporal ya está en el mínimo saludable (%(body_fat)s %%): perder más no es seguro."
+msgstr "Your body fat is already at the healthy minimum (%(body_fat)s %%): losing more is not safe."
 
 #. código del motor: safety.deficit_blocked
-#: app/engine/messages.py:131
-msgid "Puedes usar el módulo de entrenamiento y un plan de mantenimiento o ganancia; para perder peso consulta con un profesional sanitario."
-msgstr "You can use the training side and a maintenance or gaining plan; to lose weight, see a healthcare professional."
+#: app/engine/messages.py:139
+msgid "Puedes usar la parte de entrenamiento y un plan para mantener o ganar peso; para perder peso consulta con un profesional sanitario."
+msgstr "You can use the training part and a plan to keep or gain weight; to lose weight, see a healthcare professional."
 
 #. código del motor: safety.below_floor
-#: app/engine/messages.py:134
+#: app/engine/messages.py:143
 #, python-format
-msgid "Calorías (%(calories)s) por debajo del mínimo (%(floor)s)."
-msgstr "Calories (%(calories)s) below the minimum (%(floor)s)."
+msgid "Las calorías (%(calories)s) quedan por debajo del mínimo seguro (%(floor)s)."
+msgstr "Calories (%(calories)s) are below the safe minimum (%(floor)s)."
 
 #. código del motor: safety.loss_too_fast
-#: app/engine/messages.py:136
+#: app/engine/messages.py:146
 #, python-format
 msgid "Pérdida prevista de %(weekly)s kg a la semana, por encima del máximo de %(max)s."
 msgstr "Expected loss of %(weekly)s kg a week, above the maximum of %(max)s."
 
 #. código del motor: safety.deficit_while_underweight
-#: app/engine/messages.py:138
-msgid "Déficit con un IMC bajo."
-msgstr "Eating below your burn with a low BMI."
+#: app/engine/messages.py:148
+msgid "Plan para perder peso con un IMC bajo."
+msgstr "Weight-loss plan with a low BMI."
 
 #. código del motor: safety.protein_out_of_range
-#: app/engine/messages.py:139
+#: app/engine/messages.py:149
 #, python-format
-msgid "Proteína fuera de rango (%(per_kg)s g/kg)."
-msgstr "Protein out of range (%(per_kg)s g/kg)."
+msgid "Proteína fuera de lo razonable (%(per_kg)s g por kg)."
+msgstr "Protein outside a sensible range (%(per_kg)s g per kg)."
 
 #. código del motor: safety.fat_too_low
-#: app/engine/messages.py:140
+#: app/engine/messages.py:150
 #, python-format
 msgid "Grasa demasiado baja (%(fat_g)s g)."
 msgstr "Fat too low (%(fat_g)s g)."
 
 #. código del motor: safety.negative_macro
-#: app/engine/messages.py:141
-msgid "Macronutriente negativo."
-msgstr "Negative macronutrient."
+#: app/engine/messages.py:151
+msgid "La proteína, los hidratos o la grasa salen en negativo."
+msgstr "Protein, carbs or fat come out negative."
 
 #. código del motor: safety.macros_mismatch
-#: app/engine/messages.py:143
+#: app/engine/messages.py:153
 #, python-format
-msgid "Los macros (%(energy)s kcal) no cuadran con las calorías (%(calories)s)."
-msgstr "The macros (%(energy)s kcal) do not add up to the calories (%(calories)s)."
+msgid "La proteína, los hidratos y la grasa (%(energy)s kcal) no cuadran con las calorías (%(calories)s)."
+msgstr "Protein, carbs and fat (%(energy)s kcal) do not add up to the calories (%(calories)s)."
 
 #. código del motor: routine.no_days
-#: app/engine/messages.py:145
+#: app/engine/messages.py:156
 msgid "Sin días de entrenamiento no se puede generar una rutina."
 msgstr "Without training days no routine can be built."
 
 #. código del motor: routine.nothing_possible
-#: app/engine/messages.py:147
+#: app/engine/messages.py:158
 msgid "Con el material y las limitaciones indicadas no hay ejercicios posibles; revisa el material o consulta con un profesional."
 msgstr "With the equipment and limits given there are no possible exercises; review the equipment or talk to a professional."
 
 #. código del motor: routine.days_capped
-#: app/engine/messages.py:150
+#: app/engine/messages.py:161
 msgid "Se planifican 6 días como máximo; el séptimo es descanso."
 msgstr "Six days at most are planned; the seventh is rest."
 
 #. código del motor: routine.days_dropped
-#: app/engine/messages.py:152
+#: app/engine/messages.py:163
 #, python-format
 msgid "Con tu material y tus limitaciones no hay ejercicios posibles para algunos días (%(dropped)s): la semana queda en %(days)s días de entrenamiento."
 msgstr "With your equipment and limitations there are no possible exercises for some days (%(dropped)s): the week is left with %(days)s training days."
 
 #. código del motor: routine.split
-#: app/engine/messages.py:155
+#: app/engine/messages.py:166
 #, python-format
 msgid "Reparto %(split)s, %(days)s días a la semana."
 msgstr "%(split)s split, %(days)s days a week."
 
 #. código del motor: routine.mesocycle
-#: app/engine/messages.py:157
+#: app/engine/messages.py:168
 #, python-format
 msgid "Bloques de %(weeks)s semanas, con una semana suave cada %(deload)s. Reserva de cada semana: %(rir)s."
 msgstr "Blocks of %(weeks)s weeks, with an easy week every %(deload)s. Reps in reserve each week: %(rir)s."
 
 #. código del motor: routine.double_progression
-#: app/engine/messages.py:161
+#: app/engine/messages.py:172
 msgid "Cómo progresar: cuando hagas el máximo de repeticiones en todas las series dejando la reserva que toca, sube el peso indicado y vuelve al mínimo de repeticiones."
 msgstr "How to progress: when you hit the top of the rep range on every set while leaving the right reps in reserve, add the weight shown and go back to the bottom of the range."
 
 #. código del motor: routine.level_relaxed
-#: app/engine/messages.py:165
+#: app/engine/messages.py:176
 #, python-format
 msgid "%(exercise)s: exige más técnica de la habitual para tu experiencia; empieza ligero."
 msgstr "%(exercise)s: it asks for more technique than usual at your level; start light."
 
 #. código del motor: routine.slot_unfilled
-#: app/engine/messages.py:168
+#: app/engine/messages.py:179
 #, python-format
 msgid "En %(day)s no hay ningún ejercicio de %(pattern)s posible con tu material y tus limitaciones."
 msgstr "On %(day)s there is no %(pattern)s exercise you can do with your equipment and limitations."
 
 #. código del motor: routine.pattern_missing
-#: app/engine/messages.py:172
+#: app/engine/messages.py:183
 #, python-format
 msgid "No hay ejercicios de %(pattern)s con tu material: con %(suggestion)s se resolvería."
 msgstr "There are no %(pattern)s exercises for your equipment: %(suggestion)s would solve it."
 
 #. código del motor: routine.pull_bias
-#: app/engine/messages.py:175
+#: app/engine/messages.py:186
 #, python-format
 msgid "Por tu historial de hombro hay un 30 %% más de series de tirar que de empujar."
 msgstr "Because of your shoulder history there are 30 %% more pulling sets than pushing sets."
 
 #. código del motor: routine.push_pull
-#: app/engine/messages.py:177
+#: app/engine/messages.py:188
 #, python-format
 msgid "Series de empujar: %(push)s. Series de tirar: %(pull)s."
 msgstr "Pushing sets: %(push)s. Pulling sets: %(pull)s."
 
 #. código del motor: routine.time_trimmed
-#: app/engine/messages.py:178
+#: app/engine/messages.py:189
 #, python-format
 msgid "%(day)s: series recortadas para encajar en %(minutes)s minutos."
 msgstr "%(day)s: sets trimmed to fit into %(minutes)s minutes."
 
 #. código del motor: routine.exercises_dropped_for_time
-#: app/engine/messages.py:180
+#: app/engine/messages.py:191
 #, python-format
-msgid "%(day)s: se quitan ejercicios de aislamiento (%(n)s) para caber en %(minutes)s minutos. El descanso entre series no se recorta: manda el trabajo básico."
-msgstr "%(day)s: isolation exercises (%(n)s) are removed to fit into %(minutes)s minutes. Rest between sets is not cut: the main lifts come first."
+msgid "%(day)s: se quitan ejercicios de un solo músculo (%(n)s) para caber en %(minutes)s minutos. El descanso entre series no se recorta: mandan los ejercicios principales."
+msgstr "%(day)s: single-muscle exercises (%(n)s) are removed to fit into %(minutes)s minutes. Rest between sets is not cut: the main lifts come first."
 
 #. código del motor: routine.session_too_long
-#: app/engine/messages.py:184
+#: app/engine/messages.py:195
 #, python-format
 msgid "%(day)s: aun recortando, la sesión estimada dura %(estimated)s min y tienes %(budget)s; añade minutos o un día."
 msgstr "%(day)s: even trimmed, the session runs %(estimated)s min and you have %(budget)s; add minutes or a day."
 
 #. código del motor: routine.volume_scaled_by_time
-#: app/engine/messages.py:188
+#: app/engine/messages.py:199
 #, python-format
-msgid "Objetivos de volumen reducidos un %(pct)s %% para caber en tus sesiones; más días o minutos permitirían más series."
-msgstr "Volume targets cut by %(pct)s %% to fit your sessions; more days or minutes would allow more sets."
+msgid "Se programan un %(pct)s %% menos de series para caber en tus sesiones; con más días o minutos habría más."
+msgstr "%(pct)s %% fewer sets are scheduled to fit your sessions; more days or minutes would allow more."
 
 #. código del motor: routine.pattern_trimmed
-#: app/engine/messages.py:192
+#: app/engine/messages.py:203
 #, python-format
 msgid "Los ejercicios de %(pattern)s quedan fuera esta semana por falta de tiempo."
 msgstr "%(pattern)s exercises are left out this week for lack of time."
 
 #. código del motor: routine.pattern_not_scheduled
-#: app/engine/messages.py:195
+#: app/engine/messages.py:206
 #, python-format
 msgid "Los ejercicios de %(pattern)s no entran en este reparto de días; vuelven en el siguiente bloque."
 msgstr "%(pattern)s exercises do not fit this split; they come back in the next block."
 
 #. código del motor: routine.pattern_blocked_by_injury
-#: app/engine/messages.py:199
+#: app/engine/messages.py:210
 #, python-format
 msgid "Los ejercicios de %(pattern)s se omiten por las lesiones o molestias que has indicado."
 msgstr "%(pattern)s exercises are skipped because of the injuries or aches you told us about."
 
 #. código del motor: routine.push_pull_unbalanced
-#: app/engine/messages.py:202
+#: app/engine/messages.py:213
 msgid "Con tu material no hay suficientes ejercicios de tirar para equilibrar los de empujar."
 msgstr "Your equipment does not offer enough pulling exercises to balance the pushing ones."
 
 #. código del motor: routine.priority_applied
-#: app/engine/messages.py:204
+#: app/engine/messages.py:215
 #, python-format
-msgid "Volumen extra (+27 %%) para %(muscles)s, compensado en el resto."
-msgstr "Extra volume (+27 %%) for %(muscles)s, taken off the rest."
+msgid "Un 27 %% más de series para %(muscles)s, compensado con el resto."
+msgstr "27 %% more sets for %(muscles)s, balanced out with the rest."
 
 #. código del motor: routine.priority_slot_added
-#: app/engine/messages.py:206
+#: app/engine/messages.py:217
 #, python-format
 msgid "Se añade un ejercicio de %(muscle)s en %(day)s porque es prioritario para ti."
 msgstr "A %(muscle)s exercise is added on %(day)s because it is a priority for you."
 
 #. código del motor: routine.volume_low
-#: app/engine/messages.py:209
+#: app/engine/messages.py:220
 #, python-format
-msgid "Para %(muscle)s salen %(planned)s series efectivas, por debajo de las %(target_min)s recomendadas: lo limita el material o el tiempo."
-msgstr "%(muscle)s gets %(planned)s effective sets, below the recommended %(target_min)s: equipment or time is the limit."
+msgid "Para %(muscle)s salen %(planned)s series a la semana, por debajo de las %(target_min)s recomendadas: lo limita el material o el tiempo."
+msgstr "%(muscle)s gets %(planned)s sets a week, below the recommended %(target_min)s: equipment or time is the limit."
 
 #. código del motor: cardio.not_punishment
-#: app/engine/messages.py:213
+#: app/engine/messages.py:224
 msgid "El cardio se programa por su efecto sobre el gasto y la salud, nunca como castigo por saltarse la dieta."
 msgstr "Cardio is programmed for what it does to expenditure and health, never as punishment for slipping on the diet."
 
 #. código del motor: cardio.deficit_not_covered
-#: app/engine/messages.py:217
+#: app/engine/messages.py:228
 #, python-format
-msgid "Quedan %(kcal)s kcal semanales de déficit sin cubrir con actividad: se alarga el plazo antes que añadir más cardio."
-msgstr "%(kcal)s kcal a week of deficit are still uncovered: the timeline stretches before more cardio is added."
+msgid "Para tu ritmo faltarían %(kcal)s kcal a la semana: antes que añadir más cardio, se alarga el plazo."
+msgstr "Your pace would still be %(kcal)s kcal a week short: rather than adding more cardio, the timeline is extended."
 
 #. código del motor: cardio.health_sessions
-#: app/engine/messages.py:221
+#: app/engine/messages.py:232
 #, python-format
-msgid "%(sessions)s sesiones suaves de cardio a la semana por salud cardiovascular (opcionales)."
-msgstr "%(sessions)s easy cardio sessions a week for cardiovascular health (optional)."
+msgid "%(sessions)s sesiones suaves de cardio a la semana por la salud del corazón (opcionales)."
+msgstr "%(sessions)s easy cardio sessions a week for heart health (optional)."
 
 #. código del motor: cardio.liss_machine
-#: app/engine/messages.py:224
+#: app/engine/messages.py:235
 msgid "El cardio suave, en la máquina que prefieras: cinta a ritmo vivo, bici, elíptica o remo. Ritmo de poder hablar sin quedarte sin aire."
 msgstr "Easy cardio, on whichever machine you prefer: treadmill at a brisk pace, bike, elliptical or rower. A pace where you can still talk."
 
 #. código del motor: cardio.liss_outdoor
-#: app/engine/messages.py:228
+#: app/engine/messages.py:239
 msgid "El cardio suave: andar rápido, bici o trote cómodo. Ritmo de poder hablar sin quedarte sin aire."
 msgstr "Easy cardio: brisk walking, cycling or a comfortable jog. A pace where you can still talk."
 
 #. código del motor: cardio.liss_low_impact
-#: app/engine/messages.py:232
+#: app/engine/messages.py:243
 msgid "Por lo que has contado de tus articulaciones, el cardio suave mejor sin impacto: bici, elíptica, remo o andar. Nada de correr ni saltar."
 msgstr "Given what you told us about your joints, keep the easy cardio low impact: bike, elliptical, rower or walking. No running or jumping."
 
 #. código del motor: cardio.hiit_machine
-#: app/engine/messages.py:236
+#: app/engine/messages.py:247
 msgid "Los intervalos, en bici estática, remo o cinta en cuesta: 30 segundos fuertes y 90 suaves, con 10 minutos de calentamiento y vuelta a la calma."
 msgstr "Intervals on an exercise bike, rower or incline treadmill: 30 seconds hard and 90 easy, with 10 minutes to warm up and cool down."
 
 #. código del motor: cardio.hiit_outdoor
-#: app/engine/messages.py:240
+#: app/engine/messages.py:251
 msgid "Los intervalos: cuestas, comba o sprints en bici. 30 segundos fuertes y 90 suaves, con 10 minutos de calentamiento y vuelta a la calma."
 msgstr "Intervals: hills, skipping rope or bike sprints. 30 seconds hard and 90 easy, with 10 minutes to warm up and cool down."
 
 #. código del motor: cardio.hiit_low_impact
-#: app/engine/messages.py:244
+#: app/engine/messages.py:255
 msgid "Los intervalos, sin impacto: bici o remo, 30 segundos fuertes y 90 suaves."
 msgstr "Low-impact intervals: bike or rower, 30 seconds hard and 90 easy."
 
 #. código del motor: cardio.summary
-#: app/engine/messages.py:247
+#: app/engine/messages.py:258
 #, python-format
 msgid "Objetivo de %(steps)s pasos al día, %(liss)s sesiones de cardio suave y %(hiit)s de intervalos (unas %(kcal)s kcal a la semana)."
 msgstr "Aim for %(steps)s steps a day, %(liss)s easy cardio sessions and %(hiit)s interval sessions (about %(kcal)s kcal a week)."
 
 #. código del motor: adjust.insufficient_data
-#: app/engine/messages.py:251
+#: app/engine/messages.py:262
 #, python-format
 msgid "Todavía no hay datos suficientes (%(weight_days)s pesajes en %(span_days)s días): sigue apuntando tu peso; con tres pesajes repartidos ya se puede revisar."
 msgstr "Not enough data yet (%(weight_days)s weigh-ins over %(span_days)s days): keep logging your weight; three weigh-ins spread out are enough for a review."
 
 #. código del motor: adjust.too_early
-#: app/engine/messages.py:254
+#: app/engine/messages.py:265
 #, python-format
 msgid "La próxima revisión toca el %(next_review)s."
 msgstr "The next review is due on %(next_review)s."
 
 #. código del motor: adjust.sparse_trend
-#: app/engine/messages.py:256
+#: app/engine/messages.py:267
 #, python-format
 msgid "Con %(weight_days)s pesajes en %(span_days)s días la tendencia se ve, pero con margen: se mira un mes entero y se ajusta la mitad. Pesándote más a menudo se afina antes."
 msgstr "With %(weight_days)s weigh-ins in %(span_days)s days the trend shows, but with a margin: a whole month is used and the change is halved. Weighing more often sharpens it sooner."
 
 #. código del motor: adjust.trend
-#: app/engine/messages.py:261
+#: app/engine/messages.py:272
 #, python-format
 msgid "Tu peso cambia %(observed)s kg a la semana; se esperaba %(expected)s (media de 7 días)."
 msgstr "Your weight changes %(observed)s kg a week; %(expected)s was expected (7-day average)."
 
 #. código del motor: adjust.trend_raw
-#: app/engine/messages.py:264
+#: app/engine/messages.py:275
 #, python-format
 msgid "Tu peso cambia %(observed)s kg a la semana; se esperaba %(expected)s, contando los pesajes que has apuntado."
 msgstr "Your weight changes %(observed)s kg a week; %(expected)s was expected, based on the weigh-ins you logged."
 
 #. código del motor: adjust.tdee_observed
-#: app/engine/messages.py:268
+#: app/engine/messages.py:279
 #, python-format
 msgid "Con lo que has apuntado, gastas unas %(observed)s kcal al día (estimábamos %(theoretical)s). Se usa %(blended)s, con %(days)s días de datos."
 msgstr "From what you logged, you burn about %(observed)s kcal a day (we estimated %(theoretical)s). %(blended)s is used, with %(days)s days of data."
 
 #. código del motor: adjust.adherence_first
-#: app/engine/messages.py:272
+#: app/engine/messages.py:283
 #, python-format
 msgid "Vas más lento de lo previsto, pero has seguido el plan un %(adherence)s %% de los días: antes de tocar calorías, intenta ser más constante y apuntarlo todo."
 msgstr "You are progressing more slowly than expected, but you followed the plan on %(adherence)s %% of days: before touching calories, try to be more consistent and log everything."
 
 #. código del motor: adjust.keep
-#: app/engine/messages.py:275
+#: app/engine/messages.py:286
 msgid "Vas según lo previsto: sin cambios hasta la próxima revisión."
 msgstr "You are on track: no changes until the next review."
 
 #. código del motor: adjust.reduce_calories
-#: app/engine/messages.py:277
+#: app/engine/messages.py:288
 #, python-format
 msgid "Calorías bajadas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories cut by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.increase_calories
-#: app/engine/messages.py:280
+#: app/engine/messages.py:291
 #, python-format
 msgid "Calorías subidas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories raised by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.add_steps
-#: app/engine/messages.py:283
+#: app/engine/messages.py:294
 #, python-format
 msgid "Las calorías ya están en el mínimo seguro: se suman %(steps)s pasos diarios en su lugar."
 msgstr "Calories are already at the safe minimum: %(steps)s daily steps are added instead."
 
 #. código del motor: adjust.loss_too_fast
-#: app/engine/messages.py:286
+#: app/engine/messages.py:297
 #, python-format
 msgid "Pierdes %(observed)s kg a la semana, más del máximo de %(max_weekly)s kg (el 1 %% de tu peso): suben las calorías."
 msgstr "You are losing %(observed)s kg a week, more than the maximum of %(max_weekly)s kg (1 %% of your weight): calories go up."
 
 #. código del motor: adjust.diet_break
-#: app/engine/messages.py:290
+#: app/engine/messages.py:301
 #, python-format
 msgid "Llevas %(weeks)s semanas en déficit y el peso está estancado: pausa de dieta de 2 semanas comiendo lo que gastas (%(calories)s kcal) antes de seguir."
 msgstr "You have been eating below your burn for %(weeks)s weeks and your weight has stalled: take a 2-week diet break eating what you burn (%(calories)s kcal) before carrying on."
 
 #. código del motor: adjust.refeed
-#: app/engine/messages.py:294
+#: app/engine/messages.py:305
 #, python-format
 msgid "Estancamiento tras %(weeks)s semanas de déficit: un día de recarga comiendo lo que gastas (%(calories)s kcal) esta semana, sobre todo hidratos."
 msgstr "Stalled after %(weeks)s weeks below your burn: one refeed day this week eating what you burn (%(calories)s kcal), mostly carbs."
 
 #. código del motor: adjust.floor_reached
-#: app/engine/messages.py:297
+#: app/engine/messages.py:308
 #, python-format
 msgid "No se baja de %(floor)s kcal (mínimo seguro)."
 msgstr "Nothing goes below %(floor)s kcal (safe minimum)."
 
 #. código del motor: adjust.capped_step
-#: app/engine/messages.py:298
+#: app/engine/messages.py:309
 #, python-format
 msgid "Cambio limitado al %(pct)s %% por revisión."
 msgstr "Change capped at %(pct)s %% per review."
 
 #. código del motor: adjust.next_review
-#: app/engine/messages.py:299 app/templates/nutrition/plan.html:133
+#: app/engine/messages.py:310 app/templates/nutrition/plan.html:133
 #, python-format
 msgid "Próxima revisión: %(date)s."
 msgstr "Next review: %(date)s."
 
 #. código del motor: plan.confidence
-#: app/engine/messages.py:300
+#: app/engine/messages.py:311
 #, python-format
 msgid "Confianza de la estimación: %(confidence)s."
 msgstr "Confidence in the estimate: %(confidence)s."
@@ -2194,195 +2198,195 @@ msgid "Actualizaste tus datos."
 msgstr "You updated your details."
 
 #: app/services/exports.py:67
-msgid "Forja es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
-msgstr "Forja is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
+msgid "Alza es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
+msgstr "Alza is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
 
-#: app/services/exports.py:240
+#: app/services/exports.py:266
 #, python-format
-msgid "Forja · plan de %(name)s"
-msgstr "Forja · plan for %(name)s"
+msgid "Alza · plan de %(name)s"
+msgstr "Alza · plan for %(name)s"
 
-#: app/services/exports.py:242 app/services/exports.py:247
+#: app/services/exports.py:268 app/services/exports.py:273
 msgid "Plan de nutrición y entrenamiento"
 msgstr "Nutrition and training plan"
 
-#: app/services/exports.py:252
+#: app/services/exports.py:278
 #, python-format
-msgid "Generado el %(date)s · cuestionario v%(version)s · objetivo: %(goal)s"
-msgstr "Generated on %(date)s · questionnaire v%(version)s · goal: %(goal)s"
+msgid "Generado el %(date)s · objetivo: %(goal)s"
+msgstr "Generated on %(date)s · goal: %(goal)s"
 
-#: app/services/exports.py:263 app/templates/nutrition/plan.html:21
+#: app/services/exports.py:288 app/templates/nutrition/plan.html:21
 msgid "No hay plan de nutrición"
 msgstr "There is no nutrition plan"
 
-#: app/services/exports.py:266
+#: app/services/exports.py:291
 msgid "Con tus respuestas no se puede calcular un plan con seguridad:"
 msgstr "A safe plan cannot be calculated from your answers:"
 
-#: app/services/exports.py:299 app/templates/nutrition/plan.html:32
+#: app/services/exports.py:324 app/templates/nutrition/plan.html:32
 msgid "Objetivo diario"
 msgstr "Daily target"
 
-#: app/services/exports.py:308
+#: app/services/exports.py:333
 msgid "Fibra"
 msgstr "Fibre"
 
-#: app/services/exports.py:309
+#: app/services/exports.py:334
 msgid "Agua"
 msgstr "Water"
 
-#: app/services/exports.py:334
+#: app/services/exports.py:359
 #, python-format
 msgid "Para mantenerte gastas unas %(tdee)s kcal al día; con este plan el cambio previsto es de %(change)s kg a la semana. Los días de entreno, %(water)s l de agua."
 msgstr "To stay the same you burn about %(tdee)s kcal a day; with this plan the expected change is %(change)s kg a week. On training days, %(water)s l of water."
 
-#: app/services/exports.py:343
+#: app/services/exports.py:368
 msgid "Reparto por comidas"
 msgstr "Split across meals"
 
-#: app/services/exports.py:344 app/templates/nutrition/plan.html:67
+#: app/services/exports.py:369 app/templates/nutrition/plan.html:67
 #: app/templates/onboarding/result.html:46
 msgid "Comida"
 msgstr "Meal"
 
-#: app/services/exports.py:364 app/templates/nutrition/plan.html:80
+#: app/services/exports.py:389 app/templates/nutrition/plan.html:80
 #, python-format
 msgid "%(td)s días de entreno con %(hc)s g de carbohidratos (%(hk)s kcal) y %(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media de la semana es la del plan."
 msgstr "%(td)s training days with %(hc)s g of carbohydrates (%(hk)s kcal) and %(rd)s rest days with %(lc)s g (%(lk)s kcal). The weekly average matches the plan."
 
-#: app/services/exports.py:378
+#: app/services/exports.py:403
 msgid "Cómo se ha calculado"
 msgstr "How this was worked out"
 
-#: app/services/exports.py:380
+#: app/services/exports.py:405
 msgid "Dato"
 msgstr "Item"
 
-#: app/services/exports.py:380
+#: app/services/exports.py:405
 msgid "Valor"
 msgstr "Value"
 
-#: app/services/exports.py:383 app/templates/nutrition/plan.html:99
+#: app/services/exports.py:408 app/templates/nutrition/plan.html:99
 msgid "IMC"
 msgstr "BMI"
 
-#: app/services/exports.py:388 app/templates/nutrition/plan.html:100
+#: app/services/exports.py:413 app/templates/nutrition/plan.html:100
 msgid "sin estimación"
 msgstr "no estimate"
 
-#: app/services/exports.py:397 app/templates/nutrition/plan.html:101
+#: app/services/exports.py:422 app/templates/nutrition/plan.html:101
 msgid "Masa magra"
 msgstr "Lean mass"
 
-#: app/services/exports.py:400 app/templates/nutrition/plan.html:103
-msgid "Metabolismo basal"
-msgstr "Basal metabolism"
+#: app/services/exports.py:425 app/templates/nutrition/plan.html:103
+msgid "Gasto en reposo"
+msgstr "Burn at rest"
 
-#: app/services/exports.py:401
+#: app/services/exports.py:426
 msgid "Fórmula del basal"
 msgstr "BMR formula"
 
-#: app/services/exports.py:402
+#: app/services/exports.py:427
 msgid "Gasto por actividad diaria"
 msgstr "Daily activity burn"
 
-#: app/services/exports.py:403
+#: app/services/exports.py:428
 msgid "Gasto por ejercicio"
 msgstr "Exercise burn"
 
-#: app/services/exports.py:410
+#: app/services/exports.py:435
 #, python-format
-msgid "Grasa por perímetros con la fórmula de la Marina de EE. UU.; metabolismo basal por Katch-McArdle o Mifflin-St Jeor; gasto sumando el basal, lo que caminas, el ejercicio y la digestión. El plan nunca baja del mínimo seguro de calorías ni hace perder más del 1 %% del peso a la semana."
-msgstr "Body fat from measurements with the US Navy formula; resting metabolism with Katch-McArdle or Mifflin-St Jeor; daily burn adding up rest, walking, exercise and digestion. The plan never goes below the safe calorie minimum or loses more than 1 %% of body weight a week."
+msgid "Grasa por medidas de cinta con la fórmula de la Marina de EE. UU.; gasto en reposo con Katch-McArdle o Mifflin-St Jeor; gasto total sumando el reposo, lo que caminas, el ejercicio y la digestión. El plan nunca baja del mínimo seguro de calorías ni hace perder más del 1 %% del peso a la semana."
+msgstr "Body fat from tape measurements with the US Navy formula; burn at rest with Katch-McArdle or Mifflin-St Jeor; total burn adding up rest, walking, exercise and digestion. The plan never goes below the safe calorie minimum or loses more than 1 %% of body weight a week."
 
-#: app/services/exports.py:421 app/templates/nutrition/plan.html:86
+#: app/services/exports.py:446 app/templates/nutrition/plan.html:86
 msgid "A tener en cuenta"
 msgstr "Worth knowing"
 
-#: app/services/exports.py:431 app/templates/onboarding/result.html:67
+#: app/services/exports.py:456 app/templates/onboarding/result.html:67
 #: app/templates/workouts/history.html:12
 msgid "Rutina"
 msgstr "Routine"
 
-#: app/services/exports.py:436
+#: app/services/exports.py:461
 #, python-format
 msgid "%(num)s día a la semana · bloques de %(weeks)s semanas con una semana suave cada %(deload)s"
 msgid_plural "%(num)s días a la semana · bloques de %(weeks)s semanas con una semana suave cada %(deload)s"
 msgstr[0] "%(num)s day a week · blocks of %(weeks)s weeks with an easy week every %(deload)s"
 msgstr[1] "%(num)s days a week · blocks of %(weeks)s weeks with an easy week every %(deload)s"
 
-#: app/services/exports.py:446
+#: app/services/exports.py:471
 #, python-format
 msgid "reserva por semana: %(rir)s"
 msgstr "reps in reserve by week: %(rir)s"
 
-#: app/services/exports.py:450 app/templates/onboarding/result.html:79
+#: app/services/exports.py:475 app/templates/onboarding/result.html:79
 #: app/templates/workouts/progress.html:20
 #: app/templates/workouts/summary.html:26
 msgid "Ejercicio"
 msgstr "Exercise"
 
-#: app/services/exports.py:450 app/templates/training/day.html:38
+#: app/services/exports.py:475 app/templates/training/day.html:41
 #: app/templates/training/routine.html:66
 #: app/templates/workouts/history.html:19
 #: app/templates/workouts/summary.html:26
 msgid "Series"
 msgstr "Sets"
 
-#: app/services/exports.py:450 app/templates/training/day.html:39
+#: app/services/exports.py:475 app/templates/training/day.html:42
 msgid "Repeticiones"
 msgstr "Reps"
 
-#: app/services/exports.py:450 app/templates/onboarding/result.html:79
-#: app/templates/training/day.html:40
+#: app/services/exports.py:475 app/templates/onboarding/result.html:79
+#: app/templates/training/day.html:43
 msgid "Reserva"
 msgstr "In reserve"
 
-#: app/services/exports.py:450 app/templates/onboarding/result.html:79
-#: app/templates/training/day.html:41 app/templates/workouts/session.html:18
+#: app/services/exports.py:475 app/templates/onboarding/result.html:79
+#: app/templates/training/day.html:44 app/templates/workouts/session.html:18
 msgid "Descanso"
 msgstr "Rest"
 
-#: app/services/exports.py:456 app/templates/onboarding/result.html:85
-#: app/templates/training/day.html:40
+#: app/services/exports.py:481 app/templates/onboarding/result.html:85
+#: app/templates/training/day.html:43
 #, python-format
 msgid "de %(a)s a %(b)s"
 msgstr "%(a)s to %(b)s"
 
-#: app/services/exports.py:465
+#: app/services/exports.py:490
 #, python-format
 msgid "%(num)s ejercicio · unos %(m)s minutos"
 msgid_plural "%(num)s ejercicios · unos %(m)s minutos"
 msgstr[0] "%(num)s exercise · about %(m)s minutes"
 msgstr[1] "%(num)s exercises · about %(m)s minutes"
 
-#: app/services/exports.py:480 app/templates/training/routine.html:83
+#: app/services/exports.py:505 app/templates/training/routine.html:83
 msgid "Cardio y pasos"
 msgstr "Cardio and steps"
 
-#: app/services/exports.py:481
+#: app/services/exports.py:506
 #, python-format
 msgid "%(n)s pasos al día"
 msgstr "%(n)s steps a day"
 
-#: app/services/exports.py:485
+#: app/services/exports.py:510
 #, python-format
 msgid "%(n)s × %(m)s min de cardio suave a la semana"
 msgstr "%(n)s × %(m)s min of easy cardio a week"
 
-#: app/services/exports.py:493
+#: app/services/exports.py:518
 #, python-format
 msgid "%(n)s × %(m)s min de intervalos a la semana"
 msgstr "%(n)s × %(m)s min of intervals a week"
 
-#: app/services/exports.py:502 app/templates/training/routine.html:117
+#: app/services/exports.py:527 app/templates/training/routine.html:117
 msgid "Cómo está montada"
 msgstr "How it is put together"
 
-#: app/services/exports.py:854
+#: app/services/exports.py:879
 msgid ""
-"Exportación de datos de Forja\n"
-"=============================\n"
+"Exportación de datos de Alza\n"
+"============================\n"
 "\n"
 "Un fichero por tipo de dato, en CSV con separador de coma y codificación\n"
 "UTF-8 con BOM (se abre bien en Excel y en LibreOffice).\n"
@@ -2401,11 +2405,11 @@ msgid ""
 "\n"
 "Las fechas van en formato ISO (aaaa-mm-dd) y las horas en UTC.\n"
 "\n"
-"Forja es una herramienta orientativa. No sustituye el consejo de un médico,\n"
+"Alza es una herramienta orientativa. No sustituye el consejo de un médico,\n"
 "dietista-nutricionista ni de ningún otro profesional sanitario.\n"
 msgstr ""
-"Forja data export\n"
-"=================\n"
+"Alza data export\n"
+"================\n"
 "\n"
 "One file per kind of record, in CSV with comma separators and UTF-8\n"
 "encoding with BOM (it opens correctly in Excel and in LibreOffice).\n"
@@ -2425,7 +2429,7 @@ msgstr ""
 "The column names stay in Spanish so the format does not change with the\n"
 "interface language. Dates are in ISO format (yyyy-mm-dd) and times in UTC.\n"
 "\n"
-"Forja is a guidance tool. It does not replace the advice of a doctor,\n"
+"Alza is a guidance tool. It does not replace the advice of a doctor,\n"
 "a dietitian or any other healthcare professional.\n"
 
 #: app/services/onboarding.py:57
@@ -2446,7 +2450,7 @@ msgstr "Training"
 msgid "Material y lesiones"
 msgstr "Equipment and injuries"
 
-#: app/services/onboarding.py:72 app/templates/base.html:23
+#: app/services/onboarding.py:72 app/templates/base.html:27
 #: app/templates/nutrition/plan.html:4 app/templates/nutrition/plan.html:12
 #: app/templates/onboarding/result.html:29
 msgid "Nutrición"
@@ -2456,62 +2460,62 @@ msgstr "Nutrition"
 msgid "Salud"
 msgstr "Health"
 
-#: app/templates/base.html:16
+#: app/templates/base.html:20
 msgid "Saltar al contenido"
 msgstr "Skip to content"
 
-#: app/templates/base.html:18
+#: app/templates/base.html:22
 msgid "Navegación principal"
 msgstr "Main navigation"
 
-#: app/templates/base.html:22 app/templates/dashboard/index.html:5
+#: app/templates/base.html:26 app/templates/dashboard/index.html:5
 msgid "Inicio"
 msgstr "Home"
 
-#: app/templates/base.html:24
+#: app/templates/base.html:28
 msgid "Entreno"
 msgstr "Training"
 
-#: app/templates/base.html:25 app/templates/review/index.html:8
+#: app/templates/base.html:29 app/templates/review/index.html:8
 #: app/templates/tracking/diary.html:4 app/templates/tracking/diary.html:9
 #: app/templates/tracking/measurements.html:9
 msgid "Diario"
 msgstr "Diary"
 
 #: app/templates/account/index.html:5 app/templates/account/index.html:9
-#: app/templates/base.html:26
+#: app/templates/base.html:30
 msgid "Cuenta"
 msgstr "Account"
 
-#: app/templates/base.html:34
+#: app/templates/base.html:38
 msgid "Salir"
 msgstr "Sign out"
 
 #: app/templates/auth/login.html:4 app/templates/auth/login.html:8
 #: app/templates/auth/login.html:14 app/templates/auth/register.html:19
-#: app/templates/base.html:38 app/templates/main/index.html:17
+#: app/templates/base.html:42 app/templates/main/index.html:17
 msgid "Entrar"
 msgstr "Sign in"
 
 #: app/templates/auth/login.html:18 app/templates/auth/register.html:4
 #: app/templates/auth/register.html:8 app/templates/auth/register.html:17
-#: app/templates/base.html:39
+#: app/templates/base.html:43
 msgid "Crear cuenta"
 msgstr "Create account"
 
-#: app/templates/base.html:45
+#: app/templates/base.html:49
 msgid "Cambiar de tema"
 msgstr "Switch theme"
 
-#: app/templates/base.html:46
+#: app/templates/base.html:50
 msgid "Cambiar al tema claro"
 msgstr "Switch to the light theme"
 
-#: app/templates/base.html:46
+#: app/templates/base.html:50
 msgid "Cambiar al tema oscuro"
 msgstr "Switch to the dark theme"
 
-#: app/templates/base.html:75
+#: app/templates/base.html:79
 msgid "es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
 msgstr "is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
 
@@ -2596,7 +2600,7 @@ msgid "Todos tus datos en CSV"
 msgstr "All your data as CSV"
 
 #: app/templates/account/index.html:70
-msgid "Un ZIP con un CSV por tipo de dato: respuestas, pesajes, comidas, actividad, perímetros, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo."
+msgid "Un ZIP con un CSV por tipo de dato: respuestas, pesajes, comidas, actividad, medidas, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo."
 msgstr "A ZIP with one CSV per kind of data: answers, weigh-ins, meals, activity, measurements, plans, adjustments, routines, sessions and sets. Opens in any spreadsheet."
 
 #: app/templates/account/index.html:71
@@ -2723,8 +2727,8 @@ msgstr "Next session"
 
 #: app/templates/dashboard/index.html:66
 #: app/templates/onboarding/result.html:76 app/templates/training/day.html:4
-#: app/templates/training/day.html:9 app/templates/training/day.html:79
-#: app/templates/training/day.html:81 app/templates/training/routine.html:39
+#: app/templates/training/day.html:9 app/templates/training/day.html:82
+#: app/templates/training/day.html:84 app/templates/training/routine.html:39
 #: app/templates/training/routine.html:49 app/templates/workouts/session.html:9
 #: app/templates/workouts/summary.html:10
 #, python-format
@@ -2843,34 +2847,34 @@ msgid "Empezar"
 msgstr "Get started"
 
 #: app/templates/main/index.html:30
-msgid "Nutrición con fórmulas, no con reglas del pulgar"
-msgstr "Nutrition from formulas, not rules of thumb"
+msgid "Calorías a tu medida, no de tabla"
+msgstr "Calories made for you, not from a table"
 
 #: app/templates/main/index.html:31
-msgid "Composición corporal por perímetros, metabolismo basal por Katch-McArdle o Mifflin-St Jeor y gasto por componentes. El déficit se escala a tu porcentaje de grasa y nunca baja del suelo calórico."
-msgstr "Body composition from measurements, basal metabolism by Katch-McArdle or Mifflin-St Jeor, and expenditure by components. The deficit scales to your body fat and never drops below the calorie floor."
+msgid "Calculamos tu grasa corporal con unas medidas de cinta, lo que gastas en reposo y lo que mueves cada día. Cuanta más grasa tienes, más rápido puedes bajar; nunca por debajo del mínimo seguro de calorías."
+msgstr "We work out your body fat from a few tape measurements, what you burn at rest and how much you move each day. The more fat you have, the faster you can lose it; never below the safe calorie minimum."
 
 #: app/templates/main/index.html:34
 msgid "Una rutina que cabe en tu semana"
 msgstr "A routine that fits your week"
 
 #: app/templates/main/index.html:35
-msgid "El reparto sale de tus días y minutos reales, con el material que tienes y sin los ejercicios que tu lesión desaconseja. Volumen por músculo, progresión doble y descargas programadas."
-msgstr "The split comes from the days and minutes you really have, with the equipment you own and without the exercises your injury rules out. Volume per muscle, double progression and scheduled deloads."
+msgid "Se monta con los días y los minutos que tienes de verdad, con tu material y sin los ejercicios que te harían daño. Te dice cuánto peso poner, cuándo subirlo y cuándo toca una semana más suave."
+msgstr "It is built around the days and minutes you really have, with your equipment and without the exercises that would hurt you. It tells you how much weight to use, when to add more and when an easier week is due."
 
 #: app/templates/main/index.html:38
 msgid "Se corrige con lo que pasa de verdad"
 msgstr "It corrects itself with what actually happens"
 
 #: app/templates/main/index.html:39
-msgid "Registras peso, comida y series. Cada dos semanas se compara tu cambio real con el esperado, se estima tu gasto observado y se ajusta en escalones pequeños. Nada cambia sin que lo aceptes."
-msgstr "You log weight, food and sets. Every two weeks your real change is compared with the expected one, your observed expenditure is estimated, and things move in small steps. Nothing changes until you accept it."
+msgid "Apuntas tu peso, lo que comes y tus entrenos. Cada dos semanas se compara lo que ha cambiado tu peso con lo previsto y se propone un ajuste pequeño. Nada cambia sin que lo aceptes."
+msgstr "You log your weight, what you eat and your workouts. Every two weeks your weight change is compared with what was expected and a small adjustment is proposed. Nothing changes until you accept it."
 
-#: app/templates/main/index.html:44
+#: app/templates/main/index.html:42
 msgid "Los límites están puestos a propósito"
 msgstr "The limits are there on purpose"
 
-#: app/templates/main/index.html:45
+#: app/templates/main/index.html:43
 #, python-format
 msgid "No hay planes por debajo del mínimo seguro de calorías, ni pérdidas por encima del 1 %% del peso por semana. Si estás embarazada, en periodo de lactancia o tienes antecedentes de un trastorno de la conducta alimentaria, la app no genera plan de nutrición y te dice por qué."
 msgstr "There are no plans below the safe calorie minimum, and no losses above 1 %% of body weight per week. If you are pregnant, breastfeeding or have a history of an eating disorder, the app does not build a nutrition plan and tells you why."
@@ -2881,8 +2885,8 @@ msgstr "Your nutrition plan"
 
 #: app/templates/nutrition/plan.html:15
 #, python-format
-msgid "Vigente desde el %(date)s · estimación de confianza %(c)s."
-msgstr "In effect since %(date)s · estimate confidence %(c)s."
+msgid "Vigente desde el %(date)s · cálculo de fiabilidad %(c)s."
+msgstr "In effect since %(date)s · %(c)s-reliability estimate."
 
 #: app/templates/nutrition/plan.html:25
 msgid "Si cambia tu situación u objetivo, actualiza tus datos y volveremos a calcular."
@@ -2897,12 +2901,12 @@ msgid "kcal para mantenerte"
 msgstr "kcal to stay the same"
 
 #: app/templates/nutrition/plan.html:36
-msgid "kcal de déficit al día"
-msgstr "kcal below your burn a day"
+msgid "kcal de menos al día"
+msgstr "kcal under your burn a day"
 
 #: app/templates/nutrition/plan.html:36
-msgid "kcal de superávit al día"
-msgstr "kcal above your burn a day"
+msgid "kcal de más al día"
+msgstr "kcal over your burn a day"
 
 #: app/templates/nutrition/plan.html:36
 msgid "kcal de diferencia"
@@ -3004,8 +3008,8 @@ msgstr "Carbohydrate minimum"
 
 #: app/templates/nutrition/plan.html:128
 #, python-format
-msgid "Grasa por perímetros con la fórmula de la Marina de EE. UU.; metabolismo basal por Katch-McArdle o Mifflin-St Jeor; gasto sumando el basal, lo que caminas, el ejercicio según su intensidad y la digestión (10 %%). El déficit o el superávit dependen de tu grasa corporal y tu experiencia. Cada fórmula está citada en el código."
-msgstr "Body fat from measurements with the US Navy formula; resting metabolism with Katch-McArdle or Mifflin-St Jeor; daily burn adding up rest, walking, exercise by intensity and digestion (10 %%). How far below or above your burn you eat depends on your body fat and experience. Every formula is cited in the code."
+msgid "Grasa por medidas de cinta con la fórmula de la Marina de EE. UU.; gasto en reposo con Katch-McArdle o Mifflin-St Jeor; gasto total sumando el reposo, lo que caminas, el ejercicio según su intensidad y la digestión (10 %%). Cuánto comes de menos o de más depende de tu grasa corporal y tu experiencia. Cada fórmula está citada en el código."
+msgstr "Body fat from tape measurements with the US Navy formula; burn at rest with Katch-McArdle or Mifflin-St Jeor; total burn adding up rest, walking, exercise by intensity and digestion (10 %%). How much under or over your burn you eat depends on your body fat and experience. Every formula is cited in the code."
 
 #: app/templates/nutrition/plan.html:132
 msgid "Cómo se ajusta"
@@ -3147,8 +3151,8 @@ msgstr "water (more on training days)"
 
 #: app/templates/onboarding/result.html:41
 #, python-format
-msgid "En reposo gastas unas %(bmr)s kcal (%(method)s) y en total, unas %(tdee)s kcal al día."
-msgstr "At rest you burn about %(bmr)s kcal (%(method)s) and in total about %(tdee)s kcal a day."
+msgid "En reposo gastas unas %(bmr)s kcal y en total, unas %(tdee)s kcal al día."
+msgstr "At rest you burn about %(bmr)s kcal and in total about %(tdee)s kcal a day."
 
 #: app/templates/onboarding/result.html:57
 #, python-format
@@ -3216,15 +3220,15 @@ msgid "Deporte o actividad aparte de las pesas: fútbol, correr, bici, clases…
 msgstr "Sport or activity other than lifting: football, running, cycling, classes…"
 
 #: app/templates/onboarding/step_body.html:4
-msgid "Con esto calculamos tu metabolismo basal y tu composición corporal."
-msgstr "This is what we use to work out your basal metabolism and your body composition."
+msgid "Con esto calculamos cuánto gastas en reposo y tu grasa corporal."
+msgstr "We use this to work out what you burn at rest and your body fat."
 
 #: app/templates/onboarding/step_body.html:9
 msgid "Las fórmulas metabólicas usan el sexo biológico; no es una pregunta sobre identidad."
 msgstr "The metabolic formulas use biological sex; this is not a question about identity."
 
 #: app/templates/onboarding/step_body.html:16
-msgid "Perímetros (opcional)"
+msgid "Medidas (opcional)"
 msgstr "Measurements (optional)"
 
 #: app/templates/onboarding/step_body.html:17
@@ -3285,8 +3289,9 @@ msgid "Marca la zona y cómo está. Se quitan los ejercicios desaconsejados seg�
 msgstr "Tick the area and how it is. Exercises ruled out by severity are dropped; with a serious injury, talk to a professional first."
 
 #: app/templates/onboarding/step_goal.html:4
-msgid "El objetivo decide el balance calórico; los límites de seguridad (suelo calórico, ritmo máximo de pérdida) se aplican siempre."
-msgstr "The goal decides the calorie balance; the safety limits (calorie floor, maximum rate of loss) always apply."
+#, python-format
+msgid "El objetivo decide si comes menos, igual o más de lo que gastas. Los límites de seguridad (un mínimo de calorías y no perder más del 1 %% del peso a la semana) se aplican siempre."
+msgstr "Your goal decides whether you eat less than, as much as or more than you burn. The safety limits (a calorie minimum and never losing more than 1 %% of your weight a week) always apply."
 
 #: app/templates/onboarding/step_goal.html:14
 msgid "Si pones fecha, te diremos con sinceridad si es realista."
@@ -3516,78 +3521,84 @@ msgstr "Calf"
 msgid "Todavía no hay mediciones. De cuello, cintura y cadera sale tu porcentaje de grasa."
 msgstr "No measurements yet. Your body fat percentage comes from neck, waist and hip."
 
-#: app/templates/training/day.html:13
-msgid "Reserva por semana:"
-msgstr "Reps in reserve by week:"
+#: app/templates/training/day.html:13 app/templates/training/routine.html:13
+msgid "Reserva por semana"
+msgstr "Reps in reserve by week"
 
-#: app/templates/training/day.html:13
+#: app/templates/training/day.html:14 app/templates/training/routine.html:14
 #, python-format
-msgid "semana %(n)s, %(rir)s"
-msgstr "week %(n)s, %(rir)s"
+msgid "Semana %(n)s"
+msgstr "Week %(n)s"
 
-#: app/templates/training/day.html:13
-msgid "Sube el peso cuando hagas el máximo de repeticiones en todas las series."
-msgstr "Add weight when you hit the top of the rep range on every set."
+#: app/templates/training/day.html:14 app/templates/training/routine.html:14
+#: app/templates/workouts/session.html:57
+#, python-format
+msgid "reserva %(n)s"
+msgstr "%(n)s in reserve"
 
-#: app/templates/training/day.html:18
+#: app/templates/training/day.html:16
+msgid "La reserva es cuántas repeticiones te deberían sobrar al acabar cada serie. Sube el peso cuando hagas el máximo de repeticiones en todas las series."
+msgstr "Reps in reserve are how many reps you should have left at the end of each set. Add weight when you hit the top of the rep range on every set."
+
+#: app/templates/training/day.html:21
 msgid "Empezar esta sesión"
 msgstr "Start this session"
 
-#: app/templates/training/day.html:27
+#: app/templates/training/day.html:30
 msgid "Cambiar entre posición inicial y final"
 msgstr "Switch between the start and end positions"
 
-#: app/templates/training/day.html:28
+#: app/templates/training/day.html:31
 #, python-format
 msgid "%(name)s, posición inicial"
 msgstr "%(name)s, start position"
 
-#: app/templates/training/day.html:30
+#: app/templates/training/day.html:33
 #, python-format
 msgid "%(name)s, posición final"
 msgstr "%(name)s, end position"
 
-#: app/templates/training/day.html:42
+#: app/templates/training/day.html:45
 msgid "Para subir"
 msgstr "To move up"
 
-#: app/templates/training/day.html:45
+#: app/templates/training/day.html:48
 msgid "Unilateral: las series son por lado."
 msgstr "Unilateral: the sets are per side."
 
-#: app/templates/training/day.html:49
+#: app/templates/training/day.html:52
 msgid "Cómo se hace"
 msgstr "How to do it"
 
-#: app/templates/training/day.html:49
+#: app/templates/training/day.html:52
 msgid "en inglés"
 msgstr "in English"
 
-#: app/templates/training/day.html:55
+#: app/templates/training/day.html:58
 msgid "Alternativas"
 msgstr "Alternatives"
 
-#: app/templates/training/day.html:63
+#: app/templates/training/day.html:66
 msgid "No me gusta: cámbialo"
 msgstr "I do not like it: swap it"
 
-#: app/templates/training/day.html:65
+#: app/templates/training/day.html:68
 msgid "Se queda fuera de esta rutina y de las siguientes. Puedes deshacerlo desde la rutina."
 msgstr "It stays out of this routine and the next ones. You can undo it from the routine."
 
-#: app/templates/training/day.html:67
+#: app/templates/training/day.html:70
 msgid "Ninguna con tu material y tus molestias."
 msgstr "None with your equipment and aches."
 
-#: app/templates/training/day.html:71
+#: app/templates/training/day.html:74
 msgid "Buscar vídeo"
 msgstr "Search for a video"
 
-#: app/templates/training/day.html:78
+#: app/templates/training/day.html:81
 msgid "Otros días"
 msgstr "Other days"
 
-#: app/templates/training/day.html:80
+#: app/templates/training/day.html:83
 msgid "Toda la rutina"
 msgstr "The whole routine"
 
@@ -3599,21 +3610,6 @@ msgstr "Blocks of %(w)s weeks, with an easy week every %(d)s. In effect since %(
 #: app/templates/training/routine.html:12
 msgid "Cada semana aprietas un poco más: la reserva es cuántas repeticiones te deberían sobrar al acabar cada serie."
 msgstr "Each week you push a little harder: reps in reserve are how many reps you should have left at the end of each set."
-
-#: app/templates/training/routine.html:13
-msgid "Reserva por semana"
-msgstr "Reps in reserve by week"
-
-#: app/templates/training/routine.html:14
-#, python-format
-msgid "Semana %(n)s"
-msgstr "Week %(n)s"
-
-#: app/templates/training/routine.html:14
-#: app/templates/workouts/session.html:57
-#, python-format
-msgid "reserva %(n)s"
-msgstr "%(n)s in reserve"
 
 #: app/templates/training/routine.html:18
 msgid "Tu rutina"
@@ -3636,8 +3632,8 @@ msgid "Ver día"
 msgstr "See the day"
 
 #: app/templates/training/routine.html:62
-msgid "Volumen semanal"
-msgstr "Weekly volume"
+msgid "Series por músculo"
+msgstr "Sets per muscle"
 
 #: app/templates/training/routine.html:63
 msgid "Series a la semana por músculo, frente a lo que funciona para crecer."
@@ -3925,8 +3921,8 @@ msgstr[0] "One new record. Good work."
 msgstr[1] "%(num)s new records. Good work."
 
 #: app/templates/workouts/summary.html:15
-msgid "series efectivas"
-msgstr "working sets"
+msgid "series"
+msgstr "sets"
 
 #: app/templates/workouts/summary.html:16
 msgid "repeticiones"

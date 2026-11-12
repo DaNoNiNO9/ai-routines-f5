@@ -69,7 +69,7 @@
                 <input type="hidden" name="set_type" value="working">
                 <span class="set-index">{{ row.index }}</span>
                 <label class="set-field"><span>{% if block.takes_load %}kg{% else %}{{ _('lastre') }}{% endif %}</span><input class="field-input" type="number" name="weight_kg" step="0.25" min="0" max="1000" inputmode="decimal" required value="{{ row.prefill_kg if row.prefill_kg is not none else (0 if not block.takes_load else '') }}"></label>
-                <label class="set-field"><span>reps</span><input class="field-input" type="number" name="reps" min="0" max="200" inputmode="numeric" required value="{{ row.prefill_reps or item.rep_min }}"></label>
+                <label class="set-field"><span>{{ _('reps') }}</span><input class="field-input" type="number" name="reps" min="0" max="200" inputmode="numeric" required value="{{ row.prefill_reps or item.rep_min }}"></label>
                 <label class="set-field"><span>{{ _('reserva') }}</span><input class="field-input" type="number" name="rir" min="0" max="10" inputmode="numeric" placeholder="{{ block.target_rir }}"></label>
                 <button type="submit" class="button set-submit" aria-label="{{ _('Guardar la serie %(n)s', n=row.index) }}">{{ icon('check') }}</button>
                 {% if row.adjusted %}<p class="set-hint">{{ _('Peso ajustado por cómo fue la serie anterior.') }}</p>{% endif %}

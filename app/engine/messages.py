@@ -42,23 +42,28 @@ translator: Callable[[str], str] = _as_written
 params_translator: Callable[[str, Mapping[str, Any]], Mapping[str, Any]] = _as_produced
 
 TEMPLATES: dict[str, str] = {
-    "body_fat.declared": "Porcentaje de grasa declarado (%(value)s %%, método: %(method)s).",
-    "body_fat.navy": (
-        "Grasa corporal estimada por el método Navy a partir de tus perímetros: %(value)s %%."
+    "body_fat.declared": (
+        "Porcentaje de grasa que has indicado: %(value)s %% (medido con %(method)s)."
     ),
+    "body_fat.navy": "Tu grasa corporal, calculada con tus medidas de cinta: %(value)s %%.",
     "body_fat.navy_invalid": (
         "Los perímetros no permiten estimar la grasa (revisa cuello, cintura y cadera)."
     ),
     "body_fat.unknown": (
-        "Sin dato de grasa corporal: la estimación es de baja confianza y se usa Mifflin-St Jeor."
+        "Sin tu porcentaje de grasa el cálculo es menos preciso: lo que gastas en reposo sale"
+        " de tu peso, altura, edad y sexo."
     ),
-    "bmr.katch_mcardle": "Metabolismo basal por Katch-McArdle (masa magra %(lean_mass_kg)s kg).",
-    "bmr.mifflin": "Metabolismo basal por Mifflin-St Jeor.",
+    "bmr.katch_mcardle": (
+        "Lo que gastas en reposo se calcula con tu masa magra (todo lo que no es grasa): "
+        "%(lean_mass_kg)s kg."
+    ),
+    "bmr.mifflin": "Lo que gastas en reposo se calcula con tu peso, altura, edad y sexo.",
     "tdee.steps_estimated": (
         "Pasos diarios estimados en %(steps)s por tu tipo de trabajo (%(job)s)."
     ),
     "tdee.lifestyle_modifier": (
-        "Gasto por actividad reducido un %(pct)s %% por sueño corto o estrés alto."
+        "Lo que gastas moviéndote se rebaja un %(pct)s %% porque duermes poco o tienes mucho "
+        "estrés."
     ),
     "tdee.divergence": (
         "Tu gasto calculado (%(components)s kcal) se aleja un %(pct)s %% de la estimación "
@@ -68,8 +73,9 @@ TEMPLATES: dict[str, str] = {
     "target.surplus": "Comes un %(pct)s %% más de lo que gastas.",
     "target.maintenance": "Comes lo mismo que gastas.",
     "target.recomposition_not_ideal": (
-        "La recomposición no encaja con tu experiencia y grasa actual: se usan calorías de "
-        "mantenimiento; valora perder grasa o ganar músculo como objetivo."
+        "Perder grasa y ganar músculo a la vez no encaja con tu experiencia y tu grasa "
+        "actual: comes lo mismo que gastas. Valora elegir solo perder grasa o solo ganar "
+        "músculo."
     ),
     "target.raised_to_floor": "Calorías subidas al mínimo seguro (%(floor)s kcal).",
     "target.capped_by_max_loss": (
@@ -87,7 +93,7 @@ TEMPLATES: dict[str, str] = {
         "Fecha objetivo alcanzable: unas %(weeks_needed)s semanas de %(weeks_available)s."
     ),
     "macros.protein_lean_basis": (
-        "Proteína calculada sobre tu masa magra (%(per_kg)s g por kg de peso total)."
+        "Proteína calculada con tu masa magra (%(per_kg)s g por kg de tu peso)."
     ),
     "macros.protein_vegan": (
         "Como sigues una dieta vegana, la proteína sube %(extra)s g por kg: la vegetal se "
@@ -98,18 +104,17 @@ TEMPLATES: dict[str, str] = {
         "Van dentro del total, no aparte: apúntalas en el diario."
     ),
     "macros.fat_lowered_for_carbs": (
-        "Grasa bajada al mínimo para no dejar los carbohidratos por debajo de %(floor)s g."
+        "La grasa baja al mínimo para que los hidratos no queden por debajo de %(floor)s g."
     ),
     "macros.deficit_reduced_for_carbs": (
-        "Déficit reducido (%(kcal)s kcal más al día) para mantener al menos %(floor)s g de "
-        "carbohidratos."
+        "Comes %(kcal)s kcal más al día de lo previsto para no bajar de %(floor)s g de hidratos."
     ),
     "macros.calories_raised_for_carbs": (
-        "Calorías subidas %(kcal)s kcal para cubrir el mínimo de carbohidratos (%(floor)s g)."
+        "Las calorías suben %(kcal)s kcal para llegar al mínimo de hidratos (%(floor)s g)."
     ),
     "meals.protein_per_meal_low": (
-        "Con este número de comidas tocan %(per_meal)s g de proteína por toma; con "
-        "%(recommended_meals)s comidas cada toma superaría los 0,4 g/kg."
+        "Con este número de comidas tocan %(per_meal)s g de proteína en cada una; repartida "
+        "en %(recommended_meals)s comidas se aprovecharía mejor."
     ),
     "cycle.enabled": "Más hidratos los días de entreno: %(high)s g, y %(low)s g los de descanso.",
     "cycle.low_day_at_floor": (
@@ -123,24 +128,30 @@ TEMPLATES: dict[str, str] = {
         "Antecedentes de trastorno de la conducta alimentaria: no se genera plan; consulta con un "
         "profesional sanitario."
     ),
-    "safety.underweight": "IMC %(bmi)s, por debajo de 18,5: no se genera un plan de déficit.",
+    "safety.underweight": (
+        "Tu IMC es %(bmi)s, por debajo de 18,5 (bajo peso): no se genera un plan para perder peso."
+    ),
     "safety.essential_fat": (
-        "Grasa corporal en niveles esenciales (%(body_fat)s %%): perder más no es seguro."
+        "Tu grasa corporal ya está en el mínimo saludable (%(body_fat)s %%): perder más no es"
+        " seguro."
     ),
     "safety.deficit_blocked": (
-        "Puedes usar el módulo de entrenamiento y un plan de mantenimiento o ganancia; para perder "
-        "peso consulta con un profesional sanitario."
+        "Puedes usar la parte de entrenamiento y un plan para mantener o ganar peso; para "
+        "perder peso consulta con un profesional sanitario."
     ),
-    "safety.below_floor": "Calorías (%(calories)s) por debajo del mínimo (%(floor)s).",
+    "safety.below_floor": (
+        "Las calorías (%(calories)s) quedan por debajo del mínimo seguro (%(floor)s)."
+    ),
     "safety.loss_too_fast": (
         "Pérdida prevista de %(weekly)s kg a la semana, por encima del máximo de %(max)s."
     ),
-    "safety.deficit_while_underweight": "Déficit con un IMC bajo.",
-    "safety.protein_out_of_range": "Proteína fuera de rango (%(per_kg)s g/kg).",
+    "safety.deficit_while_underweight": "Plan para perder peso con un IMC bajo.",
+    "safety.protein_out_of_range": "Proteína fuera de lo razonable (%(per_kg)s g por kg).",
     "safety.fat_too_low": "Grasa demasiado baja (%(fat_g)s g).",
-    "safety.negative_macro": "Macronutriente negativo.",
+    "safety.negative_macro": "La proteína, los hidratos o la grasa salen en negativo.",
     "safety.macros_mismatch": (
-        "Los macros (%(energy)s kcal) no cuadran con las calorías (%(calories)s)."
+        "La proteína, los hidratos y la grasa (%(energy)s kcal) no cuadran con las calorías "
+        "(%(calories)s)."
     ),
     "routine.no_days": "Sin días de entrenamiento no se puede generar una rutina.",
     "routine.nothing_possible": (
@@ -177,16 +188,16 @@ TEMPLATES: dict[str, str] = {
     "routine.push_pull": "Series de empujar: %(push)s. Series de tirar: %(pull)s.",
     "routine.time_trimmed": "%(day)s: series recortadas para encajar en %(minutes)s minutos.",
     "routine.exercises_dropped_for_time": (
-        "%(day)s: se quitan ejercicios de aislamiento (%(n)s) para caber en %(minutes)s "
-        "minutos. El descanso entre series no se recorta: manda el trabajo básico."
+        "%(day)s: se quitan ejercicios de un solo músculo (%(n)s) para caber en %(minutes)s "
+        "minutos. El descanso entre series no se recorta: mandan los ejercicios principales."
     ),
     "routine.session_too_long": (
         "%(day)s: aun recortando, la sesión estimada dura %(estimated)s min y tienes %(budget)s; "
         "añade minutos o un día."
     ),
     "routine.volume_scaled_by_time": (
-        "Objetivos de volumen reducidos un %(pct)s %% para caber en tus sesiones; más días o "
-        "minutos permitirían más series."
+        "Se programan un %(pct)s %% menos de series para caber en tus sesiones; con más días "
+        "o minutos habría más."
     ),
     "routine.pattern_trimmed": (
         "Los ejercicios de %(pattern)s quedan fuera esta semana por falta de tiempo."
@@ -201,24 +212,24 @@ TEMPLATES: dict[str, str] = {
     "routine.push_pull_unbalanced": (
         "Con tu material no hay suficientes ejercicios de tirar para equilibrar los de empujar."
     ),
-    "routine.priority_applied": "Volumen extra (+27 %%) para %(muscles)s, compensado en el resto.",
+    "routine.priority_applied": "Un 27 %% más de series para %(muscles)s, compensado con el resto.",
     "routine.priority_slot_added": (
         "Se añade un ejercicio de %(muscle)s en %(day)s porque es prioritario para ti."
     ),
     "routine.volume_low": (
-        "Para %(muscle)s salen %(planned)s series efectivas, por debajo de las %(target_min)s "
-        "recomendadas: lo limita el material o el tiempo."
+        "Para %(muscle)s salen %(planned)s series a la semana, por debajo de las "
+        "%(target_min)s recomendadas: lo limita el material o el tiempo."
     ),
     "cardio.not_punishment": (
         "El cardio se programa por su efecto sobre el gasto y la salud, nunca como castigo por "
         "saltarse la dieta."
     ),
     "cardio.deficit_not_covered": (
-        "Quedan %(kcal)s kcal semanales de déficit sin cubrir con actividad: se alarga el plazo "
-        "antes que añadir más cardio."
+        "Para tu ritmo faltarían %(kcal)s kcal a la semana: antes que añadir más cardio, se "
+        "alarga el plazo."
     ),
     "cardio.health_sessions": (
-        "%(sessions)s sesiones suaves de cardio a la semana por salud cardiovascular (opcionales)."
+        "%(sessions)s sesiones suaves de cardio a la semana por la salud del corazón (opcionales)."
     ),
     "cardio.liss_machine": (
         "El cardio suave, en la máquina que prefieras: cinta a ritmo vivo, bici, elíptica o "
