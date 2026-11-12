@@ -81,7 +81,7 @@ def test_weight_intake_and_activity_are_saved_for_the_chosen_day(
     assert activity.cardio_minutes == 30
 
     page = client.get("/diario").get_data(as_text=True)
-    assert "80.4" in page
+    assert "80,4" in page
     assert "2150" in page
     assert "9500" in page
 
@@ -201,3 +201,41 @@ def test_one_diary_never_leaks_into_another(client: FlaskClient, seeded: SQLAlch
     assert other.status_code == 302
     page = client.get("/diario").get_data(as_text=True)
     assert "80.4" not in page
+
+
+def test_a_decimal_comma_is_accepted_and_shown_back_with_a_comma(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    """Anyone in Spain types "63,9": it used to fail with an English error."""
+    _signup(client)
+    today = _user(seeded).today()
+    saved = client.post(
+        "/diario/peso", data={"day": today.isoformat(), "weight_kg": "63,9"}, follow_redirects=True
+    )
+    assert "Peso guardado" in saved.get_data(as_text=True)
+    weight = seeded.session.scalar(select(WeightLog))
+    assert weight is not None
+    assert weight.weight_kg == 63.9
+
+    client.post(
+        "/diario/ingesta",
+        data={"day": today.isoformat(), "calories": "1800", "protein_g": "118", "fat_g": "55,5"},
+    )
+    html = client.get("/diario").get_data(as_text=True)
+    assert 'value="63,9"' in html
+    assert 'value="118"' in html  # no "118.0"
+    assert 'value="55,5"' in html
+
+
+def test_a_number_that_is_not_a_number_is_explained_in_spanish(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    _signup(client)
+    today = _user(seeded).today()
+    page = client.post(
+        "/diario/peso",
+        data={"day": today.isoformat(), "weight_kg": "sesenta"},
+        follow_redirects=True,
+    ).get_data(as_text=True)
+    assert "Escribe un número, por ejemplo 63,5." in page
+    assert "Not a valid float value" not in page

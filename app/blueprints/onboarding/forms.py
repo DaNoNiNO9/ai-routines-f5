@@ -11,7 +11,6 @@ from flask_wtf import FlaskForm
 from wtforms import (
     BooleanField,
     DateField,
-    FloatField,
     IntegerField,
     RadioField,
     SelectField,
@@ -24,6 +23,7 @@ from wtforms.validators import InputRequired, Length, NumberRange, Optional, Val
 from app import labels
 from app.engine.enums import InjuryArea, Sex
 from app.engine.routines.types import MAX_PRIORITY_MUSCLES
+from app.fields import DecimalField
 
 MIN_AGE = 18
 MAX_AGE = 110
@@ -67,16 +67,18 @@ class BodyForm(StepForm):
         _l("Sexo biológico"), choices=labels.choices(labels.SEX), validators=[InputRequired()]
     )
     birth_date = DateField(_l("Fecha de nacimiento"), validators=[InputRequired()])
-    height_cm = FloatField(
+    height_cm = DecimalField(
         _l("Altura (cm)"), validators=[InputRequired(), NumberRange(min=100, max=250)]
     )
-    weight_kg = FloatField(
+    weight_kg = DecimalField(
         _l("Peso actual (kg)"), validators=[InputRequired(), NumberRange(min=25, max=350)]
     )
-    neck_cm = FloatField(_l("Cuello (cm)"), validators=[Optional(), NumberRange(min=20, max=80)])
-    waist_cm = FloatField(_l("Cintura (cm)"), validators=[Optional(), NumberRange(min=40, max=250)])
-    hip_cm = FloatField(_l("Cadera (cm)"), validators=[Optional(), NumberRange(min=50, max=250)])
-    body_fat_pct = FloatField(
+    neck_cm = DecimalField(_l("Cuello (cm)"), validators=[Optional(), NumberRange(min=20, max=80)])
+    waist_cm = DecimalField(
+        _l("Cintura (cm)"), validators=[Optional(), NumberRange(min=40, max=250)]
+    )
+    hip_cm = DecimalField(_l("Cadera (cm)"), validators=[Optional(), NumberRange(min=50, max=250)])
+    body_fat_pct = DecimalField(
         _l("Porcentaje de grasa corporal"), validators=[Optional(), NumberRange(min=2, max=70)]
     )
     body_fat_method = SelectField(
@@ -134,7 +136,7 @@ class ActivityForm(StepForm):
         _l("Pasos diarios (si los conoces)"),
         validators=[Optional(), NumberRange(min=0, max=60000)],
     )
-    sleep_hours = FloatField(
+    sleep_hours = DecimalField(
         _l("Horas de sueño por noche"), validators=[InputRequired(), NumberRange(min=3, max=16)]
     )
     stress_level = RadioField(
@@ -272,7 +274,7 @@ class GoalForm(StepForm):
         default="moderate",
         validators=[InputRequired()],
     )
-    target_weight_kg = FloatField(
+    target_weight_kg = DecimalField(
         _l("Peso objetivo (kg, opcional)"), validators=[Optional(), NumberRange(min=25, max=350)]
     )
     target_date = DateField(_l("Fecha objetivo (opcional)"), validators=[Optional()])

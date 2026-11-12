@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
-from wtforms import FloatField, IntegerField, RadioField, SelectField, TextAreaField
+from wtforms import IntegerField, RadioField, SelectField, TextAreaField
 from wtforms.validators import InputRequired, Length, NumberRange, Optional, ValidationError
 
 from app.engine.enums import SetType
+from app.fields import DecimalField
 
 FATIGUE_LABELS = {
     1: _l("1 · Fresco"),
@@ -23,7 +24,7 @@ class SetForm(FlaskForm):
 
     routine_exercise_id = IntegerField(validators=[InputRequired()])
     set_index = IntegerField(validators=[InputRequired(), NumberRange(min=1, max=20)])
-    weight_kg = FloatField(_l("kg"), validators=[InputRequired(), NumberRange(min=0, max=1000)])
+    weight_kg = DecimalField(_l("kg"), validators=[InputRequired(), NumberRange(min=0, max=1000)])
     reps = IntegerField(_l("reps"), validators=[InputRequired(), NumberRange(min=0, max=200)])
     rir = IntegerField(_l("RIR"), validators=[Optional(), NumberRange(min=0, max=10)])
     set_type = SelectField(

@@ -9,12 +9,13 @@ from __future__ import annotations
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
 from flask_wtf import FlaskForm
-from wtforms import DateField, FloatField, IntegerField, SelectField, StringField
+from wtforms import DateField, IntegerField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, NumberRange, Optional, ValidationError
 from wtforms.widgets import HiddenInput
 
 from app import labels
 from app.engine.enums import BodyFatMethod, CardioKind
+from app.fields import DecimalField
 
 CARDIO_CHOICES = [
     ("", _l("—")),
@@ -37,7 +38,7 @@ class DayForm(FlaskForm):
 class WeightForm(DayForm):
     """The morning weigh-in."""
 
-    weight_kg = FloatField(
+    weight_kg = DecimalField(
         _l("Peso (kg)"), validators=[InputRequired(), NumberRange(min=25, max=350)]
     )
     notes = StringField(_l("Nota (opcional)"), validators=[Optional(), Length(max=200)])
@@ -49,13 +50,13 @@ class IntakeForm(DayForm):
     calories = IntegerField(
         _l("Calorías"), validators=[InputRequired(), NumberRange(min=0, max=20000)]
     )
-    protein_g = FloatField(
+    protein_g = DecimalField(
         _l("Proteína (g)"), validators=[Optional(), NumberRange(min=0, max=1000)]
     )
-    carbs_g = FloatField(
+    carbs_g = DecimalField(
         _l("Carbohidratos (g)"), validators=[Optional(), NumberRange(min=0, max=2000)]
     )
-    fat_g = FloatField(_l("Grasa (g)"), validators=[Optional(), NumberRange(min=0, max=1000)])
+    fat_g = DecimalField(_l("Grasa (g)"), validators=[Optional(), NumberRange(min=0, max=1000)])
     adherence_pct = IntegerField(
         _l("Cuánto has seguido el plan (%)"), validators=[Optional(), NumberRange(min=0, max=100)]
     )
@@ -101,14 +102,16 @@ class MeasurementForm(FlaskForm):
     """Weekly tape measures; the day is visible because they are not always taken today."""
 
     day = DateField(_l("Día"), validators=[InputRequired()])
-    neck_cm = FloatField(_l("Cuello (cm)"), validators=[Optional(), NumberRange(min=20, max=80)])
-    waist_cm = FloatField(_l("Cintura (cm)"), validators=[Optional(), NumberRange(min=40, max=250)])
-    hip_cm = FloatField(_l("Cadera (cm)"), validators=[Optional(), NumberRange(min=50, max=250)])
-    chest_cm = FloatField(_l("Pecho (cm)"), validators=[Optional(), NumberRange(min=50, max=250)])
-    arm_cm = FloatField(_l("Brazo (cm)"), validators=[Optional(), NumberRange(min=15, max=90)])
-    thigh_cm = FloatField(_l("Muslo (cm)"), validators=[Optional(), NumberRange(min=25, max=120)])
-    calf_cm = FloatField(_l("Gemelo (cm)"), validators=[Optional(), NumberRange(min=15, max=90)])
-    body_fat_pct = FloatField(
+    neck_cm = DecimalField(_l("Cuello (cm)"), validators=[Optional(), NumberRange(min=20, max=80)])
+    waist_cm = DecimalField(
+        _l("Cintura (cm)"), validators=[Optional(), NumberRange(min=40, max=250)]
+    )
+    hip_cm = DecimalField(_l("Cadera (cm)"), validators=[Optional(), NumberRange(min=50, max=250)])
+    chest_cm = DecimalField(_l("Pecho (cm)"), validators=[Optional(), NumberRange(min=50, max=250)])
+    arm_cm = DecimalField(_l("Brazo (cm)"), validators=[Optional(), NumberRange(min=15, max=90)])
+    thigh_cm = DecimalField(_l("Muslo (cm)"), validators=[Optional(), NumberRange(min=25, max=120)])
+    calf_cm = DecimalField(_l("Gemelo (cm)"), validators=[Optional(), NumberRange(min=15, max=90)])
+    body_fat_pct = DecimalField(
         _l("Grasa corporal (%)"), validators=[Optional(), NumberRange(min=2, max=70)]
     )
     body_fat_method = SelectField(
