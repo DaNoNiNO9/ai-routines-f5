@@ -340,7 +340,7 @@ def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphSt
                     f"{_round(plan.carbs_g)} g",
                     f"{_round(plan.fat_g)} g",
                     f"{_round(plan.fiber_g)} g",
-                    f"{plan.water_ml / 1000:.1f} l",
+                    f"{formatting.num(plan.water_ml / 1000)} l",
                 ],
             ],
             [30 * mm] * 6,

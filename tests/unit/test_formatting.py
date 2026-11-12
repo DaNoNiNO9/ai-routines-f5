@@ -37,6 +37,21 @@ def test_spanish_uses_a_decimal_comma_and_drops_useless_zeros() -> None:
     assert num(None) == kg(None) == "—"
 
 
+@pytest.mark.usefixtures("es")
+def test_spanish_does_not_split_four_digit_numbers() -> None:
+    """RAE: "1995 kcal" and "8000 pasos", like the |int figures beside them; "12.000" does split."""
+    assert num(1995, 0) == "1995"
+    assert num(8000, 0) == "8000"
+    assert num(9999.5, 1) == "9999,5"
+    assert num(-1500, 0) == f"{MINUS}1500"
+    assert num(10000, 0) == "10.000"
+
+
+@pytest.mark.usefixtures("en")
+def test_english_keeps_its_thousands_comma() -> None:
+    assert num(1995, 0) == "1,995"
+
+
 @pytest.mark.usefixtures("en")
 def test_english_keeps_the_decimal_point() -> None:
     assert num(2.5) == "2.5"

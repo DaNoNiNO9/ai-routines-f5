@@ -21,6 +21,10 @@ from flask_login import current_user
 
 TRIM_ZEROS = {0: "#,##0", 1: "#,##0.#", 2: "#,##0.##"}
 FIXED = {0: "#,##0", 1: "#,##0.0", 2: "#,##0.00"}
+# Spanish does not split four-digit numbers ("1995 kcal", "8000 pasos"; RAE,
+# Ortografía 2010), although Babel would print "1.995". From five digits on it does.
+UNGROUPED = {key: pattern.replace("#,##", "") for key, pattern in TRIM_ZEROS.items()}
+UNGROUPED_FIXED = {key: pattern.replace("#,##", "") for key, pattern in FIXED.items()}
 DEFAULT_ZONE = "Europe/Madrid"
 MINUS = chr(0x2212)  # typographic minus, not the hyphen
 TIMES = chr(0xD7)  # the multiplication sign of 60 kg x 8
@@ -34,8 +38,12 @@ def num(value: Any, decimals: int = 1, *, fixed: bool = False) -> str:
     """
     if value is None or value == "":
         return "—"
-    pattern = (FIXED if fixed else TRIM_ZEROS)[decimals]
-    text = format_decimal(float(value), format=pattern)
+    number = float(value)
+    if abs(number) < 10000 and str(get_locale() or "es").startswith("es"):
+        pattern = (UNGROUPED_FIXED if fixed else UNGROUPED)[decimals]
+    else:
+        pattern = (FIXED if fixed else TRIM_ZEROS)[decimals]
+    text = format_decimal(number, format=pattern)
     return text.replace("-", MINUS)
 
 
