@@ -38,13 +38,14 @@
       <h2 class="card-title">{{ icon('flame') }}{{ _('Hoy') }}</h2>
       {% if plan %}
         {% if targets.cycle %}
+          <p class="meta">{% if training_today %}{{ _('Hoy entrenas: te tocan los números de día de entreno, con más hidratos.') }}{% else %}{{ _('Hoy, de momento, día de descanso. Si empiezas una sesión, pasa a día de entreno.') }}{% endif %}</p>
           <div class="stat-row">
-            <div class="stat">
+            <div class="stat{% if training_today %} is-today{% else %} is-other{% endif %}">
               <span class="stat-label">{{ _('Día de entreno') }}</span>
               <span class="stat-value">{{ targets.cycle.high.calories }} <small>kcal</small></span>
               <span class="stat-label">{{ _('%(p)s g proteína · %(c)s g carbohidratos · %(g)s g grasa', p=targets.cycle.high.protein_g, c=targets.cycle.high.carbs_g, g=targets.cycle.high.fat_g) }}</span>
             </div>
-            <div class="stat">
+            <div class="stat{% if not training_today %} is-today{% else %} is-other{% endif %}">
               <span class="stat-label">{{ _('Día de descanso') }}</span>
               <span class="stat-value">{{ targets.cycle.low.calories }} <small>kcal</small></span>
               <span class="stat-label">{{ _('%(p)s g proteína · %(c)s g carbohidratos · %(g)s g grasa', p=targets.cycle.low.protein_g, c=targets.cycle.low.carbs_g, g=targets.cycle.low.fat_g) }}</span>

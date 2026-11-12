@@ -94,6 +94,16 @@ def fdate(value: date | datetime | str | None, style: str = "short") -> str:
     return format_skeleton(skeleton, value, locale=get_locale())
 
 
+def local_date(moment: datetime, user: Any) -> date:
+    """The calendar day of ``moment`` in ``user``'s time zone (Madrid when unknown)."""
+    aware = moment if moment.tzinfo else moment.replace(tzinfo=ZoneInfo("UTC"))
+    try:
+        zone = ZoneInfo(getattr(user, "timezone", None) or DEFAULT_ZONE)
+    except (ZoneInfoNotFoundError, ValueError):
+        zone = ZoneInfo(DEFAULT_ZONE)
+    return aware.astimezone(zone).date()
+
+
 def _local(moment: datetime) -> datetime:
     """An aware datetime in the reader's time zone (Madrid when unknown).
 

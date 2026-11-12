@@ -808,3 +808,12 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 
 /* hidden siempre gana a las reglas que fijan display */
 [hidden] { display: none !important; }
+
+/* Cómo llegas hoy */
+.checkin-card { border-color: var(--accent); }
+.checkin-options { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-2); }
+.easy-day { border-color: var(--focus); }
+.easy-day .card-title .icon { color: var(--focus); }
+
+.stat.is-today { border-color: var(--accent); }
+.stat.is-other { opacity: 0.6; }

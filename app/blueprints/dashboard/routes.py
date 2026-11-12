@@ -47,6 +47,7 @@ def index() -> str:
             plan=plan,
             routine=routine,
             targets=dashboard.today_targets(plan) if plan else None,
+            training_today=dashboard.trains_on(current_user, today),
             next_day=dashboard.next_routine_day(current_user, routine),
             weights=weights,
             weight_chart=chart,

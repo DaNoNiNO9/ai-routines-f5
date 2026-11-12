@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 16:31+0100\n"
+"POT-Creation-Date: 2026-11-12 16:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -95,34 +95,34 @@ msgstr "%(min)s min"
 msgid "%(s)s s"
 msgstr "%(s)s s"
 
-#: app/formatting.py:118 app/templates/tracking/foods.html:29
+#: app/formatting.py:128 app/templates/tracking/foods.html:29
 msgid "hoy"
 msgstr "today"
 
-#: app/formatting.py:120
+#: app/formatting.py:130
 msgid "mañana"
 msgstr "tomorrow"
 
-#: app/formatting.py:122
+#: app/formatting.py:132
 #, python-format
 msgid "hace %(num)s día"
 msgid_plural "hace %(num)s días"
 msgstr[0] "%(num)s day ago"
 msgstr[1] "%(num)s days ago"
 
-#: app/formatting.py:123
+#: app/formatting.py:133
 #, python-format
 msgid "en %(num)s día"
 msgid_plural "en %(num)s días"
 msgstr[0] "in %(num)s day"
 msgstr[1] "in %(num)s days"
 
-#: app/formatting.py:140
+#: app/formatting.py:150
 #, python-format
 msgid "Baja en %(down)s s, para %(pause)s s abajo y sube en %(up)s s"
 msgstr "Lower in %(down)s s, pause %(pause)s s at the bottom and lift in %(up)s s"
 
-#: app/formatting.py:145
+#: app/formatting.py:155
 #, python-format
 msgid "Baja en %(down)s s y sube en %(up)s s"
 msgstr "Lower in %(down)s s and lift in %(up)s s"
@@ -1007,7 +1007,7 @@ msgstr "Change saved (simulation)."
 
 #: app/blueprints/dashboard/routes.py:43
 #: app/blueprints/onboarding/routes.py:183 app/services/exports.py:407
-#: app/templates/dashboard/index.html:87 app/templates/tracking/diary.html:25
+#: app/templates/dashboard/index.html:88 app/templates/tracking/diary.html:25
 msgid "Peso"
 msgstr "Weight"
 
@@ -1020,20 +1020,20 @@ msgid "Tu plan de entrenamiento y nutrición, calculado y no inventado."
 msgstr "Your training and nutrition plan, calculated, not made up."
 
 #: app/blueprints/nutrition/routes.py:26 app/services/exports.py:331
-#: app/services/exports.py:370 app/templates/dashboard/index.html:56
+#: app/services/exports.py:370 app/templates/dashboard/index.html:57
 #: app/templates/nutrition/plan.html:56 app/templates/nutrition/plan.html:126
 #: app/templates/onboarding/result.html:48 app/templates/tracking/diary.html:43
 msgid "Proteína"
 msgstr "Protein"
 
 #: app/blueprints/nutrition/routes.py:26 app/services/exports.py:332
-#: app/services/exports.py:370 app/templates/dashboard/index.html:57
+#: app/services/exports.py:370 app/templates/dashboard/index.html:58
 #: app/templates/nutrition/plan.html:57 app/templates/onboarding/result.html:48
 msgid "Carbohidratos"
 msgstr "Carbohydrates"
 
 #: app/blueprints/nutrition/routes.py:26 app/services/exports.py:333
-#: app/services/exports.py:370 app/templates/dashboard/index.html:58
+#: app/services/exports.py:370 app/templates/dashboard/index.html:59
 #: app/templates/nutrition/plan.html:58 app/templates/nutrition/plan.html:70
 #: app/templates/onboarding/result.html:48 app/templates/tracking/diary.html:45
 msgid "Grasa"
@@ -1248,7 +1248,7 @@ msgid "Tengo o he tenido un trastorno de la conducta alimentaria"
 msgstr "I have or have had an eating disorder"
 
 #: app/blueprints/onboarding/routes.py:36
-#: app/templates/dashboard/index.html:167 app/templates/review/index.html:5
+#: app/templates/dashboard/index.html:168 app/templates/review/index.html:5
 #: app/templates/tracking/diary.html:18
 msgid "Revisión"
 msgstr "Review"
@@ -1606,58 +1606,58 @@ msgstr "Method"
 msgid "Rellena al menos una medida."
 msgstr "Fill in at least one measurement."
 
-#: app/blueprints/tracking/routes.py:123
+#: app/blueprints/tracking/routes.py:127
 #, python-format
 msgid "Peso guardado: %(kg)s."
 msgstr "Weight saved: %(kg)s."
 
-#: app/blueprints/tracking/routes.py:149
+#: app/blueprints/tracking/routes.py:153
 msgid "Guardado."
 msgstr "Saved."
 
-#: app/blueprints/tracking/routes.py:152
+#: app/blueprints/tracking/routes.py:156
 #, python-format
 msgid "Ingesta guardada: %(kcal)s kcal."
 msgstr "Intake saved: %(kcal)s kcal."
 
-#: app/blueprints/tracking/routes.py:173
+#: app/blueprints/tracking/routes.py:177
 msgid "Actividad guardada."
 msgstr "Activity saved."
 
-#: app/blueprints/tracking/routes.py:198
+#: app/blueprints/tracking/routes.py:202
 msgid "Medidas guardadas."
 msgstr "Measurements saved."
 
-#: app/blueprints/tracking/routes.py:212
+#: app/blueprints/tracking/routes.py:216
 msgid "Open Food Facts no responde ahora mismo. La tabla básica sigue funcionando."
 msgstr "Open Food Facts is not answering right now. The basic table still works."
 
-#: app/blueprints/tracking/routes.py:214
+#: app/blueprints/tracking/routes.py:218
 msgid "Ese código de barras no parece válido: son de 8 a 13 cifras."
 msgstr "That barcode does not look valid: they have 8 to 13 digits."
 
-#: app/blueprints/tracking/routes.py:215
+#: app/blueprints/tracking/routes.py:219
 msgid "No encontramos ese código en Open Food Facts. Búscalo por su nombre."
 msgstr "We could not find that code on Open Food Facts. Search for it by name."
 
-#: app/blueprints/tracking/routes.py:217
+#: app/blueprints/tracking/routes.py:221
 msgid "Ese producto no tiene todos sus valores en Open Food Facts. Búscalo por su nombre."
 msgstr "That product does not have all its values on Open Food Facts. Search for it by name."
 
-#: app/blueprints/tracking/routes.py:219
+#: app/blueprints/tracking/routes.py:223
 msgid "Indica los gramos: entre 1 y 5000."
 msgstr "Enter the grams: between 1 and 5000."
 
-#: app/blueprints/tracking/routes.py:220
+#: app/blueprints/tracking/routes.py:224
 msgid "No encontramos ese alimento."
 msgstr "We could not find that food."
 
-#: app/blueprints/tracking/routes.py:287
+#: app/blueprints/tracking/routes.py:291
 #, python-format
 msgid "Apuntado: %(name)s, %(grams)s g (%(kcal)s kcal)."
 msgstr "Logged: %(name)s, %(grams)s g (%(kcal)s kcal)."
 
-#: app/blueprints/tracking/routes.py:318
+#: app/blueprints/tracking/routes.py:322
 #, python-format
 msgid "%(num)s alimento copiado de ayer."
 msgid_plural "%(num)s alimentos copiados de ayer."
@@ -1697,7 +1697,7 @@ msgstr "5 · Spent"
 msgid "kg"
 msgstr "kg"
 
-#: app/blueprints/workouts/forms.py:28 app/templates/workouts/session.html:82
+#: app/blueprints/workouts/forms.py:28 app/templates/workouts/session.html:106
 msgid "reps"
 msgstr "reps"
 
@@ -1709,7 +1709,7 @@ msgstr "RIR"
 msgid "efectiva"
 msgstr "working"
 
-#: app/blueprints/workouts/forms.py:33 app/templates/workouts/session.html:67
+#: app/blueprints/workouts/forms.py:33 app/templates/workouts/session.html:91
 msgid "calentamiento"
 msgstr "warm-up"
 
@@ -1725,68 +1725,68 @@ msgstr "Notes (optional)"
 msgid "Elige un valor entre 1 y 5."
 msgstr "Choose a value between 1 and 5."
 
-#: app/blueprints/workouts/routes.py:22
+#: app/blueprints/workouts/routes.py:23
 msgid "Esa sesión ya está cerrada."
 msgstr "That session is already closed."
 
-#: app/blueprints/workouts/routes.py:23
+#: app/blueprints/workouts/routes.py:24
 msgid "Número de serie fuera de rango."
 msgstr "Set number out of range."
 
-#: app/blueprints/workouts/routes.py:24
+#: app/blueprints/workouts/routes.py:25
 msgid "Ya has registrado series de ese ejercicio: no se puede sustituir."
 msgstr "You have already logged sets for that exercise: it cannot be swapped."
 
-#: app/blueprints/workouts/routes.py:25
+#: app/blueprints/workouts/routes.py:26
 msgid "Ese ejercicio no es una alternativa válida para ti."
 msgstr "That exercise is not a valid alternative for you."
 
-#: app/blueprints/workouts/routes.py:26
+#: app/blueprints/workouts/routes.py:27
 msgid "No encontramos esa serie."
 msgstr "We cannot find that set."
 
-#: app/blueprints/workouts/routes.py:65
+#: app/blueprints/workouts/routes.py:66
 msgid "No tienes una rutina activa."
 msgstr "You do not have an active routine."
 
-#: app/blueprints/workouts/routes.py:73
+#: app/blueprints/workouts/routes.py:74
 msgid "Ya tienes una sesión en marcha: termínala o abandónala antes."
 msgstr "You already have a session running: finish or drop it first."
 
-#: app/blueprints/workouts/routes.py:170
+#: app/blueprints/workouts/routes.py:190
 msgid "Petición no válida."
 msgstr "Invalid request."
 
-#: app/blueprints/workouts/routes.py:181
+#: app/blueprints/workouts/routes.py:201
 #, python-format
 msgid "Ejercicio sustituido por %(name)s."
 msgstr "Exercise swapped for %(name)s."
 
-#: app/blueprints/workouts/routes.py:183
+#: app/blueprints/workouts/routes.py:203
 msgid "Ejercicio original restaurado."
 msgstr "Original exercise restored."
 
-#: app/blueprints/workouts/routes.py:196
+#: app/blueprints/workouts/routes.py:216
 msgid "Revisa el formulario de cierre."
 msgstr "Check the closing form."
 
-#: app/blueprints/workouts/routes.py:207
+#: app/blueprints/workouts/routes.py:227
 msgid "Sesión guardada. Buen trabajo."
 msgstr "Session saved. Good work."
 
-#: app/blueprints/workouts/routes.py:209
+#: app/blueprints/workouts/routes.py:229
 msgid "Sesión cerrada sin series: no cuenta como completada."
 msgstr "Session closed with no sets: it does not count as completed."
 
-#: app/blueprints/workouts/routes.py:224
+#: app/blueprints/workouts/routes.py:244
 msgid "Sesión abandonada."
 msgstr "Session dropped."
 
-#: app/blueprints/workouts/routes.py:265
+#: app/blueprints/workouts/routes.py:285
 msgid "Máximo estimado (kg)"
 msgstr "Estimated max (kg)"
 
-#: app/blueprints/workouts/routes.py:266
+#: app/blueprints/workouts/routes.py:286
 msgid "Peso máximo (kg)"
 msgstr "Top weight (kg)"
 
@@ -2256,62 +2256,89 @@ msgstr "You are progressing more slowly than expected, but you followed the plan
 msgid "Vas según lo previsto: sin cambios hasta la próxima revisión."
 msgstr "You are on track: no changes until the next review."
 
-#. código del motor: adjust.reduce_calories
+#. código del motor: readiness.sleep_bad
+#: app/engine/messages.py:284
+msgid "Has dormido mal."
+msgstr "You slept badly."
+
+#. código del motor: readiness.sleep_ok
 #: app/engine/messages.py:285
+msgid "Has dormido regular."
+msgstr "You slept so-so."
+
+#. código del motor: readiness.underfed
+#: app/engine/messages.py:286
+#, python-format
+msgid "Ayer comiste el %(pct)s %% de lo previsto."
+msgstr "Yesterday you ate %(pct)s %% of your target."
+
+#. código del motor: readiness.hard_last_session
+#: app/engine/messages.py:287
+msgid "La última sesión fue muy dura."
+msgstr "Your last session was very hard."
+
+#. código del motor: readiness.long_deficit
+#: app/engine/messages.py:288
+#, python-format
+msgid "Llevas %(weeks)s semanas comiendo por debajo de lo que gastas."
+msgstr "You have been eating below what you burn for %(weeks)s weeks."
+
+#. código del motor: adjust.reduce_calories
+#: app/engine/messages.py:290
 #, python-format
 msgid "Calorías bajadas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories cut by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.increase_calories
-#: app/engine/messages.py:288
+#: app/engine/messages.py:293
 #, python-format
 msgid "Calorías subidas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
 msgstr "Calories raised by %(delta)s kcal (%(pct)s %%): from %(old)s to %(new)s kcal."
 
 #. código del motor: adjust.add_steps
-#: app/engine/messages.py:291
+#: app/engine/messages.py:296
 #, python-format
 msgid "Las calorías ya están en el mínimo seguro: se suman %(steps)s pasos diarios en su lugar."
 msgstr "Calories are already at the safe minimum: %(steps)s daily steps are added instead."
 
 #. código del motor: adjust.loss_too_fast
-#: app/engine/messages.py:294
+#: app/engine/messages.py:299
 #, python-format
 msgid "Pierdes %(observed)s kg a la semana, más del máximo de %(max_weekly)s kg (el 1 %% de tu peso): suben las calorías."
 msgstr "You are losing %(observed)s kg a week, more than the maximum of %(max_weekly)s kg (1 %% of your weight): calories go up."
 
 #. código del motor: adjust.diet_break
-#: app/engine/messages.py:298
+#: app/engine/messages.py:303
 #, python-format
 msgid "Llevas %(weeks)s semanas en déficit y el peso está estancado: pausa de dieta de 2 semanas comiendo lo que gastas (%(calories)s kcal) antes de seguir."
 msgstr "You have been eating below your burn for %(weeks)s weeks and your weight has stalled: take a 2-week diet break eating what you burn (%(calories)s kcal) before carrying on."
 
 #. código del motor: adjust.refeed
-#: app/engine/messages.py:302
+#: app/engine/messages.py:307
 #, python-format
 msgid "Estancamiento tras %(weeks)s semanas de déficit: un día de recarga comiendo lo que gastas (%(calories)s kcal) esta semana, sobre todo hidratos."
 msgstr "Stalled after %(weeks)s weeks below your burn: one refeed day this week eating what you burn (%(calories)s kcal), mostly carbs."
 
 #. código del motor: adjust.floor_reached
-#: app/engine/messages.py:305
+#: app/engine/messages.py:310
 #, python-format
 msgid "No se baja de %(floor)s kcal (mínimo seguro)."
 msgstr "Nothing goes below %(floor)s kcal (safe minimum)."
 
 #. código del motor: adjust.capped_step
-#: app/engine/messages.py:306
+#: app/engine/messages.py:311
 #, python-format
 msgid "Cambio limitado al %(pct)s %% por revisión."
 msgstr "Change capped at %(pct)s %% per review."
 
 #. código del motor: adjust.next_review
-#: app/engine/messages.py:307 app/templates/nutrition/plan.html:136
+#: app/engine/messages.py:312 app/templates/nutrition/plan.html:136
 #, python-format
 msgid "Próxima revisión: %(date)s."
 msgstr "Next review: %(date)s."
 
 #. código del motor: plan.confidence
-#: app/engine/messages.py:308
+#: app/engine/messages.py:313
 #, python-format
 msgid "Confianza de la estimación: %(confidence)s."
 msgstr "Confidence in the estimate: %(confidence)s."
@@ -2470,7 +2497,7 @@ msgid "Reserva"
 msgstr "In reserve"
 
 #: app/services/exports.py:476 app/templates/onboarding/result.html:81
-#: app/templates/training/day.html:44 app/templates/workouts/session.html:28
+#: app/templates/training/day.html:44 app/templates/workouts/session.html:52
 msgid "Descanso"
 msgstr "Rest"
 
@@ -3247,45 +3274,53 @@ msgstr "or the full questionnaire, step by step"
 msgid "Hoy"
 msgstr "Today"
 
-#: app/templates/dashboard/index.html:43
+#: app/templates/dashboard/index.html:41
+msgid "Hoy entrenas: te tocan los números de día de entreno, con más hidratos."
+msgstr "You train today: today's numbers are the training-day ones, with more carbs."
+
+#: app/templates/dashboard/index.html:41
+msgid "Hoy, de momento, día de descanso. Si empiezas una sesión, pasa a día de entreno."
+msgstr "For now, today is a rest day. If you start a session, it becomes a training day."
+
+#: app/templates/dashboard/index.html:44
 msgid "Día de entreno"
 msgstr "Training day"
 
-#: app/templates/dashboard/index.html:45 app/templates/dashboard/index.html:50
+#: app/templates/dashboard/index.html:46 app/templates/dashboard/index.html:51
 #, python-format
 msgid "%(p)s g proteína · %(c)s g carbohidratos · %(g)s g grasa"
 msgstr "%(p)s g protein · %(c)s g carbohydrates · %(g)s g fat"
 
-#: app/templates/dashboard/index.html:48
+#: app/templates/dashboard/index.html:49
 msgid "Día de descanso"
 msgstr "Rest day"
 
-#: app/templates/dashboard/index.html:55 app/templates/nutrition/plan.html:50
+#: app/templates/dashboard/index.html:56 app/templates/nutrition/plan.html:50
 msgid "Macronutrientes"
 msgstr "Macronutrients"
 
-#: app/templates/dashboard/index.html:61
+#: app/templates/dashboard/index.html:62
 #, python-format
 msgid "Agua: %(l)s l (más en días de entreno) · fibra %(f)s g"
 msgstr "Water: %(l)s l (more on training days) · fibre %(f)s g"
 
-#: app/templates/dashboard/index.html:62
+#: app/templates/dashboard/index.html:63
 msgid "Ver plan de nutrición"
 msgstr "See the nutrition plan"
 
-#: app/templates/dashboard/index.html:64
+#: app/templates/dashboard/index.html:65
 msgid "Sin plan de nutrición: las respuestas de salud u objetivo lo impiden."
 msgstr "No nutrition plan: your health or goal answers rule it out."
 
-#: app/templates/dashboard/index.html:65
+#: app/templates/dashboard/index.html:66
 msgid "Ver los motivos"
 msgstr "See why"
 
-#: app/templates/dashboard/index.html:70 app/templates/training/routine.html:38
+#: app/templates/dashboard/index.html:71 app/templates/training/routine.html:38
 msgid "Próxima sesión"
 msgstr "Next session"
 
-#: app/templates/dashboard/index.html:72
+#: app/templates/dashboard/index.html:73
 #: app/templates/onboarding/result.html:78 app/templates/training/day.html:4
 #: app/templates/training/day.html:9 app/templates/training/day.html:74
 #: app/templates/training/day.html:76 app/templates/training/routine.html:39
@@ -3295,11 +3330,11 @@ msgstr "Next session"
 msgid "Día %(n)s"
 msgstr "Day %(n)s"
 
-#: app/templates/dashboard/index.html:73
+#: app/templates/dashboard/index.html:74
 msgid "Grupos musculares"
 msgstr "Muscle groups"
 
-#: app/templates/dashboard/index.html:76 app/templates/training/day.html:10
+#: app/templates/dashboard/index.html:77 app/templates/training/day.html:10
 #: app/templates/training/routine.html:54
 #, python-format
 msgid "%(num)s ejercicio"
@@ -3307,188 +3342,188 @@ msgid_plural "%(num)s ejercicios"
 msgstr[0] "%(num)s exercise"
 msgstr[1] "%(num)s exercises"
 
-#: app/templates/dashboard/index.html:76 app/templates/training/day.html:10
+#: app/templates/dashboard/index.html:77 app/templates/training/day.html:10
 #: app/templates/training/routine.html:54
 #, python-format
 msgid "unos %(m)s minutos"
 msgstr "about %(m)s minutes"
 
-#: app/templates/dashboard/index.html:77 app/templates/training/routine.html:41
+#: app/templates/dashboard/index.html:78 app/templates/training/routine.html:41
 msgid "Ver la sesión"
 msgstr "Open the session"
 
-#: app/templates/dashboard/index.html:79
+#: app/templates/dashboard/index.html:80
 msgid "La rutina no tiene días."
 msgstr "The routine has no days."
 
-#: app/templates/dashboard/index.html:81
+#: app/templates/dashboard/index.html:82
 msgid "Sin rutina activa."
 msgstr "No active routine."
 
-#: app/templates/dashboard/index.html:82
+#: app/templates/dashboard/index.html:83
 msgid "Ver por qué"
 msgstr "See why"
 
-#: app/templates/dashboard/index.html:91
+#: app/templates/dashboard/index.html:92
 #, python-format
 msgid "%(delta)s kg desde que empezaste, comparando medias de 7 días."
 msgstr "%(delta)s kg since you started, comparing 7-day averages."
 
-#: app/templates/dashboard/index.html:93
+#: app/templates/dashboard/index.html:94
 msgid "Con tres pesajes seguidos ya se ve la tendencia. Si te pesas menos, se mira mes a mes."
 msgstr "Three weigh-ins in a row already show the trend. If you weigh yourself less often, it is looked at month by month."
 
-#: app/templates/dashboard/index.html:96
+#: app/templates/dashboard/index.html:97
 msgid "Evolución del peso"
 msgstr "Weight over time"
 
-#: app/templates/dashboard/index.html:99
+#: app/templates/dashboard/index.html:100
 msgid "Todavía no hay pesajes. Anota el de hoy en el diario."
 msgstr "No weigh-ins yet. Note today's in the diary."
 
-#: app/templates/dashboard/index.html:99
+#: app/templates/dashboard/index.html:100
 msgid "Registrar peso"
 msgstr "Log weight"
 
-#: app/templates/dashboard/index.html:101
+#: app/templates/dashboard/index.html:102
 msgid "Pésate al levantarte, después del baño y antes de desayunar. Un día suelto no dice nada: el peso sube y baja con el agua y la sal."
 msgstr "Weigh yourself when you get up, after the bathroom and before breakfast. A single day means nothing: weight goes up and down with water and salt."
 
-#: app/templates/dashboard/index.html:106
+#: app/templates/dashboard/index.html:107
 msgid "Constancia"
 msgstr "Consistency"
 
-#: app/templates/dashboard/index.html:108
+#: app/templates/dashboard/index.html:109
 #, python-format
 msgid "%(num)s semana"
 msgid_plural "%(num)s semanas"
 msgstr[0] "%(num)s week"
 msgstr[1] "%(num)s weeks"
 
-#: app/templates/dashboard/index.html:109
+#: app/templates/dashboard/index.html:110
 msgid "cumpliendo tus entrenos."
 msgid_plural "seguidas cumpliendo tus entrenos."
 msgstr[0] "keeping up with your training."
 msgstr[1] "in a row keeping up with your training."
 
-#: app/templates/dashboard/index.html:111
+#: app/templates/dashboard/index.html:112
 msgid "Esta semana"
 msgstr "This week"
 
-#: app/templates/dashboard/index.html:112
+#: app/templates/dashboard/index.html:113
 #, python-format
 msgid "Con %(num)s sesión, la semana cuenta."
 msgid_plural "Con %(num)s sesiones, la semana cuenta."
 msgstr[0] "With %(num)s session, the week counts."
 msgstr[1] "With %(num)s sessions, the week counts."
 
-#: app/templates/dashboard/index.html:114
+#: app/templates/dashboard/index.html:115
 #, python-format
 msgid "Sesiones de esta semana: %(done)s de %(target)s"
 msgstr "Sessions this week: %(done)s of %(target)s"
 
-#: app/templates/dashboard/index.html:117
+#: app/templates/dashboard/index.html:118
 msgid "Esta semana ya cuenta. Cada sesión de más, mejor."
 msgstr "This week already counts. Every extra session is a bonus."
 
-#: app/templates/dashboard/index.html:117
+#: app/templates/dashboard/index.html:118
 #, python-format
 msgid "Esta semana: %(done)s de %(target)s. Saltarte un día no rompe la racha."
 msgstr "This week: %(done)s of %(target)s. Skipping one day does not break the streak."
 
-#: app/templates/dashboard/index.html:123
-#: app/templates/dashboard/index.html:132
+#: app/templates/dashboard/index.html:124
+#: app/templates/dashboard/index.html:133
 msgid "Tu llegada"
 msgstr "Your arrival"
 
-#: app/templates/dashboard/index.html:124
+#: app/templates/dashboard/index.html:125
 #, python-format
 msgid "La fecha en la que llegas a %(kg)s, con su margen, y cómo vas frente a lo previsto. Se afina con cada pesaje."
 msgstr "The date you reach %(kg)s, with its margin, and how you are doing against the plan. Every weigh-in sharpens it."
 
-#: app/templates/dashboard/index.html:125 app/templates/tracking/diary.html:83
+#: app/templates/dashboard/index.html:126 app/templates/tracking/diary.html:83
 msgid "Probar Pro gratis"
 msgstr "Try Pro for free"
 
-#: app/templates/dashboard/index.html:135
+#: app/templates/dashboard/index.html:136
 #, python-format
 msgid "A este ritmo llegas a %(kg)s hacia el %(date)s."
 msgstr "At this pace you reach %(kg)s around %(date)s."
 
-#: app/templates/dashboard/index.html:137
+#: app/templates/dashboard/index.html:138
 #, python-format
 msgid "Lo más probable, entre el %(a)s y el %(b)s. Con cada pesaje la fecha se afina."
 msgstr "Most likely between %(a)s and %(b)s. Every weigh-in sharpens the date."
 
-#: app/templates/dashboard/index.html:139
+#: app/templates/dashboard/index.html:140
 #, python-format
 msgid "Lo más probable, a partir del %(a)s. Con cada pesaje la fecha se afina."
 msgstr "Most likely from %(a)s on. Every weigh-in sharpens the date."
 
-#: app/templates/dashboard/index.html:143
+#: app/templates/dashboard/index.html:144
 #, python-format
 msgid "Si sigues el plan, llegas a %(kg)s hacia el %(date)s."
 msgstr "If you follow the plan, you reach %(kg)s around %(date)s."
 
-#: app/templates/dashboard/index.html:144
+#: app/templates/dashboard/index.html:145
 msgid "Con unas semanas de pesajes la fecha saldrá de tu ritmo real."
 msgstr "After a few weeks of weigh-ins the date will come from your real pace."
 
-#: app/templates/dashboard/index.html:146
+#: app/templates/dashboard/index.html:147
 msgid "¡Lo tienes!"
 msgstr "You made it!"
 
-#: app/templates/dashboard/index.html:147
+#: app/templates/dashboard/index.html:148
 #, python-format
 msgid "Ya estás en tu objetivo de %(kg)s. Si quieres uno nuevo, cámbialo en tus datos."
 msgstr "You are at your goal of %(kg)s. If you want a new one, change it in your details."
 
-#: app/templates/dashboard/index.html:149
+#: app/templates/dashboard/index.html:150
 #, python-format
 msgid "Tu peso está estable. Para llegar a %(kg)s, la revisión quincenal propondrá un ajuste."
 msgstr "Your weight is steady. To reach %(kg)s, the fortnightly review will propose an adjustment."
 
-#: app/templates/dashboard/index.html:151
+#: app/templates/dashboard/index.html:152
 #, python-format
 msgid "Tu peso va en dirección contraria a tu objetivo de %(kg)s. La revisión lo tendrá en cuenta."
 msgstr "Your weight is moving away from your goal of %(kg)s. The review will take it into account."
 
-#: app/templates/dashboard/index.html:153
+#: app/templates/dashboard/index.html:154
 #, python-format
 msgid "A este ritmo tardarías más de dos años en llegar a %(kg)s."
 msgstr "At this pace it would take more than two years to reach %(kg)s."
 
-#: app/templates/dashboard/index.html:157
+#: app/templates/dashboard/index.html:158
 msgid "Camino recorrido"
 msgstr "Way done"
 
-#: app/templates/dashboard/index.html:158
+#: app/templates/dashboard/index.html:159
 #, python-format
 msgid "Llevas el %(pct)s %% del camino: de %(start)s a %(target)s."
 msgstr "You are %(pct)s %% of the way: from %(start)s to %(target)s."
 
-#: app/templates/dashboard/index.html:161
+#: app/templates/dashboard/index.html:162
 #, python-format
 msgid "Previsto: %(plan)s kg a la semana · real: %(real)s."
 msgstr "Planned: %(plan)s kg a week · real: %(real)s."
 
-#: app/templates/dashboard/index.html:170
+#: app/templates/dashboard/index.html:171
 msgid "Toca hoy"
 msgstr "Due today"
 
-#: app/templates/dashboard/index.html:171
+#: app/templates/dashboard/index.html:172
 msgid "Cada dos semanas se mira si el peso se está moviendo como debería. Si no, se tocan calorías o pasos, poco a poco."
 msgstr "Every two weeks we look at whether the weight is moving as it should. If it is not, calories or steps change, little by little."
 
-#: app/templates/dashboard/index.html:172
+#: app/templates/dashboard/index.html:173
 msgid "Revisar ahora"
 msgstr "Review now"
 
-#: app/templates/dashboard/index.html:172
+#: app/templates/dashboard/index.html:173
 msgid "Ver la revisión"
 msgstr "See the review"
 
-#: app/templates/dashboard/index.html:174
+#: app/templates/dashboard/index.html:175
 msgid "Sin plan que revisar."
 msgstr "No plan to review."
 
@@ -3955,7 +3990,7 @@ msgid "Tu plan"
 msgstr "Your plan"
 
 #: app/templates/onboarding/result.html:8
-#: app/templates/workouts/session.html:33
+#: app/templates/workouts/session.html:57
 msgid "Listo"
 msgstr "Done"
 
@@ -4298,7 +4333,7 @@ msgstr "None yet."
 msgid "Elegir día"
 msgstr "Choose a day"
 
-#: app/templates/tracking/diary.html:13 app/templates/workouts/session.html:101
+#: app/templates/tracking/diary.html:13 app/templates/workouts/session.html:125
 msgid "Cambiar"
 msgstr "Change"
 
@@ -4600,7 +4635,7 @@ msgid "Semana %(n)s"
 msgstr "Week %(n)s"
 
 #: app/templates/training/day.html:14 app/templates/training/routine.html:14
-#: app/templates/workouts/session.html:67
+#: app/templates/workouts/session.html:91
 #, python-format
 msgid "reserva %(n)s"
 msgstr "%(n)s in reserve"
@@ -4861,122 +4896,163 @@ msgstr "Reps in reserve: the reps you could still do at the end of the set. Log 
 msgid "Terminar sesión"
 msgstr "Finish the session"
 
-#: app/templates/workouts/session.html:19
+#: app/templates/workouts/session.html:17
+msgid "Antes de empezar: ¿cómo has dormido?"
+msgstr "Before you start: how did you sleep?"
+
+#: app/templates/workouts/session.html:18
+msgid "Con esto, lo que comiste ayer y cómo fue tu última sesión ajustamos el peso de hoy."
+msgstr "With this, what you ate yesterday and how your last session went, we adjust today's weights."
+
+#: app/templates/workouts/session.html:21
+msgid "Bien"
+msgstr "Well"
+
+#: app/templates/workouts/session.html:22
+msgid "Regular"
+msgstr "So-so"
+
+#: app/templates/workouts/session.html:23
+msgid "Mal"
+msgstr "Badly"
+
+#: app/templates/workouts/session.html:24
+msgid "Saltar"
+msgstr "Skip"
+
+#: app/templates/workouts/session.html:29
+msgid "Hoy, sesión más suave"
+msgstr "Today, an easier session"
+
+#: app/templates/workouts/session.html:29
+msgid "Hoy, sesión suave"
+msgstr "Today, an easy session"
+
+#: app/templates/workouts/session.html:31
+#, python-format
+msgid "El peso sugerido baja un %(pct)s %% y dejas una repetición más en reserva. Entrenar también es saber cuándo apretar menos: mañana recuperas."
+msgstr "The suggested weight goes down %(pct)s %% and you leave one more rep in reserve. Training is also knowing when to ease off: tomorrow you recover."
+
+#: app/templates/workouts/session.html:34
+msgid "Me encuentro bien: entrenar normal"
+msgstr "I feel fine: train as usual"
+
+#: app/templates/workouts/session.html:43
 #, python-format
 msgid "¡Marca nueva en %(name)s!"
 msgstr "New record on %(name)s!"
 
-#: app/templates/workouts/session.html:20
+#: app/templates/workouts/session.html:44
 #, python-format
 msgid "%(kg)s × %(reps)s: tu máximo estimado sube de %(before)s a %(after)s."
 msgstr "%(kg)s × %(reps)s: your estimated max goes up from %(before)s to %(after)s."
 
-#: app/templates/workouts/session.html:28
+#: app/templates/workouts/session.html:52
 msgid "¡Siguiente serie!"
 msgstr "Next set!"
 
-#: app/templates/workouts/session.html:44
+#: app/templates/workouts/session.html:68
 msgid "sustituido"
 msgstr "swapped"
 
-#: app/templates/workouts/session.html:49
+#: app/templates/workouts/session.html:73
 #, python-format
 msgid "%(num)s serie"
 msgid_plural "%(num)s series"
 msgstr[0] "%(num)s set"
 msgstr[1] "%(num)s sets"
 
-#: app/templates/workouts/session.html:49
+#: app/templates/workouts/session.html:73
 #, python-format
 msgid "de %(min)s a %(max)s repeticiones"
 msgstr "%(min)s to %(max)s reps"
 
-#: app/templates/workouts/session.html:49
+#: app/templates/workouts/session.html:73
 #, python-format
 msgid "deja %(n)s en reserva"
 msgstr "leave %(n)s in reserve"
 
-#: app/templates/workouts/session.html:49
+#: app/templates/workouts/session.html:73
 #, python-format
 msgid "descanso %(time)s"
 msgstr "rest %(time)s"
 
-#: app/templates/workouts/session.html:51
+#: app/templates/workouts/session.html:75
 #, python-format
 msgid "Cuando hagas %(max)s en todas las series, sube %(kg)s."
 msgstr "When you do %(max)s on every set, add %(kg)s."
 
-#: app/templates/workouts/session.html:54
+#: app/templates/workouts/session.html:78
 #, python-format
 msgid "Última vez (%(date)s): %(sets)s."
 msgstr "Last time (%(date)s): %(sets)s."
 
-#: app/templates/workouts/session.html:55
+#: app/templates/workouts/session.html:79
 #, python-format
 msgid "Hoy: %(kg)s."
 msgstr "Today: %(kg)s."
 
-#: app/templates/workouts/session.html:58
+#: app/templates/workouts/session.html:82
 #, python-format
 msgid "Primera vez: empieza con %(kg)s"
 msgstr "First time: start with %(kg)s"
 
-#: app/templates/workouts/session.html:58
+#: app/templates/workouts/session.html:82
 msgid "por mancuerna"
 msgstr "per dumbbell"
 
-#: app/templates/workouts/session.html:58
+#: app/templates/workouts/session.html:82
 msgid "Es una estimación prudente; tras la primera serie se ajusta."
 msgstr "It is a cautious estimate; it adjusts after the first set."
 
-#: app/templates/workouts/session.html:60
+#: app/templates/workouts/session.html:84
 msgid "Con tu peso corporal. Si añades lastre, apúntalo en kg."
 msgstr "With your body weight. If you add extra weight, log it in kg."
 
-#: app/templates/workouts/session.html:70
+#: app/templates/workouts/session.html:94
 #, python-format
 msgid "Borrar la serie %(n)s"
 msgstr "Delete set %(n)s"
 
-#: app/templates/workouts/session.html:81
+#: app/templates/workouts/session.html:105
 msgid "lastre"
 msgstr "extra weight"
 
-#: app/templates/workouts/session.html:83
+#: app/templates/workouts/session.html:107
 msgid "reserva"
 msgstr "in reserve"
 
-#: app/templates/workouts/session.html:84
+#: app/templates/workouts/session.html:108
 #, python-format
 msgid "Guardar la serie %(n)s"
 msgstr "Save set %(n)s"
 
-#: app/templates/workouts/session.html:85
+#: app/templates/workouts/session.html:109
 msgid "Peso ajustado por cómo fue la serie anterior."
 msgstr "Weight adjusted for how the previous set went."
 
-#: app/templates/workouts/session.html:93
+#: app/templates/workouts/session.html:117
 msgid "Cambiar por una alternativa"
 msgstr "Swap for an alternative"
 
-#: app/templates/workouts/session.html:97
+#: app/templates/workouts/session.html:121
 msgid "Alternativa"
 msgstr "Alternative"
 
-#: app/templates/workouts/session.html:98
+#: app/templates/workouts/session.html:122
 #, python-format
 msgid "Original: %(name)s"
 msgstr "Original: %(name)s"
 
-#: app/templates/workouts/session.html:110
+#: app/templates/workouts/session.html:134
 msgid "Cerrar la sesión"
 msgstr "Close the session"
 
-#: app/templates/workouts/session.html:125
+#: app/templates/workouts/session.html:149
 msgid "Terminar y guardar"
 msgstr "Finish and save"
 
-#: app/templates/workouts/session.html:129
+#: app/templates/workouts/session.html:153
 msgid "Abandonar sin guardar"
 msgstr "Drop without saving"
 

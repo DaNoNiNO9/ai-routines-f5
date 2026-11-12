@@ -78,7 +78,11 @@ def _diary_page(day: date, **overrides: object) -> str:
         day=day,
         foods=foods,
         food_totals=food_service.totals(foods),
-        targets=dashboard.today_targets(plan) if plan else None,
+        targets=dashboard.target_for_day(
+            dashboard.today_targets(plan), dashboard.trains_on(current_user, day)
+        )
+        if plan
+        else None,
         yesterday_foods=pro
         and not foods
         and bool(food_service.entries(current_user, day - timedelta(days=1))),

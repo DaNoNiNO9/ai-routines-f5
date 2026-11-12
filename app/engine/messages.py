@@ -281,6 +281,11 @@ TEMPLATES: dict[str, str] = {
         "días: antes de tocar calorías, intenta ser más constante y apuntarlo todo."
     ),
     "adjust.keep": "Vas según lo previsto: sin cambios hasta la próxima revisión.",
+    "readiness.sleep_bad": "Has dormido mal.",
+    "readiness.sleep_ok": "Has dormido regular.",
+    "readiness.underfed": "Ayer comiste el %(pct)s %% de lo previsto.",
+    "readiness.hard_last_session": "La última sesión fue muy dura.",
+    "readiness.long_deficit": "Llevas %(weeks)s semanas comiendo por debajo de lo que gastas.",
     "adjust.reduce_calories": (
         "Calorías bajadas %(delta)s kcal (%(pct)s %%): de %(old)s a %(new)s kcal."
     ),

@@ -42,6 +42,8 @@ class WorkoutSession(TimestampMixin, SoftDeleteMixin, db.Model):
     )
     mesocycle_week: Mapped[int | None] = mapped_column()
     perceived_fatigue: Mapped[int | None] = mapped_column()
+    # Respuesta de un toque al empezar: good | ok | bad | skip | normal (pidió entrenar normal).
+    sleep_quality: Mapped[str | None] = mapped_column(String(10))
     notes: Mapped[str | None] = mapped_column(Text)
     # {routine_exercise_id (as str): exercise_id} chosen for this session only.
     substitutions: Mapped[dict[str, int] | None] = mapped_column(JSONType)

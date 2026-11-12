@@ -18,12 +18,14 @@ from sqlalchemy.orm import selectinload
 
 from app import formatting
 from app.engine.enums import SetType, Sex, TrainingExperience, WorkoutStatus
-from app.engine.routines.loads import loads_weight, next_set_load, starting_load
+from app.engine.readiness import Readiness, Sleep, assess
+from app.engine.routines.loads import loads_weight, next_set_load, round_load, starting_load
 from app.engine.routines.prescription import weekly_rir
 from app.engine.routines.types import ExerciseInfo
 from app.extensions import db
 from app.models import (
     Exercise,
+    IntakeLog,
     Profile,
     Routine,
     RoutineDay,
@@ -405,10 +407,64 @@ def _prefill(
         row.prefill_kg, row.prefill_reps, row.adjusted = kg, reps, adjusted
 
 
+SLEEP_ANSWERS = frozenset({"good", "ok", "bad", "skip", "normal"})
+
+
+def readiness_for(user: User, session: WorkoutSession) -> Readiness | None:
+    """How the person arrives today; ``None`` until the one-tap question is answered.
+
+    ``normal`` means the person chose to train as usual: no easy day whatever
+    the signals say.
+    """
+    answer = session.sleep_quality
+    if answer is None:
+        return None
+    if answer == "normal":
+        return assess(None, None, None, 0)
+    from app.services import adjustments, plans
+
+    plan = plans.active_plan(user)
+    today = user.today()
+    ratio = None
+    if plan is not None and plan.calorie_target:
+        yesterday = db.session.scalar(
+            select(IntakeLog).where(
+                IntakeLog.user_id == user.id, IntakeLog.logged_on == today - timedelta(days=1)
+            )
+        )
+        if yesterday is not None and yesterday.calories > 0:
+            ratio = yesterday.calories / plan.calorie_target
+    last = db.session.scalars(
+        select(WorkoutSession)
+        .where(
+            WorkoutSession.user_id == user.id,
+            WorkoutSession.status == WorkoutStatus.COMPLETED,
+            WorkoutSession.started_at < session.started_at,
+            WorkoutSession.deleted_at.is_(None),
+        )
+        .order_by(WorkoutSession.started_at.desc())
+    ).first()
+    return assess(
+        Sleep(answer) if answer in {"good", "ok", "bad"} else None,
+        ratio,
+        last.perceived_fatigue if last else None,
+        adjustments.weeks_in_deficit(user, plan, today) if plan else 0,
+    )
+
+
 def session_blocks(
-    user: User, session: WorkoutSession, profile: Profile, equipment: frozenset[str]
+    user: User,
+    session: WorkoutSession,
+    profile: Profile,
+    equipment: frozenset[str],
+    readiness: Readiness | None = None,
 ) -> list[ExerciseBlock]:
-    """What the live page shows: one block per prescribed exercise."""
+    """What the live page shows: one block per prescribed exercise.
+
+    On an easy day the first set's suggestion goes down and the reserve goes up
+    (``engine.readiness``); the sets after it adjust from how each one went.
+    """
+    easy = readiness is not None and readiness.is_easy
     day = session.routine_day
     if day is None:
         return []
@@ -429,6 +485,10 @@ def session_blocks(
         if first_time:
             suggested = first_load(exercise, profile)
         rir = target_rir(session, item)
+        if easy and readiness is not None:
+            rir += readiness.extra_rir
+            if suggested and loads_weight(info):
+                suggested = round_load(info, suggested * readiness.load_factor)
         _prefill(info, rows, item, suggested, rir)
         blocks.append(
             ExerciseBlock(

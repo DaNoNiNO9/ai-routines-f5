@@ -12,6 +12,30 @@
   <p><a class="button button-small button-secondary" href="#cierre">{{ _('Terminar sesión') }}</a></p>
 </section>
 
+{% if ask_sleep %}
+  <section class="card checkin-card" aria-labelledby="checkin-title">
+    <h2 id="checkin-title" class="card-title">{{ _('Antes de empezar: ¿cómo has dormido?') }}</h2>
+    <p class="meta">{{ _('Con esto, lo que comiste ayer y cómo fue tu última sesión ajustamos el peso de hoy.') }}</p>
+    <form method="post" action="{{ url_for('workouts.how_you_arrive', session_id=session.id) }}" class="checkin-options">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" name="sueno" value="good" class="button button-secondary">{{ _('Bien') }}</button>
+      <button type="submit" name="sueno" value="ok" class="button button-secondary">{{ _('Regular') }}</button>
+      <button type="submit" name="sueno" value="bad" class="button button-secondary">{{ _('Mal') }}</button>
+      <button type="submit" name="sueno" value="skip" class="link-button">{{ _('Saltar') }}</button>
+    </form>
+  </section>
+{% elif readiness and readiness.is_easy %}
+  <section class="card easy-day" role="status">
+    <h2 class="card-title">{{ icon('moon') }}{% if readiness.kind == 'easier' %}{{ _('Hoy, sesión más suave') }}{% else %}{{ _('Hoy, sesión suave') }}{% endif %}</h2>
+    <p>{{ ' '.join(readiness_reasons) }}</p>
+    <p class="meta">{{ _('El peso sugerido baja un %(pct)s %% y dejas una repetición más en reserva. Entrenar también es saber cuándo apretar menos: mañana recuperas.', pct=((1 - readiness.load_factor) * 100)|round|int) }}</p>
+    <form method="post" action="{{ url_for('workouts.how_you_arrive', session_id=session.id) }}" class="inline-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" name="sueno" value="normal" class="link-button">{{ _('Me encuentro bien: entrenar normal') }}</button>
+    </form>
+  </section>
+{% endif %}
+
 {% if record %}
   <div class="pr-banner" role="status" data-vibrate>
     {{ icon('trophy') }}

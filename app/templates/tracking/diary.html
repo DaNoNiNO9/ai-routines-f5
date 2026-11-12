@@ -36,7 +36,7 @@
     <h2 class="card-title">{{ _('Lo que has comido') }}</h2>
     {% if is_pro %}
       {% if foods %}
-        {% set goal = targets.base if targets else none %}
+        {% set goal = targets %}
         <div class="macro-bars">
           {% for label, eaten, target in [
             (_('Calorías'), food_totals.kcal, goal.calories if goal else none),

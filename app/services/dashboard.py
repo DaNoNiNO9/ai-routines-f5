@@ -8,7 +8,7 @@ from __future__ import annotations
 import logging
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, time, timedelta
 from typing import Any
 
 from sqlalchemy import select
@@ -197,6 +197,36 @@ def today_targets(plan: Plan) -> dict[str, Any]:
             "low": cycle.get("low_day", {}),
             "training_days": cycle.get("training_days"),
         },
+    }
+
+
+def trains_on(user: User, day: date) -> bool:
+    """Whether the person started a session on ``day`` (their own calendar day)."""
+    from app.formatting import local_date
+
+    started = db.session.scalars(
+        select(WorkoutSession.started_at).where(
+            WorkoutSession.user_id == user.id,
+            WorkoutSession.status != WorkoutStatus.ABANDONED,
+            WorkoutSession.deleted_at.is_(None),
+            WorkoutSession.started_at
+            >= datetime.combine(day - timedelta(days=1), time.min, tzinfo=UTC),
+        )
+    ).all()
+    return any(local_date(moment, user) == day for moment in started)
+
+
+def target_for_day(targets: dict[str, Any], training: bool) -> dict[str, Any]:
+    """Today's numbers: with more carbs on training days, the right kind of day."""
+    cycle = targets.get("cycle")
+    if not cycle:
+        return dict(targets["base"])
+    chosen = cycle["high"] if training else cycle["low"]
+    return {
+        "calories": chosen.get("calories"),
+        "protein_g": chosen.get("protein_g"),
+        "carbs_g": chosen.get("carbs_g"),
+        "fat_g": chosen.get("fat_g"),
     }
 
 

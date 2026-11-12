@@ -10,6 +10,7 @@ from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import labels
 from app.blueprints.workouts.forms import FATIGUE_LABELS, FinishForm, SetForm, SubstituteForm
+from app.engine import messages as engine_messages
 from app.engine.enums import SetType, WorkoutStatus
 from app.extensions import db
 from app.models import Exercise, Profile, RoutineExercise, WorkoutSession
@@ -84,7 +85,8 @@ def session(session_id: int) -> str | WerkzeugResponse:
     current = _session_or_404(session_id)
     if current.status is not WorkoutStatus.IN_PROGRESS:
         return redirect(url_for("workouts.summary", session_id=current.id))
-    blocks = workouts.session_blocks(current_user, current, profile, _equipment())
+    readiness = workouts.readiness_for(current_user, current)
+    blocks = workouts.session_blocks(current_user, current, profile, _equipment(), readiness)
     record = None
     record_id = request.args.get("marca", type=int)
     if record_id:
@@ -93,6 +95,11 @@ def session(session_id: int) -> str | WerkzeugResponse:
     return render_template(
         "workouts/session.html",
         record=record,
+        readiness=readiness,
+        readiness_reasons=[engine_messages.render(note) for note in readiness.reasons]
+        if readiness
+        else [],
+        ask_sleep=current.sleep_quality is None and not current.sets,
         session=current,
         blocks=blocks,
         rest_seconds=request.args.get("descanso", type=int),
@@ -103,6 +110,19 @@ def session(session_id: int) -> str | WerkzeugResponse:
         labels=labels,
         started_epoch=int(current.started_at.timestamp()),
     )
+
+
+@bp.post("/<int:session_id>/estado")
+@login_required
+def how_you_arrive(session_id: int) -> WerkzeugResponse:
+    """The one-tap answer: how you slept (or train as usual)."""
+    current = _session_or_404(session_id)
+    answer = request.form.get("sueno", "")
+    if answer not in workouts.SLEEP_ANSWERS or current.status is not WorkoutStatus.IN_PROGRESS:
+        abort(400)
+    current.sleep_quality = answer
+    db.session.commit()
+    return redirect(url_for("workouts.session", session_id=current.id))
 
 
 @bp.post("/<int:session_id>/serie")
