@@ -10,6 +10,7 @@
   {% if checkout.trial_days %}
     <p>{{ ngettext('Hoy pagas %(zero)s: el primer %(num)s día es gratis.', 'Hoy pagas %(zero)s: los primeros %(num)s días son gratis.', checkout.trial_days, zero=0|money) }}</p>
   {% endif %}
+  <p class="meta">{% if checkout.plan == 'yearly' %}{{ _('IVA incluido. Se renueva automáticamente cada año hasta que canceles; cancelas en un clic desde tu cuenta.') }}{% else %}{{ _('IVA incluido. Se renueva automáticamente cada mes hasta que canceles; cancelas en un clic desde tu cuenta.') }}{% endif %} <a href="{{ url_for('billing.prices') }}#condiciones">{{ _('Condiciones y desistimiento') }}</a></p>
   <form method="post" class="fake-actions">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <button type="submit" name="outcome" value="pay" class="button">{{ _('Pagar (simulado)') }}</button>

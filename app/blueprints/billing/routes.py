@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
+from datetime import UTC, datetime
 from functools import wraps
 from typing import Any
 
@@ -39,6 +40,7 @@ ERROR_TEXTS = {
     "no_customer": _l("Todavía no tienes una suscripción que gestionar."),
     "no_subscription": _l("Todavía no tienes una suscripción que gestionar."),
     "bad_checkout": _l("Ese enlace de pago no es válido o ha caducado."),
+    "withdrawal_expired": _l("El plazo de 14 días para desistir ha terminado."),
 }
 
 
@@ -109,6 +111,7 @@ def subscription() -> str:
     """Your plan, its state, and the way to change it."""
     return render_template(
         "billing/subscription.html",
+        now=datetime.now(UTC),
         subscription=billing.subscription_of(current_user),
         plans={plan["key"]: plan for plan in _plans()},
         backend=current_app.config["BILLING_BACKEND"],
@@ -169,6 +172,46 @@ def manage() -> WerkzeugResponse:
         flash(str(ERROR_TEXTS.get(exc.reason, ERROR_TEXTS["gateway_error"])), "error")
         return redirect(url_for("billing.subscription"))
     return redirect(url, code=303)
+
+
+def _subscription_action(action: Callable[[Any], Any], done: str) -> WerkzeugResponse:
+    try:
+        action(current_user)
+    except billing.BillingError as exc:
+        flash(str(ERROR_TEXTS.get(exc.reason, ERROR_TEXTS["gateway_error"])), "error")
+        return redirect(url_for("billing.subscription"))
+    flash(done, "success")
+    return redirect(url_for("billing.subscription"))
+
+
+@bp.post("/suscripcion/cancelar")
+@login_required
+def cancel() -> WerkzeugResponse:
+    """One click, no questions: Pro stays until the end of what is already paid."""
+    return _subscription_action(
+        billing.cancel,
+        _(
+            "Suscripción cancelada. No se te cobrará nada más; "
+            "sigues con Pro hasta el final del periodo."
+        ),
+    )
+
+
+@bp.post("/suscripcion/reanudar")
+@login_required
+def resume() -> WerkzeugResponse:
+    """Undo a cancellation before it takes effect."""
+    return _subscription_action(billing.resume, _("Suscripción reanudada."))
+
+
+@bp.post("/suscripcion/desistir")
+@login_required
+def withdraw() -> WerkzeugResponse:
+    """Right of withdrawal: end now and get back what was paid."""
+    return _subscription_action(
+        billing.withdraw,
+        _("Has desistido: la suscripción ha terminado y te devolvemos lo que hayas pagado."),
+    )
 
 
 @bp.post("/suscripcion/webhook")

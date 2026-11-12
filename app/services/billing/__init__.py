@@ -111,12 +111,17 @@ def _row_for(
     return row
 
 
-def _apply_subscription(obj: dict[str, Any], deleted: bool) -> None:
+def _apply_subscription(obj: dict[str, Any], deleted: bool, at: datetime | None = None) -> None:
     metadata = obj.get("metadata") or {}
     row = _row_for(metadata.get("user_id"), obj.get("id"), obj.get("customer"))
     if row is None:
         logger.warning("Billing event for an unknown subscription %s", obj.get("id"))
         return
+    if at is not None and row.last_event_at is not None and at < row.last_event_at:
+        # Stripe no garantiza el orden: un evento anterior no pisa el estado más reciente.
+        logger.info("Billing event for %s older than the last one applied: ignored", obj.get("id"))
+        return
+    was_active = row.is_active and row.subscription_id == obj.get("id")
     items = (obj.get("items") or {}).get("data") or []
     first = items[0] if items else {}
     row.subscription_id = obj.get("id") or row.subscription_id
@@ -129,9 +134,13 @@ def _apply_subscription(obj: dict[str, Any], deleted: bool) -> None:
     # Desde la versión 2025-03 de la API el fin del periodo va en cada línea.
     row.current_period_end = _when(obj.get("current_period_end") or first.get("current_period_end"))
     row.cancel_at_period_end = bool(obj.get("cancel_at_period_end"))
+    if row.is_active and not was_active:
+        row.started_at = _when(obj.get("start_date")) or at or datetime.now(UTC)
+    if at is not None:
+        row.last_event_at = at
 
 
-def _apply_checkout(obj: dict[str, Any]) -> None:
+def _apply_checkout(obj: dict[str, Any], at: datetime | None = None) -> None:
     metadata = obj.get("metadata") or {}
     row = _row_for(obj.get("client_reference_id"), obj.get("subscription"), obj.get("customer"))
     if row is None:
@@ -140,15 +149,16 @@ def _apply_checkout(obj: dict[str, Any]) -> None:
     row.customer_id = obj.get("customer") or row.customer_id
     row.subscription_id = obj.get("subscription") or row.subscription_id
     row.plan = metadata.get("plan") or row.plan
-    if row.status == "none":
+    if row.status in ("none", "canceled"):
         row.status = "incomplete"  # el evento de la suscripción trae el estado real
+    del at
 
 
 HANDLERS = {
-    "checkout.session.completed": lambda obj: _apply_checkout(obj),
-    "customer.subscription.created": lambda obj: _apply_subscription(obj, deleted=False),
-    "customer.subscription.updated": lambda obj: _apply_subscription(obj, deleted=False),
-    "customer.subscription.deleted": lambda obj: _apply_subscription(obj, deleted=True),
+    "checkout.session.completed": lambda obj, at: _apply_checkout(obj, at),
+    "customer.subscription.created": lambda obj, at: _apply_subscription(obj, False, at),
+    "customer.subscription.updated": lambda obj, at: _apply_subscription(obj, False, at),
+    "customer.subscription.deleted": lambda obj, at: _apply_subscription(obj, True, at),
 }
 
 
@@ -165,7 +175,7 @@ def apply_event(event: dict[str, Any]) -> bool:
         return False
     if db.session.scalar(select(BillingEvent).where(BillingEvent.event_id == event_id)):
         return False
-    handler((event.get("data") or {}).get("object") or {})
+    handler((event.get("data") or {}).get("object") or {}, _when(event.get("created")))
     db.session.add(BillingEvent(event_id=event_id, event_type=event_type))
     try:
         db.session.commit()
@@ -174,3 +184,36 @@ def apply_event(event: dict[str, Any]) -> bool:
         return False
     logger.info("Billing event %s applied (%s)", event_type, event_id)
     return True
+
+
+def apply_subscription_object(obj: dict[str, Any]) -> None:
+    """Mirror a subscription the gateway just returned (the webhook confirms it later)."""
+    _apply_subscription(obj, deleted=obj.get("status") == "canceled")
+    db.session.commit()
+
+
+def cancel(user: User) -> Subscription:
+    """Cancel at the end of the paid period (or of the trial): one click, no questions."""
+    row = subscription_of(user)
+    if row is None or not row.is_active:
+        raise BillingError("no_subscription")
+    gateway().set_cancel_at_period_end(row, True)
+    return row
+
+
+def resume(user: User) -> Subscription:
+    """Undo a cancellation that has not taken effect yet."""
+    row = subscription_of(user)
+    if row is None or not row.is_active:
+        raise BillingError("no_subscription")
+    gateway().set_cancel_at_period_end(row, False)
+    return row
+
+
+def withdraw(user: User) -> Subscription:
+    """Right of withdrawal: end now and refund what was paid (within 14 days)."""
+    row = subscription_of(user)
+    if row is None or not row.can_withdraw(datetime.now(UTC)):
+        raise BillingError("withdrawal_expired")
+    gateway().withdraw(row)
+    return row

@@ -100,6 +100,56 @@ Tres reglas que hay que respetar:
 
 Selección de idioma: `?lang=en` (se recuerda en la sesión) → sesión → idioma de la cuenta → `Accept-Language` → castellano.
 
+## Pagos con Stripe
+
+Sin claves, la app usa una pasarela **simulada** (`BILLING_BACKEND=fake`): todo el flujo funciona y no se cobra nada. La real se activa por configuración; el código es el mismo.
+
+Lo que garantiza el código (y prueban `tests/integration/test_stripe_gateway.py` y `test_billing_rights.py`):
+
+- **Firma verificada** en cada webhook: HMAC-SHA256 de `"<t>.<cuerpo>"` con `STRIPE_WEBHOOK_SECRET`, comparada en tiempo constante, con 5 minutos de margen contra reenvíos. Sin firma o con firma mala: `400` y no se toca nada.
+- **Idempotencia**: cada evento se guarda en `billing_events` en la misma transacción en que se aplica. Si Stripe lo reenvía, responde `200` (para que deje de reintentar) con `"applied": false` y no cambia nada.
+- **Orden**: Stripe no garantiza el orden de los eventos; uno más antiguo que el último aplicado a esa suscripción se descarta.
+
+### Probarlo en modo test (unos 15 minutos)
+
+1. **Modo test.** En el [Dashboard de Stripe](https://dashboard.stripe.com), activa «Test mode» (arriba a la derecha).
+2. **Producto y precios.** *Product catalog › Add product*: «Alza Pro», con dos precios **recurrentes** en EUR: 7,99 € mensual y 49,99 € anual. En cada precio, *Include tax in price: Yes* (los precios de la web llevan el IVA incluido). Copia los dos ids (`price_…`).
+3. **Clave secreta.** *Developers › API keys*: copia la *Secret key* (`sk_test_…`).
+4. **Portal de clientes.** *Settings › Billing › Customer portal*: actívalo y permite actualizar el método de pago, cambiar entre los dos precios y cancelar **al final del periodo**. Guarda.
+5. **Stripe CLI.** Instálala (`winget install Stripe.StripeCli` en Windows), y luego:
+
+   ```powershell
+   stripe login
+   stripe listen --forward-to localhost:5000/suscripcion/webhook --events checkout.session.completed,customer.subscription.created,customer.subscription.updated,customer.subscription.deleted
+   ```
+
+   Deja esa terminal abierta: imprime el secreto del webhook (`whsec_…`) y cada evento que reenvía.
+6. **`.env`:**
+
+   ```
+   BILLING_BACKEND=stripe
+   PAYWALL_ENABLED=true
+   STRIPE_SECRET_KEY=sk_test_…
+   STRIPE_WEBHOOK_SECRET=whsec_…   # el que imprime stripe listen
+   STRIPE_PRICE_MONTHLY=price_…
+   STRIPE_PRICE_YEARLY=price_…
+   ```
+
+7. **Suscribirte.** `flask run`, crea una cuenta, *Precios › Empezar la prueba gratis*. En Stripe Checkout usa la tarjeta `4242 4242 4242 4242`, cualquier fecha futura y cualquier CVC. Vuelves a «¡Ya tienes Alza Pro!» y en la terminal de `stripe listen` salen los eventos con `[200]`.
+
+Comprobaciones:
+
+| Qué | Cómo | Qué debe pasar |
+|---|---|---|
+| Idempotencia | `stripe events resend evt_…` (un id de los que imprimió `stripe listen`) | `[200]` en la CLI y `"applied": false`; la suscripción no cambia |
+| Firma | `curl.exe -X POST localhost:5000/suscripcion/webhook -d "{}"` | `400` |
+| Cancelar | *Cuenta › Tu suscripción › Cancelar la suscripción* | En el Dashboard, la suscripción dice «Cancels …» |
+| Portal | *Cambiar tarjeta o plan* | Se abre el portal de Stripe y al volver se refleja el cambio |
+| Cobro fallido | En el portal, cambia la tarjeta a `4000 0000 0000 0341` y en el Dashboard pon *Trial end: now* | El estado pasa a «Pago pendiente» y se mantiene Pro mientras Stripe reintenta |
+| Desistir | *Tu suscripción › Desistir* tras el primer cobro | Reembolso en *Payments* y la suscripción termina |
+
+**Para producción:** las mismas claves en modo *live*, y en *Developers › Webhooks › Add endpoint* la URL `https://<tu-dominio>/suscripcion/webhook` con los cuatro eventos de arriba; su *Signing secret* es el `STRIPE_WEBHOOK_SECRET`. La versión de la API va fijada en `STRIPE_API_VERSION` (2024-06-20).
+
 ## Arquitectura (objetivo)
 
 ```

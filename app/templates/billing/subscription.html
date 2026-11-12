@@ -40,10 +40,34 @@
     {% endif %}
 
     {% if s.is_active %}
-      <form method="post" action="{{ url_for('billing.manage') }}" class="inline-form">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button type="submit" class="button button-secondary">{{ _('Cambiar tarjeta, plan o cancelar') }}</button>
-      </form>
+      <div class="food-actions">
+        {% if s.cancel_at_period_end %}
+          <form method="post" action="{{ url_for('billing.resume') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="button">{{ _('Reanudar la suscripción') }}</button>
+          </form>
+        {% else %}
+          <form method="post" action="{{ url_for('billing.cancel') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="button button-secondary">{{ _('Cancelar la suscripción') }}</button>
+          </form>
+        {% endif %}
+        <form method="post" action="{{ url_for('billing.manage') }}" class="inline-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="button button-secondary">{{ _('Cambiar tarjeta o plan') }}</button>
+        </form>
+      </div>
+      <p class="help">{{ _('Cancelar es un clic: no se renueva y sigues con Pro hasta el final de lo pagado (o de la prueba).') }}</p>
+      {% if s.can_withdraw(now) %}
+        <details class="panel">
+          <summary>{{ _('Desistir (14 días desde que te suscribiste)') }}</summary>
+          <p>{{ _('Tienes derecho a desistir en los 14 días naturales siguientes a la contratación, sin dar explicaciones. La suscripción termina en el momento y te devolvemos íntegro lo que hayas pagado; si sigues en la prueba gratis, no hay nada que devolver.') }}</p>
+          <form method="post" action="{{ url_for('billing.withdraw') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="button button-peligro">{{ _('Desistir y recuperar lo pagado') }}</button>
+          </form>
+        </details>
+      {% endif %}
     {% else %}
       <p><a class="button" href="{{ url_for('billing.prices') }}">{{ _('Volver a Pro') }}</a></p>
     {% endif %}

@@ -56,8 +56,18 @@
           </form>
         {% endfor %}
       </div>
-      <p class="help">{{ ngettext('El primer %(num)s día no pagas nada. Si no cancelas antes de que acabe la prueba, se cobra el plan que elijas. Cancelas cuando quieras desde tu cuenta.', 'Los primeros %(num)s días no pagas nada. Si no cancelas antes de que acabe la prueba, se cobra el plan que elijas. Cancelas cuando quieras desde tu cuenta.', trial_days) }}</p>
     {% endif %}
   </section>
 </div>
+
+<section class="card legal-card" id="condiciones">
+  <h2 class="card-title">{{ icon('info') }}{{ _('Lo que conviene saber antes de suscribirte') }}</h2>
+  <ul class="legal-list">
+    <li><strong>{{ _('IVA incluido.') }}</strong> {{ _('Los precios son finales: lo que ves es lo que pagas.') }}</li>
+    <li><strong>{{ _('Prueba gratis.') }}</strong> {{ ngettext('El primer %(num)s día no pagas nada. Al terminar, se cobra el plan que elijas.', 'Los primeros %(num)s días no pagas nada. Al terminar, se cobra el plan que elijas.', trial_days) }}</li>
+    <li><strong>{{ _('Renovación automática.') }}</strong> {{ _('La suscripción se renueva sola al final de cada periodo (mes o año) por el mismo precio, hasta que la canceles.') }}</li>
+    <li><strong>{{ _('Cancelar es un clic.') }}</strong> {{ _('En Cuenta › Tu suscripción › «Cancelar la suscripción». Sin llamar ni escribir a nadie. No se renueva y sigues con Pro hasta el final de lo pagado (o de la prueba).') }}</li>
+    <li><strong>{{ _('Derecho de desistimiento.') }}</strong> {{ _('Tienes 14 días naturales desde que te suscribes para desistir sin dar explicaciones. Los días de prueba cuentan dentro de esos 14: si desistes durante la prueba no pagas nada, y si ya se te ha cobrado y sigues dentro del plazo, te devolvemos el importe íntegro. Se hace en un clic desde Tu suscripción.') }}</li>
+  </ul>
+</section>
 {% endblock %}

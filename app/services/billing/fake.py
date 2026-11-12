@@ -39,7 +39,12 @@ def read_checkout(token: str) -> dict[str, Any]:
 
 
 def _event(kind: str, obj: dict[str, Any]) -> dict[str, Any]:
-    return {"id": f"evt_fake_{secrets.token_hex(8)}", "type": kind, "data": {"object": obj}}
+    return {
+        "id": f"evt_fake_{secrets.token_hex(8)}",
+        "type": kind,
+        "created": int(datetime.now(UTC).timestamp()),
+        "data": {"object": obj},
+    }
 
 
 def add_months(start: datetime, months: int) -> datetime:
@@ -189,6 +194,20 @@ class FakeGateway:
 
     def cancel_now(self, subscription: Subscription) -> None:
         """Nothing to tell anyone: the row goes away with the account."""
+
+    def set_cancel_at_period_end(self, subscription: Subscription, cancel: bool) -> None:
+        """Emit the same event Stripe would and apply it."""
+        from app.services.billing import apply_event
+
+        for event in portal_events(subscription, "cancel" if cancel else "resume"):
+            apply_event(event)
+
+    def withdraw(self, subscription: Subscription) -> None:
+        """End now (nothing was charged, so nothing to refund)."""
+        from app.services.billing import apply_event
+
+        for event in portal_events(subscription, "end"):
+            apply_event(event)
 
     def parse_webhook(self, payload: bytes, signature: str | None) -> dict[str, Any]:
         """The simulation applies its events directly: there is no webhook to receive."""

@@ -34,6 +34,14 @@ class Gateway(Protocol):
         """End the subscription immediately (used when the account is deleted)."""
         ...
 
+    def set_cancel_at_period_end(self, subscription: Subscription, cancel: bool) -> None:
+        """Cancel at the end of the period, or undo that; the row reflects it on return."""
+        ...
+
+    def withdraw(self, subscription: Subscription) -> None:
+        """End now and refund the last payment (right of withdrawal)."""
+        ...
+
     def parse_webhook(self, payload: bytes, signature: str | None) -> dict[str, Any]:
         """A verified event from the gateway's webhook, or ``BillingError``."""
         ...

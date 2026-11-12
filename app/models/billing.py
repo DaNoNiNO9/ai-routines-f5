@@ -9,7 +9,7 @@ an unknown status must be stored, not rejected.
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, String
@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 # Statuses that give access to Pro. ``past_due`` keeps access while the
 # gateway retries the payment (Stripe's «smart retries»), as Stripe advises.
 ACTIVE_STATUSES = frozenset({"trialing", "active", "past_due"})
+# Derecho de desistimiento (Directiva 2011/83/UE; art. 102 TRLGDCU): 14 días naturales.
+WITHDRAWAL_PERIOD = timedelta(days=14)
 
 
 class Subscription(TimestampMixin, db.Model):
@@ -42,6 +44,10 @@ class Subscription(TimestampMixin, db.Model):
     trial_ends_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
     current_period_end: Mapped[datetime | None] = mapped_column(UTCDateTime)
     cancel_at_period_end: Mapped[bool] = mapped_column(default=False, nullable=False)
+    # Alta de la suscripción en curso: cuenta el plazo de desistimiento de 14 días.
+    started_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
+    # Hora del último evento aplicado: Stripe no garantiza el orden de los eventos.
+    last_event_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
 
     user: Mapped[User] = relationship(back_populates="subscription")
 
@@ -54,6 +60,12 @@ class Subscription(TimestampMixin, db.Model):
     def is_trial(self) -> bool:
         """In the free trial."""
         return self.status == "trialing"
+
+    def can_withdraw(self, now: datetime) -> bool:
+        """Within the 14-day withdrawal period of the current subscription."""
+        if not self.is_active or self.started_at is None:
+            return False
+        return now - self.started_at <= WITHDRAWAL_PERIOD
 
     def __repr__(self) -> str:
         return f"<Subscription user={self.user_id} {self.plan} {self.status}>"

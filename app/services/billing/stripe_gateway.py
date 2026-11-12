@@ -148,6 +148,40 @@ class StripeGateway:
         if subscription.subscription_id:
             self._call("DELETE", f"/subscriptions/{subscription.subscription_id}")
 
+    def set_cancel_at_period_end(self, subscription: Subscription, cancel: bool) -> None:
+        """Ask Stripe to (not) cancel at the period end, and mirror its answer."""
+        from app.services.billing import apply_subscription_object
+
+        if not subscription.subscription_id:
+            raise BillingError("no_subscription")
+        updated = self._call(
+            "POST",
+            f"/subscriptions/{subscription.subscription_id}",
+            {"cancel_at_period_end": "true" if cancel else "false"},
+        )
+        apply_subscription_object(updated)
+
+    def withdraw(self, subscription: Subscription) -> None:
+        """Refund the latest paid invoice of the subscription, then cancel it now."""
+        from app.services.billing import apply_subscription_object
+
+        if not subscription.subscription_id:
+            raise BillingError("no_subscription")
+        invoices = self._call(
+            "GET",
+            "/invoices?"
+            + urllib.parse.urlencode(
+                {"subscription": subscription.subscription_id, "status": "paid", "limit": "1"}
+            ),
+        )
+        for invoice in invoices.get("data") or []:
+            paid = int(invoice.get("amount_paid") or 0)
+            intent = invoice.get("payment_intent")
+            if paid > 0 and intent:
+                self._call("POST", "/refunds", {"payment_intent": str(intent)})
+        cancelled = self._call("DELETE", f"/subscriptions/{subscription.subscription_id}")
+        apply_subscription_object(cancelled)
+
     def parse_webhook(self, payload: bytes, signature: str | None) -> dict[str, Any]:
         """Verify the signature and return the event."""
         verify_signature(payload, signature, self.webhook_secret)
