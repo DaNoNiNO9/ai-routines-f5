@@ -243,3 +243,18 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-137 | Total del día con alimentos | Sale de los alimentos (y el formulario a mano solo guarda el % de cumplimiento) | Dos fuentes para el mismo número acaban contradiciéndose |
 | T-138 | Cámara | `Permissions-Policy: camera=(self)` | Escanear códigos; micrófono, ubicación y pagos siguen cerrados |
 | T-139 | Menú | Platos con proteína, hidrato y grasa principales cuyos gramos salen de resolver las tres ecuaciones de cada comida con límites, redondeo a 5 g y huevos enteros; las legumbres van como hidrato; los platos de soja solo en dieta vegana. Siete días deterministas por persona y variante | Así «apuntar» registra exactamente lo que se ve, y el menú cuadra con el plan en vez de ser una lista de recetas genérica |
+
+## 2026-11-12 — Revisión del dueño del producto y plato y barra conectados
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-140 | Revisión quincenal | Gratis, confirmado por el dueño del producto | Es la que protege cuando se pierde peso demasiado rápido |
+| T-141 | Información precontractual | En precios y en el pago: IVA incluido, renovación automática, cómo cancelar y derecho de desistimiento de 14 días con la prueba gratis dentro del plazo | Directiva 2011/83/UE y TRLGDCU; conviene que lo revise un abogado antes de cobrar |
+| T-142 | Cancelar | Un clic desde Tu suscripción (cancela al final del periodo) y otro para reanudar, sin pasar por el portal | Darse de baja tiene que ser igual de fácil que darse de alta |
+| T-143 | Desistimiento | Dentro de los 14 días: termina al momento y, en Stripe, se reembolsa íntegra la última factura pagada | Más sencillo y más favorable que prorratear; no hay que pedir consentimiento para empezar a prestar el servicio |
+| T-144 | Orden de los eventos de Stripe | `last_event_at` por suscripción: un evento anterior al último aplicado se descarta | Stripe no garantiza el orden de entrega |
+| T-145 | Atribución | Página «Acerca de» con todas las fuentes y licencias, y la mención de Open Food Facts (ODbL) visible en el buscador | La ODbL exige atribución visible |
+| T-146 | Código de barras | El botón de escanear solo aparece si el navegador lee EAN/UPC; si no (iPhone, escritorio), entrada a mano con etiqueta visible y explicación | Safari no trae BarcodeDetector; Edge en Windows lo trae sin formatos |
+| T-147 | Aviso de salud | Breve, en el plan de calorías, el resultado y la revisión, además del pie | Es donde se deciden o cambian las calorías |
+| T-148 | Cómo llegas hoy | Sueño (una pregunta al empezar), lo comido ayer frente al objetivo, la fatiga de la última sesión y las semanas de déficit suman puntos: 2-3 día suave (−5 % de carga en la primera serie, +1 de reserva), 4 o más más suave (−10 %). Sin datos no suma; se puede elegir entrenar normal | Une el plato y la barra con datos que la app ya tiene, sin pedir más registros. Solo toca la primera serie: las siguientes ya se ajustan solas |
+| T-149 | Día de entreno o de descanso | Con más hidratos los días de entreno, el objetivo del día es el de entreno si ese día se empezó una sesión, y el de descanso si no | Las rutinas no tienen días de la semana fijos; la sesión real es la señal fiable |

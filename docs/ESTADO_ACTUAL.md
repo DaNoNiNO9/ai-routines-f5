@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 779 tests en verde |
+| Suite | 801 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -55,12 +55,13 @@ Después, el mismo día (T-131 a T-139):
 - **Apuntar comida en segundos**: tabla básica, Open Food Facts, código de barras, habituales y copiar ayer.
 - **Menú de la semana** con platos que cuadran con el plan, lista de la compra y «apuntar» con un toque.
 
+Después de la revisión del dueño del producto (T-140 a T-149): información precontractual en precios, cancelar y reanudar en un clic, desistimiento de 14 días con reembolso, eventos de Stripe desordenados, guía de Stripe en modo test en el README, página «Acerca de» con atribuciones, código de barras pensado para iPhone, avisos de salud y **plato y barra conectados** (día suave según sueño, comida y fatiga; objetivo de día de entreno o de descanso).
+
 Lo siguiente:
 
-1. **Plato y barra conectados** (la carga del día según sueño y sesiones; pausa de dieta con recorte de volumen).
-2. **Foto de la comida con IA**: pendiente de que el dueño elija proveedor; exige consentimiento expreso (RGPD art. 9).
-3. Activar Stripe real cuando estén las claves; probar el webhook con `stripe listen`.
-4. Historias de usuario con criterios de aceptación, al final.
+1. **Foto de la comida con IA**: pendiente de que el dueño elija proveedor; exige consentimiento expreso (RGPD art. 9).
+2. Activar Stripe real con sus claves (README › Pagos con Stripe) y que un abogado revise las condiciones.
+3. Historias de usuario con criterios de aceptación, al final.
 
 ## Siguiente paso
 
