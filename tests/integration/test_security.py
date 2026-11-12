@@ -15,7 +15,9 @@ def test_security_headers_on_every_response(client: FlaskClient) -> None:
     assert headers["X-Content-Type-Options"] == "nosniff"
     assert headers["X-Frame-Options"] == "DENY"
     assert headers["Referrer-Policy"] == "strict-origin-when-cross-origin"
-    assert "camera=()" in headers["Permissions-Policy"]
+    # La cámara solo para el propio sitio (escanear códigos de barras); nada más.
+    assert "camera=(self)" in headers["Permissions-Policy"]
+    assert "microphone=()" in headers["Permissions-Policy"]
     assert "Strict-Transport-Security" not in headers
 
 

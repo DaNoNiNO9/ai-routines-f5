@@ -545,3 +545,60 @@ document.addEventListener("DOMContentLoaded", function () {
     navigator.vibrate([80, 60, 80, 60, 160]);
   }
 });
+
+/* Código de barras con la cámara (BarcodeDetector: Chrome y Edge en Android). Donde no
+   existe, el botón no aparece y el código se escribe a mano. */
+document.addEventListener("DOMContentLoaded", function () {
+  "use strict";
+  var form = document.querySelector("form[data-barcode]");
+  var button = form && form.querySelector("[data-scan]");
+  var box = document.querySelector("[data-scanner]");
+  if (!button || !box || !("BarcodeDetector" in window) || !navigator.mediaDevices) {
+    return;
+  }
+  button.hidden = false;
+  var video = box.querySelector("video");
+  var stream = null;
+  var running = false;
+
+  function stop() {
+    running = false;
+    if (stream) {
+      stream.getTracks().forEach(function (track) { track.stop(); });
+      stream = null;
+    }
+    box.hidden = true;
+  }
+
+  button.addEventListener("click", function () {
+    var detector = new window.BarcodeDetector({ formats: ["ean_13", "ean_8", "upc_a", "upc_e"] });
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+      .then(function (media) {
+        stream = media;
+        video.srcObject = media;
+        box.hidden = false;
+        running = true;
+        return video.play();
+      })
+      .then(function () {
+        var look = function () {
+          if (!running) {
+            return;
+          }
+          detector.detect(video).then(function (codes) {
+            if (codes.length) {
+              form.elements.codigo.value = codes[0].rawValue;
+              stop();
+              form.requestSubmit();
+            } else {
+              setTimeout(look, 250);
+            }
+          }).catch(function () { setTimeout(look, 500); });
+        };
+        look();
+      })
+      .catch(function () { stop(); });
+  });
+  box.querySelector("[data-scan-stop]").addEventListener("click", stop);
+  window.addEventListener("pagehide", stop);
+});

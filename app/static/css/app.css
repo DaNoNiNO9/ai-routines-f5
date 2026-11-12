@@ -758,3 +758,24 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .fake-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-3) 0; }
 .pro-teaser { border-style: dashed; }
 .pro-badge { display: inline-block; margin-left: 0.4rem; padding: 0 0.45rem; border-radius: 6px; background: var(--accent); color: var(--accent-contrast); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em; vertical-align: middle; }
+
+/* Texto solo para lectores de pantalla */
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Alimentos */
+.food-search, .food-barcode { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-2); }
+.food-search .field-input, .food-barcode .field-input { flex: 1 1 12rem; }
+.food-list { list-style: none; padding: 0; margin: 0; display: grid; }
+.food-row { display: flex; gap: var(--space-2); align-items: center; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border); }
+.food-info { min-width: 0; flex: 1; }
+.food-name { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.food-row .meta { margin: 0.15rem 0 0; }
+.food-add { display: flex; gap: 0.4rem; align-items: center; flex: none; }
+.food-grams { display: flex; align-items: center; gap: 0.25rem; }
+.food-grams .field-input { width: 4.6rem; text-align: right; padding-inline: 0.5rem; }
+.scanner video { width: 100%; max-height: 16rem; border-radius: 12px; background: #000; object-fit: cover; }
+.macro-bars { display: grid; gap: var(--space-1); margin: var(--space-2) 0; }
+.macro-bar { display: grid; grid-template-columns: 6.5rem 1fr auto; gap: var(--space-2); align-items: center; font-size: 0.9rem; }
+.macro-bar .progress { margin: 0; }
+.macro-bar.is-over .progress > span { background: var(--warning); }
+.food-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-2) 0 var(--space-3); }

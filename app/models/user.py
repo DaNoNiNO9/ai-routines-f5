@@ -20,7 +20,13 @@ if TYPE_CHECKING:
     from app.models.plan import Plan, PlanAdjustment
     from app.models.profile import Profile
     from app.models.routine import Routine
-    from app.models.tracking import ActivityLog, BodyMeasurement, IntakeLog, WeightLog
+    from app.models.tracking import (
+        ActivityLog,
+        BodyMeasurement,
+        FoodEntry,
+        IntakeLog,
+        WeightLog,
+    )
     from app.models.workout import WorkoutSession
 
 EMAIL_MAX_LENGTH = 254
@@ -64,6 +70,9 @@ class User(UserMixin, TimestampMixin, SoftDeleteMixin, db.Model):
     )
     intake_logs: Mapped[list[IntakeLog]] = relationship(
         back_populates="user", cascade="all, delete-orphan", order_by="IntakeLog.logged_on"
+    )
+    food_entries: Mapped[list[FoodEntry]] = relationship(
+        back_populates="user", cascade="all, delete-orphan", order_by="FoodEntry.id"
     )
     activity_logs: Mapped[list[ActivityLog]] = relationship(
         back_populates="user", cascade="all, delete-orphan", order_by="ActivityLog.logged_on"

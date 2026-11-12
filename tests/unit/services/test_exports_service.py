@@ -91,6 +91,7 @@ def test_the_archive_has_one_sheet_per_kind_of_record(seeded: SQLAlchemy) -> Non
             "cuestionarios.csv",
             "pesajes.csv",
             "ingestas.csv",
+            "alimentos.csv",
             "actividad.csv",
             "perimetros.csv",
             "planes.csv",
@@ -98,6 +99,7 @@ def test_the_archive_has_one_sheet_per_kind_of_record(seeded: SQLAlchemy) -> Non
             "rutinas.csv",
             "sesiones.csv",
             "series.csv",
+            "suscripcion.csv",
         }
         pesajes = zipped.read("pesajes.csv").decode("utf-8-sig")
         assert pesajes.startswith("dia,peso_kg,nota")

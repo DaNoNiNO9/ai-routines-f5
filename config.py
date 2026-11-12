@@ -103,6 +103,9 @@ class BaseConfig:
     # Pinned so the shape of Stripe's objects does not change under our feet.
     STRIPE_API_VERSION = os.environ.get("STRIPE_API_VERSION", "2024-06-20")
 
+    # Open Food Facts (app/services/food.py): product search and barcodes.
+    OFF_ENABLED = env_bool("OFF_ENABLED", True)
+
     # Security headers
     ENABLE_HSTS = False
 
@@ -134,6 +137,7 @@ class TestingConfig(BaseConfig):
     # Existing tests exercise every feature; the paywall has its own tests.
     PAYWALL_ENABLED = False
     BILLING_BACKEND = "fake"
+    OFF_ENABLED = False  # sin red en los tests; los de comida inyectan respuestas
 
 
 class ProductionConfig(BaseConfig):

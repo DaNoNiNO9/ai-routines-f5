@@ -29,7 +29,7 @@ CSP_DIRECTIVES: dict[str, str] = {
 }
 CONTENT_SECURITY_POLICY = "; ".join(f"{name} {value}" for name, value in CSP_DIRECTIVES.items())
 HSTS_VALUE = "max-age=31536000; includeSubDomains"
-PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=(), payment=()"
+PERMISSIONS_POLICY = "camera=(self), microphone=(), geolocation=(), payment=()"
 
 
 def register_security_headers(app: Flask) -> None:

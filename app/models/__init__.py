@@ -7,7 +7,7 @@ from app.models.onboarding import QuestionnaireDraft
 from app.models.plan import Meal, Plan, PlanAdjustment
 from app.models.profile import Injury, Profile
 from app.models.routine import Routine, RoutineDay, RoutineExercise
-from app.models.tracking import ActivityLog, BodyMeasurement, IntakeLog, WeightLog
+from app.models.tracking import ActivityLog, BodyMeasurement, FoodEntry, IntakeLog, WeightLog
 from app.models.user import User, user_equipment
 from app.models.workout import SetLog, WorkoutSession
 
@@ -18,6 +18,7 @@ __all__ = [
     "Equipment",
     "Exercise",
     "ExerciseAlternative",
+    "FoodEntry",
     "Injury",
     "IntakeLog",
     "Meal",

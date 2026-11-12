@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "components/icons.html" import icon %}
+
+{% macro add_form(item, grams) %}
+  <form method="post" action="{{ url_for('tracking.add_food') }}" class="food-add">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="fecha" value="{{ day.isoformat() }}">
+    <input type="hidden" name="source" value="{{ item.source }}">
+    <input type="hidden" name="code" value="{{ item.code }}">
+    <label class="food-grams"><span class="visually-hidden">{{ _('Gramos') }}</span><input class="field-input" type="number" name="grams" min="1" max="5000" step="1" inputmode="decimal" required value="{{ grams|round|int }}"><span aria-hidden="true">g</span></label>
+    <button type="submit" class="button button-small" aria-label="{{ _('Añadir %(name)s', name=item.name) }}">{{ icon('plus') }}</button>
+  </form>
+{% endmacro %}
+
+{% macro food_row(item, grams) %}
+  <li class="food-row">
+    <div class="food-info">
+      <p class="food-name">{{ item.name }}{% if item.brand %} <span class="muted">· {{ item.brand }}</span>{% endif %}</p>
+      <p class="meta">{{ _('Por 100 g: %(kcal)s kcal · %(p)s g proteína · %(c)s g hidratos · %(f)s g grasa', kcal=item.kcal|num(0), p=item.protein|num, c=item.carbs|num, f=item.fat|num) }}{% if item.source == 'basic' %} · {{ _('valor medio') }}{% endif %}</p>
+    </div>
+    {{ add_form(item, grams) }}
+  </li>
+{% endmacro %}
+
+{% block title %}{{ _('Añadir alimento') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('tracking.diary', fecha=day.isoformat()) }}">{{ _('Diario') }}</a> · {% if day == today %}{{ _('hoy') }}{% else %}{{ day|fdate('long') }}{% endif %}</p>
+  <h1>{{ _('Añadir alimento') }}</h1>
+</section>
+
+<section class="card">
+  <form method="get" class="food-search" role="search">
+    <input type="hidden" name="fecha" value="{{ day.isoformat() }}">
+    <label class="visually-hidden" for="food-q">{{ _('Buscar alimento') }}</label>
+    <input id="food-q" class="field-input" type="search" name="q" value="{{ query }}" placeholder="{{ _('Pollo, yogur griego, avena…') }}" autocomplete="off" {% if not (query or barcode) %}autofocus{% endif %}>
+    <button type="submit" class="button">{{ _('Buscar') }}</button>
+  </form>
+  <form method="get" class="food-barcode" data-barcode>
+    <input type="hidden" name="fecha" value="{{ day.isoformat() }}">
+    <label class="visually-hidden" for="food-code">{{ _('Código de barras') }}</label>
+    <input id="food-code" class="field-input" type="text" name="codigo" value="{{ barcode }}" placeholder="{{ _('Código de barras') }}" inputmode="numeric" pattern="[0-9 ]*" autocomplete="off">
+    <button type="submit" class="button button-secondary">{{ _('Buscar código') }}</button>
+    <button type="button" class="button button-secondary" data-scan hidden>{{ icon('scan-barcode') }}{{ _('Escanear') }}</button>
+  </form>
+  <div class="scanner" data-scanner hidden>
+    <video playsinline muted></video>
+    <p class="meta">{{ _('Apunta al código de barras del envase.') }}</p>
+    <button type="button" class="button button-secondary button-small" data-scan-stop>{{ _('Cerrar la cámara') }}</button>
+  </div>
+</section>
+
+{% if error %}
+  <p class="flash flash-warning">{{ error }}</p>
+{% endif %}
+{% if off_down %}
+  <p class="flash flash-warning">{{ _('Open Food Facts no responde ahora mismo. Te enseñamos lo de la tabla básica.') }}</p>
+{% endif %}
+
+{% if query or barcode %}
+  <section class="card">
+    <h2 class="card-title">{% if barcode %}{{ _('Producto') }}{% else %}{{ _('Resultados') }}{% endif %}</h2>
+    {% if results %}
+      <ul class="food-list">
+        {% for item in results %}{{ food_row(item, item.portion) }}{% endfor %}
+      </ul>
+      <p class="help">{{ _('Los productos vienen de Open Food Facts, una base abierta que mantienen voluntarios: si algo no cuadra con el envase, manda el envase.') }}</p>
+    {% elif not error %}
+      <p class="muted">{{ _('No hay resultados. Prueba con menos palabras o con el nombre genérico.') }}</p>
+    {% endif %}
+  </section>
+{% elif usual %}
+  <section class="card">
+    <h2 class="card-title">{{ icon('repeat') }}{{ _('Tus habituales') }}</h2>
+    <ul class="food-list">
+      {% for item, grams in usual %}{{ food_row(item, grams) }}{% endfor %}
+    </ul>
+  </section>
+{% else %}
+  <section class="card">
+    <p class="muted">{{ _('Busca por nombre o por código de barras. Lo que apuntes a menudo aparecerá aquí para añadirlo con un toque.') }}</p>
+  </section>
+{% endif %}
+{% endblock %}

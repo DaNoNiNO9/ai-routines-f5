@@ -43,6 +43,7 @@ from app.labels import BMR_METHOD, BODY_FAT_METHOD, GOAL, MEAL_TIMING, label
 from app.models import (
     ActivityLog,
     BodyMeasurement,
+    FoodEntry,
     IntakeLog,
     Plan,
     PlanAdjustment,
@@ -546,6 +547,12 @@ def personal_sheets(user: User) -> list[Sheet]:
     intakes = session.scalars(
         select(IntakeLog).where(IntakeLog.user_id == user.id).order_by(IntakeLog.logged_on)
     ).all()
+    foods = session.scalars(
+        select(FoodEntry)
+        .where(FoodEntry.user_id == user.id)
+        .order_by(FoodEntry.logged_on, FoodEntry.id)
+    ).all()
+    subscription = user.subscription
     activity = session.scalars(
         select(ActivityLog).where(ActivityLog.user_id == user.id).order_by(ActivityLog.logged_on)
     ).all()
@@ -675,6 +682,54 @@ def personal_sheets(user: User) -> list[Sheet]:
                 ]
                 for item in intakes
             ],
+        ),
+        _sheet(
+            "alimentos.csv",
+            [
+                "dia",
+                "alimento",
+                "marca",
+                "origen",
+                "codigo",
+                "gramos",
+                "kcal_100g",
+                "proteina_100g",
+                "carbos_100g",
+                "grasa_100g",
+            ],
+            [
+                [
+                    item.logged_on.isoformat(),
+                    item.name,
+                    item.brand or "",
+                    item.source,
+                    item.code or "",
+                    item.grams,
+                    item.kcal_100g,
+                    item.protein_100g,
+                    item.carbs_100g,
+                    item.fat_100g,
+                ]
+                for item in foods
+            ],
+        ),
+        _sheet(
+            "suscripcion.csv",
+            ["plan", "estado", "fin_prueba", "fin_periodo", "cancela_al_final", "cliente_pasarela"],
+            [
+                [
+                    subscription.plan or "",
+                    subscription.status,
+                    subscription.trial_ends_at.isoformat() if subscription.trial_ends_at else "",
+                    subscription.current_period_end.isoformat()
+                    if subscription.current_period_end
+                    else "",
+                    "si" if subscription.cancel_at_period_end else "no",
+                    subscription.customer_id or "",
+                ]
+            ]
+            if subscription
+            else [],
         ),
         _sheet(
             "actividad.csv",
@@ -886,6 +941,7 @@ UTF-8 con BOM (se abre bien en Excel y en LibreOffice).
   cuestionarios.csv Cada versión del cuestionario, con sus lesiones.
   pesajes.csv       Peso por día.
   ingestas.csv      Calorías, macros y adherencia por día.
+  alimentos.csv     Cada alimento apuntado, con sus gramos y valores por 100 g.
   actividad.csv     Pasos y cardio por día.
   perimetros.csv    Medidas y porcentaje de grasa.
   planes.csv        Cada versión del plan de nutrición.
@@ -893,6 +949,7 @@ UTF-8 con BOM (se abre bien en Excel y en LibreOffice).
   rutinas.csv       Cada rutina, una fila por ejercicio de cada día.
   sesiones.csv      Sesiones de entrenamiento.
   series.csv        Cada serie registrada.
+  suscripcion.csv   Tu suscripción a Alza Pro, si la tienes o la tuviste.
 
 Las fechas van en formato ISO (aaaa-mm-dd) y las horas en UTC.
 

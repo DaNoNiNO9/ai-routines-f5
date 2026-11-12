@@ -23,6 +23,7 @@ EXPECTED_TABLES = {
     "exercise_alternatives",
     "exercise_equipment",
     "exercises",
+    "food_entries",
     "injuries",
     "intake_logs",
     "meals",

@@ -46,6 +46,7 @@ ICONS = (
     "notebook-pen",
     "plus",
     "repeat",
+    "scan-barcode",
     "scale",
     "sun",
     "timer",

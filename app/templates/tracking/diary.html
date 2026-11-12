@@ -32,19 +32,72 @@
     <p class="help">{{ _('Por la mañana, tras ir al baño, antes de comer.') }}</p>
   </section>
 
-  <section class="card">
+  <section class="card" id="comida">
     <h2 class="card-title">{{ _('Lo que has comido') }}</h2>
+    {% if is_pro %}
+      {% if foods %}
+        {% set goal = targets.base if targets else none %}
+        <div class="macro-bars">
+          {% for label, eaten, target in [
+            (_('Calorías'), food_totals.kcal, goal.calories if goal else none),
+            (_('Proteína'), food_totals.protein, goal.protein_g if goal else none),
+            (_('Hidratos'), food_totals.carbs, goal.carbs_g if goal else none),
+            (_('Grasa'), food_totals.fat, goal.fat_g if goal else none),
+          ] %}
+            {% set pct = (eaten / target * 100)|round|int if target else none %}
+            <div class="macro-bar{% if pct and pct > 110 %} is-over{% endif %}">
+              <span>{{ label }}</span>
+              {% if pct is not none %}<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ [pct, 100]|min }}" aria-label="{{ label }}"><span style="width: {{ [pct, 100]|min }}%"></span></div>{% else %}<span></span>{% endif %}
+              <span class="meta">{% if loop.first %}{{ eaten|num(0) }}{% if target %} / {{ target|num(0) }}{% endif %} kcal{% else %}{{ eaten|num(0) }}{% if target %} / {{ target|num(0) }}{% endif %} g{% endif %}</span>
+            </div>
+          {% endfor %}
+        </div>
+        <ul class="food-list">
+          {% for row in foods %}
+            <li class="food-row">
+              <div class="food-info">
+                <p class="food-name">{{ row.name }}</p>
+                <p class="meta">{{ row.grams|num }} g · {{ row.kcal|num(0) }} kcal · {{ _('P %(p)s · H %(c)s · G %(f)s', p=row.protein_g|num(0), c=row.carbs_g|num(0), f=row.fat_g|num(0)) }}</p>
+              </div>
+              <form method="post" action="{{ url_for('tracking.delete_food', entry_id=row.id) }}" class="inline-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="link-button" aria-label="{{ _('Quitar %(name)s', name=row.name) }}">{{ icon('x') }}</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="muted">{{ _('Apunta lo que comes y el total se calcula solo.') }}</p>
+      {% endif %}
+      <div class="food-actions">
+        <a class="button" href="{{ url_for('tracking.foods', fecha=day.isoformat()) }}">{{ icon('plus') }}{{ _('Añadir alimento') }}</a>
+        {% if yesterday_foods %}
+          <form method="post" action="{{ url_for('tracking.copy_yesterday') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="fecha" value="{{ day.isoformat() }}">
+            <button type="submit" class="button button-secondary">{{ icon('repeat') }}{{ _('Copiar lo de ayer') }}</button>
+          </form>
+        {% endif %}
+      </div>
+    {% elif paywall %}
+      <p class="meta">{{ _('Con Alza Pro buscas el alimento o escaneas el código de barras y el total se calcula solo.') }} <a href="{{ url_for('billing.prices') }}">{{ _('Probar Pro gratis') }}</a></p>
+    {% endif %}
+
     <form method="post" action="{{ url_for('tracking.save_intake') }}" class="form" novalidate>
       {{ intake_form.hidden_tag() }}
-      {{ field(intake_form.calories, inputmode="numeric") }}
-      <div class="grid-3">
-        {{ field(intake_form.protein_g, inputmode="decimal") }}
-        {{ field(intake_form.carbs_g, inputmode="decimal") }}
-        {{ field(intake_form.fat_g, inputmode="decimal") }}
-      </div>
+      {% if foods %}
+        <input type="hidden" name="calories" value="{{ food_totals.kcal|round|int }}">
+      {% else %}
+        {{ field(intake_form.calories, inputmode="numeric") }}
+        <div class="grid-3">
+          {{ field(intake_form.protein_g, inputmode="decimal") }}
+          {{ field(intake_form.carbs_g, inputmode="decimal") }}
+          {{ field(intake_form.fat_g, inputmode="decimal") }}
+        </div>
+      {% endif %}
       {{ field(intake_form.adherence_pct, inputmode="numeric") }}
       <p class="help">{{ _('Del 0 al 100, qué parte del plan has cumplido hoy. Con sinceridad: es lo que más pesa en la revisión.') }}</p>
-      <button type="submit" class="button button-block">{{ _('Guardar comida') }}</button>
+      <button type="submit" class="button button-block">{% if foods %}{{ _('Guardar') }}{% else %}{{ _('Guardar comida') }}{% endif %}</button>
     </form>
   </section>
 

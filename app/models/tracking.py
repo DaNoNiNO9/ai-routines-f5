@@ -136,3 +136,60 @@ class ActivityLog(TimestampMixin, db.Model):
 
     def __repr__(self) -> str:
         return f"<ActivityLog {self.logged_on}>"
+
+
+class FoodEntry(TimestampMixin, db.Model):
+    """One food eaten on a day, in grams, with its values already worked out.
+
+    The values per 100 g are copied at the moment of logging, so the day does
+    not change if Open Food Facts edits the product later. While a day has
+    entries, its ``IntakeLog`` totals are their sum (``services.food``).
+    """
+
+    __tablename__ = "food_entries"
+    __table_args__ = (
+        CheckConstraint("grams > 0 AND grams <= 5000", name="grams_range"),
+        CheckConstraint("kcal_100g >= 0 AND kcal_100g <= 950", name="kcal_range"),
+        Index("ix_food_entries_user_logged_on", "user_id", "logged_on"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    logged_on: Mapped[date] = mapped_column(Date, nullable=False)
+    name: Mapped[str] = mapped_column(String(160), nullable=False)
+    brand: Mapped[str | None] = mapped_column(String(120))
+    source: Mapped[str] = mapped_column(String(20), nullable=False)  # basic | off
+    code: Mapped[str | None] = mapped_column(String(40))  # código de barras o clave de la tabla
+    grams: Mapped[float] = mapped_column(Float, nullable=False)
+    kcal_100g: Mapped[float] = mapped_column(Float, nullable=False)
+    protein_100g: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    carbs_100g: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    fat_100g: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+
+    user: Mapped[User] = relationship(back_populates="food_entries")
+
+    def _part(self, per_100g: float) -> float:
+        return per_100g * self.grams / 100
+
+    @property
+    def kcal(self) -> float:
+        """Calories of this portion."""
+        return self._part(self.kcal_100g)
+
+    @property
+    def protein_g(self) -> float:
+        """Protein of this portion."""
+        return self._part(self.protein_100g)
+
+    @property
+    def carbs_g(self) -> float:
+        """Carbohydrates of this portion."""
+        return self._part(self.carbs_100g)
+
+    @property
+    def fat_g(self) -> float:
+        """Fat of this portion."""
+        return self._part(self.fat_100g)
+
+    def __repr__(self) -> str:
+        return f"<FoodEntry {self.logged_on} {self.name} {self.grams} g>"
