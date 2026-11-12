@@ -1,6 +1,7 @@
 """SQLAlchemy models. Importing this package registers every table on ``db.metadata``."""
 
 from app.models.base import SoftDeleteMixin, TimestampMixin, UTCDateTime, utcnow
+from app.models.billing import BillingEvent, Subscription
 from app.models.exercise import Equipment, Exercise, ExerciseAlternative, exercise_equipment
 from app.models.onboarding import QuestionnaireDraft
 from app.models.plan import Meal, Plan, PlanAdjustment
@@ -12,6 +13,7 @@ from app.models.workout import SetLog, WorkoutSession
 
 __all__ = [
     "ActivityLog",
+    "BillingEvent",
     "BodyMeasurement",
     "Equipment",
     "Exercise",
@@ -28,6 +30,7 @@ __all__ = [
     "RoutineExercise",
     "SetLog",
     "SoftDeleteMixin",
+    "Subscription",
     "TimestampMixin",
     "UTCDateTime",
     "User",

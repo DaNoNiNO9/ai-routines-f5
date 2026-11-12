@@ -17,6 +17,7 @@ MIGRATIONS_DIR = str(BASE_DIR / "migrations")
 
 EXPECTED_TABLES = {
     "activity_logs",
+    "billing_events",
     "body_measurements",
     "equipment",
     "exercise_alternatives",
@@ -33,6 +34,7 @@ EXPECTED_TABLES = {
     "routine_exercises",
     "routines",
     "set_logs",
+    "subscriptions",
     "user_equipment",
     "users",
     "weight_logs",

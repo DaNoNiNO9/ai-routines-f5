@@ -86,6 +86,23 @@ class BaseConfig:
     PASSWORD_MIN_LENGTH = 10
     PASSWORD_RESET_MAX_AGE = 3600
 
+    # Billing (app/services/billing). "fake" simulates Stripe end to end without an
+    # account (checkout, trial, portal, cancellations); "stripe" talks to the real API.
+    BILLING_BACKEND = os.environ.get("BILLING_BACKEND", "fake")
+    PAYWALL_ENABLED = env_bool("PAYWALL_ENABLED", True)
+    BILLING_TRIAL_DAYS = 7
+    BILLING_CURRENCY = "eur"
+    BILLING_PLANS: dict[str, dict[str, Any]] = {
+        "monthly": {"amount_cents": 799, "interval": "month"},
+        "yearly": {"amount_cents": 4999, "interval": "year"},
+    }
+    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+    STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+    STRIPE_PRICE_MONTHLY = os.environ.get("STRIPE_PRICE_MONTHLY", "")
+    STRIPE_PRICE_YEARLY = os.environ.get("STRIPE_PRICE_YEARLY", "")
+    # Pinned so the shape of Stripe's objects does not change under our feet.
+    STRIPE_API_VERSION = os.environ.get("STRIPE_API_VERSION", "2024-06-20")
+
     # Security headers
     ENABLE_HSTS = False
 
@@ -114,6 +131,9 @@ class TestingConfig(BaseConfig):
     LOG_LEVEL = "DEBUG"
     ENABLE_DEBUG_ROUTES = True
     MAIL_BACKEND = "log"
+    # Existing tests exercise every feature; the paywall has its own tests.
+    PAYWALL_ENABLED = False
+    BILLING_BACKEND = "fake"
 
 
 class ProductionConfig(BaseConfig):
@@ -151,6 +171,21 @@ class ProductionConfig(BaseConfig):
             problems.append("MAIL_BACKEND must be smtp (password recovery needs email)")
         elif not config.get("MAIL_SERVER") or not config.get("MAIL_FROM"):
             problems.append("MAIL_SERVER and MAIL_FROM must be set")
+        if config.get("PAYWALL_ENABLED"):
+            if config.get("BILLING_BACKEND") != "stripe":
+                problems.append(
+                    "BILLING_BACKEND must be stripe while PAYWALL_ENABLED (the simulated "
+                    "checkout would give Pro away)"
+                )
+            else:
+                for key in (
+                    "STRIPE_SECRET_KEY",
+                    "STRIPE_WEBHOOK_SECRET",
+                    "STRIPE_PRICE_MONTHLY",
+                    "STRIPE_PRICE_YEARLY",
+                ):
+                    if not config.get(key):
+                        problems.append(f"{key} must be set")
         if problems:
             raise RuntimeError("Invalid production configuration: " + "; ".join(problems))
 

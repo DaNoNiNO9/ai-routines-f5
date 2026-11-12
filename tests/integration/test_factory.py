@@ -63,6 +63,13 @@ def test_production_refuses_debug_flags() -> None:
 
 
 PRODUCTION_MAIL = {"MAIL_BACKEND": "smtp", "MAIL_SERVER": "smtp.example.com", "MAIL_FROM": "a@b.c"}
+PRODUCTION_BILLING = {
+    "BILLING_BACKEND": "stripe",
+    "STRIPE_SECRET_KEY": "sk_test_x",
+    "STRIPE_WEBHOOK_SECRET": "whsec_x",
+    "STRIPE_PRICE_MONTHLY": "price_monthly",
+    "STRIPE_PRICE_YEARLY": "price_yearly",
+}
 
 
 def test_production_requires_smtp_mail() -> None:
@@ -78,10 +85,26 @@ def test_production_requires_smtp_mail() -> None:
         create_app("production", {**overrides, "MAIL_BACKEND": "smtp", "MAIL_SERVER": ""})
 
 
+def test_production_refuses_the_simulated_checkout_behind_a_paywall() -> None:
+    base = {
+        **NO_FILE_LOG,
+        **PRODUCTION_MAIL,
+        "SECRET_KEY": "s" * MIN_SECRET_KEY_LENGTH,
+        "SQLALCHEMY_DATABASE_URI": "sqlite://",
+    }
+    with pytest.raises(RuntimeError, match="BILLING_BACKEND must be stripe"):
+        create_app("production", {**base, "BILLING_BACKEND": "fake", "PAYWALL_ENABLED": True})
+    with pytest.raises(RuntimeError, match="STRIPE_WEBHOOK_SECRET must be set"):
+        create_app("production", {**base, **PRODUCTION_BILLING, "STRIPE_WEBHOOK_SECRET": ""})
+    # Sin muro de pago (todo gratis) no hace falta pasarela.
+    create_app("production", {**base, "BILLING_BACKEND": "fake", "PAYWALL_ENABLED": False})
+
+
 def test_production_boots_with_valid_configuration() -> None:
     overrides = {
         **NO_FILE_LOG,
         **PRODUCTION_MAIL,
+        **PRODUCTION_BILLING,
         "SECRET_KEY": "s" * MIN_SECRET_KEY_LENGTH,
         "SQLALCHEMY_DATABASE_URI": "sqlite://",
     }

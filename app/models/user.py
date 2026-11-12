@@ -14,6 +14,7 @@ from app.extensions import db
 from app.models.base import SoftDeleteMixin, TimestampMixin, UTCDateTime, utcnow
 
 if TYPE_CHECKING:
+    from app.models.billing import Subscription
     from app.models.exercise import Equipment
     from app.models.onboarding import QuestionnaireDraft
     from app.models.plan import Plan, PlanAdjustment
@@ -80,6 +81,9 @@ class User(UserMixin, TimestampMixin, SoftDeleteMixin, db.Model):
         back_populates="user", cascade="all, delete-orphan", order_by="WorkoutSession.started_at"
     )
     questionnaire_draft: Mapped[QuestionnaireDraft | None] = relationship(
+        back_populates="user", cascade="all, delete-orphan", uselist=False
+    )
+    subscription: Mapped[Subscription | None] = relationship(
         back_populates="user", cascade="all, delete-orphan", uselist=False
     )
 
