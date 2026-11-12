@@ -31,6 +31,8 @@ PAGES = (
     "/entreno/progreso",
     "/cuenta",
     "/cuestionario/revisar",
+    "/entrenamiento/ejercicio/leg-press",
+    "/entrenamiento/ejercicio/ab-roller",
 )
 
 ISO_DATE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
@@ -96,8 +98,13 @@ def test_no_screen_shows_an_iso_date_a_code_or_a_leftover(
         assert not LEFTOVERS.search(text), (path, LEFTOVERS.findall(text))
 
 
+# Licence names are proper names ("CC-BY-SA 4.0"), not figures to localise.
+LICENCE_NAME = re.compile(r"\bCC[- ]BY(?:-SA)? \d\.\d\b|\bCC0 \d\.\d\b")
+
+
 def test_spanish_screens_use_a_decimal_comma(lived_in: FlaskClient, seeded: SQLAlchemy) -> None:
     for path, text in _pages(lived_in, seeded).items():
+        text = LICENCE_NAME.sub("", text)
         assert not DECIMAL_POINT.search(text), (path, DECIMAL_POINT.findall(text))
 
 
