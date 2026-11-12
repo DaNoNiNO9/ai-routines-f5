@@ -1,4 +1,6 @@
-# Forja (working title: AI Routines F5)
+# Alza
+
+App de entrenamiento y nutrición ([alza.fit](https://alza.fit)). Repositorio `ai-routines-f5`; durante el desarrollo se llamó Forja.
 
 **Qué hace:** aplicación web de planificación de entrenamiento y nutrición personalizada. El usuario rellena un cuestionario guiado y recibe un plan nutricional (calorías objetivo, macros, reparto por comidas), una rutina de gimnasio completa (split, ejercicios, series, reps, RIR, progresión, descargas) y un seguimiento que recalcula el plan con sus datos reales. Cada número sale de una fórmula documentada con su fuente citada en el código.
 
@@ -28,7 +30,7 @@ python -m pip install --upgrade pip
 pip install -r requirements-dev.txt   # incluye las dependencias de ejecución
 
 copy .env.example .env                # Linux: cp .env.example .env ; ajusta SECRET_KEY si quieres
-flask db upgrade                      # crea instance/forja.db con el esquema
+flask db upgrade                      # crea instance/alza.db con el esquema
 flask seed all                        # catálogos de equipamiento y ejercicios
 flask run                             # http://127.0.0.1:5000 (configuración en .flaskenv)
 ```
@@ -44,11 +46,11 @@ Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del en
 | `FLASK_APP` | `.flaskenv` | `app` | Paquete que expone `create_app()` |
 | `FLASK_DEBUG` | `.flaskenv` | `1` | Depurador y recarga del servidor de desarrollo. Nunca en producción |
 | `FLASK_RUN_PORT` | `.flaskenv` | `5000` | Puerto de `flask run` |
-| `FORJA_ENV` | `.env` | `development` | `development`, `testing` o `production` (elige la clase de `config.py`) |
+| `ALZA_ENV` | `.env` | `development` | `development`, `testing` o `production` (elige la clase de `config.py`) |
 | `SECRET_KEY` | `.env` | clave insegura solo en desarrollo | Firma de sesiones y tokens CSRF. Obligatoria en producción (32+ caracteres) |
-| `DATABASE_URL` | `.env` | vacío → `instance/forja.db` (SQLite) | Producción: `postgresql+psycopg://usuario:clave@host:5432/forja` |
+| `DATABASE_URL` | `.env` | vacío → `instance/alza.db` (SQLite) | Producción: `postgresql+psycopg://usuario:clave@host:5432/alza` |
 | `LOG_LEVEL` | `.env` | `DEBUG` en dev, `INFO` en el resto | Nivel del logger `app` |
-| `LOG_DIR` | `.env` | `logs/` | Carpeta de `forja.log` (JSON por línea, rotación 5 MB x 5) |
+| `LOG_DIR` | `.env` | `logs/` | Carpeta de `alza.log` (JSON por línea, rotación 5 MB x 5) |
 | `RATELIMIT_STORAGE_URI` | `.env` | `memory://` | Almacén del rate limiting; con varios workers usar Redis |
 | `SQLALCHEMY_ECHO` | `.env` | `0` | Volcar SQL en el log (solo desarrollo) |
 | `MAIL_BACKEND` | `.env` | `log` | `log` deja los correos en el log (desarrollo); `smtp` los envía (obligatorio en producción) |
@@ -69,7 +71,7 @@ Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del en
 | `pytest tests/unit/engine --cov=app/engine` | Solo el motor, con su cobertura (objetivo ≥ 95 %) |
 | `ruff check .` | Linter |
 | `ruff format .` | Formateador (`--check` solo verifica) |
-| `waitress-serve --port 8000 wsgi:app` | Servidor de producción en Windows o Linux (`FORJA_ENV=production`) |
+| `waitress-serve --port 8000 wsgi:app` | Servidor de producción en Windows o Linux (`ALZA_ENV=production`) |
 | `uv pip compile --universal --python-version 3.11 requirements.in -o requirements.txt` | Recompilar dependencias tras tocar `requirements.in` (igual con `-dev`) |
 
 Rutas de diagnóstico, solo en desarrollo y testing: `/_debug/boom` (provoca un 500), `/_debug/echo` (formulario con CSRF), `/_debug/limited` (2 peticiones por minuto), `/_debug/abort/<código>`.

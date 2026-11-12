@@ -1,4 +1,4 @@
-"""Forja (working title: AI Routines F5): application factory.
+"""Alza: application factory.
 
 ``create_app()`` builds a fully configured Flask application: per-environment
 configuration, logging, extensions, blueprints, error handlers and security
@@ -30,7 +30,7 @@ from config import CONFIGS, ProductionConfig
 __version__ = "0.1.0"
 
 DEFAULT_ENV = "development"
-SQLITE_FILENAME = "forja.db"
+SQLITE_FILENAME = "alza.db"
 
 
 def create_app(
@@ -41,7 +41,7 @@ def create_app(
 
     Args:
         config_name: ``"development"``, ``"testing"`` or ``"production"``. Defaults to
-            the ``FORJA_ENV`` environment variable, then to ``"development"``.
+            the ``ALZA_ENV`` environment variable, then to ``"development"``.
         overrides: Extra configuration applied last (used by the test suite).
 
     Returns:
@@ -51,7 +51,7 @@ def create_app(
         ValueError: If ``config_name`` is not a known environment.
         RuntimeError: If the production configuration is incomplete or unsafe.
     """
-    name = (config_name or os.environ.get("FORJA_ENV") or DEFAULT_ENV).strip().lower()
+    name = (config_name or os.environ.get("ALZA_ENV") or DEFAULT_ENV).strip().lower()
     try:
         config_class = CONFIGS[name]
     except KeyError as exc:

@@ -17,7 +17,7 @@ def test_index_responds_200_with_brand(client: FlaskClient) -> None:
     response = client.get("/")
     assert response.status_code == 200
     html = response.get_data(as_text=True)
-    assert "Forja" in html
+    assert "Alza" in html
     assert "herramienta orientativa" in html
 
 

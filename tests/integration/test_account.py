@@ -159,7 +159,7 @@ def test_the_pdf_download(client: FlaskClient, seeded: SQLAlchemy) -> None:
     response = client.get("/cuenta/plan.pdf")
     assert response.status_code == 200
     assert response.mimetype == "application/pdf"
-    assert 'filename="forja-plan-ana-' in response.headers["Content-Disposition"]
+    assert 'filename="alza-plan-ana-' in response.headers["Content-Disposition"]
     assert response.data.startswith(b"%PDF-")
 
     reader = PdfReader(io.BytesIO(response.data))
@@ -175,7 +175,7 @@ def test_the_data_archive_download(client: FlaskClient, seeded: SQLAlchemy) -> N
     response = client.get("/cuenta/datos.zip")
     assert response.status_code == 200
     assert response.mimetype == "application/zip"
-    assert 'filename="forja-datos-ana-' in response.headers["Content-Disposition"]
+    assert 'filename="alza-datos-ana-' in response.headers["Content-Disposition"]
     assert response.headers["Cache-Control"] == "no-store"
 
     with zipfile.ZipFile(io.BytesIO(response.data)) as zipped:

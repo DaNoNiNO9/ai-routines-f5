@@ -12,7 +12,7 @@ NO_FILE_LOG = {"LOG_TO_FILE": False}
 
 
 def test_default_environment_is_development(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.delenv("FORJA_ENV", raising=False)
+    monkeypatch.delenv("ALZA_ENV", raising=False)
     app = create_app(overrides=NO_FILE_LOG)
     assert app.config["ENV_NAME"] == "development"
     assert app.debug is True
@@ -20,7 +20,7 @@ def test_default_environment_is_development(monkeypatch: pytest.MonkeyPatch) -> 
 
 
 def test_environment_variable_selects_configuration(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("FORJA_ENV", "Testing")
+    monkeypatch.setenv("ALZA_ENV", "Testing")
     app = create_app(overrides=NO_FILE_LOG)
     assert app.config["ENV_NAME"] == "testing"
     assert app.testing is True
@@ -36,7 +36,7 @@ def test_sqlite_default_points_to_instance_folder(monkeypatch: pytest.MonkeyPatc
     app = create_app("development", {**NO_FILE_LOG, "SQLALCHEMY_DATABASE_URI": ""})
     uri = app.config["SQLALCHEMY_DATABASE_URI"]
     assert uri.startswith("sqlite:///")
-    assert uri.endswith("/instance/forja.db")
+    assert uri.endswith("/instance/alza.db")
 
 
 def test_production_refuses_missing_secret_and_database() -> None:

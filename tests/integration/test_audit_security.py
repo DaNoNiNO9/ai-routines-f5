@@ -26,6 +26,7 @@ INJECTION = "' OR 1=1; DROP TABLE users;--"
 PUBLIC_PATHS = {
     "/",
     "/health",
+    "/favicon.ico",
     "/entrar",
     "/registro",
     "/recuperar",
@@ -183,7 +184,7 @@ def test_passwords_are_stored_hashed_with_a_slow_algorithm(database: SQLAlchemy)
     assert not auth.verify_password(user.password_hash, PASSWORD.upper())
 
 
-@pytest.mark.parametrize("name", [".env", ".env.production", "instance/forja.db"])
+@pytest.mark.parametrize("name", [".env", ".env.production", "instance/alza.db"])
 def test_secrets_are_not_in_the_repository(name: str) -> None:
     import subprocess
 

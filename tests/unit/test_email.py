@@ -68,7 +68,7 @@ def test_smtp_backend_delivers(app: Flask, monkeypatch: pytest.MonkeyPatch) -> N
         MAIL_USE_TLS=True,
         MAIL_USERNAME="user",
         MAIL_PASSWORD="secret",
-        MAIL_FROM="Forja <no-reply@example.com>",
+        MAIL_FROM="Alza <no-reply@example.com>",
     )
     with app.app_context():
         send_email("ana@example.com", "Hola", "Cuerpo")

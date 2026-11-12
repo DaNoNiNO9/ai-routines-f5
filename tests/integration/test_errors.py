@@ -72,7 +72,7 @@ def test_500_is_logged_with_traceback_to_json_file(make_app: AppFactory, tmp_pat
     app = make_app(PROPAGATE_EXCEPTIONS=False, LOG_TO_FILE=True)
     app.test_client().get("/_debug/boom", headers={"X-Request-ID": "req-boom-1"})
 
-    log_file = tmp_path / "logs" / "forja.log"
+    log_file = tmp_path / "logs" / "alza.log"
     assert log_file.exists()
     records = [json.loads(line) for line in log_file.read_text(encoding="utf-8").splitlines()]
     errors = [r for r in records if r["level"] == "ERROR" and r["request_id"] == "req-boom-1"]

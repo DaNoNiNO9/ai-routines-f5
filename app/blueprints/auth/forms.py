@@ -34,7 +34,7 @@ class RegisterForm(FlaskForm):
     )
     consent = BooleanField(
         _l(
-            "Entiendo que Forja es una herramienta orientativa y no sustituye el consejo "
+            "Entiendo que Alza es una herramienta orientativa y no sustituye el consejo "
             "de un profesional sanitario."
         ),
         validators=[DataRequired(message=_l("Es necesario aceptar el aviso."))],

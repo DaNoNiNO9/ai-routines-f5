@@ -4,7 +4,7 @@ Todo recurso externo incluido en el proyecto se lista aquí con su origen y lice
 
 ## Datos y imágenes de ejercicios
 
-| Recurso | Origen | Licencia | Uso en Forja |
+| Recurso | Origen | Licencia | Uso en Alza |
 |---|---|---|---|
 | Dataset de ejercicios (nombres en inglés, instrucciones, músculos, mecánica, nivel) | [free-exercise-db](https://github.com/yuhonas/free-exercise-db) de yuhonas (a su vez derivado de `wrkout/exercises.json`) | [The Unlicense](https://unlicense.org/) (dominio público) | Base de `app/seeds/exercises.json`. La selección, los nombres en español, el patrón de movimiento, el equipamiento con nuestros códigos, las contraindicaciones y las alternativas son elaboración propia (`scripts/exercise_catalogue.py`). |
 | Ilustraciones de ejercicios (2 por ejercicio, posición inicial y final) | Mismo repositorio, carpeta `exercises/<id>/` | The Unlicense | Descargadas por `scripts/build_exercises.py`, reducidas a 560 px de ancho (calidad JPEG 75) y guardadas en `app/static/img/exercises/<slug>/0.jpg` y `1.jpg`. |
@@ -13,7 +13,7 @@ Los enlaces de vídeo (`video_url`) son búsquedas en YouTube con el nombre del 
 
 ## Librerías JavaScript vendorizadas
 
-| Recurso | Origen | Licencia | Uso en Forja |
+| Recurso | Origen | Licencia | Uso en Alza |
 |---|---|---|---|
 | Alpine.js 3.17.2 (`app/static/vendor/alpine-3.17.2.min.js`) | [alpinejs/alpine](https://github.com/alpinejs/alpine), build `dist/cdn.min.js` del paquete npm `alpinejs@3.17.2` | MIT (`app/static/vendor/LICENSE-alpinejs.txt`) | Interacciones pequeñas sin build: alternar la ilustración inicial/final de cada ejercicio. Requiere `'unsafe-eval'` en la CSP (T-06). |
 | Chart.js 4.5.1 (`app/static/vendor/chart-4.5.1.umd.js`) | [chartjs/Chart.js](https://github.com/chartjs/Chart.js), build `dist/chart.umd.js` del paquete npm `chart.js@4.5.1` | MIT (`app/static/vendor/LICENSE-chartjs.txt`) | Gráficas del panel y del plan (peso con media móvil, reparto de macros, componentes del gasto). Se carga solo en las páginas que la usan. |
@@ -22,7 +22,7 @@ Ambas se descargaron de jsDelivr el 2026-09-09 y se sirven desde el propio servi
 
 ## Tipografías
 
-| Recurso | Origen | Licencia | Uso en Forja |
+| Recurso | Origen | Licencia | Uso en Alza |
 |---|---|---|---|
 | Barlow Condensed 600 y 700 | [Barlow](https://github.com/jpt/barlow) de Jeremy Tribby, vía Google Fonts | SIL Open Font License 1.1 (`app/static/fonts/LICENSE-barlow.txt`) | Titulares, cifras grandes y temporizador. Subconjuntos latin y latin-ext en woff2. |
 | Inter variable 400-700 | [Inter](https://github.com/rsms/inter) de Rasmus Andersson, vía Google Fonts | SIL Open Font License 1.1 (`app/static/fonts/LICENSE-inter.txt`) | Cuerpo, formularios y tablas. Subconjuntos latin y latin-ext en woff2. |
@@ -31,7 +31,7 @@ Descargadas el 2026-09-09 desde `fonts.googleapis.com` y servidas desde `app/sta
 
 ## Iconos
 
-| Recurso | Origen | Licencia | Uso en Forja |
+| Recurso | Origen | Licencia | Uso en Alza |
 |---|---|---|---|
 | Lucide 1.43.0, 28 iconos | [lucide-icons/lucide](https://github.com/lucide-icons/lucide), paquete `lucide-static` | ISC (`app/static/img/LICENSE-lucide.txt`) | Navegación, títulos de tarjeta, estados vacíos, avisos y acciones de la sesión. Sprite generado por `scripts/build_icons.py` e incrustado por `base.html`. |
 

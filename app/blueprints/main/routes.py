@@ -27,6 +27,12 @@ def index() -> str:
     return render_template("main/index.html")
 
 
+@bp.get("/favicon.ico")
+def favicon() -> Response:
+    """Los navegadores piden /favicon.ico aunque la página declare otro icono."""
+    return current_app.send_static_file("img/favicon.ico")
+
+
 @bp.get("/health")
 def health() -> Response:
     """Liveness probe: JSON with status, version and environment name."""

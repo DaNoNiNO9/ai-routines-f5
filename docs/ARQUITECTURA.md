@@ -40,11 +40,11 @@ Regla de dependencia, de arriba abajo y nunca al revés:
 
 ## Configuración
 
-`config.py` en la raíz define `BaseConfig` y tres subclases: `DevelopmentConfig`, `TestingConfig`, `ProductionConfig`. `create_app()` elige por argumento o por `FORJA_ENV`. Los secretos y valores de máquina llegan por variables de entorno (o `.env`, cargado por python-dotenv y nunca versionado). Producción valida su configuración al arrancar y se niega a levantar si falta algo.
+`config.py` en la raíz define `BaseConfig` y tres subclases: `DevelopmentConfig`, `TestingConfig`, `ProductionConfig`. `create_app()` elige por argumento o por `ALZA_ENV`. Los secretos y valores de máquina llegan por variables de entorno (o `.env`, cargado por python-dotenv y nunca versionado). Producción valida su configuración al arrancar y se niega a levantar si falta algo.
 
 ## Logging
 
-- Logger `app`: consola (formato legible) + `logs/forja.log` (JSON por línea, rotación 5 MB x 5). Nivel por `LOG_LEVEL`.
+- Logger `app`: consola (formato legible) + `logs/alza.log` (JSON por línea, rotación 5 MB x 5). Nivel por `LOG_LEVEL`.
 - Cada registro lleva `request_id`, `method`, `path` y `remote_addr` (o `-` fuera de una petición).
 - Los módulos usan `logging.getLogger(__name__)`; al estar bajo el paquete `app`, propagan al logger `app`.
 - Las excepciones no controladas las registra Flask con traza (`exc_info`) antes de renderizar la página 500.

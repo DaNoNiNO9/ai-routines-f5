@@ -46,7 +46,7 @@ def test_json_log_file_has_one_object_per_line_with_request_fields(
     app = make_app(LOG_TO_FILE=True)
     app.test_client().get("/health?x=1", headers={"X-Request-ID": "log-test-1"})
 
-    lines = (tmp_path / "logs" / "forja.log").read_text(encoding="utf-8").splitlines()
+    lines = (tmp_path / "logs" / "alza.log").read_text(encoding="utf-8").splitlines()
     records = [json.loads(line) for line in lines]
     request_records = [r for r in records if r["name"] == "app.request"]
     assert request_records, records
@@ -61,7 +61,7 @@ def test_json_log_file_has_one_object_per_line_with_request_fields(
 
 def test_records_outside_requests_use_dashes(make_app: AppFactory, tmp_path: Path) -> None:
     make_app(LOG_TO_FILE=True)
-    lines = (tmp_path / "logs" / "forja.log").read_text(encoding="utf-8").splitlines()
+    lines = (tmp_path / "logs" / "alza.log").read_text(encoding="utf-8").splitlines()
     created = [json.loads(line) for line in lines if "Application created" in line]
     assert created
     assert created[-1]["request_id"] == "-"

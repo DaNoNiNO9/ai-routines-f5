@@ -1,4 +1,4 @@
-# Diseño de Forja
+# Diseño de Alza
 
 Qué se ha decidido, por qué, y de dónde sale. Los tokens viven en `app/static/css/app.css` y los contrastes los comprueba `tests/unit/test_design_tokens.py`: si alguien oscurece un color por debajo de AA, la suite falla.
 
@@ -14,7 +14,7 @@ Se usa **de pie, en el gimnasio, con el móvil en una mano y poca luz**, y en ca
 
 Qué se ha mirado y qué se ha cogido de cada una. Lo que no aparece aquí es propio.
 
-| Referencia | Qué hace bien | Qué se ha adoptado en Forja |
+| Referencia | Qué hace bien | Qué se ha adoptado en Alza |
 |---|---|---|
 | **MacroFactor** | Gasto energético estimado a partir de datos reales, con la confianza a la vista | La gráfica de peso con los pesajes en gris y la media móvil encima en color, y enseñar el gasto observado junto al teórico en la revisión |
 | **Hevy** | La pantalla de registro de series, la mejor del sector | La fila por serie (kg, reps, RIR, botón de confirmar) y el "Última vez: 80 kg × 8, 8" encima de los campos |
@@ -29,7 +29,7 @@ De ninguna se ha copiado la interfaz: se han adoptado patrones que ya son conven
 
 ## Paleta
 
-Elegida entre tres propuestas (naranja sobre carbón, cian sobre pizarra, lima sobre negro). La elegida es **A "Forja"**: encaja con el nombre (hierro y fuego) y se separa del azul con el que se parecen entre sí casi todas las apps de fitness.
+Elegida entre tres propuestas (naranja sobre carbón, cian sobre pizarra, lima sobre negro). La elegida es **A, naranja sobre carbón** (nació como paleta «Forja», el nombre de trabajo): transmite energía, encaja con «Alza» y se separa del azul con el que se parecen entre sí casi todas las apps de fitness.
 
 | Token | Oscuro | Claro | Para qué |
 |---|---|---|---|

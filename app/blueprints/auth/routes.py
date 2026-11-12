@@ -126,7 +126,7 @@ def forgot_password() -> str | WerkzeugResponse:
                 minutes=minutes,
             )
             try:
-                send_email(user.email, _("Recupera tu contraseña de Forja"), body)
+                send_email(user.email, _("Recupera tu contraseña de Alza"), body)
             except EmailDeliveryError:
                 flash(_("No se pudo enviar el correo. Inténtalo más tarde."), "error")
                 return render_template("auth/forgot.html", form=form)

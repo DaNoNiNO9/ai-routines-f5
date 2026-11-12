@@ -182,5 +182,5 @@ def delete_account() -> str | WerkzeugResponse:
     user = current_user._get_current_object()
     logout_user()
     auth_service.delete_account(user)
-    flash(_("Tu cuenta y todos tus datos se han borrado. Gracias por probar Forja."), "success")
+    flash(_("Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."), "success")
     return redirect(url_for("main.index"))

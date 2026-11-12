@@ -64,7 +64,7 @@ RULE = colors.HexColor("#d7dae2")
 def _disclaimer() -> str:
     """El mismo aviso que el pie de la web, en el idioma de quien lee."""
     return _(
-        "Forja es una herramienta orientativa. No sustituye el consejo de un médico, "
+        "Alza es una herramienta orientativa. No sustituye el consejo de un médico, "
         "dietista-nutricionista ni de ningún otro profesional sanitario."
     )
 
@@ -82,7 +82,7 @@ def _styles() -> dict[str, ParagraphStyle]:
     base = getSampleStyleSheet()
     return {
         "title": ParagraphStyle(
-            "forja-title",
+            "alza-title",
             parent=base["Title"],
             fontName="Helvetica-Bold",
             fontSize=26,
@@ -92,7 +92,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=2,
         ),
         "eyebrow": ParagraphStyle(
-            "forja-eyebrow",
+            "alza-eyebrow",
             parent=base["Normal"],
             fontName="Helvetica-Bold",
             fontSize=8,
@@ -101,7 +101,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=6,
         ),
         "h2": ParagraphStyle(
-            "forja-h2",
+            "alza-h2",
             parent=base["Heading2"],
             fontName="Helvetica-Bold",
             fontSize=13,
@@ -111,7 +111,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=6,
         ),
         "h3": ParagraphStyle(
-            "forja-h3",
+            "alza-h3",
             parent=base["Heading3"],
             fontName="Helvetica-Bold",
             fontSize=10.5,
@@ -121,7 +121,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=4,
         ),
         "body": ParagraphStyle(
-            "forja-body",
+            "alza-body",
             parent=base["Normal"],
             fontName="Helvetica",
             fontSize=9.5,
@@ -130,7 +130,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=4,
         ),
         "muted": ParagraphStyle(
-            "forja-muted",
+            "alza-muted",
             parent=base["Normal"],
             fontName="Helvetica",
             fontSize=8.5,
@@ -166,17 +166,43 @@ def _table(data: list[list[Any]], widths: list[float], *, numeric_from: int = 1)
     return table
 
 
+def _brand_mark(canvas: Any, x: float, y: float, size: float) -> None:
+    """The Alza mark (an upward A) with its bottom-left corner at ``x, y``.
+
+    Same 32-unit geometry as ``components/brand.html`` and ``scripts/build_brand.py``.
+    """
+    unit = size / 32
+
+    def point(px: float, py: float) -> tuple[float, float]:
+        return x + px * unit, y + (32 - py) * unit  # SVG y grows downwards
+
+    canvas.setFillColor(ACCENT)
+    canvas.roundRect(x, y, size, size, 8 * unit, stroke=0, fill=1)
+    canvas.setStrokeColor(colors.white)
+    canvas.setLineWidth(3.4 * unit)
+    canvas.setLineCap(1)
+    canvas.setLineJoin(1)
+    chevron = canvas.beginPath()
+    chevron.moveTo(*point(9.5, 23.5))
+    chevron.lineTo(*point(16, 9.5))
+    chevron.lineTo(*point(22.5, 23.5))
+    chevron.moveTo(*point(12.6, 18.5))
+    chevron.lineTo(*point(19.4, 18.5))
+    canvas.drawPath(chevron, stroke=1, fill=0)
+
+
 def _page_furniture(canvas: Any, doc: Any) -> None:
     """Brand on top, disclaimer and page number at the bottom, on every page."""
     canvas.saveState()
     width, _height = A4
     top = doc.pagesize[1] - 12 * mm
+    _brand_mark(canvas, 18 * mm, top - 1 * mm, 4.4 * mm)
     canvas.setFont("Helvetica-Bold", 9)
-    canvas.setFillColor(ACCENT)
-    canvas.drawString(18 * mm, top, "FORJA")
+    canvas.setFillColor(INK)
+    canvas.drawString(18 * mm + 6 * mm, top, "ALZA")
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(MUTED)
-    canvas.drawRightString(width - 18 * mm, top, str(doc.forja_subtitle))
+    canvas.drawRightString(width - 18 * mm, top, str(doc.alza_subtitle))
     canvas.setStrokeColor(RULE)
     canvas.setLineWidth(0.5)
     canvas.line(18 * mm, top - 3 * mm, width - 18 * mm, top - 3 * mm)
@@ -237,11 +263,11 @@ def plan_pdf(
         rightMargin=18 * mm,
         topMargin=22 * mm,
         bottomMargin=22 * mm,
-        title=_("Forja · plan de %(name)s", name=user.display_name),
-        author="Forja",
+        title=_("Alza · plan de %(name)s", name=user.display_name),
+        author="Alza",
         subject=_("Plan de nutrición y entrenamiento"),
     )
-    document.forja_subtitle = f"{user.display_name} · {today.strftime('%d/%m/%Y')}"
+    document.alza_subtitle = f"{user.display_name} · {today.strftime('%d/%m/%Y')}"
     flow: list[Any] = []
 
     flow.append(Paragraph(_("Plan de nutrición y entrenamiento").upper(), styles["eyebrow"]))
@@ -851,8 +877,8 @@ def _readme() -> str:
     """Qué lleva el ZIP, en el idioma de quien lo descarga."""
     # El literal va sin sangrar a propósito: el texto del fichero es ese.
     return _(
-        """Exportación de datos de Forja
-=============================
+        """Exportación de datos de Alza
+============================
 
 Un fichero por tipo de dato, en CSV con separador de coma y codificación
 UTF-8 con BOM (se abre bien en Excel y en LibreOffice).
@@ -871,7 +897,7 @@ UTF-8 con BOM (se abre bien en Excel y en LibreOffice).
 
 Las fechas van en formato ISO (aaaa-mm-dd) y las horas en UTC.
 
-Forja es una herramienta orientativa. No sustituye el consejo de un médico,
+Alza es una herramienta orientativa. No sustituye el consejo de un médico,
 dietista-nutricionista ni de ningún otro profesional sanitario.
 """
     )
@@ -893,7 +919,7 @@ def data_archive(user: User) -> bytes:
 
 
 def export_filename(user: User, today: date, extension: str) -> str:
-    """``forja-plan-ana-rios-2026-09-09.pdf``-style name.
+    """``alza-plan-ana-rios-2026-09-09.pdf``-style name.
 
     Only ASCII: the name travels in a ``Content-Disposition`` header, and a
     header carrying "Ríos" (or a name in another script) would break it.
@@ -902,4 +928,4 @@ def export_filename(user: User, today: date, extension: str) -> str:
     plain = plain.encode("ascii", "ignore").decode("ascii")
     stem = re.sub(r"[^a-z0-9]+", "-", plain.lower()).strip("-")
     kind = "plan" if extension == "pdf" else "datos"
-    return f"forja-{kind}-{stem or 'usuario'}-{today.isoformat()}.{extension}"
+    return f"alza-{kind}-{stem or 'usuario'}-{today.isoformat()}.{extension}"

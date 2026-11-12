@@ -142,9 +142,9 @@ def test_alpine_loads_after_the_components_it_needs(
     """
     _signup(client)
     page = client.get("/panel").get_data(as_text=True)
-    assert "forja.js" in page
+    assert "alza.js" in page
     assert "alpine-3.17.2.min.js" in page
-    assert page.index("forja.js") < page.index("alpine-3.17.2.min.js")
+    assert page.index("alza.js") < page.index("alpine-3.17.2.min.js")
 
 
 def test_the_theme_starts_dark_and_can_be_switched(

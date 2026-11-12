@@ -1,4 +1,4 @@
-{# A Chart.js canvas fed by a JSON block; forja.js builds it when Chart.js is loaded. #}
+{# A Chart.js canvas fed by a JSON block; alza.js builds it when Chart.js is loaded. #}
 {% macro chart(id, kind, data, label, height="16rem") %}
 <div class="chart-box" style="height: {{ height }};">
   <canvas data-chart="{{ id }}-data" data-kind="{{ kind }}" role="img" aria-label="{{ label }}"></canvas>

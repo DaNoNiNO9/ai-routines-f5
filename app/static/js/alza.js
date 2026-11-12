@@ -1,4 +1,4 @@
-/* Forja: progressive enhancement only. Pages work without this file. */
+/* Alza: progressive enhancement only. Pages work without this file. */
 (function () {
   "use strict";
 

@@ -2,7 +2,7 @@
 
 Fecha: 2026-09-09. Fases 0-13 cerradas más el catálogo de traducciones. Este documento es la foto de lo que hay; para el detalle de cada fase, `docs/fases/`; para el porqué de cada decisión, `docs/DECISIONES.md`; para lo que se buscó y lo que apareció al final, `docs/AUDITORIA_FINAL.md`.
 
-## Qué es Forja
+## Qué es Alza
 
 Una aplicación web que calcula un plan de nutrición y una rutina de gimnasio a partir de un cuestionario, y los va corrigiendo cada dos semanas con lo que la persona registra de verdad: peso, comida, pasos y series. Cada número sale de una fórmula publicada y citada en el código, no de una regla del pulgar. Los límites de seguridad no se pueden desactivar desde la interfaz.
 

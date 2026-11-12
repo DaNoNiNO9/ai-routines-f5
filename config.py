@@ -1,6 +1,6 @@
 """Per-environment configuration classes.
 
-The environment is chosen by ``create_app(config_name)`` or the ``FORJA_ENV``
+The environment is chosen by ``create_app(config_name)`` or the ``ALZA_ENV``
 variable (``development`` by default). Secrets and machine-specific values are
 read from the environment; a ``.env`` file at the project root is loaded first
 (see ``.env.example``). Values already present in the real environment win over
@@ -34,7 +34,7 @@ def env_bool(name: str, default: bool) -> bool:
 class BaseConfig:
     """Settings shared by every environment. Subclasses override what differs."""
 
-    APP_NAME = "Forja"
+    APP_NAME = "Alza"
     SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
     # Database. Empty means "SQLite file in the instance folder" (resolved by create_app).
@@ -80,7 +80,7 @@ class BaseConfig:
     MAIL_USE_TLS = env_bool("MAIL_USE_TLS", True)
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", "")
-    MAIL_FROM = os.environ.get("MAIL_FROM", "Forja <no-reply@forja.local>")
+    MAIL_FROM = os.environ.get("MAIL_FROM", "Alza <no-reply@alza.fit>")
 
     # Accounts
     PASSWORD_MIN_LENGTH = 10

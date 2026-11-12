@@ -92,7 +92,7 @@ class BodyForm(StepForm):
         if (today.month, today.day) < (field.data.month, field.data.day):
             age -= 1
         if age < MIN_AGE:
-            raise ValidationError(_l("Forja es solo para mayores de 18 años."))
+            raise ValidationError(_l("Alza es solo para mayores de 18 años."))
         if age > MAX_AGE:
             raise ValidationError(_l("Revisa la fecha de nacimiento."))
 

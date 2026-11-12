@@ -2,7 +2,7 @@
 
 The application logger (``app``) gets a readable stream handler on stderr and,
 when ``LOG_TO_FILE`` is on, a rotating file handler that writes one JSON object
-per line to ``LOG_DIR/forja.log``. Every record carries the request id, method,
+per line to ``LOG_DIR/alza.log``. Every record carries the request id, method,
 path and remote address when emitted inside a request. Module loggers created
 with ``logging.getLogger(__name__)`` under the ``app`` package propagate here.
 
@@ -21,7 +21,7 @@ from pathlib import Path
 from flask import Flask, Response, g, has_request_context, request
 from pythonjsonlogger.json import JsonFormatter
 
-LOG_FILENAME = "forja.log"
+LOG_FILENAME = "alza.log"
 CONSOLE_FORMAT = "%(asctime)s %(levelname)-8s [%(request_id)s] %(name)s: %(message)s"
 JSON_FORMAT = (
     "%(asctime)s %(levelname)s %(name)s %(message)s "

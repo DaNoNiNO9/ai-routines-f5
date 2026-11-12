@@ -140,9 +140,9 @@ def test_the_archive_of_an_empty_account_still_opens(database: SQLAlchemy) -> No
 
 def test_the_file_name_is_safe(database: SQLAlchemy) -> None:
     user = make_user(database.session, display_name="Ana / Ríos")
-    assert exports.export_filename(user, TODAY, "pdf") == "forja-plan-ana-rios-2026-09-09.pdf"
+    assert exports.export_filename(user, TODAY, "pdf") == "alza-plan-ana-rios-2026-09-09.pdf"
     nameless = make_user(database.session, email="x@y.com", display_name="///")
-    assert exports.export_filename(nameless, TODAY, "zip") == "forja-datos-usuario-2026-09-09.zip"
+    assert exports.export_filename(nameless, TODAY, "zip") == "alza-datos-usuario-2026-09-09.zip"
     assert isinstance(database.session.scalar(select(User)), User)
 
 

@@ -9,16 +9,13 @@ Spanish, a decimal point. Each rule exists because the app once did it.
 from __future__ import annotations
 
 import re
-from datetime import timedelta
 from html.parser import HTMLParser
 
-import pytest
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 
-from app.models import User, WeightLog, WorkoutSession
-from tests.integration.test_workout_flow import _log, _routine, _with_routine
+from app.models import WorkoutSession
 
 PAGES = (
     "/panel",
@@ -73,35 +70,6 @@ def _visible(html: str) -> str:
     return " ".join(" ".join(parser.parts).split())
 
 
-@pytest.fixture
-def lived_in(client: FlaskClient, seeded: SQLAlchemy) -> FlaskClient:
-    """An account with a plan, two weeks of weights, a finished and an open session."""
-    _with_routine(client)
-    user = seeded.session.scalar(select(User))
-    assert user is not None
-    for days_ago in range(1, 15):
-        seeded.session.add(
-            WeightLog(
-                user=user,
-                logged_on=user.today() - timedelta(days=days_ago),
-                weight_kg=64.3 + days_ago * 0.05,
-            )
-        )
-    seeded.session.commit()
-    client.post("/diario/ingesta", data={"calories": "1850", "protein_g": "120.5"})
-    client.post(
-        "/diario/actividad", data={"steps": "8500", "cardio_kind": "liss", "cardio_minutes": "30"}
-    )
-    item = _routine(seeded).days[0].exercises[0]
-    client.post("/entreno/empezar/1")
-    finished = seeded.session.scalar(select(WorkoutSession))
-    assert finished is not None
-    _log(client, finished.id, item, set_index=1, weight_kg="62.5", reps="9", rir="2")
-    client.post(f"/entreno/{finished.id}/terminar", data={"perceived_fatigue": "3"})
-    client.post("/entreno/empezar/2")
-    return client
-
-
 def _pages(client: FlaskClient, seeded: SQLAlchemy) -> dict[str, str]:
     open_session = seeded.session.scalars(
         select(WorkoutSession).order_by(WorkoutSession.id.desc())
@@ -130,3 +98,4 @@ def test_no_screen_shows_an_iso_date_a_code_or_a_leftover(
 def test_spanish_screens_use_a_decimal_comma(lived_in: FlaskClient, seeded: SQLAlchemy) -> None:
     for path, text in _pages(lived_in, seeded).items():
         assert not DECIMAL_POINT.search(text), (path, DECIMAL_POINT.findall(text))
+

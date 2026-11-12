@@ -6,17 +6,21 @@
   <meta name="color-scheme" content="{{ current_theme }}">
   <meta name="theme-color" content="{{ '#0e1013' if current_theme == 'dark' else '#f6f6f8' }}">
   <title>{% block title %}{{ app_name }}{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" sizes="48x48">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   {% block head %}{% endblock %}
 </head>
 <body{% if current_user.is_authenticated %} class="has-tabs"{% endif %}>
   {% from "components/icons.html" import icon %}
+  {% from "components/brand.html" import brand_mark %}
   {% include "components/sprite.html" %}
   <a class="skip-link" href="#main">{{ _('Saltar al contenido') }}</a>
   <header class="site-header">
     <nav class="container nav" aria-label="{{ _('Navegación principal') }}">
-      <a class="brand" href="{{ url_for('main.index') }}">{{ app_name }}</a>
+      <a class="brand" href="{{ url_for('main.index') }}">{{ brand_mark() }}<span class="brand-name">{{ app_name }}</span></a>
       {% if current_user.is_authenticated %}
         <ul class="nav-links app-tabs">
           <li><a href="{{ url_for('dashboard.index') }}"{% if request.blueprint == 'dashboard' %} aria-current="page"{% endif %}>{{ icon('layout-dashboard') }}<span class="nav-label">{{ _('Inicio') }}</span></a></li>
@@ -77,9 +81,9 @@
       <p class="meta">v{{ app_version }} · {{ current_year }}</p>
     </div>
   </footer>
-  {# forja.js va primero: Alpine arranca en un microtask nada más cargar, así que
+  {# alza.js va primero: Alpine arranca en un microtask nada más cargar, así que
      sus componentes tienen que estar registrados antes (alpine:init no espera). #}
-  <script defer src="{{ url_for('static', filename='js/forja.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='js/alza.js') }}"></script>
   {% block scripts %}{% endblock %}
   <script defer src="{{ url_for('static', filename='vendor/alpine-3.17.2.min.js') }}"></script>
 </body>

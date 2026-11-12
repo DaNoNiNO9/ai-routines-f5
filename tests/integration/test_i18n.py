@@ -112,7 +112,7 @@ def test_the_pdf_is_exported_in_english(client: FlaskClient, seeded: SQLAlchemy)
     assert "Daily target" in texto
     assert "How this was worked out" in texto
     assert "less than you burn" in texto  # aviso del motor
-    assert "Forja is a guidance tool" in texto  # aviso legal de todas las páginas
+    assert "Alza is a guidance tool" in texto  # aviso legal de todas las páginas
     assert "Objetivo diario" not in texto
     assert "Cómo se ha calculado" not in texto
 
@@ -125,6 +125,6 @@ def test_the_archive_readme_is_translated(client: FlaskClient, seeded: SQLAlchem
         leeme = archivo.read("LEEME.txt").decode("utf-8")
         cabecera = archivo.read("planes.csv").decode("utf-8-sig").splitlines()[0]
 
-    assert leeme.startswith("Forja data export")
+    assert leeme.startswith("Alza data export")
     assert "Every version of the nutrition plan." in leeme
     assert cabecera.startswith("version,estado,desde")

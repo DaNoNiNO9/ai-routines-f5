@@ -20,7 +20,7 @@
   --space-6: 4rem;
 }
 
-/* Paleta A "Forja": naranja fundido sobre carbón. Contrastes comprobados en
+/* Paleta A: naranja fundido sobre carbón. Contrastes comprobados en
    tests/unit/test_design_tokens.py; ningún par de texto baja de 4.5:1. */
 :root, [data-theme="dark"] {
   color-scheme: dark;
@@ -121,6 +121,15 @@ code { font-family: var(--font-mono); font-size: 0.95em; }
 .nav-links {
   display: flex;
   gap: var(--space-3);
+.brand-mark { flex: none; display: block; }
+.brand-mark-bg { fill: var(--accent); }
+.brand-mark-fg {
+  fill: none;
+  stroke: var(--accent-contrast);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
   list-style: none;
   margin: 0;
   padding: 0;
@@ -482,16 +491,16 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
 /* Solo desplazamiento, nunca opacidad: si la animación no llega a ejecutarse
    (bfcache, motor sin animaciones, captura headless) el contenido tiene que
    estar visible igual. */
-@keyframes forja-entra { from { transform: translateY(7px); } to { transform: none; } }
-@keyframes forja-marca { 0% { background: var(--accent-soft); } 100% { background: transparent; } }
-@keyframes forja-gira { to { transform: rotate(360deg); } }
+@keyframes alza-entra { from { transform: translateY(7px); } to { transform: none; } }
+@keyframes alza-marca { 0% { background: var(--accent-soft); } 100% { background: transparent; } }
+@keyframes alza-gira { to { transform: rotate(360deg); } }
 
-.set-done.set-nueva { animation: forja-marca 900ms ease-out; }
-.stat-grid .stat { animation: forja-entra 260ms ease-out both; }
+.set-done.set-nueva { animation: alza-marca 900ms ease-out; }
+.stat-grid .stat { animation: alza-entra 260ms ease-out both; }
 .stat-grid .stat:nth-child(2) { animation-delay: 60ms; }
 .stat-grid .stat:nth-child(3) { animation-delay: 120ms; }
 .stat-grid .stat:nth-child(4) { animation-delay: 180ms; }
-.rest-timer { animation: forja-entra 200ms ease-out; }
+.rest-timer { animation: alza-entra 200ms ease-out; }
 .rest-timer.rest-done { border-color: var(--success); }
 .rest-timer.rest-done .rest-timer-value { color: var(--success); }
 
@@ -504,7 +513,7 @@ h3, .h3, .card-title { font-size: 1.15rem; line-height: 1.2; font-weight: 700; }
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
-  animation: forja-gira 700ms linear infinite;
+  animation: alza-gira 700ms linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
