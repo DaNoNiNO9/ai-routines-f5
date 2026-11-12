@@ -78,11 +78,13 @@ Rutas de diagnóstico, solo en desarrollo y testing: `/_debug/boom` (provoca un 
 
 Los textos se marcan con `{{ _('...') }}` en plantillas y `lazy_gettext` en Python desde el principio. Las plantillas del motor viven en un diccionario (`app/engine/messages.py`), así que llegan al catálogo con el extractor de `scripts/babel_engine.py`, declarado en `babel.cfg`. Idiomas: castellano e inglés.
 
+Se lanza con `python -m babel.messages.frontend` y no con `pybabel.exe`: el ejecutable no pone la raíz del proyecto en el `sys.path` y no encuentra `scripts.babel_engine`. El catálogo va sin cortar líneas (`--no-wrap`) para que los diffs se lean.
+
 ```powershell
-pybabel extract -F babel.cfg -k _l -o messages.pot .
-pybabel init -i messages.pot -d app/translations -l en     # solo la primera vez
-pybabel update -i messages.pot -d app/translations         # siguientes veces
-pybabel compile -d app/translations
+$pybabel = ".venv\Scripts\python.exe -m babel.messages.frontend"
+iex "$pybabel extract -F babel.cfg -k _l -o messages.pot ."
+iex "$pybabel update -i messages.pot -d app/translations --no-wrap --ignore-obsolete"
+iex "$pybabel compile -d app/translations --statistics"
 ```
 
 Tres reglas que hay que respetar:
