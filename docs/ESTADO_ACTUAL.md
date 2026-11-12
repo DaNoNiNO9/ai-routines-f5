@@ -30,10 +30,10 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 801 tests en verde |
+| Suite | 813 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
-| Migración aplicada | `976a93809ca2` (cabeza) |
+| Migración aplicada | `33233c72aa44` (cabeza) |
 | Rama | `main`, con remoto `origin` en GitHub (https://github.com/DaNoNiNO9/ai-routines-f5) |
 
 ## Qué estoy haciendo ahora
@@ -57,11 +57,13 @@ Después, el mismo día (T-131 a T-139):
 
 Después de la revisión del dueño del producto (T-140 a T-149): información precontractual en precios, cancelar y reanudar en un clic, desistimiento de 14 días con reembolso, eventos de Stripe desordenados, guía de Stripe en modo test en el README, página «Acerca de» con atribuciones, código de barras pensado para iPhone, avisos de salud y **plato y barra conectados** (día suave según sueño, comida y fatiga; objetivo de día de entreno o de descanso).
 
+Después (T-150 a T-157): **escáner en iPhone** con ZXing como plan B y **RGPD**: consentimiento explícito y aparte para datos de salud, retirable desde Cuenta (borra todos los datos de salud), borrador de política de privacidad en `/privacidad` para el abogado, auditoría de lo que sale de la app (ningún dato de salud a terceros) y notas para producción en `docs/PRIVACIDAD.md`. **Historias de usuario** con criterios de aceptación en `docs/HISTORIAS_DE_USUARIO.md`.
+
 Lo siguiente:
 
-1. **Foto de la comida con IA**: pendiente de que el dueño elija proveedor; exige consentimiento expreso (RGPD art. 9).
-2. Activar Stripe real con sus claves (README › Pagos con Stripe) y que un abogado revise las condiciones.
-3. Historias de usuario con criterios de aceptación, al final.
+1. **Foto de la comida con IA**: pendiente de que el dueño elija proveedor; exige revisar el consentimiento (RGPD art. 9).
+2. Activar Stripe real con sus claves de test (README › Pagos con Stripe).
+3. Abogado: política de privacidad, condiciones y EIPD; elegir alojamiento en la UE.
 
 ## Siguiente paso
 

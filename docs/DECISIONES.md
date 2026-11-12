@@ -258,3 +258,16 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-147 | Aviso de salud | Breve, en el plan de calorías, el resultado y la revisión, además del pie | Es donde se deciden o cambian las calorías |
 | T-148 | Cómo llegas hoy | Sueño (una pregunta al empezar), lo comido ayer frente al objetivo, la fatiga de la última sesión y las semanas de déficit suman puntos: 2-3 día suave (−5 % de carga en la primera serie, +1 de reserva), 4 o más más suave (−10 %). Sin datos no suma; se puede elegir entrenar normal | Une el plato y la barra con datos que la app ya tiene, sin pedir más registros. Solo toca la primera serie: las siguientes ya se ajustan solas |
 | T-149 | Día de entreno o de descanso | Con más hidratos los días de entreno, el objetivo del día es el de entreno si ese día se empezó una sesión, y el de descanso si no | Las rutinas no tienen días de la semana fijos; la sesión real es la señal fiable |
+
+## 2026-11-12 — iPhone y RGPD
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-150 | Escáner en iPhone | Si el navegador no lee EAN/UPC con BarcodeDetector, se carga ZXing (servido desde el propio servidor, MIT) y se lee con `getUserMedia`; `?lector=zxing` lo fuerza para probar | Safari no trae BarcodeDetector; la entrada a mano queda siempre visible |
+| T-151 | Consentimiento de salud | Casilla propia en el registro, sin premarcar, con fecha y versión del texto guardadas; las cuentas anteriores lo dan al volver a entrar | Art. 9.2.a RGPD: explícito, aparte de las condiciones y demostrable |
+| T-152 | Sin consentimiento | Solo cuenta, exportación, borrado, suscripción y páginas públicas; lo demás redirige a darlo | Sin consentimiento no se puede guardar ni mostrar un dato de salud, pero sí llevarse los datos o borrar la cuenta |
+| T-153 | Retirar el consentimiento | Borra en el momento todos los datos de salud y deja la cuenta y la suscripción; pide la contraseña | Retirarlo tiene que ser tan fácil como darlo y no obliga a perder la cuenta |
+| T-154 | Tipo de dieta | Dentro del mismo consentimiento, nombrado expresamente (halal y kosher pueden revelar creencias) | Una casilla más complica el registro; queda anotado para el abogado |
+| T-155 | Registros | Ruta sin la parte de búsqueda, rotación diaria y 30 días | La búsqueda de alimentos dice qué come la persona |
+| T-156 | Datos en el móvil | `Clear-Site-Data: "cache", "storage"` al retirar el consentimiento y al borrar la cuenta | La copia para usar la app sin red también tiene datos de salud |
+| T-157 | Alojamiento y copias | En la UE, copias cifradas que caducan a los 30 días y borrados reaplicados al restaurar (`docs/PRIVACIDAD.md`) | Así el borrado llega también a las copias en un plazo que se puede prometer |
