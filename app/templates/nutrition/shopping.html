@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "components/icons.html" import icon %}
+
+{% set aisle_names = {
+  'fruit_veg': _('Fruta y verdura'),
+  'meat_fish': _('Carne, pescado y proteína vegetal'),
+  'dairy_eggs': _('Lácteos, huevos y bebidas'),
+  'grains': _('Pan, cereales, legumbres y patatas'),
+  'pantry': _('Despensa'),
+  'other': _('Otros'),
+} %}
+
+{% block title %}{{ _('Lista de la compra') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('nutrition.menu', variante=variant) }}">{{ _('Tu menú') }}</a></p>
+  <h1>{{ _('Lista de la compra') }}</h1>
+  <p class="lead">{{ _('Lo que necesitas para los siete días del menú. El arroz y la pasta van en crudo, que es como se compran.') }}</p>
+</section>
+
+<div class="grid-cards">
+  {% for aisle, items in aisles %}
+    <section class="card">
+      <h2 class="card-title">{{ aisle_names[aisle] }}</h2>
+      <ul class="shopping-list">
+        {% for item in items %}
+          <li>
+            <label class="check-label"><input type="checkbox" class="check-input"><span>{{ item.name }}</span></label>
+            <span class="meta">{% if item.units %}{{ ngettext('%(num)s huevo', '%(num)s huevos', item.units) }}{% elif item.grams >= 1000 %}{{ (item.grams / 1000)|num(1) }} kg{% else %}{{ item.grams|num(0) }} g{% endif %}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+</div>
+{% endblock %}

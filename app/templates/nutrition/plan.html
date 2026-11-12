@@ -62,6 +62,7 @@
 
     <section class="card">
       <h2 class="card-title">{{ _('Comidas') }}</h2>
+      <p>{% if is_pro %}<a class="button button-small" href="{{ url_for('nutrition.menu') }}">{{ icon('apple') }}{{ _('Ver tu menú con platos') }}</a>{% else %}<a class="button button-small button-secondary" href="{{ url_for('billing.prices') }}">{{ icon('apple') }}{{ _('Menú con platos y lista de la compra') }}<span class="pro-badge">PRO</span></a>{% endif %}</p>
       <div class="table-wrap">
         <table class="table table-meals">
           <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>{{ _('Prot.') }}</th><th>{{ _('Carb.') }}</th><th>{{ _('Grasa') }}</th></tr></thead>

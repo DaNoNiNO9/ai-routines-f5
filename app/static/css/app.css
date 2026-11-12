@@ -779,3 +779,15 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .macro-bar .progress { margin: 0; }
 .macro-bar.is-over .progress > span { background: var(--warning); }
 .food-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-2) 0 var(--space-3); }
+
+/* Menú */
+.menu-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--space-3); }
+.menu-meal { padding: var(--space-2) 0; border-top: 1px solid var(--border); }
+.menu-meal:first-of-type { border-top: 0; }
+.menu-meal .eyebrow { margin: 0; }
+.menu-meal .h3 { margin: 0.15rem 0 var(--space-1); }
+.menu-items, .shopping-list { list-style: none; padding: 0; margin: 0 0 var(--space-1); display: grid; gap: 0.2rem; }
+.menu-items li, .shopping-list li { display: flex; justify-content: space-between; gap: var(--space-2); }
+.shopping-list li { padding: 0.35rem 0; border-bottom: 1px solid var(--border); align-items: center; }
+.shopping-list .check-input:checked + span { text-decoration: line-through; color: var(--text-muted); }
+@media print { .site-header, .site-footer, .app-tabs { display: none !important; } }

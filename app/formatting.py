@@ -75,7 +75,7 @@ def fdate(value: date | datetime | str | None, style: str = "short") -> str:
     """A calendar date in the locale's own order.
 
     ``short`` 25/11/2026 (en: 11/25/2026), ``day`` 25/11, ``medium`` 25 nov,
-    ``long`` 25 de noviembre de 2026.
+    ``long`` 25 de noviembre de 2026, ``weekday`` Lunes 25 (en: Monday 25).
 
     ISO strings (as kept in drafts and JSON snapshots) are accepted too.
     """
@@ -87,6 +87,9 @@ def fdate(value: date | datetime | str | None, style: str = "short") -> str:
         value = _local(value).date()
     if style == "long":
         return format_date(value, format="long")
+    if style == "weekday":
+        text = format_skeleton("EEEEd", value, locale=get_locale())
+        return text[:1].upper() + text[1:]
     skeleton = {"day": "dM", "medium": "MMMd"}.get(style, "yMd")
     return format_skeleton(skeleton, value, locale=get_locale())
 

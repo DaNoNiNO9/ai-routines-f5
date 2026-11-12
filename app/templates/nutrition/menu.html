@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "components/icons.html" import icon %}
+
+{% block title %}{{ _('Tu menú') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('nutrition.plan') }}">{{ _('Nutrición') }}</a></p>
+  <h1>{{ _('Tu menú de la semana') }}</h1>
+  <p class="lead">{{ _('Platos de verdad con las cantidades que cuadran con tu plan. Si no te apetece algo, pide otro menú.') }}</p>
+  <div class="food-actions">
+    <a class="button" href="{{ url_for('nutrition.shopping', variante=variant) }}">{{ icon('notebook-pen') }}{{ _('Lista de la compra') }}</a>
+    <a class="button button-secondary" href="{{ url_for('nutrition.menu', variante=variant + 1) }}">{{ icon('repeat') }}{{ _('Otro menú') }}</a>
+  </div>
+</section>
+
+<div class="menu-days">
+  {% for served in days %}
+    <section class="card menu-day">
+      <h2 class="card-title">{% if served.day == today %}{{ _('Hoy') }}{% else %}{{ served.day|fdate('weekday') }}{% endif %} <span class="muted">· {{ served.day|fdate('medium') }}</span></h2>
+      {% for plate in served.plates %}
+        {% set s = summary(plate) %}
+        <article class="menu-meal">
+          <p class="eyebrow">{{ plate.target.name }}</p>
+          <h3 class="h3">{% if current_locale.startswith('en') %}{{ plate.dish.name_en }}{% else %}{{ plate.dish.name_es }}{% endif %}</h3>
+          <ul class="menu-items">
+            {% for name, grams, is_egg in s['items'] %}
+              <li><span>{{ name }}</span><span class="meta">{% if is_egg %}{{ ngettext('%(num)s huevo', '%(num)s huevos', (grams / 55)|round|int) }}{% else %}{{ grams|num(0) }} g{% endif %}</span></li>
+            {% endfor %}
+          </ul>
+          <p class="meta">{{ _('%(kcal)s kcal · P %(p)s · H %(c)s · G %(f)s', kcal=s.kcal|num(0), p=s.protein|num(0), c=s.carbs|num(0), f=s.fat|num(0)) }}{% if (s.kcal - s.target_kcal)|abs > s.target_kcal * 0.05 %} · {{ _('objetivo %(kcal)s kcal', kcal=s.target_kcal|num(0)) }}{% endif %}</p>
+          {% if served.day == today %}
+            <form method="post" action="{{ url_for('nutrition.log_meal') }}" class="inline-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="comida" value="{{ plate.target.position }}">
+              <input type="hidden" name="variante" value="{{ variant }}">
+              <button type="submit" class="button button-small button-secondary">{{ icon('check') }}{{ _('Me lo he comido: apuntar') }}</button>
+            </form>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </section>
+  {% endfor %}
+</div>
+<p class="help">{{ _('Los valores son medios de la tabla de Alza. Si cocinas con más aceite o cambias un ingrediente, apúntalo tal cual en el diario.') }}</p>
+{% endblock %}
