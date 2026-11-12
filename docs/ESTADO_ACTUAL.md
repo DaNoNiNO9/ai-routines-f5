@@ -20,7 +20,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | 8 | Cuestionario multipaso que genera y guarda plan y rutina | `FASE_08` |
 | 9 | Panel, nutrición y entrenamiento con gráficas e ilustraciones | `FASE_09` |
 | 10 | Diario (peso, ingesta, actividad, perímetros), sesiones de entrenamiento con temporizador y revisión quincenal aplicable | `FASE_10` |
-| 11 | Diseño visual: paleta Forja, tipografías e iconos vendorizados, tema claro, estados y micro-interacciones | `FASE_11` |
+| 11 | Diseño visual: paleta naranja sobre carbón, tipografías e iconos vendorizados, tema claro, estados y micro-interacciones | `FASE_11` |
 | 12 | Exportación del plan en PDF y de los datos en CSV, ajustes de cuenta y borrado RGPD | `FASE_12` |
 | — | Catálogo inglés completo (809 mensajes): interfaz, avisos del motor, PDF, LEEME del ZIP y nombres del catálogo | `FASE_TRADUCCIONES` |
 | 13 | Auditoría final: motor con datos de los bordes, seguridad, robustez, límites de §3.5, rendimiento y calidad | `FASE_13` |
@@ -30,31 +30,25 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 663 tests en verde |
-| Cobertura de `app/` | 98,6 % (motor 99,2 %) |
+| Suite | 675 tests en verde |
+| Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
 | Rama | `main`, con remoto `origin` en GitHub (https://github.com/DaNoNiNO9/ai-routines-f5) |
 
 ## Qué estoy haciendo ahora
 
-**Pausa el 2026-11-11 por la noche, a mitad del barrido de coherencia.** Encargo: arreglar los fallos de la auditoría de producto, que no quede ninguna incoherencia ni jerga, y cambiar la marca a **Alza** (dominio `alza.fit`). Después vendrán las funcionalidades nuevas (ver la auditoría en el artifact «Rumbo de Forja»).
+**Barrido de coherencia y marca Alza terminados el 2026-11-12.** Decisiones T-112 a T-119 en `docs/DECISIONES.md`.
 
-Hecho y con commit:
+Hecho:
 
-- Los seis fallos de la auditoría: contraste de «Crear cuenta», preguntas que no se usaban (fuera aversiones, alergias, presupuesto, cocina, cafeína y la nota de salud; la dieta vegana sube la proteína y el alcohol sale como aviso), peso sugerido desde la primera serie y ajuste entre series (`app/engine/routines/loads.py`), revisión sin fecha repetida, «Katch-McArdle».
-- `app/formatting.py`: filtros `num`, `signed`, `kg`, `duration`, `fdate`, `tempo` y `days_from_now`; fechas en la zona horaria de la persona.
-- Barrido de lenguaje en todas las plantillas, los avisos del motor y el PDF (reserva en vez de RIR, intervalos en vez de HIIT, bloques en vez de mesociclo, «Inicio» en vez de «Panel»…).
-- Historial del plan reconstruido desde los códigos guardados (`adjustments.describe`).
-- Barra de navegación inferior con nombres en el móvil.
-- `tests/integration/test_coherence.py` vigila fechas ISO, códigos internos, `None` y decimales con punto en todas las pantallas.
+- Los seis fallos de la auditoría de producto, el formato de cifras y fechas, el lenguaje sin jerga y la barra inferior en el móvil (2026-11-11).
+- Catálogo inglés al 100 % (881 mensajes).
+- Marca **Alza**: nombre, logo (A en flecha), favicon, icono de acceso directo, PDF, ZIP, correos y nombres internos.
+- Pasada real con cuenta nueva y capturas a 390 y 1440 px de todas las pantallas, en castellano e inglés, más el PDF. Salieron y se arreglaron: los decimales con coma se rechazaban en los formularios, cifras de cuatro dígitos con dos normas, jerga en avisos del motor, objetivos, patrones y portada, la tabla de comidas cortada en el móvil, un paréntesis doble y «cuestionario v1» en el PDF.
+- `test_coherence` vigila fechas ISO, códigos internos, decimales con punto y una lista de palabras prohibidas en todas las pantallas, la portada y el cuestionario; `test_brand`, la marca y que el inglés no caiga al castellano.
 
-Pendiente, en este orden:
-
-1. ~~**Catálogo inglés**~~: hecho el 2026-11-12 (882 mensajes, 100 %; suite completa en verde).
-2. **Marca Alza**: `APP_NAME`, logo en la cabecera, favicon, PDF, LEEME del ZIP, nombre de los ficheros exportados, «Forja es solo para mayores de 18 años» en `onboarding/forms.py`, portada y docs.
-3. **Pasada real**: cuenta nueva y capturas a 390 y 1440 px de todas las pantallas (sobre todo la barra inferior y la sesión), y suite completa en verde.
-4. Decisiones nuevas en `docs/DECISIONES.md` (T-112 en adelante) y subir a GitHub.
+Lo siguiente: las funcionalidades nuevas para vender (ver el artifact «Rumbo de Forja»; la base de ejercicios libre que se recordaba es probablemente wger) y, al final, las historias de usuario con criterios de aceptación.
 
 ## Siguiente paso
 
