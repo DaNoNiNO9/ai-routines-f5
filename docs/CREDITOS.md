@@ -12,7 +12,14 @@ Todo recurso externo incluido en el proyecto se lista aquí con su origen y lice
 | Pasos en castellano de los 190 ejercicios | Elaboración propia a partir de las instrucciones de free-exercise-db | The Unlicense (el original); los pasos son nuestros | `scripts/exercise_instructions_es.json`, copiados a `exercises.json` por `scripts/build_exercises.py`. |
 | Vídeos de 32 ejercicios | [wger](https://wger.de), grabados por Goulart | [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Descargados y convertidos a H.264 640x360 sin sonido por `scripts/build_videos.py` (obra derivada, misma licencia). Autoría, licencia y enlace al original en `app/static/video/exercises/CREDITS.json` y debajo de cada vídeo en la ficha del ejercicio. |
 
-Los ejercicios sin vídeo se muestran con sus dos fotos alternándose. El emparejamiento con wger es a mano: solo cuando el vídeo es exactamente nuestro ejercicio.
+Los ejercicios sin vídeo se muestran con sus dos fotos alternándose.
+
+## Alimentos
+
+| Recurso | Origen | Licencia | Uso en Alza |
+|---|---|---|---|
+| Productos con sus valores nutricionales | [Open Food Facts](https://world.openfoodfacts.org), consultado en caliente (`search.openfoodfacts.org` y la API de productos) | Base de datos: [ODbL](https://opendatacommons.org/licenses/odbl/1-0/); contenidos: [DbCL](https://opendatacommons.org/licenses/dbcl/1-0/) | Buscador y código de barras del diario. Solo se envía lo buscado o el código; se guarda una copia de los valores del producto que la persona apunta. La página de resultados lo atribuye. |
+| Tabla básica de 80 alimentos | Elaboración propia con valores medios de referencia (BEDCA, USDA FoodData Central) | Propia | `app/seeds/basic_foods.json`: buscador sin red y menú de la semana. Un test comprueba que las kcal cuadran con proteína, hidratos y grasa. | El emparejamiento con wger es a mano: solo cuando el vídeo es exactamente nuestro ejercicio.
 
 ## Librerías JavaScript vendorizadas
 

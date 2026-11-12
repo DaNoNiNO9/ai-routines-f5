@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 724 tests en verde |
+| Suite | 779 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -49,13 +49,18 @@ Hecho (cada una probada en el navegador, además de con tests):
 - **Marcas celebradas en el momento** y **racha semanal** con un día de margen.
 - Antes, el mismo día: marca Alza, catálogo inglés al 100 % y barrido de jerga, coma decimal y cifras.
 
-Lo siguiente, por orden de lo que pesa en la venta (ver el artifact «Rumbo de Forja»):
+Después, el mismo día (T-131 a T-139):
 
-1. **Menú de verdad** (comidas y recetas que cuadran con los macros, lista de la compra).
-2. **Apuntar comida en segundos**: base de alimentos de Open Food Facts y código de barras. La foto con IA necesita un proveedor y consentimiento explícito (RGPD art. 9): decisión del dueño del producto.
-3. **Suscripción y prueba gratis** con Stripe: necesita la cuenta de Stripe del dueño.
-4. **Plato y barra conectados** (la carga del día según sueño y sesiones; pausa de dieta con recorte de volumen).
-5. Historias de usuario con criterios de aceptación, al final.
+- **Alza Pro con pagos**: precios, prueba gratis de 7 días, tu suscripción y muro de pago. La pasarela es **simulada** hasta que el dueño del producto dé su cuenta de Stripe; la real está escrita y probada contra respuestas con la forma de Stripe. Para activarla: `BILLING_BACKEND=stripe` y las variables `STRIPE_*` (ver `.env.example`).
+- **Apuntar comida en segundos**: tabla básica, Open Food Facts, código de barras, habituales y copiar ayer.
+- **Menú de la semana** con platos que cuadran con el plan, lista de la compra y «apuntar» con un toque.
+
+Lo siguiente:
+
+1. **Plato y barra conectados** (la carga del día según sueño y sesiones; pausa de dieta con recorte de volumen).
+2. **Foto de la comida con IA**: pendiente de que el dueño elija proveedor; exige consentimiento expreso (RGPD art. 9).
+3. Activar Stripe real cuando estén las claves; probar el webhook con `stripe listen`.
+4. Historias de usuario con criterios de aceptación, al final.
 
 ## Siguiente paso
 

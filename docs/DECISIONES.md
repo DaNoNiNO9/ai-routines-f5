@@ -229,3 +229,17 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-128 | Pantalla encendida | Wake Lock durante la sesión, reactivado al volver a la pestaña | Desbloquear el móvil entre series es la queja más repetida de las apps de entreno |
 | T-129 | Marcas | Se celebran al guardar la serie que supera el mejor máximo estimado de sesiones anteriores; la primera vez no cuenta y repetir la misma serie tampoco | Celebrar algo que no lo es (la primera vez) quita valor a las marcas de verdad |
 | T-130 | Racha | Semanal, con un día de margen (días del plan menos uno), y la semana en curso nunca la rompe | Una racha diaria castiga el descanso, que es parte del plan. Perder la racha por un imprevisto hace abandonar |
+
+## 2026-11-12 — Pagos, comida y menú
+
+| ID | Tema | Decisión | Motivo |
+|---|---|---|---|
+| T-131 | Pasarela de pago | Dos implementaciones con el mismo contrato: `fake` (simula Stripe de punta a punta y emite los mismos eventos) y `stripe` (API por HTTPS sin SDK y webhooks firmados). La suscripción solo cambia aplicando eventos con la forma de Stripe, guardados en `billing_events` para no aplicarlos dos veces | El dueño del producto pidió simularlo hasta tener su cuenta: así pasar a la real es configuración, no código. Sin SDK hay una dependencia menos y cuatro llamadas no lo justifican |
+| T-132 | Producción y pagos | No arranca con la pasarela simulada y el muro de pago activo, ni con Stripe sin sus cuatro claves | La simulada regala Pro a quien la pulse |
+| T-133 | Qué es Pro | Fecha de llegada, buscador de alimentos y código de barras, habituales, copiar ayer, menú y lista de la compra. Siempre gratis: plan, rutina, sesiones, fichas, revisión quincenal, límites de seguridad, total de comida a mano y exportación | La revisión sube calorías cuando se pierde peso demasiado rápido: una protección de seguridad no puede cobrarse. El total a mano mantiene la revisión funcionando sin pagar |
+| T-134 | Precio | 7,99 € al mes o 49,99 € al año, 7 días de prueba (una sola vez) | Lo propuesto en la auditoría, entre Fitia y MacroFactor |
+| T-135 | Borrar la cuenta con suscripción | Se cancela en la pasarela antes de borrar; si falla, no se borra nada | Una cuenta borrada no puede seguir pagando |
+| T-136 | Alimentos | Tabla propia de 80 alimentos comunes (sin red, al instante) y después Open Food Facts filtrado por España; código de barras escrito o con la cámara (BarcodeDetector). Los valores se copian al apuntar y se vuelven a leer del origen, nunca del navegador; productos sin alguno de los cuatro valores, fuera | Open Food Facts es abierto y tiene los productos del súper español, pero lo escriben voluntarios: mejor no enseñar que inventar ceros |
+| T-137 | Total del día con alimentos | Sale de los alimentos (y el formulario a mano solo guarda el % de cumplimiento) | Dos fuentes para el mismo número acaban contradiciéndose |
+| T-138 | Cámara | `Permissions-Policy: camera=(self)` | Escanear códigos; micrófono, ubicación y pagos siguen cerrados |
+| T-139 | Menú | Platos con proteína, hidrato y grasa principales cuyos gramos salen de resolver las tres ecuaciones de cada comida con límites, redondeo a 5 g y huevos enteros; las legumbres van como hidrato; los platos de soja solo en dieta vegana. Siete días deterministas por persona y variante | Así «apuntar» registra exactamente lo que se ve, y el menú cuadra con el plan en vez de ser una lista de recetas genérica |
