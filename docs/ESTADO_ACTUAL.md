@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 675 tests en verde |
+| Suite | 724 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -38,17 +38,24 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 
 ## Qué estoy haciendo ahora
 
-**Barrido de coherencia y marca Alza terminados el 2026-11-12.** Decisiones T-112 a T-119 en `docs/DECISIONES.md`.
+**Primer bloque de funcionalidades para vender, terminado el 2026-11-12.** Decisiones T-120 a T-130 en `docs/DECISIONES.md`.
 
-Hecho:
+Hecho (cada una probada en el navegador, además de con tests):
 
-- Los seis fallos de la auditoría de producto, el formato de cifras y fechas, el lenguaje sin jerga y la barra inferior en el móvil (2026-11-11).
-- Catálogo inglés al 100 % (881 mensajes).
-- Marca **Alza**: nombre, logo (A en flecha), favicon, icono de acceso directo, PDF, ZIP, correos y nombres internos.
-- Pasada real con cuenta nueva y capturas a 390 y 1440 px de todas las pantallas, en castellano e inglés, más el PDF. Salieron y se arreglaron: los decimales con coma se rechazaban en los formularios, cifras de cuatro dígitos con dos normas, jerga en avisos del motor, objetivos, patrones y portada, la tabla de comidas cortada en el móvil, un paréntesis doble y «cuestionario v1» en el PDF.
-- `test_coherence` vigila fechas ISO, códigos internos, decimales con punto y una lista de palabras prohibidas en todas las pantallas, la portada y el cuestionario; `test_brand`, la marca y que el inglés no caiga al castellano.
+- **Ficha de ejercicio tipo Hevy**: vídeo de wger en 32 ejercicios, animación con las dos fotos en el resto, músculos, material, pasos en castellano para los 190 e historial propio (mejor serie, máximo estimado, con cuánto empezar). Se abre encima de la sesión sin perderla.
+- **Tu fecha de llegada** en el inicio, con banda de confianza, camino recorrido y lo previsto frente a lo real.
+- **Tu plan en un minuto**: una pantalla y plan al instante; el cuestionario completo sigue disponible.
+- **App instalable** que funciona sin cobertura: la sesión abre sin red, las series quedan en cola y se envían solas, y la pantalla no se apaga durante la sesión.
+- **Marcas celebradas en el momento** y **racha semanal** con un día de margen.
+- Antes, el mismo día: marca Alza, catálogo inglés al 100 % y barrido de jerga, coma decimal y cifras.
 
-Lo siguiente: las funcionalidades nuevas para vender (ver el artifact «Rumbo de Forja»; la base de ejercicios libre que se recordaba es probablemente wger) y, al final, las historias de usuario con criterios de aceptación.
+Lo siguiente, por orden de lo que pesa en la venta (ver el artifact «Rumbo de Forja»):
+
+1. **Menú de verdad** (comidas y recetas que cuadran con los macros, lista de la compra).
+2. **Apuntar comida en segundos**: base de alimentos de Open Food Facts y código de barras. La foto con IA necesita un proveedor y consentimiento explícito (RGPD art. 9): decisión del dueño del producto.
+3. **Suscripción y prueba gratis** con Stripe: necesita la cuenta de Stripe del dueño.
+4. **Plato y barra conectados** (la carga del día según sueño y sesiones; pausa de dieta con recorte de volumen).
+5. Historias de usuario con criterios de aceptación, al final.
 
 ## Siguiente paso
 
