@@ -30,6 +30,7 @@ PUBLIC_PATHS = {
     "/manifest.webmanifest",
     "/sw.js",
     "/sin-conexion",
+    "/precios",
     "/entrar",
     "/registro",
     "/recuperar",

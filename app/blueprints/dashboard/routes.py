@@ -9,7 +9,7 @@ from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
 from app import labels
-from app.services import dashboard, onboarding, plans, workouts
+from app.services import billing, dashboard, onboarding, plans, workouts
 
 bp = Blueprint("dashboard", __name__)
 
@@ -50,7 +50,9 @@ def index() -> str:
             next_day=dashboard.next_routine_day(current_user, routine),
             weights=weights,
             weight_chart=chart,
-            arrival=dashboard.arrival_card(profile, plan, weights, today),
+            arrival=dashboard.arrival_card(profile, plan, weights, today)
+            if billing.is_pro(current_user)
+            else None,
             streak=workouts.weekly_streak(current_user, today, len(routine.days))
             if routine
             else None,

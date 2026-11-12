@@ -51,6 +51,9 @@ Las no secretas del CLI van en `.flaskenv` (versionado). El resto se leen del en
 | `DATABASE_URL` | `.env` | vacío → `instance/alza.db` (SQLite) | Producción: `postgresql+psycopg://usuario:clave@host:5432/alza` |
 | `LOG_LEVEL` | `.env` | `DEBUG` en dev, `INFO` en el resto | Nivel del logger `app` |
 | `LOG_DIR` | `.env` | `logs/` | Carpeta de `alza.log` (JSON por línea, rotación 5 MB x 5) |
+| `BILLING_BACKEND` | `.env` | `fake` | `fake` simula Stripe de punta a punta (pago, prueba, portal, cancelación) sin cuenta ni cobro; `stripe` usa la API real |
+| `PAYWALL_ENABLED` | `.env` | `true` | Con `false`, todo el mundo tiene Pro. Producción no arranca con `fake` y el muro activo |
+| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_YEARLY` | `.env` | vacío | Cuenta real de Stripe. Webhook en `/suscripcion/webhook` (ver `.env.example`) |
 | `RATELIMIT_STORAGE_URI` | `.env` | `memory://` | Almacén del rate limiting; con varios workers usar Redis |
 | `SQLALCHEMY_ECHO` | `.env` | `0` | Volcar SQL en el log (solo desarrollo) |
 | `MAIL_BACKEND` | `.env` | `log` | `log` deja los correos en el log (desarrollo); `smtp` los envía (obligatorio en producción) |

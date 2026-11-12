@@ -118,6 +118,14 @@
       </article>
     {% endif %}
 
+    {% if not is_pro and profile.target_weight_kg %}
+      <article class="card pro-teaser">
+        <h2 class="card-title">{{ icon('trending-down') }}{{ _('Tu llegada') }}<span class="pro-badge">PRO</span></h2>
+        <p>{{ _('La fecha en la que llegas a %(kg)s, con su margen, y cómo vas frente a lo previsto. Se afina con cada pesaje.', kg=profile.target_weight_kg|kg) }}</p>
+        <a class="button button-small" href="{{ url_for('billing.prices') }}">{{ icon('trophy') }}{{ _('Probar Pro gratis') }}</a>
+      </article>
+    {% endif %}
+
     {% if arrival and arrival.arrival.status != 'no_target' %}
       {% set a = arrival.arrival %}
       <article class="card arrival-card">

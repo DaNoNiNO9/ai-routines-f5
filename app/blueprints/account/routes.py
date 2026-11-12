@@ -22,7 +22,7 @@ from app.blueprints.auth.routes import password_messages
 from app.engine.nutrition import build_nutrition_plan
 from app.extensions import db, limiter
 from app.services import auth as auth_service
-from app.services import exports, onboarding, plans
+from app.services import billing, exports, onboarding, plans
 
 logger = logging.getLogger(__name__)
 
@@ -180,6 +180,20 @@ def delete_account() -> str | WerkzeugResponse:
         form.current_password.errors.append(str(WRONG_PASSWORD))
         return _page(delete_form=form)
     user = current_user._get_current_object()
+    subscription = billing.subscription_of(user)
+    if subscription is not None and subscription.is_active:
+        # Antes de borrar nada: una cuenta borrada no puede seguir pagando.
+        try:
+            billing.gateway().cancel_now(subscription)
+        except billing.BillingError:
+            flash(
+                _(
+                    "No hemos podido cancelar tu suscripción y no hemos borrado nada. "
+                    "Inténtalo de nuevo en unos minutos."
+                ),
+                "error",
+            )
+            return _page(delete_form=form)
     logout_user()
     auth_service.delete_account(user)
     flash(_("Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."), "success")

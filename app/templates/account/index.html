@@ -54,6 +54,16 @@
   </section>
 
   <section class="card card-span">
+    <h2 class="card-title">{{ icon('trophy') }}{{ _('Tu suscripción') }}</h2>
+    {% if paywall and is_pro %}
+      <p>{{ _('Tienes Alza Pro.') }}</p>
+    {% elif paywall %}
+      <p>{{ _('Usas la versión gratis: plan, rutina, sesiones y revisión sin pagar nada.') }}</p>
+    {% endif %}
+    <p><a class="button button-secondary" href="{{ url_for('billing.subscription') }}">{{ _('Ver tu suscripción') }}</a></p>
+  </section>
+
+  <section class="card card-span">
     <h2 class="card-title">{{ icon('dumbbell') }}{{ _('Alza en tu móvil') }}</h2>
     <p>{{ _('Instálala y se abre como una app, con su icono, a pantalla completa. En el gimnasio sin cobertura sigue abriendo la sesión, y las series que apuntes se envían solas al volver la señal. Durante la sesión la pantalla no se apaga.') }}</p>
     <div data-install hidden>

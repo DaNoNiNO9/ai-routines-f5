@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Tu suscripción') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('account.index') }}">{{ _('Cuenta') }}</a></p>
+  <h1>{{ _('Tu suscripción') }}</h1>
+</section>
+
+<section class="card subscription-card">
+  {% set s = subscription %}
+  {% if not s or s.status in ('none', 'incomplete', 'incomplete_expired') %}
+    <h2 class="card-title">{{ _('Versión gratis') }}</h2>
+    <p>{{ _('Tienes el plan, la rutina, las sesiones y la revisión sin pagar nada.') }}</p>
+    <p><a class="button" href="{{ url_for('billing.prices') }}">{{ icon('trophy') }}{{ _('Ver Alza Pro') }}</a></p>
+  {% else %}
+    {% set plan = plans.get(s.plan) %}
+    <h2 class="card-title">{{ icon('trophy') }}{{ _('Alza Pro') }}{% if plan %} · {% if s.plan == 'yearly' %}{{ _('Anual') }}{% else %}{{ _('Mensual') }}{% endif %}{% endif %}</h2>
+    {% if s.status == 'trialing' %}
+      <p class="big-number">{{ _('Prueba gratis') }}</p>
+      {% if s.cancel_at_period_end %}
+        <p>{{ _('Termina el %(date)s y no se te cobrará nada.', date=s.trial_ends_at|fdate('long')) }}</p>
+      {% else %}
+        <p>{{ _('Hasta el %(date)s. Después, %(amount)s %(per)s.', date=s.trial_ends_at|fdate('long'), amount=(plan.amount|money) if plan else '', per=plan.per if plan else '') }}</p>
+      {% endif %}
+    {% elif s.status == 'active' %}
+      <p class="big-number">{{ _('Activa') }}</p>
+      {% if s.cancel_at_period_end %}
+        <p>{{ _('Cancelada: sigues con Pro hasta el %(date)s y no se renovará.', date=s.current_period_end|fdate('long')) }}</p>
+      {% else %}
+        <p>{{ _('Se renueva el %(date)s por %(amount)s.', date=s.current_period_end|fdate('long'), amount=(plan.amount|money) if plan else '') }}</p>
+      {% endif %}
+    {% elif s.status == 'past_due' %}
+      <p class="big-number">{{ _('Pago pendiente') }}</p>
+      <p>{{ _('No hemos podido cobrar la renovación. Sigues con Pro unos días mientras lo reintentamos: revisa tu tarjeta.') }}</p>
+    {% else %}
+      <p class="big-number">{{ _('Terminada') }}</p>
+      <p>{{ _('Tu suscripción ha terminado. Sigues teniendo todo lo de la versión gratis, y tus datos están intactos.') }}</p>
+    {% endif %}
+
+    {% if s.is_active %}
+      <form method="post" action="{{ url_for('billing.manage') }}" class="inline-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="button button-secondary">{{ _('Cambiar tarjeta, plan o cancelar') }}</button>
+      </form>
+    {% else %}
+      <p><a class="button" href="{{ url_for('billing.prices') }}">{{ _('Volver a Pro') }}</a></p>
+    {% endif %}
+  {% endif %}
+  {% if backend == 'fake' %}
+    <p class="notice-test">{{ icon('info') }}{{ _('Modo de pruebas: los pagos son simulados y no se cobra nada.') }}</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -128,6 +128,7 @@ def _init_extensions(app: Flask) -> None:
 def _register_blueprints(app: Flask) -> None:
     from app.blueprints.account.routes import bp as account_bp
     from app.blueprints.auth.routes import bp as auth_bp
+    from app.blueprints.billing.routes import bp as billing_bp
     from app.blueprints.dashboard.routes import bp as dashboard_bp
     from app.blueprints.main.routes import bp as main_bp
     from app.blueprints.nutrition.routes import bp as nutrition_bp
@@ -147,6 +148,7 @@ def _register_blueprints(app: Flask) -> None:
     app.register_blueprint(workouts_bp)
     app.register_blueprint(review_bp)
     app.register_blueprint(account_bp)
+    app.register_blueprint(billing_bp)
 
     if app.config["ENABLE_DEBUG_ROUTES"]:
         from app.blueprints.debug.routes import bp as debug_bp

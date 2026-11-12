@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 12:28+0100\n"
+"POT-Creation-Date: 2026-11-12 15:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -836,7 +836,11 @@ msgstr "Password updated."
 msgid "Todavía no hay plan que exportar."
 msgstr "There is no plan to export yet."
 
-#: app/blueprints/account/routes.py:185
+#: app/blueprints/account/routes.py:191
+msgid "No hemos podido cancelar tu suscripción y no hemos borrado nada. Inténtalo de nuevo en unos minutos."
+msgstr "We could not cancel your subscription and have not deleted anything. Try again in a few minutes."
+
+#: app/blueprints/account/routes.py:199
 msgid "Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."
 msgstr "Your account and all your data have been deleted. Thanks for trying Alza."
 
@@ -885,8 +889,8 @@ msgstr "The password needs at least %(n)s characters."
 
 #: app/blueprints/auth/routes.py:75
 #, python-format
-msgid "Cuenta creada. Bienvenido, %(name)s."
-msgstr "Account created. Welcome, %(name)s."
+msgid "Cuenta creada. Hola, %(name)s."
+msgstr "Account created. Hi, %(name)s."
 
 #: app/blueprints/auth/routes.py:91
 msgid "Correo o contraseña incorrectos."
@@ -936,6 +940,54 @@ msgstr "That link is not valid or has expired. Ask for a new one."
 #: app/blueprints/auth/routes.py:157
 msgid "Contraseña actualizada. Ya puedes entrar."
 msgstr "Password updated. You can sign in now."
+
+#: app/blueprints/billing/routes.py:35
+msgid "Ese plan no existe."
+msgstr "That plan does not exist."
+
+#: app/blueprints/billing/routes.py:36
+msgid "Los pagos no están configurados todavía."
+msgstr "Payments are not set up yet."
+
+#: app/blueprints/billing/routes.py:37
+msgid "La pasarela de pago ha dado un error. Inténtalo de nuevo en un rato."
+msgstr "The payment gateway returned an error. Try again in a while."
+
+#: app/blueprints/billing/routes.py:38
+msgid "No hemos podido contactar con la pasarela de pago."
+msgstr "We could not reach the payment gateway."
+
+#: app/blueprints/billing/routes.py:39 app/blueprints/billing/routes.py:40
+msgid "Todavía no tienes una suscripción que gestionar."
+msgstr "You do not have a subscription to manage yet."
+
+#: app/blueprints/billing/routes.py:41
+msgid "Ese enlace de pago no es válido o ha caducado."
+msgstr "That payment link is not valid or has expired."
+
+#: app/blueprints/billing/routes.py:59
+msgid "Esto es parte de Alza Pro. Pruébalo gratis 7 días."
+msgstr "This is part of Alza Pro. Try it free for 7 days."
+
+#: app/blueprints/billing/routes.py:80
+msgid "al mes"
+msgstr "a month"
+
+#: app/blueprints/billing/routes.py:87
+msgid "al año"
+msgstr "a year"
+
+#: app/blueprints/billing/routes.py:132 app/templates/billing/prices.html:38
+msgid "Ya tienes Alza Pro."
+msgstr "You already have Alza Pro."
+
+#: app/blueprints/billing/routes.py:211
+msgid "La tarjeta ha sido rechazada (simulación). No se ha cobrado nada."
+msgstr "The card was declined (simulation). Nothing has been charged."
+
+#: app/blueprints/billing/routes.py:235
+msgid "Cambio guardado (simulación)."
+msgstr "Change saved (simulation)."
 
 #: app/blueprints/dashboard/routes.py:43
 #: app/blueprints/onboarding/routes.py:183 app/services/exports.py:406
@@ -1173,7 +1225,7 @@ msgid "Tengo o he tenido un trastorno de la conducta alimentaria"
 msgstr "I have or have had an eating disorder"
 
 #: app/blueprints/onboarding/routes.py:36
-#: app/templates/dashboard/index.html:159 app/templates/review/index.html:4
+#: app/templates/dashboard/index.html:167 app/templates/review/index.html:4
 #: app/templates/tracking/diary.html:18
 msgid "Revisión"
 msgstr "Review"
@@ -2494,7 +2546,7 @@ msgid "Diario"
 msgstr "Diary"
 
 #: app/templates/account/index.html:5 app/templates/account/index.html:9
-#: app/templates/base.html:34
+#: app/templates/base.html:34 app/templates/billing/subscription.html:7
 msgid "Cuenta"
 msgstr "Account"
 
@@ -2529,6 +2581,11 @@ msgstr "Switch to the dark theme"
 #: app/templates/base.html:83
 msgid "es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
 msgstr "is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
+
+#: app/templates/base.html:85 app/templates/billing/prices.html:3
+#: app/templates/billing/prices.html:7
+msgid "Precios"
+msgstr "Pricing"
 
 #: app/templates/base.html:89
 msgid "Pendiente de enviar"
@@ -2611,71 +2668,90 @@ msgid "Actualizar mis datos"
 msgstr "Update my details"
 
 #: app/templates/account/index.html:57
+#: app/templates/billing/subscription.html:3
+#: app/templates/billing/subscription.html:8
+msgid "Tu suscripción"
+msgstr "Your subscription"
+
+#: app/templates/account/index.html:59
+msgid "Tienes Alza Pro."
+msgstr "You have Alza Pro."
+
+#: app/templates/account/index.html:61
+msgid "Usas la versión gratis: plan, rutina, sesiones y revisión sin pagar nada."
+msgstr "You use the free version: plan, routine, sessions and review without paying anything."
+
+#: app/templates/account/index.html:63 app/templates/billing/done.html:22
+#: app/templates/billing/prices.html:38
+msgid "Ver tu suscripción"
+msgstr "See your subscription"
+
+#: app/templates/account/index.html:67
 msgid "Alza en tu móvil"
 msgstr "Alza on your phone"
 
-#: app/templates/account/index.html:58
+#: app/templates/account/index.html:68
 msgid "Instálala y se abre como una app, con su icono, a pantalla completa. En el gimnasio sin cobertura sigue abriendo la sesión, y las series que apuntes se envían solas al volver la señal. Durante la sesión la pantalla no se apaga."
 msgstr "Install it and it opens like an app, with its icon, full screen. At a gym with no signal the session still opens, and the sets you log are sent by themselves when the signal returns. During the session the screen stays on."
 
-#: app/templates/account/index.html:60
+#: app/templates/account/index.html:70
 msgid "Instalar Alza"
 msgstr "Install Alza"
 
-#: app/templates/account/index.html:62
+#: app/templates/account/index.html:72
 msgid "En iPhone: abre Alza en Safari, toca Compartir y luego «Añadir a pantalla de inicio»."
 msgstr "On iPhone: open Alza in Safari, tap Share and then «Add to Home Screen»."
 
-#: app/templates/account/index.html:66
+#: app/templates/account/index.html:76
 msgid "Llévate tus datos"
 msgstr "Take your data with you"
 
-#: app/templates/account/index.html:69
+#: app/templates/account/index.html:79
 msgid "Plan en PDF"
 msgstr "Plan as PDF"
 
-#: app/templates/account/index.html:70
+#: app/templates/account/index.html:80
 msgid "Tu plan de nutrición y tu rutina, con cómo se han calculado. Para imprimirlo o enseñárselo a un profesional."
 msgstr "Your nutrition plan and routine, with how they were calculated. To print it or show it to a professional."
 
-#: app/templates/account/index.html:72
+#: app/templates/account/index.html:82
 msgid "Descargar el plan"
 msgstr "Download the plan"
 
-#: app/templates/account/index.html:74
+#: app/templates/account/index.html:84
 msgid "Todavía no hay plan: completa tus datos."
 msgstr "No plan yet: fill in your details."
 
-#: app/templates/account/index.html:78
+#: app/templates/account/index.html:88
 msgid "Todos tus datos en CSV"
 msgstr "All your data as CSV"
 
-#: app/templates/account/index.html:79
+#: app/templates/account/index.html:89
 msgid "Un ZIP con un CSV por tipo de dato: respuestas, pesajes, comidas, actividad, medidas, planes, ajustes, rutinas, sesiones y series. Se abre con cualquier hoja de cálculo."
 msgstr "A ZIP with one CSV per kind of data: answers, weigh-ins, meals, activity, measurements, plans, adjustments, routines, sessions and sets. Opens in any spreadsheet."
 
-#: app/templates/account/index.html:80
+#: app/templates/account/index.html:90
 msgid "Descargar mis datos"
 msgstr "Download my data"
 
-#: app/templates/account/index.html:87
+#: app/templates/account/index.html:97
 #, python-format
 msgid "Has entrado como %(email)s."
 msgstr "Signed in as %(email)s."
 
-#: app/templates/account/index.html:90
+#: app/templates/account/index.html:100
 msgid "Cerrar sesión"
 msgstr "Sign out"
 
-#: app/templates/account/index.html:96
+#: app/templates/account/index.html:106
 msgid "Borrar la cuenta"
 msgstr "Delete the account"
 
-#: app/templates/account/index.html:97
+#: app/templates/account/index.html:107
 msgid "Se borra todo: respuestas, planes, rutinas, entrenos y registros. No hay copia ni forma de recuperarlo. Si quieres conservar algo, descárgalo antes."
 msgstr "Everything is deleted: answers, plans, routines, workouts and logs. There is no copy and no way to get it back. If you want to keep anything, download it first."
 
-#: app/templates/account/index.html:104
+#: app/templates/account/index.html:114
 msgid "Borrar mi cuenta y mis datos"
 msgstr "Delete my account and my data"
 
@@ -2706,6 +2782,262 @@ msgstr "Already have an account?"
 #: app/templates/auth/reset.html:14
 msgid "Guardar contraseña"
 msgstr "Save password"
+
+#: app/templates/billing/done.html:3 app/templates/billing/prices.html:30
+#: app/templates/billing/subscription.html:19
+msgid "Alza Pro"
+msgstr "Alza Pro"
+
+#: app/templates/billing/done.html:12
+msgid "¡Ya tienes Alza Pro!"
+msgstr "You now have Alza Pro!"
+
+#: app/templates/billing/done.html:14
+#, python-format
+msgid "Tu prueba gratis dura hasta el %(date)s. Puedes cancelarla cuando quieras desde tu cuenta."
+msgstr "Your free trial lasts until %(date)s. You can cancel it whenever you like from your account."
+
+#: app/templates/billing/done.html:16
+msgid "Todo lo de Pro ya está activo."
+msgstr "Everything in Pro is now active."
+
+#: app/templates/billing/done.html:18 app/templates/main/index.html:14
+msgid "Ir a mi inicio"
+msgstr "Go to my home"
+
+#: app/templates/billing/done.html:20
+msgid "Estamos confirmando el pago…"
+msgstr "We are confirming the payment…"
+
+#: app/templates/billing/done.html:21
+msgid "Suele tardar unos segundos. Esta página se actualiza sola."
+msgstr "It usually takes a few seconds. This page refreshes by itself."
+
+#: app/templates/billing/fake_checkout.html:3
+msgid "Pago simulado"
+msgstr "Simulated payment"
+
+#: app/templates/billing/fake_checkout.html:7
+msgid "Pago simulado: así será la pasarela de Stripe, pero aquí no se pide tarjeta ni se cobra nada."
+msgstr "Simulated payment: this is how the Stripe checkout will work, but no card is asked for and nothing is charged."
+
+#: app/templates/billing/fake_checkout.html:8
+msgid "Alza Pro · Anual"
+msgstr "Alza Pro · Yearly"
+
+#: app/templates/billing/fake_checkout.html:8
+msgid "Alza Pro · Mensual"
+msgstr "Alza Pro · Monthly"
+
+#: app/templates/billing/fake_checkout.html:11
+#, python-format
+msgid "Hoy pagas %(zero)s: el primer %(num)s día es gratis."
+msgid_plural "Hoy pagas %(zero)s: los primeros %(num)s días son gratis."
+msgstr[0] "You pay %(zero)s today: the first %(num)s day is free."
+msgstr[1] "You pay %(zero)s today: the first %(num)s days are free."
+
+#: app/templates/billing/fake_checkout.html:15
+msgid "Pagar (simulado)"
+msgstr "Pay (simulated)"
+
+#: app/templates/billing/fake_checkout.html:16
+msgid "Simular tarjeta rechazada"
+msgstr "Simulate a declined card"
+
+#: app/templates/billing/fake_checkout.html:17
+msgid "Volver sin pagar"
+msgstr "Go back without paying"
+
+#: app/templates/billing/fake_portal.html:3
+msgid "Portal simulado"
+msgstr "Simulated portal"
+
+#: app/templates/billing/fake_portal.html:7
+msgid "Portal simulado: aquí estará el portal de clientes de Stripe. Sirve para probar cada situación sin cobrar nada."
+msgstr "Simulated portal: the Stripe customer portal will be here. It lets you try every situation without charging anything."
+
+#: app/templates/billing/fake_portal.html:8
+msgid "Gestionar la suscripción"
+msgstr "Manage the subscription"
+
+#: app/templates/billing/fake_portal.html:12
+msgid "Reanudar la suscripción"
+msgstr "Resume the subscription"
+
+#: app/templates/billing/fake_portal.html:14
+msgid "Cancelar al final del periodo"
+msgstr "Cancel at the end of the period"
+
+#: app/templates/billing/fake_portal.html:18
+msgid "Pasar al plan anual"
+msgstr "Switch to the yearly plan"
+
+#: app/templates/billing/fake_portal.html:18
+msgid "Pasar al plan mensual"
+msgstr "Switch to the monthly plan"
+
+#: app/templates/billing/fake_portal.html:19
+msgid "Simular un cobro fallido"
+msgstr "Simulate a failed payment"
+
+#: app/templates/billing/fake_portal.html:20
+msgid "Simular el fin de la suscripción"
+msgstr "Simulate the end of the subscription"
+
+#: app/templates/billing/fake_portal.html:22
+msgid "Volver sin cambios"
+msgstr "Go back without changes"
+
+#: app/templates/billing/prices.html:8
+msgid "Gratis para empezar. Pro para llegar antes."
+msgstr "Free to start. Pro to get there sooner."
+
+#: app/templates/billing/prices.html:9
+msgid "El plan, la rutina y la seguridad son gratis, siempre. Pro añade lo que te ahorra tiempo y te dice cuándo llegas."
+msgstr "The plan, the routine and safety are free, always. Pro adds what saves you time and tells you when you will get there."
+
+#: app/templates/billing/prices.html:11
+#: app/templates/billing/subscription.html:52
+msgid "Modo de pruebas: los pagos son simulados y no se cobra nada."
+msgstr "Test mode: payments are simulated and nothing is charged."
+
+#: app/templates/billing/prices.html:17
+msgid "Gratis"
+msgstr "Free"
+
+#: app/templates/billing/prices.html:20
+msgid "Plan de nutrición calculado con tus datos"
+msgstr "Nutrition plan calculated from your details"
+
+#: app/templates/billing/prices.html:21
+msgid "Rutina adaptada a tus días, tu material y tus molestias"
+msgstr "Routine adapted to your days, equipment and aches"
+
+#: app/templates/billing/prices.html:22
+msgid "Sesiones con peso sugerido, descanso y marcas"
+msgstr "Sessions with suggested weight, rest and records"
+
+#: app/templates/billing/prices.html:23
+msgid "Fichas de ejercicio con vídeo y pasos"
+msgstr "Exercise sheets with video and steps"
+
+#: app/templates/billing/prices.html:24
+msgid "Revisión quincenal y todos los límites de seguridad"
+msgstr "Fortnightly review and every safety limit"
+
+#: app/templates/billing/prices.html:25
+msgid "Funciona sin cobertura y te llevas tus datos cuando quieras"
+msgstr "Works without signal, and you take your data whenever you like"
+
+#: app/templates/billing/prices.html:31
+#, python-format
+msgid "%(num)s día gratis"
+msgid_plural "%(num)s días gratis"
+msgstr[0] "%(num)s day free"
+msgstr[1] "%(num)s days free"
+
+#: app/templates/billing/prices.html:33
+msgid "Todo lo de la versión gratis"
+msgstr "Everything in the free version"
+
+#: app/templates/billing/prices.html:34
+msgid "Tu fecha de llegada al peso objetivo, con su margen, que se afina con cada pesaje"
+msgstr "Your arrival date at your target weight, with its margin, sharpened by every weigh-in"
+
+#: app/templates/billing/prices.html:45
+#: app/templates/billing/subscription.html:19
+msgid "Anual"
+msgstr "Yearly"
+
+#: app/templates/billing/prices.html:45
+#: app/templates/billing/subscription.html:19
+msgid "Mensual"
+msgstr "Monthly"
+
+#: app/templates/billing/prices.html:47
+#, python-format
+msgid "Ahorras un %(pct)s %%: sale a %(month)s al mes."
+msgstr "You save %(pct)s %%: it works out at %(month)s a month."
+
+#: app/templates/billing/prices.html:49
+msgid "Empezar la prueba gratis"
+msgstr "Start the free trial"
+
+#: app/templates/billing/prices.html:49
+#: app/templates/billing/subscription.html:48
+msgid "Volver a Pro"
+msgstr "Come back to Pro"
+
+#: app/templates/billing/prices.html:51
+msgid "Crear cuenta y probar"
+msgstr "Create an account and try it"
+
+#: app/templates/billing/prices.html:56
+#, python-format
+msgid "El primer %(num)s día no pagas nada. Si no cancelas antes de que acabe la prueba, se cobra el plan que elijas. Cancelas cuando quieras desde tu cuenta."
+msgid_plural "Los primeros %(num)s días no pagas nada. Si no cancelas antes de que acabe la prueba, se cobra el plan que elijas. Cancelas cuando quieras desde tu cuenta."
+msgstr[0] "The first %(num)s day you pay nothing. If you do not cancel before the trial ends, the plan you chose is charged. Cancel whenever you like from your account."
+msgstr[1] "The first %(num)s days you pay nothing. If you do not cancel before the trial ends, the plan you chose is charged. Cancel whenever you like from your account."
+
+#: app/templates/billing/subscription.html:14
+msgid "Versión gratis"
+msgstr "Free version"
+
+#: app/templates/billing/subscription.html:15
+msgid "Tienes el plan, la rutina, las sesiones y la revisión sin pagar nada."
+msgstr "You have the plan, the routine, the sessions and the review without paying anything."
+
+#: app/templates/billing/subscription.html:16
+msgid "Ver Alza Pro"
+msgstr "See Alza Pro"
+
+#: app/templates/billing/subscription.html:21
+msgid "Prueba gratis"
+msgstr "Free trial"
+
+#: app/templates/billing/subscription.html:23
+#, python-format
+msgid "Termina el %(date)s y no se te cobrará nada."
+msgstr "It ends on %(date)s and you will not be charged."
+
+#: app/templates/billing/subscription.html:25
+#, python-format
+msgid "Hasta el %(date)s. Después, %(amount)s %(per)s."
+msgstr "Until %(date)s. After that, %(amount)s %(per)s."
+
+#: app/templates/billing/subscription.html:28
+msgid "Activa"
+msgstr "Active"
+
+#: app/templates/billing/subscription.html:30
+#, python-format
+msgid "Cancelada: sigues con Pro hasta el %(date)s y no se renovará."
+msgstr "Cancelled: you keep Pro until %(date)s and it will not renew."
+
+#: app/templates/billing/subscription.html:32
+#, python-format
+msgid "Se renueva el %(date)s por %(amount)s."
+msgstr "It renews on %(date)s for %(amount)s."
+
+#: app/templates/billing/subscription.html:35
+msgid "Pago pendiente"
+msgstr "Payment pending"
+
+#: app/templates/billing/subscription.html:36
+msgid "No hemos podido cobrar la renovación. Sigues con Pro unos días mientras lo reintentamos: revisa tu tarjeta."
+msgstr "We could not charge the renewal. You keep Pro for a few days while we retry: check your card."
+
+#: app/templates/billing/subscription.html:38
+msgid "Terminada"
+msgstr "Ended"
+
+#: app/templates/billing/subscription.html:39
+msgid "Tu suscripción ha terminado. Sigues teniendo todo lo de la versión gratis, y tus datos están intactos."
+msgstr "Your subscription has ended. You still have everything in the free version, and your data is intact."
+
+#: app/templates/billing/subscription.html:45
+msgid "Cambiar tarjeta, plan o cancelar"
+msgstr "Change card, plan or cancel"
 
 #: app/templates/dashboard/index.html:14
 #, python-format
@@ -2897,89 +3229,99 @@ msgstr "This week already counts. Every extra session is a bonus."
 msgid "Esta semana: %(done)s de %(target)s. Saltarte un día no rompe la racha."
 msgstr "This week: %(done)s of %(target)s. Skipping one day does not break the streak."
 
-#: app/templates/dashboard/index.html:124
+#: app/templates/dashboard/index.html:123
+#: app/templates/dashboard/index.html:132
 msgid "Tu llegada"
 msgstr "Your arrival"
 
-#: app/templates/dashboard/index.html:127
+#: app/templates/dashboard/index.html:124
+#, python-format
+msgid "La fecha en la que llegas a %(kg)s, con su margen, y cómo vas frente a lo previsto. Se afina con cada pesaje."
+msgstr "The date you reach %(kg)s, with its margin, and how you are doing against the plan. Every weigh-in sharpens it."
+
+#: app/templates/dashboard/index.html:125
+msgid "Probar Pro gratis"
+msgstr "Try Pro for free"
+
+#: app/templates/dashboard/index.html:135
 #, python-format
 msgid "A este ritmo llegas a %(kg)s hacia el %(date)s."
 msgstr "At this pace you reach %(kg)s around %(date)s."
 
-#: app/templates/dashboard/index.html:129
+#: app/templates/dashboard/index.html:137
 #, python-format
 msgid "Lo más probable, entre el %(a)s y el %(b)s. Con cada pesaje la fecha se afina."
 msgstr "Most likely between %(a)s and %(b)s. Every weigh-in sharpens the date."
 
-#: app/templates/dashboard/index.html:131
+#: app/templates/dashboard/index.html:139
 #, python-format
 msgid "Lo más probable, a partir del %(a)s. Con cada pesaje la fecha se afina."
 msgstr "Most likely from %(a)s on. Every weigh-in sharpens the date."
 
-#: app/templates/dashboard/index.html:135
+#: app/templates/dashboard/index.html:143
 #, python-format
 msgid "Si sigues el plan, llegas a %(kg)s hacia el %(date)s."
 msgstr "If you follow the plan, you reach %(kg)s around %(date)s."
 
-#: app/templates/dashboard/index.html:136
+#: app/templates/dashboard/index.html:144
 msgid "Con unas semanas de pesajes la fecha saldrá de tu ritmo real."
 msgstr "After a few weeks of weigh-ins the date will come from your real pace."
 
-#: app/templates/dashboard/index.html:138
+#: app/templates/dashboard/index.html:146
 msgid "¡Lo tienes!"
 msgstr "You made it!"
 
-#: app/templates/dashboard/index.html:139
+#: app/templates/dashboard/index.html:147
 #, python-format
 msgid "Ya estás en tu objetivo de %(kg)s. Si quieres uno nuevo, cámbialo en tus datos."
 msgstr "You are at your goal of %(kg)s. If you want a new one, change it in your details."
 
-#: app/templates/dashboard/index.html:141
+#: app/templates/dashboard/index.html:149
 #, python-format
 msgid "Tu peso está estable. Para llegar a %(kg)s, la revisión quincenal propondrá un ajuste."
 msgstr "Your weight is steady. To reach %(kg)s, the fortnightly review will propose an adjustment."
 
-#: app/templates/dashboard/index.html:143
+#: app/templates/dashboard/index.html:151
 #, python-format
 msgid "Tu peso va en dirección contraria a tu objetivo de %(kg)s. La revisión lo tendrá en cuenta."
 msgstr "Your weight is moving away from your goal of %(kg)s. The review will take it into account."
 
-#: app/templates/dashboard/index.html:145
+#: app/templates/dashboard/index.html:153
 #, python-format
 msgid "A este ritmo tardarías más de dos años en llegar a %(kg)s."
 msgstr "At this pace it would take more than two years to reach %(kg)s."
 
-#: app/templates/dashboard/index.html:149
+#: app/templates/dashboard/index.html:157
 msgid "Camino recorrido"
 msgstr "Way done"
 
-#: app/templates/dashboard/index.html:150
+#: app/templates/dashboard/index.html:158
 #, python-format
 msgid "Llevas el %(pct)s %% del camino: de %(start)s a %(target)s."
 msgstr "You are %(pct)s %% of the way: from %(start)s to %(target)s."
 
-#: app/templates/dashboard/index.html:153
+#: app/templates/dashboard/index.html:161
 #, python-format
 msgid "Previsto: %(plan)s kg a la semana · real: %(real)s."
 msgstr "Planned: %(plan)s kg a week · real: %(real)s."
 
-#: app/templates/dashboard/index.html:162
+#: app/templates/dashboard/index.html:170
 msgid "Toca hoy"
 msgstr "Due today"
 
-#: app/templates/dashboard/index.html:163
+#: app/templates/dashboard/index.html:171
 msgid "Cada dos semanas se mira si el peso se está moviendo como debería. Si no, se tocan calorías o pasos, poco a poco."
 msgstr "Every two weeks we look at whether the weight is moving as it should. If it is not, calories or steps change, little by little."
 
-#: app/templates/dashboard/index.html:164
+#: app/templates/dashboard/index.html:172
 msgid "Revisar ahora"
 msgstr "Review now"
 
-#: app/templates/dashboard/index.html:164
+#: app/templates/dashboard/index.html:172
 msgid "Ver la revisión"
 msgstr "See the review"
 
-#: app/templates/dashboard/index.html:166
+#: app/templates/dashboard/index.html:174
 msgid "Sin plan que revisar."
 msgstr "No plan to review."
 
@@ -3006,10 +3348,6 @@ msgstr "Not invented."
 #: app/templates/main/index.html:10
 msgid "Responde a un cuestionario guiado y obtén calorías, macros y una rutina de gimnasio completa. Cada número sale de una fórmula publicada, y el plan se ajusta con tus datos reales cada dos semanas."
 msgstr "Answer a guided questionnaire and get calories, macros and a full gym routine. Every number comes from a published formula, and the plan adjusts to your real data every two weeks."
-
-#: app/templates/main/index.html:14
-msgid "Ir a mi inicio"
-msgstr "Go to my home"
 
 #: app/templates/main/index.html:16
 msgid "Empezar"

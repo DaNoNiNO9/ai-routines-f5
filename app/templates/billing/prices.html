@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Precios') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head prices-head">
+  <p class="eyebrow">{{ _('Precios') }}</p>
+  <h1>{{ _('Gratis para empezar. Pro para llegar antes.') }}</h1>
+  <p class="lead">{{ _('El plan, la rutina y la seguridad son gratis, siempre. Pro añade lo que te ahorra tiempo y te dice cuándo llegas.') }}</p>
+  {% if config.BILLING_BACKEND == 'fake' %}
+    <p class="notice-test">{{ icon('info') }}{{ _('Modo de pruebas: los pagos son simulados y no se cobra nada.') }}</p>
+  {% endif %}
+</section>
+
+<div class="prices-grid">
+  <section class="card price-card">
+    <h2 class="card-title">{{ _('Gratis') }}</h2>
+    <p class="price-amount">{{ 0|money }}</p>
+    <ul class="price-list">
+      <li>{{ icon('check') }}{{ _('Plan de nutrición calculado con tus datos') }}</li>
+      <li>{{ icon('check') }}{{ _('Rutina adaptada a tus días, tu material y tus molestias') }}</li>
+      <li>{{ icon('check') }}{{ _('Sesiones con peso sugerido, descanso y marcas') }}</li>
+      <li>{{ icon('check') }}{{ _('Fichas de ejercicio con vídeo y pasos') }}</li>
+      <li>{{ icon('check') }}{{ _('Revisión quincenal y todos los límites de seguridad') }}</li>
+      <li>{{ icon('check') }}{{ _('Funciona sin cobertura y te llevas tus datos cuando quieras') }}</li>
+    </ul>
+  </section>
+
+  <section class="card price-card price-card-pro">
+    <h2 class="card-title">{{ icon('trophy') }}{{ _('Alza Pro') }}</h2>
+    <p class="price-trial">{{ ngettext('%(num)s día gratis', '%(num)s días gratis', trial_days) }}</p>
+    <ul class="price-list">
+      <li>{{ icon('check') }}{{ _('Todo lo de la versión gratis') }}</li>
+      <li>{{ icon('check') }}{{ _('Tu fecha de llegada al peso objetivo, con su margen, que se afina con cada pesaje') }}</li>
+    </ul>
+
+    {% if subscription and subscription.is_active %}
+      <p class="meta">{{ _('Ya tienes Alza Pro.') }} <a href="{{ url_for('billing.subscription') }}">{{ _('Ver tu suscripción') }}</a></p>
+    {% else %}
+      <div class="plan-options">
+        {% for plan in plans %}
+          <form method="post" action="{{ url_for('billing.start') }}" class="plan-option{% if plan.key == 'yearly' %} plan-option-best{% endif %}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="plan" value="{{ plan.key }}">
+            <p class="plan-name">{% if plan.key == 'yearly' %}{{ _('Anual') }}{% else %}{{ _('Mensual') }}{% endif %}</p>
+            <p class="price-amount">{{ plan.amount|money }} <small>{{ plan.per }}</small></p>
+            {% if plan.saving %}<p class="plan-note">{{ _('Ahorras un %(pct)s %%: sale a %(month)s al mes.', pct=plan.saving, month=plan.per_month|money) }}</p>{% endif %}
+            {% if current_user.is_authenticated %}
+              <button type="submit" class="button{% if plan.key != 'yearly' %} button-secondary{% endif %}">{% if not subscription or not subscription.subscription_id %}{{ _('Empezar la prueba gratis') }}{% else %}{{ _('Volver a Pro') }}{% endif %}</button>
+            {% else %}
+              <a class="button{% if plan.key != 'yearly' %} button-secondary{% endif %}" href="{{ url_for('auth.register') }}">{{ _('Crear cuenta y probar') }}</a>
+            {% endif %}
+          </form>
+        {% endfor %}
+      </div>
+      <p class="help">{{ ngettext('El primer %(num)s día no pagas nada. Si no cancelas antes de que acabe la prueba, se cobra el plan que elijas. Cancelas cuando quieras desde tu cuenta.', 'Los primeros %(num)s días no pagas nada. Si no cancelas antes de que acabe la prueba, se cobra el plan que elijas. Cancelas cuando quieras desde tu cuenta.', trial_days) }}</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

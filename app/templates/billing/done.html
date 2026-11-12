@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Alza Pro') }} · {{ app_name }}{% endblock %}
+
+{% block head %}{% if not (subscription and subscription.is_active) %}<meta http-equiv="refresh" content="4">{% endif %}{% endblock %}
+
+{% block content %}
+<section class="card done-card">
+  <div class="empty-state">
+    {{ icon('trophy') }}
+    {% if subscription and subscription.is_active %}
+      <h1 class="card-title">{{ _('¡Ya tienes Alza Pro!') }}</h1>
+      {% if subscription.is_trial %}
+        <p>{{ _('Tu prueba gratis dura hasta el %(date)s. Puedes cancelarla cuando quieras desde tu cuenta.', date=subscription.trial_ends_at|fdate('long')) }}</p>
+      {% else %}
+        <p>{{ _('Todo lo de Pro ya está activo.') }}</p>
+      {% endif %}
+      <a class="button" href="{{ url_for('dashboard.index') }}">{{ _('Ir a mi inicio') }}</a>
+    {% else %}
+      <h1 class="card-title">{{ _('Estamos confirmando el pago…') }}</h1>
+      <p>{{ _('Suele tardar unos segundos. Esta página se actualiza sola.') }}</p>
+      <a class="button button-secondary" href="{{ url_for('billing.subscription') }}">{{ _('Ver tu suscripción') }}</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

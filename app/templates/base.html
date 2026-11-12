@@ -82,7 +82,7 @@
         <strong>{{ app_name }}</strong>
         {{ _('es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario.') }}
       </p>
-      <p class="meta">v{{ app_version }} · {{ current_year }}</p>
+      <p class="meta"><a href="{{ url_for('billing.prices') }}">{{ _('Precios') }}</a> · v{{ app_version }} · {{ current_year }}</p>
     </div>
   </footer>
   <script type="application/json" id="i18n-js">{{ {

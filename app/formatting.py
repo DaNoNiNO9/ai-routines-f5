@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from babel.dates import format_skeleton
 from flask import Flask, has_request_context
-from flask_babel import format_date, format_decimal, get_locale, gettext, ngettext
+from flask_babel import format_currency, format_date, format_decimal, get_locale, gettext, ngettext
 from flask_login import current_user
 
 TRIM_ZEROS = {0: "#,##0", 1: "#,##0.#", 2: "#,##0.##"}
@@ -142,9 +142,22 @@ def tempo(code: str | None) -> str:
     return gettext("Baja en %(down)s s y sube en %(up)s s", down=down, up=up)
 
 
+def money(amount: Any, currency: str = "EUR") -> str:
+    """``7,99 €`` in Spanish, ``€7.99`` in English; whole amounts without ``,00``."""
+    if amount is None:
+        return "—"
+    value = float(amount)
+    if value % 1:
+        return format_currency(value, currency.upper())
+    spanish = str(get_locale() or "es").startswith("es")
+    pattern = "#,##0\u00a0\u00a4" if spanish else "\u00a4#,##0"
+    return format_currency(value, currency.upper(), format=pattern, currency_digits=False)
+
+
 def register(app: Flask) -> None:
     """Expose the helpers as Jinja filters."""
     app.add_template_filter(num, "num")
+    app.add_template_filter(money, "money")
     app.add_template_filter(signed, "signed")
     app.add_template_filter(kg, "kg")
     app.add_template_filter(duration, "duration")

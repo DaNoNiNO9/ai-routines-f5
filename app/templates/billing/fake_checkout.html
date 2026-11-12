@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Pago simulado') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card fake-card">
+  <p class="notice-test">{{ icon('triangle-alert') }}{{ _('Pago simulado: así será la pasarela de Stripe, pero aquí no se pide tarjeta ni se cobra nada.') }}</p>
+  <h1>{% if checkout.plan == 'yearly' %}{{ _('Alza Pro · Anual') }}{% else %}{{ _('Alza Pro · Mensual') }}{% endif %}</h1>
+  <p class="price-amount">{{ plan.amount|money }} <small>{{ plan.per }}</small></p>
+  {% if checkout.trial_days %}
+    <p>{{ ngettext('Hoy pagas %(zero)s: el primer %(num)s día es gratis.', 'Hoy pagas %(zero)s: los primeros %(num)s días son gratis.', checkout.trial_days, zero=0|money) }}</p>
+  {% endif %}
+  <form method="post" class="fake-actions">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" name="outcome" value="pay" class="button">{{ _('Pagar (simulado)') }}</button>
+    <button type="submit" name="outcome" value="decline" class="button button-secondary">{{ _('Simular tarjeta rechazada') }}</button>
+    <button type="submit" name="outcome" value="cancel" class="button button-secondary">{{ _('Volver sin pagar') }}</button>
+  </form>
+</section>
+{% endblock %}
