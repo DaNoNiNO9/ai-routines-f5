@@ -1,0 +1,226 @@
+{
+  "barbell-bench-press-medium-grip": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/73/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "barbell-curl": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/91/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "barbell-hip-thrust": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/294/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "barbell-incline-bench-press-medium-grip": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/538/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "barbell-lunge": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/46/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "cable-hammer-curls-rope-attachment": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/275/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "dips-chest-version": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/194/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "dumbbell-bench-press": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/75/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "dumbbell-bicep-curl": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/92/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "dumbbell-lunges": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/205/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "dumbbell-shoulder-press": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/567/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "face-pull": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/222/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "front-barbell-squat": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/257/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "hack-squat": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/375/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "hammer-curls": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/272/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "incline-dumbbell-press": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/537/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "leg-press": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/371/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "lying-dumbbell-tricep-extension": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/245/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "lying-leg-curls": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/365/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "lying-triceps-press": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/246/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "machine-shoulder-military-press": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/543/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "seated-cable-rows": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/512/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "seated-calf-raise": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/590/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "seated-leg-curl": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/366/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "side-lateral-raise": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/348/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "smith-machine-squat": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/341/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "standing-biceps-cable-curl": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/95/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "standing-calf-raises": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/622/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "stiff-legged-dumbbell-deadlift": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/507/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "thigh-adductor": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/12/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "tricep-dumbbell-kickback": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/655/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  },
+  "triceps-pushdown": {
+    "author": "Goulart",
+    "license": "CC-BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source": "https://wger.de/exercise/659/view/",
+    "changes": "Convertido a H.264 640x360 sin sonido."
+  }
+}

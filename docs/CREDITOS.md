@@ -9,7 +9,10 @@ Todo recurso externo incluido en el proyecto se lista aquí con su origen y lice
 | Dataset de ejercicios (nombres en inglés, instrucciones, músculos, mecánica, nivel) | [free-exercise-db](https://github.com/yuhonas/free-exercise-db) de yuhonas (a su vez derivado de `wrkout/exercises.json`) | [The Unlicense](https://unlicense.org/) (dominio público) | Base de `app/seeds/exercises.json`. La selección, los nombres en español, el patrón de movimiento, el equipamiento con nuestros códigos, las contraindicaciones y las alternativas son elaboración propia (`scripts/exercise_catalogue.py`). |
 | Ilustraciones de ejercicios (2 por ejercicio, posición inicial y final) | Mismo repositorio, carpeta `exercises/<id>/` | The Unlicense | Descargadas por `scripts/build_exercises.py`, reducidas a 560 px de ancho (calidad JPEG 75) y guardadas en `app/static/img/exercises/<slug>/0.jpg` y `1.jpg`. |
 
-Los enlaces de vídeo (`video_url`) son búsquedas en YouTube con el nombre del ejercicio (decisión T-25); no se embebe ni se descarga contenido de terceros.
+| Pasos en castellano de los 190 ejercicios | Elaboración propia a partir de las instrucciones de free-exercise-db | The Unlicense (el original); los pasos son nuestros | `scripts/exercise_instructions_es.json`, copiados a `exercises.json` por `scripts/build_exercises.py`. |
+| Vídeos de 32 ejercicios | [wger](https://wger.de), grabados por Goulart | [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) | Descargados y convertidos a H.264 640x360 sin sonido por `scripts/build_videos.py` (obra derivada, misma licencia). Autoría, licencia y enlace al original en `app/static/video/exercises/CREDITS.json` y debajo de cada vídeo en la ficha del ejercicio. |
+
+Los ejercicios sin vídeo se muestran con sus dos fotos alternándose. El emparejamiento con wger es a mano: solo cuando el vídeo es exactamente nuestro ejercicio.
 
 ## Librerías JavaScript vendorizadas
 
@@ -33,7 +36,7 @@ Descargadas el 2026-09-09 desde `fonts.googleapis.com` y servidas desde `app/sta
 
 | Recurso | Origen | Licencia | Uso en Alza |
 |---|---|---|---|
-| Lucide 1.43.0, 28 iconos | [lucide-icons/lucide](https://github.com/lucide-icons/lucide), paquete `lucide-static` | ISC (`app/static/img/LICENSE-lucide.txt`) | Navegación, títulos de tarjeta, estados vacíos, avisos y acciones de la sesión. Sprite generado por `scripts/build_icons.py` e incrustado por `base.html`. |
+| Lucide 1.43.0, 29 iconos | [lucide-icons/lucide](https://github.com/lucide-icons/lucide), paquete `lucide-static` | ISC (`app/static/img/LICENSE-lucide.txt`) | Navegación, títulos de tarjeta, estados vacíos, avisos y acciones de la sesión. Sprite generado por `scripts/build_icons.py` e incrustado por `base.html`. |
 
 Es el único set de iconos del proyecto: no se mezcla con otros.
 
