@@ -40,6 +40,12 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.exercise_catalogue import CATALOGUE  # noqa: E402
 
+# Pasos en castellano, escritos a partir de las instrucciones originales (dominio
+# público) y revisados uno a uno: breves, en el orden de las fotos del ejercicio.
+INSTRUCTIONS_ES: dict[str, str] = json.loads(
+    (Path(__file__).resolve().parent / "exercise_instructions_es.json").read_text(encoding="utf-8")
+)
+
 from app.engine.enums import (  # noqa: E402
     Force,
     InjuryArea,
@@ -229,7 +235,7 @@ def build_entry(
         "equipment": equipment,
         "contraindications": contraindications,
         "instructions_en": "\n".join(source.get("instructions", [])) or None,
-        "instructions_es": None,
+        "instructions_es": INSTRUCTIONS_ES.get(slug),
         "video_url": video_search_url(source["name"]),
         "image_path": images[0] if images else None,
         "images": images,
