@@ -15,7 +15,7 @@ from __future__ import annotations
 import logging
 import sys
 import uuid
-from logging.handlers import RotatingFileHandler
+from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
 from flask import Flask, Response, g, has_request_context, request
@@ -94,11 +94,14 @@ def configure_logging(app: Flask) -> None:
 def _build_file_handler(app: Flask, context_filter: logging.Filter) -> logging.Handler:
     log_dir = Path(app.config["LOG_DIR"])
     log_dir.mkdir(parents=True, exist_ok=True)
-    handler = RotatingFileHandler(
+    # Un fichero por día y LOG_RETENTION_DAYS días como mucho: el plazo que dice
+    # la política de privacidad (los registros llevan identificadores de cuenta).
+    handler = TimedRotatingFileHandler(
         log_dir / LOG_FILENAME,
-        maxBytes=app.config["LOG_MAX_BYTES"],
-        backupCount=app.config["LOG_BACKUP_COUNT"],
+        when="midnight",
+        backupCount=app.config["LOG_RETENTION_DAYS"],
         encoding="utf-8",
+        utc=True,
     )
     handler.setFormatter(
         JsonFormatter(JSON_FORMAT, rename_fields={"asctime": "timestamp", "levelname": "level"})
@@ -118,7 +121,11 @@ def _assign_request_id() -> None:
 def _log_request(response: Response) -> Response:
     if request.endpoint != "static":
         logging.getLogger(REQUEST_LOGGER_NAME).info(
-            "%s %s -> %s", request.method, request.full_path.rstrip("?"), response.status_code
+            # Solo la ruta: la consulta puede llevar lo que alguien busca de comida.
+            "%s %s -> %s",
+            request.method,
+            request.path,
+            response.status_code,
         )
     response.headers.setdefault(REQUEST_ID_HEADER, g.get("request_id", "-"))
     return response

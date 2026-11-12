@@ -70,8 +70,7 @@ class BaseConfig:
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
     LOG_DIR = os.environ.get("LOG_DIR", str(BASE_DIR / "logs"))
     LOG_TO_FILE = True
-    LOG_MAX_BYTES = 5 * 1024 * 1024
-    LOG_BACKUP_COUNT = 5
+    LOG_RETENTION_DAYS = 30
 
     # Email (app/email.py): "log" keeps messages in memory and in the log; "smtp" delivers.
     MAIL_BACKEND = os.environ.get("MAIL_BACKEND", "log")

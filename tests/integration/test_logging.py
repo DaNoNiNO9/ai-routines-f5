@@ -51,7 +51,8 @@ def test_json_log_file_has_one_object_per_line_with_request_fields(
     request_records = [r for r in records if r["name"] == "app.request"]
     assert request_records, records
     record = request_records[-1]
-    assert record["message"] == "GET /health?x=1 -> 200"
+    # Solo la ruta: la consulta puede llevar lo que alguien busca de comida.
+    assert record["message"] == "GET /health -> 200"
     assert record["request_id"] == "log-test-1"
     assert record["method"] == "GET"
     assert record["path"] == "/health"
