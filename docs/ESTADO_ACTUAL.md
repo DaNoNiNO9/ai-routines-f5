@@ -2,7 +2,7 @@
 
 Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para el detalle de lo ya cerrado, ver `docs/fases/FASE_XX_INFORME.md`; para el porqué de cada decisión, `docs/DECISIONES.md`.
 
-Última actualización: 2026-11-11.
+Última actualización: 2026-11-12.
 
 ## Fase actual
 
@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 633 tests en verde |
+| Suite | 663 tests en verde |
 | Cobertura de `app/` | 98,6 % (motor 99,2 %) |
 | Linter y formato | limpios |
 | Migración aplicada | `976a93809ca2` (cabeza) |
@@ -51,7 +51,7 @@ Hecho y con commit:
 
 Pendiente, en este orden:
 
-1. **Catálogo inglés**: extraer, traducir los textos nuevos y compilar. Hasta entonces fallan 3 tests de `tests/integration/test_i18n.py`, y es lo esperado (ya esperan el inglés nuevo: «You eat 20 % less than you burn.», «Worth knowing», «How to progress»).
+1. ~~**Catálogo inglés**~~: hecho el 2026-11-12 (882 mensajes, 100 %; suite completa en verde).
 2. **Marca Alza**: `APP_NAME`, logo en la cabecera, favicon, PDF, LEEME del ZIP, nombre de los ficheros exportados, «Forja es solo para mayores de 18 años» en `onboarding/forms.py`, portada y docs.
 3. **Pasada real**: cuenta nueva y capturas a 390 y 1440 px de todas las pantallas (sobre todo la barra inferior y la sesión), y suite completa en verde.
 4. Decisiones nuevas en `docs/DECISIONES.md` (T-112 en adelante) y subir a GitHub.
