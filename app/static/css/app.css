@@ -711,3 +711,8 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .quick-card { max-width: 40rem; margin: 0 auto; }
 .quick-section { margin: var(--space-4) 0 var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--border); }
 .quick-card .wizard-nav { flex-wrap: wrap; gap: var(--space-2); }
+
+/* Series apuntadas sin conexión */
+.set-pending { border-style: dashed; }
+.set-pending .set-values { color: var(--warning); }
+.offline-card { max-width: 36rem; margin: 0 auto; }

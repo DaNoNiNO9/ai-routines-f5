@@ -54,6 +54,15 @@
   </section>
 
   <section class="card card-span">
+    <h2 class="card-title">{{ icon('dumbbell') }}{{ _('Alza en tu móvil') }}</h2>
+    <p>{{ _('Instálala y se abre como una app, con su icono, a pantalla completa. En el gimnasio sin cobertura sigue abriendo la sesión, y las series que apuntes se envían solas al volver la señal. Durante la sesión la pantalla no se apaga.') }}</p>
+    <div data-install hidden>
+      <button type="button" class="button" data-install-button>{{ icon('arrow-right') }}{{ _('Instalar Alza') }}</button>
+    </div>
+    <p class="meta">{{ _('En iPhone: abre Alza en Safari, toca Compartir y luego «Añadir a pantalla de inicio».') }}</p>
+  </section>
+
+  <section class="card card-span">
     <h2 class="card-title">{{ icon('arrow-right') }}{{ _('Llévate tus datos') }}</h2>
     <div class="grid-2">
       <div>
@@ -76,7 +85,7 @@
   <section class="card card-span">
     <div class="section-head">
       <p>{{ _('Has entrado como %(email)s.', email=current_user.email) }}</p>
-      <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
+      <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form" data-logout>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="submit" class="button button-secondary">{{ icon('log-out') }}{{ _('Cerrar sesión') }}</button>
       </form>

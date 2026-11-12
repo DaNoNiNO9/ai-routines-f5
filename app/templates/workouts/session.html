@@ -4,7 +4,7 @@
 {% block title %}{{ _('Sesión') }} · {{ session.routine_day.name if session.routine_day else '' }} · {{ app_name }}{% endblock %}
 
 {% block content %}
-<section class="page-head">
+<section class="page-head" data-wake-lock>
   <p class="eyebrow">{{ _('Sesión en marcha') }}{% if session.mesocycle_week and session.routine_day %} · {{ _('semana %(n)s de %(total)s', n=session.mesocycle_week, total=session.routine_day.routine.mesocycle_weeks) }}{% endif %}</p>
   <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión libre') }}{% endif %}</h1>
   <p class="meta" x-data="elapsed({{ started_epoch }})">{{ icon('clock') }} {{ _('Tiempo:') }} <span x-text="text">—</span></p>

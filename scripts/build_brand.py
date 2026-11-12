@@ -7,7 +7,10 @@ La misma geometría la usan la cabecera (``components/brand.html``), el PDF
 
 - ``favicon.svg``: navegadores actuales.
 - ``favicon.ico`` (16, 32 y 48 px): navegadores antiguos y ``/favicon.ico``.
-- ``apple-touch-icon.png`` (180 px): acceso directo en la pantalla del móvil.
+- ``apple-touch-icon.png`` (180 px): acceso directo en la pantalla del iPhone.
+- ``icon-192.png`` e ``icon-512.png``: la app instalada (manifiesto).
+- ``icon-maskable-512.png``: Android recorta el icono con su propia forma; la
+  marca va dentro de la zona segura (el 60 % central) sobre fondo naranja.
 
 Uso: ``.venv\Scripts\python.exe scripts\build_brand.py``
 """
@@ -56,13 +59,25 @@ def _render(size: int, rounded: bool = True) -> Image.Image:
     return image.resize((size, size), Image.Resampling.LANCZOS)
 
 
+def _maskable(size: int) -> Image.Image:
+    """Full-bleed accent square with the mark inside the central safe zone."""
+    canvas = Image.new("RGB", (size, size), ACCENT)
+    mark = _render(round(size * 0.6), rounded=False).convert("RGB")
+    offset = (size - mark.width) // 2
+    canvas.paste(mark, (offset, offset))
+    return canvas
+
+
 def main() -> None:
-    """Escribe los tres ficheros de iconos."""
+    """Escribe todos los iconos de la marca."""
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "favicon.svg").write_text(SVG, encoding="utf-8")
     _render(48).save(OUT / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
     # iOS redondea las esquinas por su cuenta: el icono va a sangre.
     _render(180, rounded=False).convert("RGB").save(OUT / "apple-touch-icon.png")
+    _render(192).save(OUT / "icon-192.png")
+    _render(512).save(OUT / "icon-512.png")
+    _maskable(512).save(OUT / "icon-maskable-512.png")
     print(f"Iconos escritos en {OUT}")
 
 

@@ -9,11 +9,15 @@
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
   <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" sizes="48x48">
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('main.manifest') }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="{{ app_name }}">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   {% block head %}{% endblock %}
 </head>
-<body{% if current_user.is_authenticated %} class="has-tabs"{% endif %}>
+<body{% if current_user.is_authenticated %} class="has-tabs"{% endif %} data-sw="{{ url_for('main.service_worker', v=app_version) }}">
   {% from "components/icons.html" import icon %}
   {% from "components/brand.html" import brand_mark %}
   {% include "components/sprite.html" %}
@@ -33,7 +37,7 @@
       <ul class="nav-links nav-tools">
         {% if current_user.is_authenticated %}
           <li class="nav-logout">
-            <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
+            <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form" data-logout>
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <button type="submit" class="link-button">{{ icon('log-out') }}<span class="nav-label">{{ _('Salir') }}</span></button>
             </form>
@@ -81,6 +85,12 @@
       <p class="meta">v{{ app_version }} · {{ current_year }}</p>
     </div>
   </footer>
+  <script type="application/json" id="i18n-js">{{ {
+    "pending": _('Pendiente de enviar'),
+    "queued": _('Sin conexión: la serie se ha guardado en el móvil y se enviará sola cuando vuelva la cobertura.'),
+    "queue_waiting": _('Tienes series sin enviar. Se enviarán solas cuando vuelva la cobertura.'),
+    "queue_sent": _('Series pendientes enviadas.'),
+  }|tojson }}</script>
   {% if current_user.is_authenticated %}
     <template id="sheet-template">
       <dialog id="exercise-sheet" class="sheet-dialog" aria-label="{{ _('Ficha del ejercicio') }}">

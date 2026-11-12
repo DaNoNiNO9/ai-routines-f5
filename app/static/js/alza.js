@@ -323,3 +323,216 @@
     prepareVideos(document);
   });
 })();
+
+/* App instalable y sin cobertura: service worker, series en cola, pantalla encendida
+   durante la sesión y el botón de instalar. Todo es opcional: sin soporte, la app
+   funciona igual que antes. */
+(function () {
+  "use strict";
+
+  var QUEUE_KEY = "alza-series-pendientes";
+  var texts = {};
+  try {
+    texts = JSON.parse(document.getElementById("i18n-js").textContent);
+  } catch (error) {
+    texts = {};
+  }
+
+  /* --- Service worker --- */
+  if ("serviceWorker" in navigator && document.body.dataset.sw) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register(document.body.dataset.sw, { scope: "/" }).catch(function (error) {
+        console.warn("No se pudo registrar el service worker", error);
+      });
+    });
+  }
+
+  /* --- Cola de series --- */
+  function readQueue() {
+    try {
+      return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function writeQueue(queue) {
+    try {
+      if (queue.length) {
+        localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+      } else {
+        localStorage.removeItem(QUEUE_KEY);
+      }
+    } catch (error) {
+      /* Sin almacenamiento (modo privado): la serie no se puede guardar. */
+    }
+  }
+
+  function notice(text, kind) {
+    var list = document.querySelector(".flashes");
+    if (!list) {
+      list = document.createElement("ul");
+      list.className = "flashes";
+      list.setAttribute("role", "status");
+      list.setAttribute("aria-live", "polite");
+      var main = document.getElementById("main");
+      if (!main) {
+        return;
+      }
+      main.insertBefore(list, main.firstChild);
+    }
+    var item = document.createElement("li");
+    item.className = "flash flash-" + (kind || "info");
+    item.textContent = text;
+    list.appendChild(item);
+  }
+
+  function markPending(form, fields) {
+    var row = form.closest(".set-row");
+    var values = {};
+    fields.forEach(function (pair) { values[pair[0]] = pair[1]; });
+    var text = document.createElement("span");
+    text.className = "set-values";
+    var number = new Intl.NumberFormat(document.documentElement.lang || "es", { maximumFractionDigits: 2 });
+    var kilos = number.format(Number(String(values.weight_kg || "0").replace(",", ".")));
+    text.textContent = kilos + " kg \u00d7 " + (values.reps || "0") + " \u00b7 " + (texts.pending || "");
+    var index = document.createElement("span");
+    index.className = "set-index";
+    index.textContent = values.set_index || "";
+    row.classList.add("set-done", "set-pending");
+    row.replaceChildren(index, text);
+  }
+
+  function send(entry) {
+    var body = new URLSearchParams();
+    entry.fields.forEach(function (pair) { body.append(pair[0], pair[1]); });
+    return fetch(entry.action, { method: "POST", body: body, credentials: "same-origin" });
+  }
+
+  var flushing = false;
+  function flush() {
+    var queue = readQueue();
+    if (!queue.length || flushing) {
+      return;
+    }
+    flushing = true;
+    var chain = Promise.resolve();
+    queue.forEach(function () {
+      chain = chain.then(function () {
+        var current = readQueue();
+        if (!current.length) {
+          return null;
+        }
+        return send(current[0]).then(function () {
+          /* Entregada (sea cual sea la respuesta): fuera de la cola. Repetirla no
+             duplica nada: el servidor sobrescribe la misma serie. */
+          writeQueue(readQueue().slice(1));
+        });
+      });
+    });
+    chain.then(function () {
+      flushing = false;
+      notice(texts.queue_sent || "", "success");
+      if (document.querySelector("[data-wake-lock]")) {
+        window.location.reload();
+      }
+    }).catch(function () {
+      flushing = false; /* Sigue sin red: se reintenta con el siguiente «online». */
+      notice(texts.queue_waiting || "", "warning");
+    });
+  }
+
+  /* La copia guardada de la sesión es de antes de apuntar: las series en cola se
+     vuelven a marcar como pendientes para que nadie las apunte dos veces. */
+  function showQueued() {
+    readQueue().forEach(function (entry) {
+      var wanted = {};
+      entry.fields.forEach(function (pair) { wanted[pair[0]] = pair[1]; });
+      document.querySelectorAll("form.set-form").forEach(function (form) {
+        var same = form.action === entry.action &&
+          form.elements.routine_exercise_id && form.elements.routine_exercise_id.value === wanted.routine_exercise_id &&
+          form.elements.set_index && form.elements.set_index.value === wanted.set_index;
+        if (same) {
+          markPending(form, entry.fields);
+        }
+      });
+    });
+  }
+
+  document.addEventListener("submit", function (event) {
+    var form = event.target;
+    if (!(form instanceof HTMLFormElement)) {
+      return;
+    }
+    if (form.hasAttribute("data-logout")) {
+      writeQueue([]);
+      if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage("logout");
+      }
+      return;
+    }
+    if (!form.classList.contains("set-form") || !window.fetch) {
+      return;
+    }
+    event.preventDefault();
+    var fields = Array.from(new FormData(form).entries());
+    var entry = { action: form.action, fields: fields };
+    send(entry).then(function (response) {
+      window.location.href = response.url;
+    }).catch(function () {
+      var queue = readQueue();
+      queue.push(entry);
+      writeQueue(queue);
+      markPending(form, fields);
+      notice(texts.queued || "", "warning");
+    });
+  });
+
+  window.addEventListener("online", flush);
+  document.addEventListener("DOMContentLoaded", function () {
+    if (readQueue().length) {
+      showQueued();
+      if (navigator.onLine) {
+        flush();
+      } else {
+        notice(texts.queue_waiting || "", "warning");
+      }
+    }
+  });
+
+  /* --- Pantalla encendida durante la sesión --- */
+  var wakeLock = null;
+  function keepAwake() {
+    if (!document.querySelector("[data-wake-lock]") || !("wakeLock" in navigator)) {
+      return;
+    }
+    navigator.wakeLock.request("screen").then(function (lock) {
+      wakeLock = lock;
+    }).catch(function () { /* Batería baja o el navegador no lo permite. */ });
+  }
+  document.addEventListener("DOMContentLoaded", keepAwake);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible" && (!wakeLock || wakeLock.released)) {
+      keepAwake();
+    }
+  });
+
+  /* --- Botón de instalar (Android y escritorio; en iPhone se explica con texto) --- */
+  var installEvent = null;
+  window.addEventListener("beforeinstallprompt", function (event) {
+    event.preventDefault();
+    installEvent = event;
+    document.querySelectorAll("[data-install]").forEach(function (box) { box.hidden = false; });
+  });
+  document.addEventListener("click", function (event) {
+    var button = event.target.closest && event.target.closest("[data-install-button]");
+    if (!button || !installEvent) {
+      return;
+    }
+    installEvent.prompt();
+    installEvent.userChoice.finally(function () {
+      installEvent = null;
+      document.querySelectorAll("[data-install]").forEach(function (box) { box.hidden = true; });
+    });
+  });
+})();

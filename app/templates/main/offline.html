@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Sin conexión') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="card offline-card">
+  <div class="empty-state">
+    {{ icon('triangle-alert') }}
+    <h1 class="card-title">{{ _('Sin conexión') }}</h1>
+    <p>{{ _('Esta página no la tenías abierta antes de quedarte sin cobertura, así que no hay copia guardada.') }}</p>
+    <p class="meta">{{ _('Las páginas que ya visitaste (tu inicio, la rutina, el día y la sesión en marcha) siguen abriendo. Las series que apuntes se envían solas cuando vuelva la conexión.') }}</p>
+    <a class="button" href="{{ url_for('dashboard.index') }}">{{ _('Volver a intentarlo') }}</a>
+  </div>
+</section>
+{% endblock %}
