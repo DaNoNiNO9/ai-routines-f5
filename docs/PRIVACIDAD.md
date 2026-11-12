@@ -34,9 +34,10 @@ La política promete cosas que dependen de dónde se despliegue. Antes de abrir 
 
 1. **Servidores y base de datos en la UE.** Proveedores con región europea y contrato de encargado del tratamiento (art. 28): por ejemplo Hetzner (Alemania, Finlandia), OVHcloud o Scaleway (Francia), o la región de Fráncfort, París o Madrid de un proveedor grande. Rellenar `[nombre]` y `[país]` en la política.
 2. **Copias de seguridad cifradas, en la UE y que caduquen solas a los 30 días** como mucho (rotación diaria). Así un borrado desaparece también de las copias en ese plazo, que es lo que dice la política. Si se elige otro plazo, cambiar el `[30]`.
-3. **Restaurar una copia**: volver a aplicar los borrados de cuentas y las retiradas de consentimiento hechos desde la fecha de la copia. Hoy se hace a mano; si se restaura a menudo, conviene guardar una lista de ids borrados (sin otros datos) para automatizarlo.
-4. **Correo**: proveedor con servidores en la UE o con cláusulas tipo. Rellenar `[nombre]`.
-5. **HTTPS obligatorio**: la app ya envía HSTS en producción. La cámara para escanear solo funciona con HTTPS.
+3. **Restaurar una copia**: justo después, ejecutar `flask privacy reapply-erasures`. Cada borrado de cuenta y cada retirada del consentimiento deja una fila en `erasure_log` con solo el número de cuenta, qué se borró y cuándo (ni correo ni nombre ni datos); el comando vuelve a borrar lo que la copia ha resucitado. Respeta lo posterior: no toca una cuenta creada después con el mismo número ni los datos dados con un consentimiento nuevo.
+4. **Cada día**, `flask privacy purge-erasures` (cron o tarea programada): olvida los registros de más de `ERASURE_LOG_DAYS` (35), que sobreviven a cualquier copia que se pueda restaurar. Si las copias duran más de 30 días, subir ese valor.
+5. **Correo**: proveedor con servidores en la UE o con cláusulas tipo. Rellenar `[nombre]`.
+6. **HTTPS obligatorio**: la app ya envía HSTS en producción. La cámara para escanear solo funciona con HTTPS.
 
 ## 4. Borrado de la cuenta
 

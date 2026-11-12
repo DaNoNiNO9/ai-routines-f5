@@ -30,10 +30,10 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 813 tests en verde |
+| Suite | 818 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
-| Migración aplicada | `33233c72aa44` (cabeza) |
+| Migración aplicada | `1784f54561b7` (cabeza) |
 | Rama | `main`, con remoto `origin` en GitHub (https://github.com/DaNoNiNO9/ai-routines-f5) |
 
 ## Qué estoy haciendo ahora
@@ -59,7 +59,16 @@ Después de la revisión del dueño del producto (T-140 a T-149): información p
 
 Después (T-150 a T-157): **escáner en iPhone** con ZXing como plan B y **RGPD**: consentimiento explícito y aparte para datos de salud, retirable desde Cuenta (borra todos los datos de salud), borrador de política de privacidad en `/privacidad` para el abogado, auditoría de lo que sale de la app (ningún dato de salud a terceros) y notas para producción en `docs/PRIVACIDAD.md`. **Historias de usuario** con criterios de aceptación en `docs/HISTORIAS_DE_USUARIO.md`.
 
-Lo siguiente:
+RGPD cerrado en el código el 2026-11-12 (T-158: borrados que se vuelven a aplicar al restaurar una copia). Lo que queda es de fuera: abogado y alojamiento.
+
+**Para la sesión del 2026-11-13** (pedido por el dueño del producto; traerá más cosas):
+
+1. **Ayuda dentro de la app**: modales de ayuda donde haga falta (revisar pantalla a pantalla dónde se atasca alguien nuevo: el día suave, la reserva RIR, la revisión quincenal, la fecha de llegada, el material, los macros…). Que no estorben a quien ya sabe: se abren a demanda.
+2. **Cambiador de idioma visible** (hoy el idioma solo se cambia en Cuenta o por el navegador): en la cabecera o el pie, también para quien no ha entrado.
+3. **Revisar las traducciones** al inglés pantalla a pantalla, con capturas, no solo el catálogo al 100 %.
+4. Lo que diga el dueño mañana.
+
+Pendiente sin fecha:
 
 1. **Foto de la comida con IA**: pendiente de que el dueño elija proveedor; exige revisar el consentimiento (RGPD art. 9).
 2. Activar Stripe real con sus claves de test (README › Pagos con Stripe).

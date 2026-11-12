@@ -271,3 +271,4 @@ Registro de las decisiones tomadas con el propietario del proyecto. Cada entrada
 | T-155 | Registros | Ruta sin la parte de búsqueda, rotación diaria y 30 días | La búsqueda de alimentos dice qué come la persona |
 | T-156 | Datos en el móvil | `Clear-Site-Data: "cache", "storage"` al retirar el consentimiento y al borrar la cuenta | La copia para usar la app sin red también tiene datos de salud |
 | T-157 | Alojamiento y copias | En la UE, copias cifradas que caducan a los 30 días y borrados reaplicados al restaurar (`docs/PRIVACIDAD.md`) | Así el borrado llega también a las copias en un plazo que se puede prometer |
+| T-158 | Copias restauradas | Tabla `erasure_log` (número de cuenta, tipo y fecha, sin datos personales) y `flask privacy reapply-erasures` tras restaurar; `purge-erasures` diario la vacía a los 35 días | La política promete que un borrado llega también a las copias; sin registro, restaurar una copia resucitaría cuentas borradas |
