@@ -48,9 +48,15 @@ def test_placeholders_survive_the_translation() -> None:
 def test_compiled_catalogue_is_up_to_date() -> None:
     """Si alguien traduce y no ejecuta pybabel compile, la app sigue en castellano."""
     compilado = _mo()
+
+    def _texto(string: object) -> object:
+        # read_mo devuelve los plurales como lista y read_po como tupla.
+        return tuple(string) if isinstance(string, list | tuple) else string
+
     desfase = [
         message.id
         for message in _po()
-        if message.id and getattr(compilado.get(message.id), "string", None) != message.string
+        if message.id
+        and _texto(getattr(compilado.get(message.id), "string", None)) != _texto(message.string)
     ]
     assert desfase == []
