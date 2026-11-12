@@ -54,7 +54,7 @@
         <p class="meta">{{ _('Última vez (%(date)s): %(sets)s.', date=block.previous.day|fdate('day'), sets=block.previous.summary()) }}
           {% if block.suggested_kg is not none and block.takes_load %}<strong>{{ _('Hoy: %(kg)s.', kg=block.suggested_kg|kg(2)) }}</strong>{% endif %}
         </p>
-      {% elif block.first_time %}
+      {% elif block.first_time and not block.done %}
         <p class="meta"><strong>{{ _('Primera vez: empieza con %(kg)s', kg=block.suggested_kg|kg(2)) }}{% if block.per_hand %} {{ _('por mancuerna') }}{% endif %}.</strong> {{ _('Es una estimación prudente; tras la primera serie se ajusta.') }}</p>
       {% elif not block.takes_load %}
         <p class="meta">{{ _('Con tu peso corporal. Si añades lastre, apúntalo en kg.') }}</p>

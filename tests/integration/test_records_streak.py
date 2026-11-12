@@ -154,3 +154,17 @@ def test_one_week_is_said_in_singular(client: FlaskClient, seeded: SQLAlchemy) -
     html = client.get("/panel").get_data(as_text=True)
     assert "1 semana" in html
     assert "seguidas" not in html
+
+
+def test_the_first_time_hint_goes_once_a_set_is_logged(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    _with_routine(client)
+    session = _open_session(client, seeded)
+    item = _routine(seeded).days[0].exercises[0]
+    before = client.get(f"/entreno/{session.id}").get_data(as_text=True)
+    hints_before = before.count("Primera vez: empieza con")
+    assert hints_before >= 1
+    _log(client, session.id, item, set_index=1, weight_kg="40", reps="8")
+    after = client.get(f"/entreno/{session.id}").get_data(as_text=True)
+    assert after.count("Primera vez: empieza con") == hints_before - 1
