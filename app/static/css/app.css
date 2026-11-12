@@ -701,3 +701,8 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 }
 .sheet-link-title { color: inherit; text-decoration: none; }
 .sheet-link-title:hover, .sheet-link-title:focus-visible { text-decoration: underline; text-decoration-color: var(--accent); }
+
+/* Tu llegada */
+.progress { height: 0.6rem; border-radius: 999px; background: var(--border); overflow: hidden; margin: var(--space-2) 0 var(--space-1); }
+.progress > span { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width 400ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .progress > span { transition: none; } }

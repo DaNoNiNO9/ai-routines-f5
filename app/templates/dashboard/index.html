@@ -95,6 +95,43 @@
       <p class="help">{{ _('Pésate al levantarte, después del baño y antes de desayunar. Un día suelto no dice nada: el peso sube y baja con el agua y la sal.') }}</p>
     </article>
 
+    {% if arrival and arrival.arrival.status != 'no_target' %}
+      {% set a = arrival.arrival %}
+      <article class="card arrival-card">
+        <h2 class="card-title">{{ icon('trending-up' if (a.remaining_kg or 0) > 0 else 'trending-down') }}{{ _('Tu llegada') }}</h2>
+        {% if a.status == 'on_track' %}
+          <p class="big-number">{{ a.arrival|fdate('medium') }}</p>
+          <p>{{ _('A este ritmo llegas a %(kg)s hacia el %(date)s.', kg=a.target_kg|kg, date=a.arrival|fdate('long')) }}</p>
+          {% if a.earliest and a.latest %}
+            <p class="meta">{{ _('Lo más probable, entre el %(a)s y el %(b)s. Con cada pesaje la fecha se afina.', a=a.earliest|fdate('medium'), b=a.latest|fdate('medium')) }}</p>
+          {% elif a.earliest %}
+            <p class="meta">{{ _('Lo más probable, a partir del %(a)s. Con cada pesaje la fecha se afina.', a=a.earliest|fdate('medium')) }}</p>
+          {% endif %}
+        {% elif a.status == 'from_plan' %}
+          <p class="big-number">{{ a.arrival|fdate('medium') }}</p>
+          <p>{{ _('Si sigues el plan, llegas a %(kg)s hacia el %(date)s.', kg=a.target_kg|kg, date=a.arrival|fdate('long')) }}</p>
+          <p class="meta">{{ _('Con unas semanas de pesajes la fecha saldrá de tu ritmo real.') }}</p>
+        {% elif a.status == 'reached' %}
+          <p class="big-number">{{ _('¡Lo tienes!') }}</p>
+          <p>{{ _('Ya estás en tu objetivo de %(kg)s. Si quieres uno nuevo, cámbialo en tus datos.', kg=a.target_kg|kg) }}</p>
+        {% elif a.status == 'flat' %}
+          <p>{{ _('Tu peso está estable. Para llegar a %(kg)s, la revisión quincenal propondrá un ajuste.', kg=a.target_kg|kg) }}</p>
+        {% elif a.status == 'away' %}
+          <p>{{ _('Tu peso va en dirección contraria a tu objetivo de %(kg)s. La revisión lo tendrá en cuenta.', kg=a.target_kg|kg) }}</p>
+        {% elif a.status == 'too_far' %}
+          <p>{{ _('A este ritmo tardarías más de dos años en llegar a %(kg)s.', kg=a.target_kg|kg) }}</p>
+        {% endif %}
+        {% set pct = arrival.progress_pct %}
+        {% if pct and a.status != 'reached' %}
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ pct }}" aria-label="{{ _('Camino recorrido') }}"><span style="width: {{ pct }}%"></span></div>
+          <p class="meta">{{ _('Llevas el %(pct)s %% del camino: de %(start)s a %(target)s.', pct=pct, start=arrival.start_kg|kg, target=a.target_kg|kg) }}</p>
+        {% endif %}
+        {% if a.weekly_change_kg is not none and a.planned_weekly_kg %}
+          <p class="meta">{{ _('Previsto: %(plan)s kg a la semana · real: %(real)s.', plan=a.planned_weekly_kg|signed(2), real=a.weekly_change_kg|signed(2)) }}</p>
+        {% endif %}
+      </article>
+    {% endif %}
+
     <article class="card">
       <h2 class="card-title">{{ icon('calendar-check') }}{{ _('Revisión') }}</h2>
       {% if next_review %}

@@ -51,6 +51,7 @@ ICONS = (
     "timer",
     "trash-2",
     "trending-down",
+    "trending-up",
     "triangle-alert",
     "trophy",
     "x",

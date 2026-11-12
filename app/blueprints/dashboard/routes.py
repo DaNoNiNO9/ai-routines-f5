@@ -50,6 +50,7 @@ def index() -> str:
             next_day=dashboard.next_routine_day(current_user, routine),
             weights=weights,
             weight_chart=chart,
+            arrival=dashboard.arrival_card(profile, plan, weights, today),
             next_review=dashboard.next_review_on(plan) if plan else None,
         )
     return render_template("dashboard/index.html", **context)

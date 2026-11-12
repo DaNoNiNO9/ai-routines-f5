@@ -14,6 +14,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
+from app.engine.adjustment.projection import Arrival, project_arrival
 from app.engine.adjustment.smoothing import moving_average
 from app.engine.adjustment.types import WeightPoint
 from app.engine.enums import AdjustmentReason, WorkoutStatus
@@ -82,6 +83,41 @@ def weight_series(user: User, today: date, days: int = WEIGHT_HISTORY_DAYS) -> W
     points = [(row.logged_on, row.weight_kg) for row in rows]
     smoothed = moving_average([WeightPoint(day=day, weight_kg=kg) for day, kg in points])
     return WeightSeries(points=points, smoothed=smoothed)
+
+
+@dataclass(frozen=True)
+class ArrivalCard:
+    """The projection plus how far along the way the person already is."""
+
+    arrival: Arrival
+    start_kg: float | None
+
+    @property
+    def progress_pct(self) -> int | None:
+        """Share of the way done, 0-100; ``None`` without a start, a target or a weight."""
+        target, current = self.arrival.target_kg, self.arrival.current_kg
+        if self.start_kg is None or target is None or current is None:
+            return None
+        total = target - self.start_kg
+        if abs(total) < 0.1:
+            return None
+        return max(0, min(100, round((current - self.start_kg) / total * 100)))
+
+
+def arrival_card(
+    profile: Profile, plan: Plan | None, weights: WeightSeries, today: date
+) -> ArrivalCard:
+    """When the target weight is reached at the current pace (``engine.adjustment.projection``)."""
+    target = (plan.details.get("target") or {}) if plan else {}
+    projection = project_arrival(
+        [WeightPoint(day=day, weight_kg=kg) for day, kg in weights.points],
+        today,
+        profile.target_weight_kg,
+        float(target.get("expected_weekly_change_kg") or 0.0),
+        fallback_current_kg=profile.weight_kg,
+    )
+    start = weights.smoothed[0][1] if weights.smoothed else profile.weight_kg
+    return ArrivalCard(arrival=projection, start_kg=start)
 
 
 def next_routine_day(user: User, routine: Routine | None) -> RoutineDay | None:
