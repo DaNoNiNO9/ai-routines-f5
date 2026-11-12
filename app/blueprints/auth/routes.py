@@ -72,7 +72,7 @@ def register() -> str | WerkzeugResponse:
             form.email.errors.append(_("Ya existe una cuenta con ese correo."))
         else:
             login_user(user)
-            flash(_("Cuenta creada. Bienvenido, %(name)s.", name=user.display_name), "success")
+            flash(_("Cuenta creada. Hola, %(name)s.", name=user.display_name), "success")
             return redirect(url_for("dashboard.index"))
     return render_template("auth/register.html", form=form)
 
