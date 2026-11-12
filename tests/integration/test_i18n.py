@@ -111,7 +111,7 @@ def test_the_pdf_is_exported_in_english(client: FlaskClient, seeded: SQLAlchemy)
     assert "NUTRITION AND TRAINING PLAN" in texto
     assert "Daily target" in texto
     assert "How this was worked out" in texto
-    assert "Deficit of" in texto  # aviso del motor
+    assert "less than you burn" in texto  # aviso del motor
     assert "Forja is a guidance tool" in texto  # aviso legal de todas las páginas
     assert "Objetivo diario" not in texto
     assert "Cómo se ha calculado" not in texto
