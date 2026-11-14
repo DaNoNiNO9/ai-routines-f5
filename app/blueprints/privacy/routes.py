@@ -41,6 +41,9 @@ OPEN_WITHOUT_CONSENT = frozenset(
         "main.health",
         "main.toggle_theme",
         "main.set_language",
+        "idle.status",
+        "idle.keep_alive",
+        "idle.expired",
     }
 )
 

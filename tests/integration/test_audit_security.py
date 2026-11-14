@@ -26,6 +26,7 @@ INJECTION = "' OR 1=1; DROP TABLE users;--"
 PUBLIC_PATHS = {
     "/",
     "/health",
+    "/sesion/estado",  # a un visitante solo le dice que no ha entrado
     "/favicon.ico",
     "/manifest.webmanifest",
     "/sw.js",

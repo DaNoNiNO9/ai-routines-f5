@@ -96,6 +96,9 @@ class BaseConfig:
     # Detrás de un proxy o túnel (Cloudflare, nginx): fiarse de X-Forwarded-Proto/Host/For
     # de un solo salto. Sin proxy delante, dejarlo apagado: cualquiera podría falsearlos.
     BEHIND_PROXY = env_bool("BEHIND_PROXY", False)
+    # Cierre por inactividad en el ordenador (nunca en el móvil ni a mitad de entreno).
+    # 0 lo desactiva. Ver app/blueprints/idle/routes.py.
+    IDLE_TIMEOUT_MINUTES = int(os.environ.get("IDLE_TIMEOUT_MINUTES", "120"))
     BILLING_TRIAL_DAYS = 7
     BILLING_CURRENCY = "eur"
     BILLING_PLANS: dict[str, dict[str, Any]] = {

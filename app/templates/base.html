@@ -21,6 +21,19 @@
   {% from "components/icons.html" import icon %}
   {% from "components/brand.html" import brand_mark %}
   {% include "components/sprite.html" %}
+  {% if g.idle_timeout %}
+  <dialog id="idle-dialog" class="sheet-dialog help-dialog" aria-labelledby="idle-title"
+          data-timeout="{{ g.idle_timeout }}" data-status="{{ url_for('idle.status') }}"
+          data-expired="{{ url_for('idle.expired') }}">
+    <h2 id="idle-title" class="h3">{{ icon('clock') }}{{ _('¿Sigues ahí?') }}</h2>
+    <p>{{ _('Por seguridad, tu sesión se cerrará en') }} <strong class="idle-countdown" aria-live="polite">2:00</strong>.</p>
+    <form method="post" action="{{ url_for('idle.keep_alive') }}" class="help-actions idle-actions">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="button">{{ _('Seguir conectado') }}</button>
+      <button type="submit" class="button button-secondary" formaction="{{ url_for('auth.logout') }}" data-logout>{{ _('Salir') }}</button>
+    </form>
+  </dialog>
+  {% endif %}
   <a class="skip-link" href="#main">{{ _('Saltar al contenido') }}</a>
   <header class="site-header">
     <nav class="container nav" aria-label="{{ _('Navegación principal') }}">

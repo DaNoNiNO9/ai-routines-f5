@@ -464,7 +464,7 @@
     if (!(form instanceof HTMLFormElement)) {
       return;
     }
-    if (form.hasAttribute("data-logout")) {
+    if (form.hasAttribute("data-logout") || (event.submitter && event.submitter.hasAttribute("data-logout"))) {
       writeQueue([]);
       if (navigator.serviceWorker && navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage("logout");
@@ -700,5 +700,160 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.target.classList && event.target.classList.contains("help-dialog") && event.target.open) {
       event.target.close();
     }
+  });
+})();
+
+
+/* Cierre por inactividad en el ordenador: aviso dos minutos antes. El servidor es
+   quien manda (una recarga tras el plazo ya lleva al login); esto solo avisa y
+   permite seguir. Varias pestañas: antes de avisar se pregunta cuánto queda. */
+(function () {
+  "use strict";
+  var box = document.getElementById("idle-dialog");
+  if (!box || !window.fetch) {
+    return;
+  }
+  var WARN = 120;
+  var timeout = parseInt(box.getAttribute("data-timeout"), 10);
+  var timer = null;
+  var ticker = null;
+  var countdown = box.querySelector(".idle-countdown");
+
+  function schedule(seconds) {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(check, Math.max(seconds - WARN, 5) * 1000);
+  }
+
+  function expire() {
+    window.location.href = box.getAttribute("data-expired");
+  }
+
+  function show(remaining) {
+    var end = Date.now() + remaining * 1000;
+    function tick() {
+      var left = Math.max(0, Math.round((end - Date.now()) / 1000));
+      countdown.textContent = Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+      if (left <= 0) {
+        window.clearInterval(ticker);
+        expire();
+      }
+    }
+    tick();
+    window.clearInterval(ticker);
+    ticker = window.setInterval(tick, 1000);
+    if (!box.open && typeof box.showModal === "function") {
+      box.showModal();
+    }
+  }
+
+  function check() {
+    fetch(box.getAttribute("data-status"), { credentials: "same-origin", cache: "no-store" })
+      .then(function (response) { return response.json(); })
+      .then(function (state) {
+        if (!state.signed_in) {
+          expire();
+        } else if (state.remaining === null) {
+          return; // ya no aplica (por ejemplo, ha empezado un entreno)
+        } else if (state.remaining > WARN + 5) {
+          schedule(state.remaining); // otra pestaña ha tenido actividad
+        } else {
+          show(state.remaining);
+        }
+      })
+      .catch(function () { schedule(WARN + 60); }); // sin red: se vuelve a mirar
+  }
+
+  box.querySelector(".idle-actions").addEventListener("submit", function (event) {
+    if (event.submitter && event.submitter.hasAttribute("data-logout")) {
+      return; // «Salir»: envío normal al cierre de sesión
+    }
+    event.preventDefault();
+    fetch(this.action, { method: "POST", body: new FormData(this), credentials: "same-origin" })
+      .then(function (response) { return response.json(); })
+      .then(function (state) {
+        window.clearInterval(ticker);
+        box.close();
+        if (state.signed_in) {
+          schedule(state.remaining);
+        } else {
+          expire();
+        }
+      })
+      .catch(function () { box.close(); schedule(WARN + 60); });
+  });
+
+  schedule(timeout);
+})();
+
+/* «Cambiar ejercicio»: la lista por grupos musculares se abre en una ventana; las
+   fichas de grupo cargan dentro y «Ver cómo se hace» abre la ficha encima. Sin
+   JavaScript, los mismos enlaces llevan a la página completa. */
+(function () {
+  "use strict";
+  if (!window.fetch) {
+    return;
+  }
+  var box = null;
+
+  function dialog() {
+    if (box) {
+      return box;
+    }
+    box = document.createElement("dialog");
+    box.className = "sheet-dialog";
+    box.id = "swap-dialog";
+    box.setAttribute("aria-label", document.documentElement.lang === "en" ? "Swap exercise" : "Cambiar ejercicio");
+    box.innerHTML = '<button type="button" class="sheet-close" aria-label="×" data-swap-close>×</button><div class="swap-body"></div>';
+    document.body.appendChild(box);
+    box.addEventListener("click", function (event) {
+      if (event.target === box || (event.target.closest && event.target.closest("[data-swap-close]"))) {
+        box.close();
+      }
+    });
+    return box;
+  }
+
+  function load(href, fallback) {
+    var url = href + (href.indexOf("?") === -1 ? "?" : "&") + "parcial=1";
+    return fetch(url, { credentials: "same-origin" })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+        return response.text();
+      })
+      .then(function (html) {
+        var d = dialog();
+        d.querySelector(".swap-body").innerHTML = html;
+        if (!d.open && typeof d.showModal === "function") {
+          d.showModal();
+        }
+        d.scrollTop = 0;
+      })
+      .catch(function () {
+        window.location.href = fallback;
+      });
+  }
+
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest && event.target.closest("a[data-swap], a[data-swap-nav]");
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.button !== 0) {
+      return;
+    }
+    if (typeof HTMLDialogElement === "undefined") {
+      return;
+    }
+    event.preventDefault();
+    load(link.href, link.href);
+  });
+
+  document.addEventListener("submit", function (event) {
+    var form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.hasAttribute("data-swap-form")) {
+      return;
+    }
+    var root = form.closest("[data-swap-root]");
+    var aside = root && root.querySelector("[data-swap-aside]");
+    form.querySelector('input[name="apartar"]').value = aside && aside.checked ? "1" : "";
   });
 })();
