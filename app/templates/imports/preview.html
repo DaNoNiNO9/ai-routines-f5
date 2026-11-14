@@ -8,6 +8,7 @@
   <h1>{{ _('Revisa antes de importar') }}</h1>
   <p class="lead">{{ ngettext('%(num)s entreno', '%(num)s entrenos', history.workouts|length) }} · {{ first|fdate('long') }} – {{ last|fdate('long') }}</p>
   {% if history.unit == 'lb' %}<p class="meta">{{ _('Los pesos venían en libras: los pasamos a kilos.') }}</p>{% endif %}
+  {% if history.skipped_invalid %}<p class="meta">{{ ngettext("%(num)s serie con valores imposibles (más de 1000 kg o 200 repeticiones) no se importa.", "%(num)s series con valores imposibles (más de 1000 kg o 200 repeticiones) no se importan.", history.skipped_invalid) }}</p>{% endif %}
   {% if history.skipped_cardio %}<p class="meta">{{ ngettext('%(num)s fila de cardio (tiempo o distancia) no se importa.', '%(num)s filas de cardio (tiempo o distancia) no se importan.', history.skipped_cardio) }}</p>{% endif %}
 </section>
 

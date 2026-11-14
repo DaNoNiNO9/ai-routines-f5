@@ -6,6 +6,8 @@ say no in Spanish, the database says no in SQL, and neither trusts the other.
 
 from __future__ import annotations
 
+from datetime import date, timedelta
+
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -24,15 +26,29 @@ CARDIO_CHOICES = [
 ]
 
 
+# Más atrás no sirve para la revisión y suele ser un error al teclear el año.
+OLDEST_DAYS = 730
+
+
+def check_diary_day(day: date | None) -> None:
+    """A diary day has to have happened, within the last two years (the user's time zone)."""
+    if day is None:
+        return
+    today = current_user.today()
+    if day > today:
+        raise ValidationError(_l("Ese día todavía no ha llegado."))
+    if day < today - timedelta(days=OLDEST_DAYS):
+        raise ValidationError(_l("Solo se pueden apuntar días de los dos últimos años."))
+
+
 class DayForm(FlaskForm):
     """Base for the diary forms: they all act on one day, never on a future one."""
 
     day = DateField(_l("Día"), validators=[InputRequired()], widget=HiddenInput())
 
     def validate_day(self, field: DateField) -> None:
-        """Reject days that have not happened yet (in the user's time zone)."""
-        if field.data is not None and field.data > current_user.today():
-            raise ValidationError(_l("Ese día todavía no ha llegado."))
+        """Only days that have happened, and not further back than two years."""
+        check_diary_day(field.data)
 
 
 class WeightForm(DayForm):
@@ -120,9 +136,8 @@ class MeasurementForm(FlaskForm):
     notes = StringField(_l("Nota (opcional)"), validators=[Optional(), Length(max=200)])
 
     def validate_day(self, field: DateField) -> None:
-        """No measurements from the future."""
-        if field.data is not None and field.data > current_user.today():
-            raise ValidationError(_l("Ese día todavía no ha llegado."))
+        """Only days that have happened, and not further back than two years."""
+        check_diary_day(field.data)
 
     def validate_body_fat_method(self, field: SelectField) -> None:
         """A declared percentage needs its method (it decides how much to trust it)."""

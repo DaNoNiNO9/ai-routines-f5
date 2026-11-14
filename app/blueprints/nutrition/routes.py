@@ -16,6 +16,7 @@ from app.engine.nutrition import build_nutrition_plan
 from app.extensions import db
 from app.services import adjustments, dashboard, onboarding, plans
 from app.services import menu as menu_service
+from app.stored_names import stored_name
 
 bp = Blueprint("nutrition", __name__, url_prefix="/nutricion")
 
@@ -137,12 +138,18 @@ def log_meal() -> WerkzeugResponse:
         abort(400)
     added = menu_service.log_plate(current_user, days[0].day, plate)
     db.session.commit()
+    if not added:
+        flash(
+            _("%(meal)s ya estaba apuntada en el diario.", meal=stored_name(plate.target.name)),
+            "info",
+        )
+        return redirect(url_for("nutrition.menu", variante=variant))
     flash(
         ngettext(
             "Apuntado en el diario: %(meal)s, %(num)s alimento.",
             "Apuntado en el diario: %(meal)s, %(num)s alimentos.",
             added,
-            meal=plate.target.name,
+            meal=stored_name(plate.target.name),
         ),
         "success",
     )

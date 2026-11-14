@@ -124,11 +124,18 @@ def week_for(
 
 
 def log_plate(user: User, day: date, plate: engine.Plate) -> int:
-    """Put every food of a planned meal in the diary; how many were added."""
+    """Put every food of a planned meal in the diary; how many were added.
+
+    A food already logged that day with the same grams is not added again: a
+    double tap on «apuntar» would otherwise double the meal.
+    """
+    already = {(row.name, round(row.grams, 1)) for row in food_service.entries(user, day)}
     added = 0
     for portion in plate.portions:
         found = food_service.basic_food(portion.food)
         if found is not None and portion.grams > 0:
+            if (found.name, round(float(portion.grams), 1)) in already:
+                continue
             food_service.add(user, day, found, portion.grams)
             added += 1
     return added

@@ -1,3 +1,5 @@
+> **Estado (2026-11-14):** los 12 fallos están arreglados; sus tests ya no llevan `xfail`.
+
 # Auditoría de formularios y endpoints POST
 
 Fecha: 14 de noviembre de 2026. Pruebas: `tests/integration/test_audit_forms.py`

@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 844 tests en verde |
+| Suite | 1236 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `1784f54561b7` (cabeza) |
@@ -62,6 +62,10 @@ Después (T-150 a T-157): **escáner en iPhone** con ZXing como plan B y **RGPD*
 RGPD cerrado en el código el 2026-11-12 (T-158: borrados que se vuelven a aplicar al restaurar una copia). Lo que queda es de fuera: abogado y alojamiento.
 
 **Sesión del 2026-11-14** (T-159 a T-164): cambiador de idioma en la cabecera, ayuda a demanda («?») en siete pantallas, revisión del inglés pantalla a pantalla (nombres generados y fechas), importación del historial de Hevy por CSV y entorno de producción local con túnel de Cloudflare a un subdominio propio (`docs/DEMO_PRO.md`).
+
+Después, el mismo día (T-165 a T-169): fecha de nacimiento en el registro (no menores), cierre de sesión por inactividad solo en ordenador, casillas propias, diario con «Tu semana», cambiar ejercicio por grupo muscular con ficha y auditoría de formularios (373 tests, 12 fallos arreglados).
+
+**Siguiente sesión, por este orden:** más ayuda «?» (cuestionario, resultado, menú, suscripción, progreso, Hevy); precios 3,99 €/mes y 29,99 €/año configurables; panel de administración con superadministrador orientado a soporte (roles, registro de acciones, estadísticas agregadas, gestión de usuarios sin ver datos de salud, ajustes de precios). Ver el plan aprobado en la conversación del 2026-11-14.
 
 Pendiente de esa sesión:
 

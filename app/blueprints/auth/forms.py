@@ -10,6 +10,7 @@ from flask_wtf import FlaskForm
 from wtforms import BooleanField, DateField, EmailField, PasswordField, StringField
 from wtforms.validators import DataRequired, Email, EqualTo, InputRequired, Length
 
+from app.fields import strip_text
 from app.models.user import DISPLAY_NAME_MAX_LENGTH, EMAIL_MAX_LENGTH
 
 PASSWORD_MAX_LENGTH = 128
@@ -23,7 +24,9 @@ class RegisterForm(FlaskForm):
         validators=[DataRequired(), Email(), Length(max=EMAIL_MAX_LENGTH)],
     )
     display_name = StringField(
-        _l("Nombre"), validators=[DataRequired(), Length(min=2, max=DISPLAY_NAME_MAX_LENGTH)]
+        _l("Nombre"),
+        filters=[strip_text],
+        validators=[DataRequired(), Length(min=2, max=DISPLAY_NAME_MAX_LENGTH)],
     )
     password = PasswordField(
         _l("Contraseña"), validators=[DataRequired(), Length(max=PASSWORD_MAX_LENGTH)]

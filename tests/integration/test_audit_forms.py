@@ -12,9 +12,9 @@ veces seguidas. Por cada caso se comprueba lo mismo:
   código 4xx en los endpoints que no tienen pantalla propia);
 * si la entrada no era válida, no se ha escrito nada en la base de datos.
 
-Lo que hoy falla está marcado ``xfail(strict=True)`` con su ``BUG-n``, descrito
-en ``docs/AUDITORIA_FORMULARIOS.md``: cuando se arregle, el test pasará a XPASS
-y habrá que quitar la marca.
+Los 12 fallos que encontró (``BUG-n``, descritos en ``docs/AUDITORIA_FORMULARIOS.md``)
+están arreglados y sus tests quedan como guardia. Un fallo nuevo que no se pueda arreglar
+en el momento se marca ``xfail(strict=True)`` con su número, para que avise al arreglarlo.
 """
 
 from __future__ import annotations
@@ -257,7 +257,6 @@ def test_register_twice_in_a_row_creates_one_account(
     assert _count(database, User) == 1
 
 
-@pytest.mark.xfail(strict=True, reason="BUG-5: el nombre se recorta después de validar su largo")
 def test_register_does_not_store_a_name_shorter_than_two_letters(
     client: FlaskClient, database: SQLAlchemy
 ) -> None:
@@ -392,7 +391,6 @@ def test_profile_accepts_the_limits(account: FlaskClient, seeded: SQLAlchemy) ->
     assert _user(seeded).display_name == name
 
 
-@pytest.mark.xfail(strict=True, reason="BUG-5: el nombre se recorta después de validar su largo")
 def test_profile_does_not_store_a_name_shorter_than_two_letters(
     account: FlaskClient, seeded: SQLAlchemy
 ) -> None:
@@ -590,11 +588,8 @@ STEP_BAD_INPUT = [
 ]
 
 
-STEP_KNOWN_BUGS = {
-    "lesion-fuera-de-opciones": pytest.mark.xfail(
-        strict=True, reason="BUG-12: una gravedad de lesión no válida se rechaza sin decir por qué"
-    ),
-}
+# Arreglados todos los de la auditoría (docs/AUDITORIA_FORMULARIOS.md); aquí irían los nuevos.
+STEP_KNOWN_BUGS: dict[str, pytest.MarkDecorator] = {}
 
 
 @pytest.mark.parametrize(
@@ -699,10 +694,6 @@ def test_quick_questionnaire_refuses_bad_input_and_writes_no_plan(
     assert _count(seeded, Profile) == 0
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="BUG-10: pulsar dos veces «Generar plan» crea otra versión de perfil y de plan",
-)
 def test_generating_the_plan_twice_makes_one_profile(
     account: FlaskClient, seeded: SQLAlchemy
 ) -> None:
@@ -848,9 +839,6 @@ def test_diary_notes_never_come_back_as_html(account: FlaskClient, seeded: SQLAl
         assert "<script>alert" not in page, path
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-6: el diario acepta días de hace más de un siglo (sin límite inferior)"
-)
 @pytest.mark.parametrize(
     ("path", "data"),
     [
@@ -872,9 +860,6 @@ def test_diary_refuses_a_day_before_anyone_was_born(
     assert _count(seeded, BodyMeasurement) == 0
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-7: los números aceptan la sintaxis de Python ('6_4' se lee como 64)"
-)
 @pytest.mark.parametrize("value", ["6_4", "1_00"])
 def test_numbers_with_underscores_are_not_numbers(
     account: FlaskClient, seeded: SQLAlchemy, value: str
@@ -990,16 +975,12 @@ def test_deleting_a_food_that_does_not_exist_is_harmless(
     assert _count(seeded, FoodEntry) == 1
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-1: un id enorme en la URL desborda el INTEGER de SQL y da 500"
-)
 def test_deleting_a_food_with_a_huge_id_is_harmless(
     account: FlaskClient, seeded: SQLAlchemy
 ) -> None:
     assert account.post(f"/diario/alimentos/{HUGE_ID}/borrar").status_code in {302, 404}
 
 
-@pytest.mark.xfail(strict=True, reason="BUG-3: «Copiar ayer» enviado dos veces duplica la comida")
 def test_copying_yesterday_twice_does_not_duplicate(
     account: FlaskClient, seeded: SQLAlchemy
 ) -> None:
@@ -1031,9 +1012,6 @@ def test_logging_a_meal_that_is_not_on_the_menu_is_refused(
     assert _count(seeded, FoodEntry) == 0
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-4: apuntar dos veces la misma comida del menú la duplica"
-)
 def test_logging_the_same_planned_meal_twice_does_not_duplicate(
     planned: FlaskClient, seeded: SQLAlchemy
 ) -> None:
@@ -1159,9 +1137,6 @@ def test_a_set_for_an_exercise_of_another_day_is_refused(
     assert _count(seeded, SetLog) == 0
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-2: un id enorme en un campo oculto desborda el INTEGER de SQL"
-)
 @pytest.mark.parametrize(
     ("endpoint", "overrides"),
     [
@@ -1185,9 +1160,6 @@ def test_a_huge_hidden_id_is_refused_without_crashing(
     assert _count(seeded, SetLog) == 0
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-1: un id enorme en la URL desborda el INTEGER de SQL y da 500"
-)
 @pytest.mark.parametrize(
     ("method", "suffix"),
     [
@@ -1249,11 +1221,6 @@ def test_a_substitution_that_is_not_an_alternative_is_refused(
     assert seeded.session.get(WorkoutSession, session_id).substitutions == {}
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="BUG-11: un exercise_id inexistente se toma como «restaurar el original» y borra "
-    "la sustitución que hubiera",
-)
 def test_a_substitution_with_an_unknown_exercise_is_refused(
     live: tuple[FlaskClient, int, RoutineExercise], seeded: SQLAlchemy
 ) -> None:
@@ -1543,7 +1510,6 @@ def test_odd_hevy_values_are_clamped_not_fatal(
     assert _confirm(planned, page.get_data(as_text=True)).status_code == 302
 
 
-@pytest.mark.xfail(strict=True, reason="BUG-8: NaN o infinito en reps/RPE del CSV de Hevy da 500")
 @pytest.mark.parametrize(
     "row",
     [
@@ -1560,9 +1526,6 @@ def test_hevy_upload_survives_nan_and_infinity(
     assert response.status_code == 200
 
 
-@pytest.mark.xfail(
-    strict=True, reason="BUG-9: valores del CSV fuera de las CHECK de la base dan 500 al importar"
-)
 @pytest.mark.parametrize(
     ("row", "end"),
     [

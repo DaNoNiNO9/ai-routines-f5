@@ -2,11 +2,19 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from flask_babel import format_decimal
 from flask_babel import lazy_gettext as _l
 from wtforms import FloatField
+
+NUMBER = re.compile(r"[+-]?(\d+([.,]\d*)?|[.,]\d+)")
+
+
+def strip_text(value: object) -> object:
+    """Trim spaces before the length checks ("  B  " is one letter, not five)."""
+    return value.strip() if isinstance(value, str) else value
 
 
 class DecimalField(FloatField):
@@ -26,6 +34,10 @@ class DecimalField(FloatField):
         if not valuelist:
             return
         raw = str(valuelist[0]).strip().replace(" ", "")
+        # Solo cifras con coma o punto: float() también acepta «6_4», «1e3» o «nan».
+        if not NUMBER.fullmatch(raw):
+            self.data = None
+            raise ValueError(str(self.invalid_message))
         try:
             self.data = float(raw.replace(",", "."))
         except ValueError:

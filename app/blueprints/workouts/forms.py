@@ -19,10 +19,16 @@ FATIGUE_LABELS = {
 }
 
 
+# Un identificador mayor no cabe en la base (y en SQLite desborda): se rechaza aquí.
+MAX_ID = 2_147_483_647
+
+
 class SetForm(FlaskForm):
     """One set: which prescription, which index, and what was done."""
 
-    routine_exercise_id = IntegerField(validators=[InputRequired()])
+    routine_exercise_id = IntegerField(
+        validators=[InputRequired(), NumberRange(min=-MAX_ID, max=MAX_ID)]
+    )
     set_index = IntegerField(validators=[InputRequired(), NumberRange(min=1, max=20)])
     weight_kg = DecimalField(_l("kg"), validators=[InputRequired(), NumberRange(min=0, max=1000)])
     reps = IntegerField(_l("reps"), validators=[InputRequired(), NumberRange(min=0, max=200)])
@@ -39,8 +45,10 @@ class SetForm(FlaskForm):
 class SubstituteForm(FlaskForm):
     """Swap the prescribed exercise for one of its alternatives (empty restores it)."""
 
-    routine_exercise_id = IntegerField(validators=[InputRequired()])
-    exercise_id = IntegerField(validators=[Optional()])
+    routine_exercise_id = IntegerField(
+        validators=[InputRequired(), NumberRange(min=-MAX_ID, max=MAX_ID)]
+    )
+    exercise_id = IntegerField(validators=[Optional(), NumberRange(min=-MAX_ID, max=MAX_ID)])
 
 
 class FinishForm(FlaskForm):

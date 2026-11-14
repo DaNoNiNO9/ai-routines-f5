@@ -92,6 +92,7 @@
           <div x-show="tocada" x-cloak>
             {{ campo(class_="field-input injury-severity", **{"x-ref": "gravedad"}) }}
           </div>
+          {% for error in campo.errors %}<p class="field-error" role="alert">{{ labels.label(labels.INJURY_AREA, area) }}: {{ error }}</p>{% endfor %}
         </div>
       {% endfor %}
     </div>

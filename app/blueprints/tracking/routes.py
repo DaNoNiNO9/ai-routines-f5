@@ -317,6 +317,10 @@ def delete_food(entry_id: int) -> WerkzeugResponse:
 def copy_yesterday() -> WerkzeugResponse:
     """Log again what was eaten the day before."""
     day = _requested_day(request.form.get("fecha"))
+    if food_service.entries(current_user, day):
+        # Un doble toque (o volver atrás y repetir) duplicaría el día entero.
+        flash(_("Ese día ya tiene alimentos apuntados: no copiamos nada."), "warning")
+        return redirect(url_for("tracking.diary", fecha=day.isoformat()) + "#comida")
     copied = food_service.copy_day(current_user, day - timedelta(days=1), day)
     db.session.commit()
     flash(

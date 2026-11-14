@@ -23,6 +23,7 @@ from __future__ import annotations
 import csv
 import io
 import logging
+import math
 import re
 import secrets
 import time
@@ -43,6 +44,9 @@ from app.models import Exercise, SetLog, User, WorkoutSession
 logger = logging.getLogger(__name__)
 
 LB_TO_KG = 0.45359237
+# Los mismos límites que la base de datos (SetLog): fuera de ellos la serie se omite.
+MAX_WEIGHT_KG = 1000
+MAX_REPS = 200
 MAX_BYTES = 8 * 1024 * 1024
 PENDING_SECONDS = 3600
 MIN_GUESS_SCORE = 0.5
@@ -263,6 +267,7 @@ class ParsedHistory:
     exercises: Counter[str]
     skipped_cardio: int
     unit: str
+    skipped_invalid: int = 0
 
 
 @dataclass(frozen=True)
@@ -292,9 +297,10 @@ def _number(value: str | None) -> float | None:
     if value is None or not value.strip():
         return None
     try:
-        return float(value.strip().replace(",", "."))
+        number = float(value.strip().replace(",", "."))
     except ValueError:
         return None
+    return number if math.isfinite(number) else None  # «nan» e «inf» también son float
 
 
 def _moment(value: str, zone: ZoneInfo) -> datetime | None:
@@ -326,6 +332,7 @@ def parse_csv(data: bytes, timezone: str = "Europe/Madrid") -> ParsedHistory:
     workouts: dict[tuple[str, str], HevyWorkout] = {}
     exercises: Counter[str] = Counter()
     cardio = 0
+    skipped = 0
     for raw in reader:
         row = {(k or "").strip().lower(): (v or "") for k, v in raw.items()}
         started = _moment(row.get("start_time", ""), zone)
@@ -335,10 +342,12 @@ def parse_csv(data: bytes, timezone: str = "Europe/Madrid") -> ParsedHistory:
         key = (row.get("title", ""), row.get("start_time", ""))
         workout = workouts.get(key)
         if workout is None:
+            finished = _moment(row.get("end_time", ""), zone)
             workout = HevyWorkout(
                 title=row.get("title", "").strip()[:120] or "Hevy",
                 started_at=started,
-                finished_at=_moment(row.get("end_time", ""), zone),
+                # Un fin anterior al inicio no tiene sentido (y la base lo rechaza).
+                finished_at=finished if finished and finished >= started else None,
             )
             workouts[key] = workout
         reps = _number(row.get("reps"))
@@ -348,17 +357,22 @@ def parse_csv(data: bytes, timezone: str = "Europe/Madrid") -> ParsedHistory:
         weight = _number(row.get("weight_kg" if unit == "kg" else "weight_lbs")) or 0.0
         if unit == "lb":
             weight *= LB_TO_KG
+        if weight < 0 or weight > MAX_WEIGHT_KG or reps > MAX_REPS:
+            skipped += 1  # imposible: mejor omitirla que inventar un valor
+            continue
         rpe = _number(row.get("rpe"))
         index = _number(row.get("set_index"))
         workout.sets.append(
             HevySet(
                 exercise=name,
-                set_index=int(index) + 1 if index is not None else len(workout.sets) + 1,
+                set_index=int(index) + 1
+                if index is not None and index >= 0
+                else len(workout.sets) + 1,
                 set_type=SetType.WARMUP
                 if row.get("set_type", "").strip().lower() == "warmup"
                 else SetType.WORKING,
                 weight_kg=round(max(weight, 0.0), 2),
-                reps=min(int(reps), 100),
+                reps=int(reps),
                 rir=max(0, min(10, round(10 - rpe))) if rpe else None,
             )
         )
@@ -366,7 +380,13 @@ def parse_csv(data: bytes, timezone: str = "Europe/Madrid") -> ParsedHistory:
     if not workouts:
         raise HevyImportError("empty")
     ordered = sorted(workouts.values(), key=lambda w: w.started_at)
-    return ParsedHistory(workouts=ordered, exercises=exercises, skipped_cardio=cardio, unit=unit)
+    return ParsedHistory(
+        workouts=ordered,
+        exercises=exercises,
+        skipped_cardio=cardio,
+        unit=unit,
+        skipped_invalid=skipped,
+    )
 
 
 def _tokens(name: str) -> set[str]:

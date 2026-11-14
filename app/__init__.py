@@ -18,6 +18,7 @@ from flask import Flask, current_app, session
 from flask_babel import get_locale
 from flask_babel import lazy_gettext as _l
 from werkzeug.middleware.proxy_fix import ProxyFix
+from werkzeug.routing import IntegerConverter
 
 from app.cli import register_cli
 from app.errors import register_error_handlers
@@ -32,6 +33,18 @@ __version__ = "0.1.0"
 
 DEFAULT_ENV = "development"
 SQLITE_FILENAME = "alza.db"
+
+
+# Mayor entero de una columna INTEGER en PostgreSQL (y lo que SQLite convierte sin desbordar).
+MAX_DB_INT = 2_147_483_647
+
+
+class BoundedIntConverter(IntegerConverter):
+    """``<int:...>`` with a ceiling: a huge id in the URL is a 404, not an overflow (500)."""
+
+    def __init__(self, map: Any, *args: Any, **kwargs: Any) -> None:
+        kwargs.setdefault("max", MAX_DB_INT)
+        super().__init__(map, *args, **kwargs)
 
 
 def create_app(
@@ -60,6 +73,7 @@ def create_app(
         raise ValueError(f"Unknown configuration {name!r}; expected one of: {known}") from exc
 
     app = Flask(__name__, instance_relative_config=True)
+    app.url_map.converters["int"] = BoundedIntConverter
     app.config.from_object(config_class)
     if overrides:
         app.config.from_mapping(overrides)

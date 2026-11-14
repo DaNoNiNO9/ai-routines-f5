@@ -123,6 +123,15 @@ def start_draft(user: User) -> QuestionnaireDraft:
     return draft
 
 
+def same_as_profile(user: User, draft: QuestionnaireDraft) -> bool:
+    """Whether the draft only repeats the current profile (generating again would duplicate)."""
+    profile = current_profile(user)
+    if profile is None:
+        return False
+    stored = profile_to_data(profile, [item.code for item in user.equipment])
+    return all(draft.data.get(key) == value for key, value in stored.items())
+
+
 def save_step(draft: QuestionnaireDraft, number: int, values: dict[str, Any]) -> None:
     """Merge one step's answers into the draft and record the progress."""
     draft.data = {**draft.data, **values}

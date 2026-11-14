@@ -332,6 +332,10 @@ def review() -> str | WerkzeugResponse:
         flash(_("Faltan respuestas en el paso %(n)s.", n=missing), "warning")
         return redirect(url_for("onboarding.step", number=missing))
     if request.method == "POST":
+        if onboarding.same_as_profile(current_user, draft):
+            # Doble envío, o volver a la revisión sin cambiar nada: el plan ya es este.
+            flash(_("Tu plan ya está calculado con estas respuestas."), "info")
+            return redirect(url_for("onboarding.result"))
         return _generate(draft)
     return render_template(
         "onboarding/review.html",

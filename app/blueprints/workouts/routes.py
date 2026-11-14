@@ -191,6 +191,10 @@ def substitute(session_id: int) -> WerkzeugResponse:
         return redirect(url_for("workouts.session", session_id=current.id))
     item = _item_of(current, form.routine_exercise_id.data)
     exercise = db.session.get(Exercise, form.exercise_id.data) if form.exercise_id.data else None
+    if form.exercise_id.data and exercise is None:
+        # Un id que no existe no es «volver al original»: es una petición rota.
+        flash(_("Petición no válida."), "error")
+        return redirect(url_for("workouts.session", session_id=current.id))
     try:
         workouts.substitute(current, item, exercise, profile, _equipment())
     except WorkoutError as exc:
