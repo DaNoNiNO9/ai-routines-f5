@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import date
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerifyMismatchError
@@ -105,7 +106,11 @@ def find_by_email(email: str) -> User | None:
 
 
 def register_user(
-    email: str, password: str, display_name: str, health_consent: bool = False
+    email: str,
+    password: str,
+    display_name: str,
+    health_consent: bool = False,
+    birth_date: date | None = None,
 ) -> User:
     """Create an account, recording consent now (and the health-data consent, if given).
 
@@ -123,6 +128,7 @@ def register_user(
         password_hash=hash_password(password),
         display_name=display_name.strip(),
         consent_accepted_at=utcnow(),
+        birth_date=birth_date,
     )
     if health_consent:
         from app.services.privacy import CONSENT_VERSION

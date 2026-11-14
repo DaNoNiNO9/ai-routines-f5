@@ -15,7 +15,7 @@
 
   <h2 class="h3">2. Qué datos tratamos</h2>
   <ul>
-    <li><strong>Cuenta:</strong> correo, nombre, contraseña (guardada como resumen irreversible con Argon2), idioma, zona horaria y fechas de aceptación del aviso y del consentimiento.</li>
+    <li><strong>Cuenta:</strong> correo, nombre, fecha de nacimiento (para no admitir a menores), contraseña (guardada como resumen irreversible con Argon2), idioma, zona horaria y fechas de aceptación del aviso y del consentimiento.</li>
     <li><strong>Datos de salud (categoría especial, art. 9 RGPD):</strong> sexo, fecha de nacimiento, altura, peso, medidas, porcentaje de grasa, actividad, horas de sueño y estrés, experiencia y material de entreno, molestias y lesiones, embarazo o lactancia y antecedentes de trastorno de la conducta alimentaria (solo para bloquear el plan), lo que comes, tus entrenos y series, cómo has dormido antes de entrenar y tu plan y sus revisiones.</li>
     <li><strong>Tipo de dieta:</strong> si indicas halal o kosher, puede revelar creencias religiosas (también categoría especial). Es opcional: puedes elegir «omnívora».</li>
     <li><strong>Suscripción:</strong> plan, estado, fechas e identificadores de cliente y suscripción en la pasarela. <strong>No guardamos los datos de tu tarjeta</strong>: los trata Stripe.</li>
@@ -60,6 +60,6 @@
   <p>Solo técnicas e imprescindibles: la de sesión (para mantenerte dentro), la de protección CSRF y las de tema e idioma. No usamos cookies de analítica ni de publicidad, por eso no te pedimos que las aceptes.</p>
 
   <h2 class="h3">9. Menores</h2>
-  <p>Alza es solo para mayores de 18 años y no genera planes a menores.</p>
+  <p>Alza es solo para mayores de 18 años. Te pedimos la fecha de nacimiento al registrarte y no creamos la cuenta si indica menos de 18; también la comprobamos al calcular el plan. No podemos verificarla: si sabemos que una cuenta es de un menor, la borramos con todos sus datos. Si eres madre, padre o tutor y crees que un menor se ha registrado, escríbenos a [correo de privacidad].</p>
 </article>
 {% endblock %}

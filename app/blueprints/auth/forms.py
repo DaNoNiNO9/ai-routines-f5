@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, EmailField, PasswordField, StringField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import BooleanField, DateField, EmailField, PasswordField, StringField
+from wtforms.validators import DataRequired, Email, EqualTo, InputRequired, Length
 
 from app.models.user import DISPLAY_NAME_MAX_LENGTH, EMAIL_MAX_LENGTH
 
@@ -32,6 +35,10 @@ class RegisterForm(FlaskForm):
             EqualTo("password", message=_l("Las contraseñas no coinciden.")),
         ],
     )
+    birth_date = DateField(
+        _l("Fecha de nacimiento"),
+        validators=[InputRequired(message=_l("Indica tu fecha de nacimiento."))],
+    )
     consent = BooleanField(
         _l(
             "Entiendo que Alza es una herramienta orientativa y no sustituye el consejo "
@@ -49,6 +56,13 @@ class RegisterForm(FlaskForm):
             DataRequired(message=_l("Sin este consentimiento no podemos calcular tu plan."))
         ],
     )
+
+    def validate_birth_date(self, field: DateField) -> None:
+        """No accounts for minors: the date decides, as in the questionnaire."""
+        from app.blueprints.onboarding.forms import check_adult
+
+        # Aún no hay cuenta ni zona horaria: el día de hoy en Madrid.
+        check_adult(field.data, datetime.now(ZoneInfo("Europe/Madrid")).date())
 
 
 class LoginForm(FlaskForm):

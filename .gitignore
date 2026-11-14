@@ -49,3 +49,6 @@ scripts/cache/
 
 # Plantilla de traducción: se regenera con pybabel extract
 messages.pot
+
+# Copias de trabajo de agentes (Claude Code)
+.claude/

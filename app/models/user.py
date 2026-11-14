@@ -62,6 +62,8 @@ class User(UserMixin, TimestampMixin, SoftDeleteMixin, db.Model):
     # cuándo se dio y qué versión del texto se aceptó. Se puede retirar (vuelve a None).
     health_consent_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
     health_consent_version: Mapped[str | None] = mapped_column(String(20))
+    # Se pide al registrarse para no crear cuentas de menores (Alza es para mayores de 18).
+    birth_date: Mapped[date | None] = mapped_column()
 
     profiles: Mapped[list[Profile]] = relationship(
         back_populates="user", cascade="all, delete-orphan", order_by="Profile.version"

@@ -67,6 +67,7 @@ def register() -> str | WerkzeugResponse:
                 form.password.data or "",
                 form.display_name.data or "",
                 health_consent=bool(form.health_consent.data),
+                birth_date=form.birth_date.data,
             )
         except auth_service.WeakPasswordError as exc:
             for message in password_messages(exc.problems):

@@ -27,6 +27,27 @@ from app.fields import DecimalField
 
 MIN_AGE = 18
 MAX_AGE = 110
+
+
+def age_on(birth: date, today: date) -> int:
+    """Whole years old on ``today``."""
+    years = today.year - birth.year
+    if (today.month, today.day) < (birth.month, birth.day):
+        years -= 1
+    return years
+
+
+def check_adult(birth: date | None, today: date) -> None:
+    """Adults only and a plausible age (the engine repeats the first check)."""
+    if birth is None:
+        return
+    age = age_on(birth, today)
+    if age < MIN_AGE:
+        raise ValidationError(_l("Alza es solo para mayores de 18 años."))
+    if age > MAX_AGE:
+        raise ValidationError(_l("Revisa la fecha de nacimiento."))
+
+
 SESSION_MINUTE_OPTIONS = (30, 45, 60, 75, 90, 120)
 MEAL_OPTIONS = (2, 3, 4, 5, 6)
 INJURY_FIELDS = {area: f"injury_{area.value}" for area in InjuryArea}
@@ -87,16 +108,7 @@ class BodyForm(StepForm):
 
     def validate_birth_date(self, field: DateField) -> None:
         """Adults only (the engine repeats the check) and a plausible age."""
-        if field.data is None:
-            return
-        today = current_user.today()
-        age = today.year - field.data.year
-        if (today.month, today.day) < (field.data.month, field.data.day):
-            age -= 1
-        if age < MIN_AGE:
-            raise ValidationError(_l("Alza es solo para mayores de 18 años."))
-        if age > MAX_AGE:
-            raise ValidationError(_l("Revisa la fecha de nacimiento."))
+        check_adult(field.data, current_user.today())
 
     def validate_body_fat_method(self, field: SelectField) -> None:
         """A declared percentage needs its method (it decides how much to trust it)."""

@@ -23,6 +23,7 @@ def _register(client: FlaskClient, email: str = "ana@example.com", **overrides: 
         "password_confirm": PASSWORD,
         "consent": "y",
         "health_consent": "y",
+        "birth_date": "1990-05-05",
     }
     data.update(overrides)
     return client.post("/registro", data=data)
@@ -227,3 +228,29 @@ def test_login_requires_a_csrf_token_when_enabled(make_app: AppFactory) -> None:
 def test_whoami_is_hidden_outside_debug(make_app: AppFactory) -> None:
     app = make_app(ENABLE_DEBUG_ROUTES=False)
     assert app.test_client().get("/_auth/whoami").status_code == 404
+
+
+def test_minors_cannot_create_an_account(client: FlaskClient, database: SQLAlchemy) -> None:
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+
+    from sqlalchemy import func, select
+
+    from app.models import User
+
+    today = datetime.now(ZoneInfo("Europe/Madrid")).date()
+    seventeen = today.replace(year=today.year - 17).isoformat()
+    response = _register(client, birth_date=seventeen)
+    assert response.status_code == 200
+    assert "Alza es solo para mayores de 18 años." in response.get_data(as_text=True)
+    missing = _register(client, birth_date="")
+    assert "Indica tu fecha de nacimiento." in missing.get_data(as_text=True)
+    assert database.session.scalar(select(func.count()).select_from(User)) == 0
+    adult = today.replace(year=today.year - 18) if (today.month, today.day) != (2, 29) else today
+    assert _register(client, birth_date=adult.isoformat()).status_code == 302
+
+
+def test_the_questionnaire_reuses_the_birth_date(client: FlaskClient, database: SQLAlchemy) -> None:
+    _register(client)
+    assert 'value="1990-05-05"' in client.get("/cuestionario/rapido").get_data(as_text=True)
+    assert 'value="1990-05-05"' in client.get("/cuestionario/paso/1").get_data(as_text=True)

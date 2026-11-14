@@ -54,6 +54,8 @@ def _form_defaults(number: int, data: dict[str, Any]) -> dict[str, Any]:
             defaults[key] = date.fromisoformat(value)
         else:
             defaults[key] = value
+    if "birth_date" not in defaults and current_user.birth_date:
+        defaults["birth_date"] = current_user.birth_date  # ya la dio al registrarse
     if number == 4:
         location = data.get("training_location")
         if "equipment" not in data or data.get("equipment_for_location") != location:
@@ -98,7 +100,7 @@ def quick() -> str | WerkzeugResponse:
     Whoever has aches or injuries goes on to the full material and injuries
     step, already filled in, because they change which exercises are possible.
     """
-    form = QuickForm()
+    form = QuickForm(data={"birth_date": current_user.birth_date})
     if form.validate_on_submit():
         draft = onboarding.start_draft(current_user)
         answers = form.to_data()

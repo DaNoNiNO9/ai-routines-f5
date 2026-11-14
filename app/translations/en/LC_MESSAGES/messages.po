@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 16:57+0100\n"
+"POT-Creation-Date: 2026-11-14 21:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/__init__.py:123
+#: app/__init__.py:128
 msgid "Inicia sesión para continuar."
 msgstr "Sign in to continue."
 
@@ -827,7 +827,7 @@ msgid_plural "%(num)s días"
 msgstr[0] "%(num)s day"
 msgstr[1] "%(num)s days"
 
-#: app/blueprints/account/forms.py:37 app/blueprints/auth/forms.py:23
+#: app/blueprints/account/forms.py:37 app/blueprints/auth/forms.py:26
 msgid "Nombre"
 msgstr "Name"
 
@@ -863,8 +863,8 @@ msgstr "New password"
 msgid "Repite la contraseña nueva"
 msgstr "Repeat the new password"
 
-#: app/blueprints/account/forms.py:80 app/blueprints/auth/forms.py:32
-#: app/blueprints/auth/forms.py:80
+#: app/blueprints/account/forms.py:80 app/blueprints/auth/forms.py:35
+#: app/blueprints/auth/forms.py:94
 msgid "Las contraseñas no coinciden."
 msgstr "The passwords do not match."
 
@@ -886,7 +886,7 @@ msgstr "That password is not correct."
 msgid "Datos guardados."
 msgstr "Saved."
 
-#: app/blueprints/account/routes.py:92 app/blueprints/auth/routes.py:75
+#: app/blueprints/account/routes.py:92 app/blueprints/auth/routes.py:76
 msgid "Ya existe una cuenta con ese correo."
 msgstr "There is already an account with that email."
 
@@ -910,40 +910,49 @@ msgstr "We could not cancel your subscription and have not deleted anything. Try
 msgid "Tu cuenta y todos tus datos se han borrado. Gracias por probar Alza."
 msgstr "Your account and all your data have been deleted. Thanks for trying Alza."
 
-#: app/blueprints/auth/forms.py:19 app/blueprints/auth/forms.py:57
-#: app/blueprints/auth/forms.py:67
+#: app/blueprints/auth/forms.py:22 app/blueprints/auth/forms.py:71
+#: app/blueprints/auth/forms.py:81
 msgid "Correo electrónico"
 msgstr "Email"
 
-#: app/blueprints/auth/forms.py:26 app/blueprints/auth/forms.py:59
+#: app/blueprints/auth/forms.py:29 app/blueprints/auth/forms.py:73
 msgid "Contraseña"
 msgstr "Password"
 
-#: app/blueprints/auth/forms.py:29 app/blueprints/auth/forms.py:77
+#: app/blueprints/auth/forms.py:32 app/blueprints/auth/forms.py:91
 msgid "Repite la contraseña"
 msgstr "Repeat the password"
 
-#: app/blueprints/auth/forms.py:37
+#: app/blueprints/auth/forms.py:39 app/blueprints/onboarding/forms.py:90
+#: app/blueprints/onboarding/routes.py:183
+msgid "Fecha de nacimiento"
+msgstr "Date of birth"
+
+#: app/blueprints/auth/forms.py:40
+msgid "Indica tu fecha de nacimiento."
+msgstr "Enter your date of birth."
+
+#: app/blueprints/auth/forms.py:44
 msgid "Entiendo que Alza es una herramienta orientativa y no sustituye el consejo de un profesional sanitario."
 msgstr "I understand that Alza is a guidance tool and does not replace the advice of a healthcare professional."
 
-#: app/blueprints/auth/forms.py:40
+#: app/blueprints/auth/forms.py:47
 msgid "Es necesario aceptar el aviso."
 msgstr "You need to accept the notice."
 
-#: app/blueprints/auth/forms.py:44 app/templates/privacy/consent.html:19
+#: app/blueprints/auth/forms.py:51 app/templates/privacy/consent.html:19
 msgid "Doy mi consentimiento explícito para que Alza trate mis datos de salud (peso, medidas, sueño, comida, entrenos y molestias) y, si lo indico, mi tipo de dieta, solo para calcular y ajustar mi plan. Puedo retirarlo cuando quiera."
 msgstr "I give my explicit consent for Alza to process my health data (weight, measurements, sleep, food, workouts and aches) and, if I state it, my type of diet, only to calculate and adjust my plan. I can withdraw it whenever I want."
 
-#: app/blueprints/auth/forms.py:49
+#: app/blueprints/auth/forms.py:56
 msgid "Sin este consentimiento no podemos calcular tu plan."
 msgstr "Without this consent we cannot calculate your plan."
 
-#: app/blueprints/auth/forms.py:61
+#: app/blueprints/auth/forms.py:75
 msgid "Mantener la sesión iniciada"
 msgstr "Keep me signed in"
 
-#: app/blueprints/auth/forms.py:74 app/templates/auth/reset.html:4
+#: app/blueprints/auth/forms.py:88 app/templates/auth/reset.html:4
 #: app/templates/auth/reset.html:8
 msgid "Nueva contraseña"
 msgstr "New password"
@@ -961,24 +970,24 @@ msgstr "That password is too common."
 msgid "La contraseña debe tener al menos %(n)s caracteres."
 msgstr "The password needs at least %(n)s characters."
 
-#: app/blueprints/auth/routes.py:78
+#: app/blueprints/auth/routes.py:79
 #, python-format
 msgid "Cuenta creada. Hola, %(name)s."
 msgstr "Account created. Hi, %(name)s."
 
-#: app/blueprints/auth/routes.py:94
+#: app/blueprints/auth/routes.py:95
 msgid "Correo o contraseña incorrectos."
 msgstr "Wrong email or password."
 
-#: app/blueprints/auth/routes.py:96
+#: app/blueprints/auth/routes.py:97
 msgid "Esta cuenta está desactivada."
 msgstr "This account is deactivated."
 
-#: app/blueprints/auth/routes.py:108
+#: app/blueprints/auth/routes.py:109
 msgid "Sesión cerrada."
 msgstr "Signed out."
 
-#: app/blueprints/auth/routes.py:125
+#: app/blueprints/auth/routes.py:126
 #, python-format
 msgid ""
 "Hola %(name)s,\n"
@@ -995,23 +1004,23 @@ msgstr ""
 "\n"
 "The link expires in %(minutes)s minutes. If you did not ask for it, ignore this email."
 
-#: app/blueprints/auth/routes.py:132
+#: app/blueprints/auth/routes.py:133
 msgid "Recupera tu contraseña de Alza"
 msgstr "Recover your Alza password"
 
-#: app/blueprints/auth/routes.py:134
+#: app/blueprints/auth/routes.py:135
 msgid "No se pudo enviar el correo. Inténtalo más tarde."
 msgstr "The email could not be sent. Try again later."
 
-#: app/blueprints/auth/routes.py:138
+#: app/blueprints/auth/routes.py:139
 msgid "Si el correo existe, recibirás un enlace para restablecer la contraseña."
 msgstr "If that email exists, you will get a link to reset the password."
 
-#: app/blueprints/auth/routes.py:150
+#: app/blueprints/auth/routes.py:151
 msgid "El enlace no es válido o ha caducado. Pide uno nuevo."
 msgstr "That link is not valid or has expired. Ask for a new one."
 
-#: app/blueprints/auth/routes.py:160
+#: app/blueprints/auth/routes.py:161
 msgid "Contraseña actualizada. Ya puedes entrar."
 msgstr "Password updated. You can sign in now."
 
@@ -1080,7 +1089,7 @@ msgid "Cambio guardado (simulación)."
 msgstr "Change saved (simulation)."
 
 #: app/blueprints/dashboard/routes.py:43
-#: app/blueprints/onboarding/routes.py:183 app/services/exports.py:408
+#: app/blueprints/onboarding/routes.py:185 app/services/exports.py:408
 #: app/templates/dashboard/index.html:89 app/templates/tracking/diary.html:26
 msgid "Peso"
 msgstr "Weight"
@@ -1171,188 +1180,183 @@ msgid_plural "Apuntado en el diario: %(meal)s, %(num)s alimentos."
 msgstr[0] "Logged in the diary: %(meal)s, %(num)s food."
 msgstr[1] "Logged in the diary: %(meal)s, %(num)s foods."
 
-#: app/blueprints/onboarding/forms.py:67
-msgid "Sexo biológico"
-msgstr "Biological sex"
-
-#: app/blueprints/onboarding/forms.py:69
-#: app/blueprints/onboarding/routes.py:181
-msgid "Fecha de nacimiento"
-msgstr "Date of birth"
-
-#: app/blueprints/onboarding/forms.py:71
-msgid "Altura (cm)"
-msgstr "Height (cm)"
-
-#: app/blueprints/onboarding/forms.py:74
-msgid "Peso actual (kg)"
-msgstr "Current weight (kg)"
-
-#: app/blueprints/onboarding/forms.py:76 app/blueprints/tracking/forms.py:105
-msgid "Cuello (cm)"
-msgstr "Neck (cm)"
-
-#: app/blueprints/onboarding/forms.py:78 app/blueprints/tracking/forms.py:107
-msgid "Cintura (cm)"
-msgstr "Waist (cm)"
-
-#: app/blueprints/onboarding/forms.py:80 app/blueprints/tracking/forms.py:109
-msgid "Cadera (cm)"
-msgstr "Hip (cm)"
-
-#: app/blueprints/onboarding/forms.py:82
-msgid "Porcentaje de grasa corporal"
-msgstr "Body fat percentage"
-
-#: app/blueprints/onboarding/forms.py:85
-msgid "¿Cómo lo has medido?"
-msgstr "How did you measure it?"
-
-#: app/blueprints/onboarding/forms.py:97
+#: app/blueprints/onboarding/forms.py:46 app/templates/auth/register.html:17
 msgid "Alza es solo para mayores de 18 años."
 msgstr "Alza is only for people aged 18 and over."
 
-#: app/blueprints/onboarding/forms.py:99
+#: app/blueprints/onboarding/forms.py:48
 msgid "Revisa la fecha de nacimiento."
 msgstr "Check the date of birth."
 
-#: app/blueprints/onboarding/forms.py:104 app/blueprints/tracking/forms.py:130
+#: app/blueprints/onboarding/forms.py:88
+msgid "Sexo biológico"
+msgstr "Biological sex"
+
+#: app/blueprints/onboarding/forms.py:92
+msgid "Altura (cm)"
+msgstr "Height (cm)"
+
+#: app/blueprints/onboarding/forms.py:95
+msgid "Peso actual (kg)"
+msgstr "Current weight (kg)"
+
+#: app/blueprints/onboarding/forms.py:97 app/blueprints/tracking/forms.py:105
+msgid "Cuello (cm)"
+msgstr "Neck (cm)"
+
+#: app/blueprints/onboarding/forms.py:99 app/blueprints/tracking/forms.py:107
+msgid "Cintura (cm)"
+msgstr "Waist (cm)"
+
+#: app/blueprints/onboarding/forms.py:101 app/blueprints/tracking/forms.py:109
+msgid "Cadera (cm)"
+msgstr "Hip (cm)"
+
+#: app/blueprints/onboarding/forms.py:103
+msgid "Porcentaje de grasa corporal"
+msgstr "Body fat percentage"
+
+#: app/blueprints/onboarding/forms.py:106
+msgid "¿Cómo lo has medido?"
+msgstr "How did you measure it?"
+
+#: app/blueprints/onboarding/forms.py:116 app/blueprints/tracking/forms.py:130
 msgid "Indica cómo has medido el porcentaje de grasa."
 msgstr "Tell us how you measured your body fat."
 
-#: app/blueprints/onboarding/forms.py:121
+#: app/blueprints/onboarding/forms.py:133
 msgid "Para estimar la grasa en mujeres hace falta también la cadera."
 msgstr "Estimating body fat in women needs the hip measurement too."
 
-#: app/blueprints/onboarding/forms.py:131
+#: app/blueprints/onboarding/forms.py:143
 msgid "Actividad en tu trabajo o día a día"
 msgstr "Activity at work or day to day"
 
-#: app/blueprints/onboarding/forms.py:136
+#: app/blueprints/onboarding/forms.py:148
 msgid "Pasos diarios (si los conoces)"
 msgstr "Daily steps (if you know them)"
 
-#: app/blueprints/onboarding/forms.py:140
+#: app/blueprints/onboarding/forms.py:152
 msgid "Horas de sueño por noche"
 msgstr "Hours of sleep per night"
 
-#: app/blueprints/onboarding/forms.py:143
+#: app/blueprints/onboarding/forms.py:155
 msgid "Nivel de estrés habitual"
 msgstr "Usual stress level"
 
-#: app/blueprints/onboarding/forms.py:149
+#: app/blueprints/onboarding/forms.py:161
 msgid "Otro deporte o actividad (opcional)"
 msgstr "Another sport or activity (optional)"
 
-#: app/blueprints/onboarding/forms.py:152
+#: app/blueprints/onboarding/forms.py:164
 msgid "Sesiones por semana"
 msgstr "Sessions per week"
 
-#: app/blueprints/onboarding/forms.py:157
-#: app/blueprints/onboarding/forms.py:193
+#: app/blueprints/onboarding/forms.py:169
+#: app/blueprints/onboarding/forms.py:205
 msgid "Minutos por sesión"
 msgstr "Minutes per session"
 
-#: app/blueprints/onboarding/forms.py:162
+#: app/blueprints/onboarding/forms.py:174
 msgid "Intensidad"
 msgstr "Intensity"
 
-#: app/blueprints/onboarding/forms.py:163 app/blueprints/tracking/forms.py:21
+#: app/blueprints/onboarding/forms.py:175 app/blueprints/tracking/forms.py:21
 msgid "—"
 msgstr "—"
 
-#: app/blueprints/onboarding/forms.py:172
+#: app/blueprints/onboarding/forms.py:184
 msgid "Indica cuánto dura cada sesión."
 msgstr "Tell us how long each session lasts."
 
-#: app/blueprints/onboarding/forms.py:174
+#: app/blueprints/onboarding/forms.py:186
 msgid "Indica la intensidad de esa actividad."
 msgstr "Tell us how hard that activity is."
 
-#: app/blueprints/onboarding/forms.py:181
+#: app/blueprints/onboarding/forms.py:193
 msgid "Experiencia con pesas"
 msgstr "Experience with weights"
 
-#: app/blueprints/onboarding/forms.py:186
+#: app/blueprints/onboarding/forms.py:198
 msgid "Días de entrenamiento por semana"
 msgstr "Training days per week"
 
-#: app/blueprints/onboarding/forms.py:200
+#: app/blueprints/onboarding/forms.py:212
 msgid "¿Dónde entrenas?"
 msgstr "Where do you train?"
 
-#: app/blueprints/onboarding/forms.py:205
+#: app/blueprints/onboarding/forms.py:217
 msgid "¿A qué hora sueles entrenar?"
 msgstr "When do you usually train?"
 
-#: app/blueprints/onboarding/forms.py:215
+#: app/blueprints/onboarding/forms.py:227
 msgid "Material disponible"
 msgstr "Equipment available"
 
-#: app/blueprints/onboarding/forms.py:217
+#: app/blueprints/onboarding/forms.py:229
 msgid "¿Hay algún músculo que quieras trabajar más? (opcional, máximo dos)"
 msgstr "Any muscle you want to work more? (optional, two at most)"
 
-#: app/blueprints/onboarding/forms.py:221
-#: app/blueprints/onboarding/forms.py:372
+#: app/blueprints/onboarding/forms.py:233
+#: app/blueprints/onboarding/forms.py:384
 msgid "Tengo alguna molestia o lesión"
 msgstr "I have a niggle or an injury"
 
-#: app/blueprints/onboarding/forms.py:228
+#: app/blueprints/onboarding/forms.py:240
 msgid "Marca al menos una opción; el peso corporal cuenta."
 msgstr "Tick at least one; body weight counts."
 
-#: app/blueprints/onboarding/forms.py:233
+#: app/blueprints/onboarding/forms.py:245
 msgid "Elige como mucho dos músculos."
 msgstr "Choose two muscles at most."
 
-#: app/blueprints/onboarding/forms.py:261
+#: app/blueprints/onboarding/forms.py:273
 msgid "Sin molestias"
 msgstr "No trouble"
 
-#: app/blueprints/onboarding/forms.py:271
+#: app/blueprints/onboarding/forms.py:283
 msgid "Objetivo principal"
 msgstr "Main goal"
 
-#: app/blueprints/onboarding/forms.py:274
-#: app/blueprints/onboarding/routes.py:277
+#: app/blueprints/onboarding/forms.py:286
+#: app/blueprints/onboarding/routes.py:279
 msgid "Ritmo"
 msgstr "Pace"
 
-#: app/blueprints/onboarding/forms.py:280
+#: app/blueprints/onboarding/forms.py:292
 msgid "Peso objetivo (kg, opcional)"
 msgstr "Target weight (kg, optional)"
 
-#: app/blueprints/onboarding/forms.py:282
+#: app/blueprints/onboarding/forms.py:294
 msgid "Fecha objetivo (opcional)"
 msgstr "Target date (optional)"
 
-#: app/blueprints/onboarding/forms.py:287
+#: app/blueprints/onboarding/forms.py:299
 msgid "La fecha objetivo tiene que ser futura."
 msgstr "The target date has to be in the future."
 
-#: app/blueprints/onboarding/forms.py:299
-#: app/blueprints/onboarding/routes.py:292
+#: app/blueprints/onboarding/forms.py:311
+#: app/blueprints/onboarding/routes.py:294
 msgid "Comidas al día"
 msgstr "Meals per day"
 
-#: app/blueprints/onboarding/forms.py:306
+#: app/blueprints/onboarding/forms.py:318
 msgid "Tipo de alimentación"
 msgstr "Type of diet"
 
-#: app/blueprints/onboarding/forms.py:312
+#: app/blueprints/onboarding/forms.py:324
 msgid "Quiero más hidratos los días de entreno y menos los de descanso"
 msgstr "I want more carbs on training days and fewer on rest days"
 
-#: app/blueprints/onboarding/forms.py:315
+#: app/blueprints/onboarding/forms.py:327
 msgid "Bebidas alcohólicas por semana"
 msgstr "Alcoholic drinks per week"
 
-#: app/blueprints/onboarding/forms.py:324
+#: app/blueprints/onboarding/forms.py:336
 msgid "Estoy embarazada o en periodo de lactancia"
 msgstr "I am pregnant or breastfeeding"
 
-#: app/blueprints/onboarding/forms.py:326
+#: app/blueprints/onboarding/forms.py:338
 msgid "Tengo o he tenido un trastorno de la conducta alimentaria"
 msgstr "I have or have had an eating disorder"
 
@@ -1374,193 +1378,193 @@ msgstr "One of the answers is not valid. Check the steps and try again."
 msgid "No se pudo generar el plan con estos datos. Lo hemos registrado; revisa las respuestas o inténtalo más tarde."
 msgstr "The plan could not be built with these answers. We have logged it; check your answers or try again later."
 
-#: app/blueprints/onboarding/routes.py:108
+#: app/blueprints/onboarding/routes.py:110
 msgid "Cuéntanos qué te molesta y elegiremos los ejercicios con cuidado."
 msgstr "Tell us what bothers you and we will choose the exercises carefully."
 
-#: app/blueprints/onboarding/routes.py:123
+#: app/blueprints/onboarding/routes.py:125
 msgid "Hemos guardado tus respuestas, pero no podemos darte un plan."
 msgstr "We have saved your answers, but we cannot give you a plan."
 
-#: app/blueprints/onboarding/routes.py:126
+#: app/blueprints/onboarding/routes.py:128
 msgid "Plan de nutrición listo. No pudimos montar una rutina con ese material."
 msgstr "Nutrition plan ready. We could not build a routine with that equipment."
 
-#: app/blueprints/onboarding/routes.py:130
+#: app/blueprints/onboarding/routes.py:132
 msgid "Plan y rutina generados."
 msgstr "Plan and routine generated."
 
-#: app/blueprints/onboarding/routes.py:143
+#: app/blueprints/onboarding/routes.py:145
 msgid "Completa primero los pasos anteriores."
 msgstr "Finish the earlier steps first."
 
-#: app/blueprints/onboarding/routes.py:177
+#: app/blueprints/onboarding/routes.py:179
 msgid "Sí"
 msgstr "Yes"
 
-#: app/blueprints/onboarding/routes.py:177
+#: app/blueprints/onboarding/routes.py:179
 msgid "No"
 msgstr "No"
 
-#: app/blueprints/onboarding/routes.py:180
+#: app/blueprints/onboarding/routes.py:182
 msgid "Sexo"
 msgstr "Sex"
 
-#: app/blueprints/onboarding/routes.py:182 app/services/exports.py:409
+#: app/blueprints/onboarding/routes.py:184 app/services/exports.py:409
 msgid "Altura"
 msgstr "Height"
 
-#: app/blueprints/onboarding/routes.py:185 app/templates/tracking/diary.html:18
+#: app/blueprints/onboarding/routes.py:187 app/templates/tracking/diary.html:18
 #: app/templates/tracking/measurements.html:5
 #: app/templates/tracking/measurements.html:10
 msgid "Medidas"
 msgstr "Measurements"
 
-#: app/blueprints/onboarding/routes.py:189
+#: app/blueprints/onboarding/routes.py:191
 msgid "cuello"
 msgstr "neck"
 
-#: app/blueprints/onboarding/routes.py:190
+#: app/blueprints/onboarding/routes.py:192
 msgid "cintura"
 msgstr "waist"
 
-#: app/blueprints/onboarding/routes.py:191
+#: app/blueprints/onboarding/routes.py:193
 msgid "cadera"
 msgstr "hip"
 
-#: app/blueprints/onboarding/routes.py:195
-#: app/blueprints/onboarding/routes.py:214
+#: app/blueprints/onboarding/routes.py:197
+#: app/blueprints/onboarding/routes.py:216
 msgid "no indicados"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:198 app/services/exports.py:412
+#: app/blueprints/onboarding/routes.py:200 app/services/exports.py:412
 #: app/templates/nutrition/plan.html:104
 msgid "Grasa corporal"
 msgstr "Body fat"
 
-#: app/blueprints/onboarding/routes.py:203
+#: app/blueprints/onboarding/routes.py:205
 msgid "no indicada"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:209
+#: app/blueprints/onboarding/routes.py:211
 msgid "Trabajo"
 msgstr "Work"
 
-#: app/blueprints/onboarding/routes.py:211
+#: app/blueprints/onboarding/routes.py:213
 msgid "Pasos diarios"
 msgstr "Daily steps"
 
-#: app/blueprints/onboarding/routes.py:216
+#: app/blueprints/onboarding/routes.py:218
 msgid "Sueño"
 msgstr "Sleep"
 
-#: app/blueprints/onboarding/routes.py:217
+#: app/blueprints/onboarding/routes.py:219
 msgid "Estrés"
 msgstr "Stress"
 
-#: app/blueprints/onboarding/routes.py:219
+#: app/blueprints/onboarding/routes.py:221
 msgid "Otra actividad"
 msgstr "Other activity"
 
-#: app/blueprints/onboarding/routes.py:225
-#: app/blueprints/onboarding/routes.py:256
-#: app/blueprints/onboarding/routes.py:264
+#: app/blueprints/onboarding/routes.py:227
+#: app/blueprints/onboarding/routes.py:258
+#: app/blueprints/onboarding/routes.py:266
 msgid "ninguna"
 msgstr "none"
 
-#: app/blueprints/onboarding/routes.py:231
+#: app/blueprints/onboarding/routes.py:233
 msgid "Experiencia"
 msgstr "Experience"
 
-#: app/blueprints/onboarding/routes.py:235
+#: app/blueprints/onboarding/routes.py:237
 msgid "Frecuencia"
 msgstr "Frequency"
 
-#: app/blueprints/onboarding/routes.py:237
+#: app/blueprints/onboarding/routes.py:239
 #, python-format
 msgid "%(num)s día a la semana, %(minutes)s min"
 msgid_plural "%(num)s días a la semana, %(minutes)s min"
 msgstr[0] "%(num)s day a week, %(minutes)s min"
 msgstr[1] "%(num)s days a week, %(minutes)s min"
 
-#: app/blueprints/onboarding/routes.py:243
+#: app/blueprints/onboarding/routes.py:245
 msgid "Lugar"
 msgstr "Place"
 
-#: app/blueprints/onboarding/routes.py:244
+#: app/blueprints/onboarding/routes.py:246
 msgid "Hora"
 msgstr "Time"
 
-#: app/blueprints/onboarding/routes.py:248
+#: app/blueprints/onboarding/routes.py:250
 #: app/templates/training/_exercise_sheet.html:29
 msgid "Material"
 msgstr "Equipment"
 
-#: app/blueprints/onboarding/routes.py:252
+#: app/blueprints/onboarding/routes.py:254
 msgid "Prioridad"
 msgstr "Priority"
 
-#: app/blueprints/onboarding/routes.py:259
+#: app/blueprints/onboarding/routes.py:261
 msgid "Molestias o lesiones"
 msgstr "Aches or injuries"
 
-#: app/blueprints/onboarding/routes.py:269
+#: app/blueprints/onboarding/routes.py:271
 msgid "Ejercicios que evitar"
 msgstr "Exercises to avoid"
 
-#: app/blueprints/onboarding/routes.py:270
+#: app/blueprints/onboarding/routes.py:272
 msgid "Ejercicios preferidos"
 msgstr "Preferred exercises"
 
-#: app/blueprints/onboarding/routes.py:276 app/services/onboarding.py:72
+#: app/blueprints/onboarding/routes.py:278 app/services/onboarding.py:72
 msgid "Objetivo"
 msgstr "Goal"
 
-#: app/blueprints/onboarding/routes.py:279
+#: app/blueprints/onboarding/routes.py:281
 msgid "Peso objetivo"
 msgstr "Target weight"
 
-#: app/blueprints/onboarding/routes.py:282
+#: app/blueprints/onboarding/routes.py:284
 msgid "no indicado"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:285
+#: app/blueprints/onboarding/routes.py:287
 msgid "Fecha objetivo"
 msgstr "Target date"
 
-#: app/blueprints/onboarding/routes.py:288
+#: app/blueprints/onboarding/routes.py:290
 msgid "sin fecha"
 msgstr "no date"
 
-#: app/blueprints/onboarding/routes.py:293
+#: app/blueprints/onboarding/routes.py:295
 msgid "Alimentación"
 msgstr "Eating"
 
-#: app/blueprints/onboarding/routes.py:294 app/services/exports.py:387
+#: app/blueprints/onboarding/routes.py:296 app/services/exports.py:387
 #: app/templates/nutrition/plan.html:83
 msgid "Más hidratos los días de entreno"
 msgstr "More carbs on training days"
 
-#: app/blueprints/onboarding/routes.py:296
+#: app/blueprints/onboarding/routes.py:298
 msgid "Alcohol"
 msgstr "Alcohol"
 
-#: app/blueprints/onboarding/routes.py:298
+#: app/blueprints/onboarding/routes.py:300
 #, python-format
 msgid "%(num)s bebida a la semana"
 msgid_plural "%(num)s bebidas a la semana"
 msgstr[0] "%(num)s drink a week"
 msgstr[1] "%(num)s drinks a week"
 
-#: app/blueprints/onboarding/routes.py:305
+#: app/blueprints/onboarding/routes.py:307
 msgid "Embarazo o lactancia"
 msgstr "Pregnancy or breastfeeding"
 
-#: app/blueprints/onboarding/routes.py:307
+#: app/blueprints/onboarding/routes.py:309
 msgid "Antecedentes de trastorno alimentario"
 msgstr "History of an eating disorder"
 
-#: app/blueprints/onboarding/routes.py:330
+#: app/blueprints/onboarding/routes.py:332
 #, python-format
 msgid "Faltan respuestas en el paso %(n)s."
 msgstr "Answers are missing on step %(n)s."
@@ -2658,7 +2662,7 @@ msgstr "%(n)s × %(m)s min of intervals a week"
 msgid "Cómo está montada"
 msgstr "How it is put together"
 
-#: app/services/exports.py:939
+#: app/services/exports.py:941
 msgid ""
 "Exportación de datos de Alza\n"
 "============================\n"
@@ -2773,13 +2777,13 @@ msgid "Salir"
 msgstr "Sign out"
 
 #: app/templates/auth/login.html:4 app/templates/auth/login.html:8
-#: app/templates/auth/login.html:14 app/templates/auth/register.html:21
+#: app/templates/auth/login.html:14 app/templates/auth/register.html:23
 #: app/templates/base.html:46 app/templates/main/index.html:17
 msgid "Entrar"
 msgstr "Sign in"
 
 #: app/templates/auth/login.html:18 app/templates/auth/register.html:4
-#: app/templates/auth/register.html:8 app/templates/auth/register.html:19
+#: app/templates/auth/register.html:8 app/templates/auth/register.html:21
 #: app/templates/base.html:47
 msgid "Crear cuenta"
 msgstr "Create account"
@@ -2915,7 +2919,7 @@ msgstr "You have not given consent to process health data, so we keep none."
 msgid "Dar mi consentimiento"
 msgstr "Give my consent"
 
-#: app/templates/account/index.html:65 app/templates/auth/register.html:18
+#: app/templates/account/index.html:65 app/templates/auth/register.html:20
 #: app/templates/privacy/consent.html:24 app/templates/privacy/policy.html:3
 msgid "Política de privacidad"
 msgstr "Privacy policy"
@@ -3041,11 +3045,11 @@ msgstr "Back to sign in"
 msgid "¿Has olvidado la contraseña?"
 msgstr "Forgotten your password?"
 
-#: app/templates/auth/register.html:18
+#: app/templates/auth/register.html:20
 msgid "Son datos de salud: los usamos solo para tu plan, nunca para publicidad ni analítica, y no se los damos a nadie."
 msgstr "This is health data: we use it only for your plan, never for advertising or analytics, and we give it to no one."
 
-#: app/templates/auth/register.html:21
+#: app/templates/auth/register.html:23
 msgid "¿Ya tienes cuenta?"
 msgstr "Already have an account?"
 

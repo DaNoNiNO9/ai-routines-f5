@@ -13,6 +13,8 @@
     {{ field(form.password, autocomplete="new-password") }}
     <p class="help">{{ _('Mínimo %(n)s caracteres.', n=password_min_length) }}</p>
     {{ field(form.password_confirm, autocomplete="new-password") }}
+    {{ field(form.birth_date, autocomplete="bday") }}
+    <p class="help">{{ _('Alza es solo para mayores de 18 años.') }}</p>
     {{ checkbox(form.consent) }}
     {{ checkbox(form.health_consent) }}
     <p class="help">{{ _('Son datos de salud: los usamos solo para tu plan, nunca para publicidad ni analítica, y no se los damos a nadie.') }} <a href="{{ url_for('privacy.policy') }}">{{ _('Política de privacidad') }}</a></p>

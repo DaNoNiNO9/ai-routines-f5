@@ -5,7 +5,7 @@
 target-version = "py311"
 line-length = 100
 src = ["app", "tests"]
-extend-exclude = ["migrations/versions"]
+extend-exclude = ["migrations/versions", ".claude"]
 
 [tool.ruff.lint]
 select = [
