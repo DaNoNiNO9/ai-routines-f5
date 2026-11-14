@@ -6,7 +6,7 @@ castellano por debajo y nadie se entera. Por eso se comprueba aquí.
 
 from __future__ import annotations
 
-from babel.messages.catalog import Catalog
+from babel.messages.catalog import Catalog, Message
 from babel.messages.mofile import read_mo
 from babel.messages.pofile import read_po
 
@@ -53,10 +53,16 @@ def test_compiled_catalogue_is_up_to_date() -> None:
         # read_mo devuelve los plurales como lista y read_po como tupla.
         return tuple(string) if isinstance(string, list | tuple) else string
 
+    def _compilado(message: Message) -> object:
+        # read_mo devuelve el contexto como bytes; read_po, como texto.
+        found = compilado.get(message.id, message.context)
+        if found is None and message.context:
+            found = compilado.get(message.id, message.context.encode())
+        return getattr(found, "string", None)
+
     desfase = [
         message.id
         for message in _po()
-        if message.id
-        and _texto(getattr(compilado.get(message.id), "string", None)) != _texto(message.string)
+        if message.id and _texto(_compilado(message)) != _texto(message.string)
     ]
     assert desfase == []

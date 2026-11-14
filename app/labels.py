@@ -345,6 +345,11 @@ def note_params(code: str, params: Mapping[str, Any]) -> Mapping[str, Any]:
         # El motor los junta con comas para poder guardarlos como texto.
         codes = str(translated["muscles"]).split(", ")
         translated["muscles"] = ", ".join(label(MUSCLE_GROUP, code).lower() for code in codes)
+    if isinstance(translated.get("day"), str):
+        # Nombre de día generado y guardado en castellano («Torso A»).
+        from app.stored_names import stored_name
+
+        translated["day"] = stored_name(translated["day"])
     if code == "routine.pattern_missing" and "pattern" in params:
         suggestion = EQUIPMENT_SUGGESTION.get(MovementPattern(params["pattern"]))
         if suggestion is not None:

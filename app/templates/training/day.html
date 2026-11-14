@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% from "components/icons.html" import icon %}
 
-{% block title %}{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }} · {{ app_name }}{% endblock %}
+{% block title %}{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name|stored }} · {{ app_name }}{% endblock %}
 
 {% block content %}
 <section class="page-head">
-  <p class="eyebrow"><a href="{{ url_for('training.routine') }}">{{ routine.name }}</a></p>
-  <h1>{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }}</h1>
+  <p class="eyebrow"><a href="{{ url_for('training.routine') }}">{{ routine.name|stored }}</a></p>
+  <h1>{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name|stored }}</h1>
   <p class="lead">{{ ngettext('%(num)s ejercicio', '%(num)s ejercicios', day.exercises|length) }} · {{ _('unos %(m)s minutos', m=day.estimated_minutes) }}</p>
   <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
   {% if weekly_rir %}

@@ -7,7 +7,7 @@
 {% set session = summary.session %}
 <section class="page-head">
   <p class="eyebrow">{{ session.started_at|fdate('long') }} · {% if session.status.value == 'completed' %}{{ _('completada') }}{% else %}{{ _('abandonada') }}{% endif %}</p>
-  <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión') }}{% endif %}</h1>
+  <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name|stored }}{% else %}{{ _('Sesión') }}{% endif %}</h1>
   {% if summary.prs %}<p class="lead">{{ ngettext('Una marca nueva. Buen trabajo.', '%(num)s marcas nuevas. Buen trabajo.', summary.prs) }}</p>{% endif %}
 </section>
 

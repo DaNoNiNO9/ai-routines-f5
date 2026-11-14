@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% from "components/icons.html" import icon %}
 
-{% block title %}{{ _('Sesión') }} · {{ session.routine_day.name if session.routine_day else '' }} · {{ app_name }}{% endblock %}
+{% block title %}{{ _('Sesión') }} · {{ session.routine_day.name|stored if session.routine_day else '' }} · {{ app_name }}{% endblock %}
 
 {% block content %}
 {% from "components/help.html" import help_button, help_dialog %}
 <section class="page-head" data-wake-lock>
   <p class="eyebrow">{{ _('Sesión en marcha') }}{% if session.mesocycle_week and session.routine_day %} · {{ _('semana %(n)s de %(total)s', n=session.mesocycle_week, total=session.routine_day.routine.mesocycle_weeks) }}{% endif %}</p>
-  <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión libre') }}{% endif %}{{ help_button('series', _('Cómo apuntar una serie')) }}</h1>
+  <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name|stored }}{% else %}{{ _('Sesión libre') }}{% endif %}{{ help_button('series', _('Cómo apuntar una serie')) }}</h1>
   <p class="meta" x-data="elapsed({{ started_epoch }})">{{ icon('clock') }} {{ _('Tiempo:') }} <span x-text="text">—</span></p>
   <p class="meta">{{ _('Reserva: las repeticiones que aún podrías hacer al acabar la serie. Apúntala y la siguiente serie se ajusta sola.') }}</p>
   <p><a class="button button-small button-secondary" href="#cierre">{{ _('Terminar sesión') }}</a></p>

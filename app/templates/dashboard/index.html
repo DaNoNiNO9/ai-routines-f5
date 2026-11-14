@@ -71,7 +71,7 @@
     <article class="card">
       <h2 class="card-title">{{ icon('dumbbell') }}{{ _('Próxima sesión') }}</h2>
       {% if next_day %}
-        <p class="big-number">{{ _('Día %(n)s', n=next_day.day_index) }} <small>{{ next_day.name }}</small></p>
+        <p class="big-number">{{ _('Día %(n)s', n=next_day.day_index) }} <small>{{ next_day.name|stored }}</small></p>
         <ul class="chips" aria-label="{{ _('Grupos musculares') }}">
           {% for muscle in next_day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}
         </ul>

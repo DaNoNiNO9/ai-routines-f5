@@ -21,7 +21,7 @@
       {% for plate in served.plates %}
         {% set s = summary(plate) %}
         <article class="menu-meal">
-          <p class="eyebrow">{{ plate.target.name }}</p>
+          <p class="eyebrow">{{ plate.target.name|stored }}</p>
           <h3 class="h3">{% if current_locale.startswith('en') %}{{ plate.dish.name_en }}{% else %}{{ plate.dish.name_es }}{% endif %}</h3>
           <ul class="menu-items">
             {% for name, grams, is_egg in s['items'] %}

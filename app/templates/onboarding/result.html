@@ -48,7 +48,7 @@
           <thead><tr><th>{{ _('Comida') }}</th><th>kcal</th><th>{{ _('Proteína') }}</th><th>{{ _('Carbohidratos') }}</th><th>{{ _('Grasa') }}</th></tr></thead>
           <tbody>
             {% for meal in plan.meals %}
-              <tr><td>{{ meal.name }}</td><td>{{ meal.calories }}</td><td>{{ meal.protein_g|int }} g</td><td>{{ meal.carbs_g|int }} g</td><td>{{ meal.fat_g|int }} g</td></tr>
+              <tr><td>{{ meal.name|stored }}</td><td>{{ meal.calories }}</td><td>{{ meal.protein_g|int }} g</td><td>{{ meal.carbs_g|int }} g</td><td>{{ meal.fat_g|int }} g</td></tr>
             {% endfor %}
           </tbody>
         </table>
@@ -73,9 +73,9 @@
         {% for reason in routine_reasons %}<li class="note-error">{{ reason }}</li>{% endfor %}
       </ul>
     {% else %}
-      <p class="lead">{{ routine.name }} · {{ _('bloques de %(w)s semanas, con una semana suave cada %(d)s', w=routine.mesocycle_weeks, d=routine.deload_every_weeks) }}</p>
+      <p class="lead">{{ routine.name|stored }} · {{ _('bloques de %(w)s semanas, con una semana suave cada %(d)s', w=routine.mesocycle_weeks, d=routine.deload_every_weeks) }}</p>
       {% for day in routine.days %}
-        <h3 class="h3">{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name }} <span class="badge">{{ day.estimated_minutes }} min</span></h3>
+        <h3 class="h3">{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name|stored }} <span class="badge">{{ day.estimated_minutes }} min</span></h3>
         <div class="table-wrap">
           <table class="table">
             <thead><tr><th>{{ _('Ejercicio') }}</th><th>{{ _('Series × repeticiones') }}</th><th>{{ _('Reserva') }}</th><th>{{ _('Descanso') }}</th></tr></thead>

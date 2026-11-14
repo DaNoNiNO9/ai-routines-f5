@@ -55,6 +55,7 @@ from app.models import (
     WorkoutSession,
 )
 from app.services import plans as plans_service
+from app.stored_names import stored_name
 
 ACCENT = colors.HexColor("#b34b00")
 INK = colors.HexColor("#15171c")
@@ -309,8 +310,8 @@ def plan_pdf(
 def _meal_name(meal: Any) -> str:
     """El nombre de la comida, marcando las que rodean al entrenamiento."""
     if meal.timing.value in ("pre_workout", "post_workout"):
-        return f"{meal.name} ({label(MEAL_TIMING, meal.timing).lower()})"
-    return str(meal.name)
+        return f"{stored_name(meal.name)} ({label(MEAL_TIMING, meal.timing).lower()})"
+    return stored_name(meal.name)
 
 
 def _nutrition_pages(plan: Plan, profile: Profile, styles: dict[str, ParagraphStyle]) -> list[Any]:
@@ -455,7 +456,7 @@ def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[
     details = routine.details or {}
     flow: list[Any] = [
         Paragraph(_("Rutina"), styles["h2"]),
-        Paragraph(routine.name, styles["h3"]),
+        Paragraph(stored_name(routine.name), styles["h3"]),
     ]
     rir = details.get("weekly_rir") or []
     resumen = ngettext(
@@ -485,7 +486,7 @@ def _routine_pages(routine: Routine, styles: dict[str, ParagraphStyle]) -> list[
             for item in day.exercises
         ]
         bloque = [
-            Paragraph(f"{_('Día %(n)s', n=day.day_index)} · {day.name}", styles["h3"]),
+            Paragraph(f"{_('Día %(n)s', n=day.day_index)} · {stored_name(day.name)}", styles["h3"]),
             Paragraph(
                 ngettext(
                     "%(num)s ejercicio · unos %(m)s minutos",

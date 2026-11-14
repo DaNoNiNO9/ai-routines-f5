@@ -87,7 +87,7 @@ Se lanza con `python -m babel.messages.frontend` y no con `pybabel.exe`: el ejec
 
 ```powershell
 $pybabel = ".venv\Scripts\python.exe -m babel.messages.frontend"
-iex "$pybabel extract -F babel.cfg -k _l -o messages.pot ."
+iex "$pybabel extract -F babel.cfg -k _l -k lazy_pgettext:1c,2 -o messages.pot ."
 iex "$pybabel update -i messages.pot -d app/translations --no-wrap --ignore-obsolete"
 iex "$pybabel compile -d app/translations --statistics"
 ```

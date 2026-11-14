@@ -78,6 +78,8 @@ def test_spanish_dates_never_show_iso() -> None:
 
 
 @pytest.mark.usefixtures("en")
-def test_english_dates_put_the_month_first() -> None:
-    assert fdate(DAY) == "11/5/2026"
+def test_english_dates_spell_the_month() -> None:
+    # 11/5/2026 es 5 de noviembre en EE. UU. y 11 de mayo en Reino Unido.
+    assert fdate(DAY) == "Nov 5, 2026"
+    assert fdate(DAY, "day") == "Nov 5"
     assert fdate(DAY, "long") == "November 5, 2026"

@@ -85,7 +85,6 @@ Puesta en producción, cuando toque (`docs/ESTADO_FINAL.md`, "Lo que falta"):
 
 ## Detalles menores heredados
 
-- Los nombres generados y guardados en la base (rutina «Torso / pierna · 4 días», días «Torso A», comidas «Desayuno») se muestran tal cual en los dos idiomas: son datos, no interfaz.
 - El paso 4 pliega el material con Alpine: sin JavaScript no se puede ajustar (se envía el preset del sitio) ni declarar lesiones.
 - El contador de series muestra "3/2" cuando se hacen más de las prescritas; es correcto pero se lee raro.
 - `instructions_es` sigue vacío: las instrucciones salen en inglés, marcadas como tales.

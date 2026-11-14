@@ -72,7 +72,7 @@
           <tbody>
             {% for meal in plan.meals %}
               <tr>
-                <td>{{ meal.name }}{% if meal.timing.value != 'regular' %} <span class="badge">{{ labels.label(labels.MEAL_TIMING, meal.timing) }}</span>{% endif %}</td>
+                <td>{{ meal.name|stored }}{% if meal.timing.value != 'regular' %} <span class="badge">{{ labels.label(labels.MEAL_TIMING, meal.timing) }}</span>{% endif %}</td>
                 <td>{{ meal.calories }}</td><td>{{ meal.protein_g|int }} g</td><td>{{ meal.carbs_g|int }} g</td><td>{{ meal.fat_g|int }} g</td>
               </tr>
             {% endfor %}

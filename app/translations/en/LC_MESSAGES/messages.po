@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 16:29+0100\n"
+"POT-Creation-Date: 2026-11-14 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/__init__.py:122
+#: app/__init__.py:123
 msgid "Inicia sesión para continuar."
 msgstr "Sign in to continue."
 
@@ -283,7 +283,7 @@ msgstr "Lose fat and gain muscle"
 msgid "Ganar músculo"
 msgstr "Gain muscle"
 
-#: app/labels.py:113 app/services/exports.py:430
+#: app/labels.py:113 app/services/exports.py:431
 msgid "Mantener el peso"
 msgstr "Keep my weight"
 
@@ -535,7 +535,7 @@ msgstr "Machines"
 msgid "Accesorios"
 msgstr "Accessories"
 
-#: app/labels.py:221
+#: app/labels.py:221 app/stored_names.py:23
 msgid "Cuerpo completo"
 msgstr "Full body"
 
@@ -760,6 +760,72 @@ msgstr "We assume dumbbells, bands and a bench."
 #: app/labels.py:391
 msgid "Damos por hecho que entrenas solo con tu peso."
 msgstr "We assume you train with your body weight only."
+
+#: app/stored_names.py:24
+msgid "Torso"
+msgstr "Upper"
+
+#: app/stored_names.py:25
+msgid "Pierna"
+msgstr "Lower"
+
+#: app/stored_names.py:26
+msgid "Empuje"
+msgstr "Push"
+
+#: app/stored_names.py:27
+msgid "Tirón"
+msgstr "Pull"
+
+#: app/stored_names.py:28
+msgid "Pecho y espalda"
+msgstr "Chest and back"
+
+#: app/stored_names.py:29
+msgid "Hombros y brazos"
+msgstr "Shoulders and arms"
+
+#: app/stored_names.py:34
+msgctxt "nombre de comida"
+msgid "Desayuno"
+msgstr "Breakfast"
+
+#: app/stored_names.py:35
+msgctxt "nombre de comida"
+msgid "Media mañana"
+msgstr "Mid-morning snack"
+
+#: app/stored_names.py:36
+msgctxt "nombre de comida"
+msgid "Comida"
+msgstr "Lunch"
+
+#: app/stored_names.py:37
+msgctxt "nombre de comida"
+msgid "Merienda"
+msgstr "Afternoon snack"
+
+#: app/stored_names.py:38
+msgctxt "nombre de comida"
+msgid "Cena"
+msgstr "Dinner"
+
+#: app/stored_names.py:39
+msgctxt "nombre de comida"
+msgid "Recena"
+msgstr "Late snack"
+
+#: app/stored_names.py:40
+msgctxt "nombre de comida"
+msgid "Comida extra"
+msgstr "Extra meal"
+
+#: app/stored_names.py:68
+#, python-format
+msgid "%(num)s día"
+msgid_plural "%(num)s días"
+msgstr[0] "%(num)s day"
+msgstr[1] "%(num)s days"
 
 #: app/blueprints/account/forms.py:37 app/blueprints/auth/forms.py:23
 msgid "Nombre"
@@ -1014,7 +1080,7 @@ msgid "Cambio guardado (simulación)."
 msgstr "Change saved (simulation)."
 
 #: app/blueprints/dashboard/routes.py:43
-#: app/blueprints/onboarding/routes.py:183 app/services/exports.py:407
+#: app/blueprints/onboarding/routes.py:183 app/services/exports.py:408
 #: app/templates/dashboard/index.html:89 app/templates/tracking/diary.html:26
 msgid "Peso"
 msgstr "Weight"
@@ -1027,22 +1093,22 @@ msgstr "7-day average"
 msgid "Tu plan de entrenamiento y nutrición, calculado y no inventado."
 msgstr "Your training and nutrition plan, calculated, not made up."
 
-#: app/blueprints/nutrition/routes.py:26 app/services/exports.py:331
-#: app/services/exports.py:370 app/templates/dashboard/index.html:58
+#: app/blueprints/nutrition/routes.py:26 app/services/exports.py:332
+#: app/services/exports.py:371 app/templates/dashboard/index.html:58
 #: app/templates/nutrition/plan.html:57 app/templates/nutrition/plan.html:127
 #: app/templates/nutrition/plan.html:170
 #: app/templates/onboarding/result.html:48 app/templates/tracking/diary.html:44
 msgid "Proteína"
 msgstr "Protein"
 
-#: app/blueprints/nutrition/routes.py:26 app/services/exports.py:332
-#: app/services/exports.py:370 app/templates/dashboard/index.html:59
+#: app/blueprints/nutrition/routes.py:26 app/services/exports.py:333
+#: app/services/exports.py:371 app/templates/dashboard/index.html:59
 #: app/templates/nutrition/plan.html:58 app/templates/onboarding/result.html:48
 msgid "Carbohidratos"
 msgstr "Carbohydrates"
 
-#: app/blueprints/nutrition/routes.py:26 app/services/exports.py:333
-#: app/services/exports.py:370 app/templates/dashboard/index.html:60
+#: app/blueprints/nutrition/routes.py:26 app/services/exports.py:334
+#: app/services/exports.py:371 app/templates/dashboard/index.html:60
 #: app/templates/nutrition/plan.html:59 app/templates/nutrition/plan.html:71
 #: app/templates/nutrition/plan.html:172
 #: app/templates/onboarding/result.html:48 app/templates/tracking/diary.html:46
@@ -1307,7 +1373,7 @@ msgstr "No"
 msgid "Sexo"
 msgstr "Sex"
 
-#: app/blueprints/onboarding/routes.py:182 app/services/exports.py:408
+#: app/blueprints/onboarding/routes.py:182 app/services/exports.py:409
 msgid "Altura"
 msgstr "Height"
 
@@ -1334,7 +1400,7 @@ msgstr "hip"
 msgid "no indicados"
 msgstr "not given"
 
-#: app/blueprints/onboarding/routes.py:198 app/services/exports.py:411
+#: app/blueprints/onboarding/routes.py:198 app/services/exports.py:412
 #: app/templates/nutrition/plan.html:104
 msgid "Grasa corporal"
 msgstr "Body fat"
@@ -1437,7 +1503,7 @@ msgstr "no date"
 msgid "Alimentación"
 msgstr "Eating"
 
-#: app/blueprints/onboarding/routes.py:294 app/services/exports.py:386
+#: app/blueprints/onboarding/routes.py:294 app/services/exports.py:387
 #: app/templates/nutrition/plan.html:83
 msgid "Más hidratos los días de entreno"
 msgstr "More carbs on training days"
@@ -1559,7 +1625,7 @@ msgstr "Weight (kg)"
 msgid "Nota (opcional)"
 msgstr "Note (optional)"
 
-#: app/blueprints/tracking/forms.py:51 app/services/exports.py:330
+#: app/blueprints/tracking/forms.py:51 app/services/exports.py:331
 #: app/templates/tracking/diary.html:43
 msgid "Calorías"
 msgstr "Calories"
@@ -1620,7 +1686,7 @@ msgstr "Calf (cm)"
 msgid "Grasa corporal (%)"
 msgstr "Body fat (%)"
 
-#: app/blueprints/tracking/forms.py:118 app/services/exports.py:417
+#: app/blueprints/tracking/forms.py:118 app/services/exports.py:418
 msgid "Método"
 msgstr "Method"
 
@@ -2373,193 +2439,193 @@ msgstr "Starting plan."
 msgid "Actualizaste tus datos."
 msgstr "You updated your details."
 
-#: app/services/exports.py:68
+#: app/services/exports.py:69
 msgid "Alza es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
 msgstr "Alza is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
 
-#: app/services/exports.py:267
+#: app/services/exports.py:268
 #, python-format
 msgid "Alza · plan de %(name)s"
 msgstr "Alza · plan for %(name)s"
 
-#: app/services/exports.py:269 app/services/exports.py:274
+#: app/services/exports.py:270 app/services/exports.py:275
 msgid "Plan de nutrición y entrenamiento"
 msgstr "Nutrition and training plan"
 
-#: app/services/exports.py:279
+#: app/services/exports.py:280
 #, python-format
 msgid "Generado el %(date)s · objetivo: %(goal)s"
 msgstr "Generated on %(date)s · goal: %(goal)s"
 
-#: app/services/exports.py:289 app/templates/nutrition/plan.html:24
+#: app/services/exports.py:290 app/templates/nutrition/plan.html:24
 msgid "No hay plan de nutrición"
 msgstr "There is no nutrition plan"
 
-#: app/services/exports.py:292
+#: app/services/exports.py:293
 msgid "Con tus respuestas no se puede calcular un plan con seguridad:"
 msgstr "A safe plan cannot be calculated from your answers:"
 
-#: app/services/exports.py:325 app/templates/nutrition/plan.html:35
+#: app/services/exports.py:326 app/templates/nutrition/plan.html:35
 msgid "Objetivo diario"
 msgstr "Daily target"
 
-#: app/services/exports.py:334
+#: app/services/exports.py:335
 msgid "Fibra"
 msgstr "Fibre"
 
-#: app/services/exports.py:335
+#: app/services/exports.py:336
 msgid "Agua"
 msgstr "Water"
 
-#: app/services/exports.py:360
+#: app/services/exports.py:361
 #, python-format
 msgid "Para mantenerte gastas unas %(tdee)s kcal al día; con este plan el cambio previsto es de %(change)s kg a la semana. Los días de entreno, %(water)s l de agua."
 msgstr "To stay the same you burn about %(tdee)s kcal a day; with this plan the expected change is %(change)s kg a week. On training days, %(water)s l of water."
 
-#: app/services/exports.py:369
+#: app/services/exports.py:370
 msgid "Reparto por comidas"
 msgstr "Split across meals"
 
-#: app/services/exports.py:370 app/templates/nutrition/plan.html:71
+#: app/services/exports.py:371 app/templates/nutrition/plan.html:71
 #: app/templates/onboarding/result.html:48
 msgid "Comida"
 msgstr "Meal"
 
-#: app/services/exports.py:390 app/templates/nutrition/plan.html:84
+#: app/services/exports.py:391 app/templates/nutrition/plan.html:84
 #, python-format
 msgid "%(td)s días de entreno con %(hc)s g de carbohidratos (%(hk)s kcal) y %(rd)s de descanso con %(lc)s g (%(lk)s kcal). La media de la semana es la del plan."
 msgstr "%(td)s training days with %(hc)s g of carbohydrates (%(hk)s kcal) and %(rd)s rest days with %(lc)s g (%(lk)s kcal). The weekly average matches the plan."
 
-#: app/services/exports.py:404
+#: app/services/exports.py:405
 msgid "Cómo se ha calculado"
 msgstr "How this was worked out"
 
-#: app/services/exports.py:406
+#: app/services/exports.py:407
 msgid "Dato"
 msgstr "Item"
 
-#: app/services/exports.py:406
+#: app/services/exports.py:407
 msgid "Valor"
 msgstr "Value"
 
-#: app/services/exports.py:409 app/templates/nutrition/plan.html:103
+#: app/services/exports.py:410 app/templates/nutrition/plan.html:103
 msgid "IMC"
 msgstr "BMI"
 
-#: app/services/exports.py:414 app/templates/nutrition/plan.html:104
+#: app/services/exports.py:415 app/templates/nutrition/plan.html:104
 msgid "sin estimación"
 msgstr "no estimate"
 
-#: app/services/exports.py:423 app/templates/nutrition/plan.html:105
+#: app/services/exports.py:424 app/templates/nutrition/plan.html:105
 msgid "Masa magra"
 msgstr "Lean mass"
 
-#: app/services/exports.py:426 app/templates/nutrition/plan.html:107
+#: app/services/exports.py:427 app/templates/nutrition/plan.html:107
 msgid "Gasto en reposo"
 msgstr "Burn at rest"
 
-#: app/services/exports.py:427
+#: app/services/exports.py:428
 msgid "Fórmula del basal"
 msgstr "BMR formula"
 
-#: app/services/exports.py:428
+#: app/services/exports.py:429
 msgid "Gasto por actividad diaria"
 msgstr "Daily activity burn"
 
-#: app/services/exports.py:429
+#: app/services/exports.py:430
 msgid "Gasto por ejercicio"
 msgstr "Exercise burn"
 
-#: app/services/exports.py:436
+#: app/services/exports.py:437
 #, python-format
 msgid "Grasa por medidas de cinta con la fórmula de la Marina de EE. UU.; gasto en reposo con Katch-McArdle o Mifflin-St Jeor; gasto total sumando el reposo, lo que caminas, el ejercicio y la digestión. El plan nunca baja del mínimo seguro de calorías ni hace perder más del 1 %% del peso a la semana."
 msgstr "Body fat from tape measurements with the US Navy formula; burn at rest with Katch-McArdle or Mifflin-St Jeor; total burn adding up rest, walking, exercise and digestion. The plan never goes below the safe calorie minimum or loses more than 1 %% of body weight a week."
 
-#: app/services/exports.py:447 app/templates/nutrition/plan.html:90
+#: app/services/exports.py:448 app/templates/nutrition/plan.html:90
 msgid "A tener en cuenta"
 msgstr "Worth knowing"
 
-#: app/services/exports.py:457 app/templates/onboarding/result.html:69
+#: app/services/exports.py:458 app/templates/onboarding/result.html:69
 #: app/templates/workouts/history.html:12
 msgid "Rutina"
 msgstr "Routine"
 
-#: app/services/exports.py:462
+#: app/services/exports.py:463
 #, python-format
 msgid "%(num)s día a la semana · bloques de %(weeks)s semanas con una semana suave cada %(deload)s"
 msgid_plural "%(num)s días a la semana · bloques de %(weeks)s semanas con una semana suave cada %(deload)s"
 msgstr[0] "%(num)s day a week · blocks of %(weeks)s weeks with an easy week every %(deload)s"
 msgstr[1] "%(num)s days a week · blocks of %(weeks)s weeks with an easy week every %(deload)s"
 
-#: app/services/exports.py:472
+#: app/services/exports.py:473
 #, python-format
 msgid "reserva por semana: %(rir)s"
 msgstr "reps in reserve by week: %(rir)s"
 
-#: app/services/exports.py:476 app/templates/onboarding/result.html:81
+#: app/services/exports.py:477 app/templates/onboarding/result.html:81
 #: app/templates/workouts/progress.html:20
 #: app/templates/workouts/summary.html:26
 msgid "Ejercicio"
 msgstr "Exercise"
 
-#: app/services/exports.py:476 app/templates/training/day.html:41
+#: app/services/exports.py:477 app/templates/training/day.html:41
 #: app/templates/training/routine.html:66
 #: app/templates/workouts/history.html:19
 #: app/templates/workouts/summary.html:26
 msgid "Series"
 msgstr "Sets"
 
-#: app/services/exports.py:476 app/templates/training/day.html:42
+#: app/services/exports.py:477 app/templates/training/day.html:42
 msgid "Repeticiones"
 msgstr "Reps"
 
-#: app/services/exports.py:476 app/templates/onboarding/result.html:81
+#: app/services/exports.py:477 app/templates/onboarding/result.html:81
 #: app/templates/training/day.html:43
 msgid "Reserva"
 msgstr "In reserve"
 
-#: app/services/exports.py:476 app/templates/onboarding/result.html:81
+#: app/services/exports.py:477 app/templates/onboarding/result.html:81
 #: app/templates/training/day.html:44 app/templates/workouts/session.html:53
 msgid "Descanso"
 msgstr "Rest"
 
-#: app/services/exports.py:482 app/templates/onboarding/result.html:87
+#: app/services/exports.py:483 app/templates/onboarding/result.html:87
 #: app/templates/training/day.html:43
 #, python-format
 msgid "de %(a)s a %(b)s"
 msgstr "%(a)s to %(b)s"
 
-#: app/services/exports.py:491
+#: app/services/exports.py:492
 #, python-format
 msgid "%(num)s ejercicio · unos %(m)s minutos"
 msgid_plural "%(num)s ejercicios · unos %(m)s minutos"
 msgstr[0] "%(num)s exercise · about %(m)s minutes"
 msgstr[1] "%(num)s exercises · about %(m)s minutes"
 
-#: app/services/exports.py:506 app/templates/training/routine.html:83
+#: app/services/exports.py:507 app/templates/training/routine.html:83
 msgid "Cardio y pasos"
 msgstr "Cardio and steps"
 
-#: app/services/exports.py:507
+#: app/services/exports.py:508
 #, python-format
 msgid "%(n)s pasos al día"
 msgstr "%(n)s steps a day"
 
-#: app/services/exports.py:511
+#: app/services/exports.py:512
 #, python-format
 msgid "%(n)s × %(m)s min de cardio suave a la semana"
 msgstr "%(n)s × %(m)s min of easy cardio a week"
 
-#: app/services/exports.py:519
+#: app/services/exports.py:520
 #, python-format
 msgid "%(n)s × %(m)s min de intervalos a la semana"
 msgstr "%(n)s × %(m)s min of intervals a week"
 
-#: app/services/exports.py:528 app/templates/training/routine.html:117
+#: app/services/exports.py:529 app/templates/training/routine.html:117
 msgid "Cómo está montada"
 msgstr "How it is put together"
 
-#: app/services/exports.py:938
+#: app/services/exports.py:939
 msgid ""
 "Exportación de datos de Alza\n"
 "============================\n"

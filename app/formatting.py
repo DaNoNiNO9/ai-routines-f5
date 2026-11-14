@@ -74,7 +74,7 @@ def duration(seconds: Any) -> str:
 def fdate(value: date | datetime | str | None, style: str = "short") -> str:
     """A calendar date in the locale's own order.
 
-    ``short`` 25/11/2026 (en: 11/25/2026), ``day`` 25/11, ``medium`` 25 nov,
+    ``short`` 25/11/2026 (en: Nov 25, 2026), ``day`` 25/11 (en: Nov 25), ``medium`` 25 nov,
     ``long`` 25 de noviembre de 2026, ``weekday`` Lunes 25 (en: Monday 25).
 
     ISO strings (as kept in drafts and JSON snapshots) are accepted too.
@@ -90,7 +90,11 @@ def fdate(value: date | datetime | str | None, style: str = "short") -> str:
     if style == "weekday":
         text = format_skeleton("EEEEd", value, locale=get_locale())
         return text[:1].upper() + text[1:]
-    skeleton = {"day": "dM", "medium": "MMMd"}.get(style, "yMd")
+    if str(get_locale() or "es").startswith("en"):
+        # 11/5 se lee 5 de noviembre en Reino Unido y 11 de mayo en EE. UU.: mejor el mes en letra.
+        skeleton = {"day": "MMMd", "medium": "MMMd"}.get(style, "yMMMd")
+    else:
+        skeleton = {"day": "dM", "medium": "MMMd"}.get(style, "yMd")
     return format_skeleton(skeleton, value, locale=get_locale())
 
 

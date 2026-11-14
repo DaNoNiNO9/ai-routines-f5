@@ -368,7 +368,8 @@ def persist_routine(
         user=user,
         profile=profile,
         version=_next_version(Routine, user),
-        name=f"{SPLIT_TYPE[routine_plan.split_type]} · {routine_plan.days_per_week} días",
+        # Siempre en castellano: se traduce al mostrarlo (app/stored_names.py).
+        name=f"{SPLIT_TYPE[routine_plan.split_type]._args[0]} · {routine_plan.days_per_week} días",
         split_type=routine_plan.split_type,
         days_per_week=routine_plan.days_per_week,
         mesocycle_weeks=routine_plan.mesocycle_weeks,

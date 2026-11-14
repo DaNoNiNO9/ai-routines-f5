@@ -170,3 +170,31 @@ def test_the_account_setting_wins_over_an_earlier_switch(
         data={"display_name": "Ana", "locale": "es", "timezone": "Europe/Madrid"},
     )
     assert '<html lang="es"' in client.get("/panel").get_data(as_text=True)
+
+
+def test_generated_names_read_in_english(app: Flask) -> None:
+    from app.stored_names import stored_name
+
+    with app.test_request_context("/?lang=en"):
+        assert stored_name("Torso A") == "Upper A"
+        assert stored_name("Cuerpo completo B") == "Full body B"
+        assert stored_name("Desayuno") == "Breakfast"
+        assert stored_name("Comida extra 2") == "Extra meal 2"
+        assert stored_name("Torso / pierna · 4 días") == "Upper / lower · 4 days"
+        # Guardado en inglés por una versión anterior: también.
+        assert stored_name("Upper / lower · 4 días") == "Upper / lower · 4 days"
+        assert stored_name("Mi rutina de verano") == "Mi rutina de verano"
+    with app.test_request_context("/"):
+        assert stored_name("Torso A") == "Torso A"
+        assert stored_name("Upper / lower · 4 días") == "Torso / pierna · 4 días"
+
+
+def test_routine_pages_show_generated_names_in_english(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    _signup(client)
+    _generate(client)
+    html = client.get("/entrenamiento?lang=en").get_data(as_text=True)
+    assert " días" not in html
+    assert "Cuerpo completo" not in html
+    assert "Torso A" not in html
