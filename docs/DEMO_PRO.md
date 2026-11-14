@@ -23,13 +23,38 @@ Cada arranque aplica las migraciones y carga el catálogo (las dos cosas son ide
 
 ## Lo más rápido: enlace temporal (sin dominio ni cuenta)
 
-Con `serve_pro.ps1` en marcha, en otra terminal:
+### Con el script (recomendado)
+
+Doble clic en **`scripts\demo_pro.cmd`**. El script:
+
+1. Arranca el servidor de producción en una ventana minimizada (si ya estaba en marcha, lo reutiliza).
+2. Abre el túnel de Cloudflare.
+3. **Copia la URL pública al portapapeles** y la enseña en una ventana emergente, lista para pegar en WhatsApp o en un correo.
+4. Mientras su ventana siga abierta, la demo funciona. Al cerrarla (o con Ctrl+C) cierra el túnel y el servidor que arrancó.
+
+Desde una terminal es lo mismo:
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File scripts\demo_pro.ps1
+```
+
+Con `-Quiet` no abre la ventana emergente ni toca el portapapeles: solo escribe la URL en la terminal.
+
+### A mano
+
+En dos terminales, desde la carpeta del proyecto:
+
+```powershell
+# 1. El servidor en modo producción (déjala abierta)
+powershell -ExecutionPolicy Bypass -File scripts\serve_pro.ps1
+
+# 2. El túnel (déjala abierta)
 & "$env:LOCALAPPDATA\cloudflared\cloudflared.exe" tunnel --no-autoupdate --url http://127.0.0.1:8000
 ```
 
-Imprime una dirección `https://…trycloudflare.com` que funciona al momento. Cambia cada vez que se abre y deja de funcionar al cerrar la terminal. Es lo que se usó el 2026-11-14 para la primera demo.
+La URL aparece en la salida de la segunda terminal, en un recuadro: `https://palabras-al-azar.trycloudflare.com`. Cópiala de ahí.
+
+En los dos casos, la dirección cambia cada vez que se abre el túnel y deja de funcionar al cerrarlo. Si la primera vez Windows pregunta por el firewall, no hace falta permitir nada: el túnel solo sale hacia Cloudflare.
 
 ## Con dominio propio
 
