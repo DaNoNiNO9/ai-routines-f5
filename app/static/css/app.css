@@ -840,3 +840,103 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 .import-table .field-input { min-width: 14rem; }
 .import-table .badge { display: inline-block; margin-top: var(--space-1); }
 .badge-warn { border-color: var(--warning, #e0a800); color: var(--warning, #e0a800); }
+
+/* Casillas y opciones propias (sin librería): mismo radio, borde y naranja que el
+   resto de la app, en los dos temas. Siguen siendo <input> de verdad: teclado,
+   lector de pantalla y formularios sin JavaScript funcionan igual. */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0.15rem 0 0;
+  border: 2px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--bg);
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+input[type="radio"] { border-radius: 999px; }
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.38rem;
+  height: 0.7rem;
+  border: solid var(--accent-contrast);
+  border-width: 0 2.5px 2.5px 0;
+  transform: translateY(-1px) rotate(45deg) scale(0);
+  transition: transform 120ms ease-out;
+}
+input[type="radio"]::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-contrast);
+  transform: scale(0);
+  transition: transform 120ms ease-out;
+}
+input[type="checkbox"]:checked,
+input[type="radio"]:checked { background: var(--accent); border-color: var(--accent); }
+input[type="checkbox"]:checked::before { transform: translateY(-1px) rotate(45deg) scale(1); }
+input[type="radio"]:checked::before { transform: scale(1); }
+input[type="checkbox"]:hover:not(:checked),
+input[type="radio"]:hover:not(:checked) { border-color: var(--accent); }
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.field-invalid input[type="checkbox"] { border-color: var(--danger); }
+.check-input, .choice-input { margin-top: 0.15rem; }
+
+/* Las opciones en tarjeta se rellenan al marcarlas: se ve de un vistazo qué está elegido. */
+.choice:has(.choice-input:checked) { background: var(--accent-soft); }
+.choice:hover { border-color: var(--border-strong); }
+.check-label { align-items: flex-start; }
+@media (prefers-reduced-motion: reduce) {
+  input[type="checkbox"]::before, input[type="radio"]::before { transition: none; }
+}
+
+
+/* Diario: «Tu semana» */
+.week-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); }
+.week-head .card-title { margin: 0; }
+.week-nav { display: flex; gap: var(--space-1); }
+.week-strip { list-style: none; margin: var(--space-3) 0 var(--space-2); padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-1); }
+.week-cell { display: grid; justify-items: center; gap: 0.15rem; padding: var(--space-2) 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); text-decoration: none; }
+a.week-cell:hover { border-color: var(--border-strong); }
+.week-cell.is-off { opacity: 0.4; border-style: dashed; }
+.week-name { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+.week-num { font-weight: 700; font-variant-numeric: tabular-nums; }
+.is-today .week-cell { border-color: var(--text-muted); }
+.is-selected .week-cell { border-color: var(--accent); background: var(--accent-soft); }
+.week-dots { display: flex; gap: 3px; min-height: 6px; }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: var(--border); vertical-align: middle; }
+.dot-weight.on { background: var(--accent); }
+.dot-food.on { background: var(--success); }
+.dot-move.on { background: var(--focus); }
+.week-legend .dot { margin: 0 0.15rem; }
+.first-steps { list-style: none; padding: 0; margin: 0 0 var(--space-2); display: grid; gap: var(--space-1); }
+.first-steps li { display: flex; gap: var(--space-2); align-items: center; }
+.first-steps li .icon { color: var(--accent); }
+.first-steps li.is-done { color: var(--text-muted); text-decoration: line-through; }
+.first-steps li.is-done .icon { color: var(--success); }
+
+/* Cambiar ejercicio */
+.swap-muscles { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: var(--space-3) 0; }
+.swap-muscles .chip { text-decoration: none; color: var(--text); }
+.swap-muscles .chip:hover { border-color: var(--border-strong); }
+.swap-aside { margin-bottom: var(--space-3); font-size: 0.9rem; color: var(--text-muted); }
+.swap-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2); }
+.swap-card { display: grid; grid-template-columns: 96px 1fr; gap: var(--space-3); padding: var(--space-2); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
+.swap-thumb { width: 96px; height: 72px; object-fit: contain; background: #fff; border-radius: calc(var(--radius) - 2px); display: block; }
+.swap-name { margin: 0; font-weight: 700; }
+.swap-info .meta { margin: 0.1rem 0 var(--space-1); }
+.swap-actions { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-2); align-items: center; }
+.swap-actions form { display: inline-flex; gap: var(--space-1); flex-wrap: wrap; }
+@media (max-width: 30rem) { .swap-card { grid-template-columns: 72px 1fr; } .swap-thumb { width: 72px; height: 54px; } }
+
+.swap-entry { display: flex; flex-wrap: wrap; gap: var(--space-1); align-items: center; }
+.swap-mini { display: inline-flex; vertical-align: middle; color: var(--text-muted); padding: 0 0.2rem; }
+.swap-mini:hover, .swap-mini:focus-visible { color: var(--accent); }

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Alza 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 21:41+0100\n"
+"POT-Creation-Date: 2026-11-14 22:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alza\n"
 "Language: en\n"
@@ -95,669 +95,681 @@ msgstr "%(min)s min"
 msgid "%(s)s s"
 msgstr "%(s)s s"
 
-#: app/formatting.py:132 app/templates/tracking/foods.html:29
+#: app/formatting.py:134 app/templates/tracking/foods.html:29
 msgid "hoy"
 msgstr "today"
 
-#: app/formatting.py:134
+#: app/formatting.py:136
 msgid "mañana"
 msgstr "tomorrow"
 
-#: app/formatting.py:136
+#: app/formatting.py:138
 #, python-format
 msgid "hace %(num)s día"
 msgid_plural "hace %(num)s días"
 msgstr[0] "%(num)s day ago"
 msgstr[1] "%(num)s days ago"
 
-#: app/formatting.py:137
+#: app/formatting.py:139
 #, python-format
 msgid "en %(num)s día"
 msgid_plural "en %(num)s días"
 msgstr[0] "in %(num)s day"
 msgstr[1] "in %(num)s days"
 
-#: app/formatting.py:154
+#: app/formatting.py:156
 #, python-format
 msgid "Baja en %(down)s s, para %(pause)s s abajo y sube en %(up)s s"
 msgstr "Lower in %(down)s s, pause %(pause)s s at the bottom and lift in %(up)s s"
 
-#: app/formatting.py:159
+#: app/formatting.py:161
 #, python-format
 msgid "Baja en %(down)s s y sube en %(up)s s"
 msgstr "Lower in %(down)s s and lift in %(up)s s"
 
-#: app/labels.py:43
+#: app/labels.py:44
 msgid "Hombre"
 msgstr "Male"
 
-#: app/labels.py:43
+#: app/labels.py:44
 msgid "Mujer"
 msgstr "Female"
 
-#: app/labels.py:46
+#: app/labels.py:47
 msgid "No lo sé"
 msgstr "I do not know"
 
-#: app/labels.py:47
+#: app/labels.py:48
 msgid "Calculado con tus medidas (fórmula de la Marina de EE. UU.)"
 msgstr "Worked out from your measurements (US Navy formula)"
 
-#: app/labels.py:48
+#: app/labels.py:49
 msgid "Báscula de bioimpedancia"
 msgstr "Bioimpedance scale"
 
-#: app/labels.py:49
+#: app/labels.py:50
 msgid "Plicómetro (pliegues)"
 msgstr "Calipers (skinfolds)"
 
-#: app/labels.py:50
+#: app/labels.py:51
 msgid "DEXA"
 msgstr "DEXA"
 
-#: app/labels.py:51
+#: app/labels.py:52
 msgid "Estimación visual"
 msgstr "Visual estimate"
 
-#: app/labels.py:59
+#: app/labels.py:60
 msgid "Sedentario"
 msgstr "Sedentary"
 
-#: app/labels.py:60
+#: app/labels.py:61
 msgid "De pie"
 msgstr "On your feet"
 
-#: app/labels.py:61
+#: app/labels.py:62
 msgid "Físico ligero"
 msgstr "Lightly physical"
 
-#: app/labels.py:62
+#: app/labels.py:63
 msgid "Físico duro"
 msgstr "Heavy physical"
 
-#: app/labels.py:65
+#: app/labels.py:66
 msgid "Oficina, estudio, conducir: casi todo el día sentado."
 msgstr "Office, study, driving: sitting most of the day."
 
-#: app/labels.py:66
+#: app/labels.py:67
 msgid "Comercio, docencia, hostelería: muchas horas de pie."
 msgstr "Retail, teaching, hospitality: many hours standing."
 
-#: app/labels.py:67
+#: app/labels.py:68
 msgid "Reparto, limpieza, almacén: en movimiento continuo."
 msgstr "Delivery, cleaning, warehouse: moving all day."
 
-#: app/labels.py:68
+#: app/labels.py:69
 msgid "Construcción, agricultura, cargas pesadas."
 msgstr "Construction, farming, heavy lifting."
 
-#: app/labels.py:72
+#: app/labels.py:73
 msgid "Suave (paseo, yoga)"
 msgstr "Easy (walking, yoga)"
 
-#: app/labels.py:73
+#: app/labels.py:74
 msgid "Moderada (fútbol, natación, bici)"
 msgstr "Moderate (football, swimming, cycling)"
 
-#: app/labels.py:74
+#: app/labels.py:75
 msgid "Alta (carrera, crossfit, deportes de combate)"
 msgstr "Hard (running, crossfit, combat sports)"
 
-#: app/labels.py:78
+#: app/labels.py:79
 msgid "Nunca he entrenado con pesas"
 msgstr "I have never lifted weights"
 
-#: app/labels.py:79
+#: app/labels.py:80
 msgid "Menos de 6 meses"
 msgstr "Less than 6 months"
 
-#: app/labels.py:80
+#: app/labels.py:81
 msgid "Entre 6 meses y 2 años"
 msgstr "Between 6 months and 2 years"
 
-#: app/labels.py:81
+#: app/labels.py:82
 msgid "Entre 2 y 5 años"
 msgstr "Between 2 and 5 years"
 
-#: app/labels.py:82
+#: app/labels.py:83
 msgid "Más de 5 años"
 msgstr "More than 5 years"
 
-#: app/labels.py:86
+#: app/labels.py:87
 msgid "Gimnasio completo"
 msgstr "Full gym"
 
-#: app/labels.py:87
+#: app/labels.py:88
 msgid "Gimnasio básico"
 msgstr "Basic gym"
 
-#: app/labels.py:88
+#: app/labels.py:89
 msgid "En casa con material"
 msgstr "At home with equipment"
 
-#: app/labels.py:89
+#: app/labels.py:90
 msgid "En casa sin material"
 msgstr "At home with nothing"
 
-#: app/labels.py:92
+#: app/labels.py:93
 msgid "Barras, mancuernas, poleas y máquinas de todo tipo."
 msgstr "Barbells, dumbbells, cables and machines of every kind."
 
-#: app/labels.py:94
+#: app/labels.py:95
 msgid "Barras, mancuernas, rack, poleas y las máquinas más comunes."
 msgstr "Barbells, dumbbells, a rack, cables and the common machines."
 
-#: app/labels.py:97
+#: app/labels.py:98
 msgid "Mancuernas, bandas, barra de dominadas o banco. Ajusta la lista en el paso siguiente."
 msgstr "Dumbbells, bands, a pull-up bar or a bench. Adjust the list on the next step."
 
-#: app/labels.py:99
+#: app/labels.py:100
 msgid "Solo tu peso corporal."
 msgstr "Your body weight only."
 
-#: app/labels.py:103
+#: app/labels.py:104
 msgid "Varía o no lo sé"
 msgstr "It varies, or I do not know"
 
-#: app/labels.py:104
+#: app/labels.py:105
 msgid "Por la mañana"
 msgstr "In the morning"
 
-#: app/labels.py:105
+#: app/labels.py:106
 msgid "A mediodía"
 msgstr "Around midday"
 
-#: app/labels.py:106
+#: app/labels.py:107
 msgid "Por la tarde o noche"
 msgstr "In the afternoon or evening"
 
-#: app/labels.py:110
+#: app/labels.py:111
 msgid "Perder grasa"
 msgstr "Lose fat"
 
-#: app/labels.py:111
+#: app/labels.py:112
 msgid "Perder grasa y ganar músculo"
 msgstr "Lose fat and gain muscle"
 
-#: app/labels.py:112
+#: app/labels.py:113
 msgid "Ganar músculo"
 msgstr "Gain muscle"
 
-#: app/labels.py:113 app/services/exports.py:431
+#: app/labels.py:114 app/services/exports.py:431
 msgid "Mantener el peso"
 msgstr "Keep my weight"
 
-#: app/labels.py:114
+#: app/labels.py:115
 msgid "Ganar fuerza"
 msgstr "Get stronger"
 
-#: app/labels.py:117
+#: app/labels.py:118
 msgid "Comer algo menos de lo que gastas, sin perder músculo."
 msgstr "Eat a little less than you burn, without losing muscle."
 
-#: app/labels.py:119
+#: app/labels.py:120
 msgid "Perder algo de grasa y ganar músculo a la vez; funciona mejor en principiantes."
 msgstr "Lose some fat and gain muscle at once; it works best for beginners."
 
-#: app/labels.py:122
+#: app/labels.py:123
 msgid "Comer algo más de lo que gastas para ganar músculo con poca grasa."
 msgstr "Eat a little more than you burn to gain muscle with little fat."
 
-#: app/labels.py:124
+#: app/labels.py:125
 msgid "Ni subir ni bajar: mejorar hábitos y fuerza."
 msgstr "Neither up nor down: better habits and strength."
 
-#: app/labels.py:125
+#: app/labels.py:126
 msgid "Lo importante es levantar más; el peso es secundario."
 msgstr "What matters is lifting more; your weight comes second."
 
-#: app/labels.py:129
+#: app/labels.py:130
 msgid "Conservador"
 msgstr "Cautious"
 
-#: app/labels.py:130
+#: app/labels.py:131
 msgid "Moderado"
 msgstr "Moderate"
 
-#: app/labels.py:131
+#: app/labels.py:132
 msgid "Decidido"
 msgstr "Determined"
 
-#: app/labels.py:134
+#: app/labels.py:135
 msgid "Cambios pequeños, más fáciles de mantener."
 msgstr "Small changes, easier to keep up."
 
-#: app/labels.py:135
+#: app/labels.py:136
 msgid "El punto medio recomendado."
 msgstr "The recommended middle ground."
 
-#: app/labels.py:137
+#: app/labels.py:138
 msgid "Más rápido, más hambre y fatiga. Los límites de seguridad se aplican igual."
 msgstr "Faster, hungrier and more tiring. The safety limits still apply."
 
-#: app/labels.py:142
+#: app/labels.py:143
 msgid "Omnívora"
 msgstr "Omnivore"
 
-#: app/labels.py:143
+#: app/labels.py:144
 msgid "Vegetariana"
 msgstr "Vegetarian"
 
-#: app/labels.py:144
+#: app/labels.py:145
 msgid "Vegana"
 msgstr "Vegan"
 
-#: app/labels.py:145
+#: app/labels.py:146
 msgid "Pescetariana"
 msgstr "Pescatarian"
 
-#: app/labels.py:146
+#: app/labels.py:147
 msgid "Halal"
 msgstr "Halal"
 
-#: app/labels.py:147
+#: app/labels.py:148
 msgid "Kosher"
 msgstr "Kosher"
 
-#: app/labels.py:151
+#: app/labels.py:152
 msgid "Bajo"
 msgstr "Low"
 
-#: app/labels.py:152
+#: app/labels.py:153
 msgid "Medio"
 msgstr "Medium"
 
-#: app/labels.py:153
+#: app/labels.py:154
 msgid "Alto"
 msgstr "High"
 
-#: app/labels.py:156
+#: app/labels.py:157
 msgid "Poco (menos de 20 min al día)"
 msgstr "Little (under 20 min a day)"
 
-#: app/labels.py:157
+#: app/labels.py:158
 msgid "Normal (20-45 min)"
 msgstr "Normal (20-45 min)"
 
-#: app/labels.py:158
+#: app/labels.py:159
 msgid "Bastante (más de 45 min)"
 msgstr "Plenty (over 45 min)"
 
-#: app/labels.py:162
+#: app/labels.py:163
 msgid "Hombro"
 msgstr "Shoulder"
 
-#: app/labels.py:163
+#: app/labels.py:164
 msgid "Codo"
 msgstr "Elbow"
 
-#: app/labels.py:164
+#: app/labels.py:165
 msgid "Muñeca"
 msgstr "Wrist"
 
-#: app/labels.py:165 app/templates/tracking/measurements.html:43
+#: app/labels.py:166 app/templates/tracking/measurements.html:43
 msgid "Cuello"
 msgstr "Neck"
 
-#: app/labels.py:166
+#: app/labels.py:167
 msgid "Zona lumbar"
 msgstr "Lower back"
 
-#: app/labels.py:167 app/templates/tracking/measurements.html:43
+#: app/labels.py:168 app/templates/tracking/measurements.html:43
 msgid "Cadera"
 msgstr "Hip"
 
-#: app/labels.py:168
+#: app/labels.py:169
 msgid "Rodilla"
 msgstr "Knee"
 
-#: app/labels.py:169
+#: app/labels.py:170
 msgid "Tobillo"
 msgstr "Ankle"
 
-#: app/labels.py:173
+#: app/labels.py:174
 msgid "Leve (molesta a veces)"
 msgstr "Mild (it bothers me sometimes)"
 
-#: app/labels.py:174
+#: app/labels.py:175
 msgid "Moderada (limita algunos ejercicios)"
 msgstr "Moderate (it rules out some exercises)"
 
-#: app/labels.py:175
+#: app/labels.py:176
 msgid "Grave (en tratamiento o con dolor habitual)"
 msgstr "Severe (under treatment or in regular pain)"
 
-#: app/labels.py:179 app/templates/tracking/measurements.html:43
+#: app/labels.py:180 app/templates/tracking/measurements.html:43
 msgid "Pecho"
 msgstr "Chest"
 
-#: app/labels.py:180
+#: app/labels.py:181
 msgid "Espalda"
 msgstr "Back"
 
-#: app/labels.py:181
+#: app/labels.py:182
 msgid "Hombros"
 msgstr "Shoulders"
 
-#: app/labels.py:182
+#: app/labels.py:183
 msgid "Bíceps"
 msgstr "Biceps"
 
-#: app/labels.py:183
+#: app/labels.py:184
 msgid "Tríceps"
 msgstr "Triceps"
 
-#: app/labels.py:184
+#: app/labels.py:185
 msgid "Antebrazos"
 msgstr "Forearms"
 
-#: app/labels.py:185
+#: app/labels.py:186
 msgid "Cuádriceps"
 msgstr "Quads"
 
-#: app/labels.py:186
+#: app/labels.py:187
 msgid "Femorales"
 msgstr "Hamstrings"
 
-#: app/labels.py:187
+#: app/labels.py:188
 msgid "Glúteos"
 msgstr "Glutes"
 
-#: app/labels.py:188
+#: app/labels.py:189
 msgid "Gemelos"
 msgstr "Calves"
 
-#: app/labels.py:189
+#: app/labels.py:190
 msgid "Abdomen"
 msgstr "Abs"
 
-#: app/labels.py:190
+#: app/labels.py:191
 msgid "Lumbares"
 msgstr "Lower back"
 
-#: app/labels.py:191
+#: app/labels.py:192
 msgid "Trapecios"
 msgstr "Traps"
 
-#: app/labels.py:192
+#: app/labels.py:193
 msgid "Aductores"
 msgstr "Adductors"
 
-#: app/labels.py:202
+#: app/labels.py:203
 msgid "Empujar al frente"
 msgstr "Push forward"
 
-#: app/labels.py:203
+#: app/labels.py:204
 msgid "Empujar hacia arriba"
 msgstr "Push overhead"
 
-#: app/labels.py:204
+#: app/labels.py:205
 msgid "Tirar hacia ti"
 msgstr "Pull towards you"
 
-#: app/labels.py:205
+#: app/labels.py:206
 msgid "Tirar desde arriba"
 msgstr "Pull down from above"
 
-#: app/labels.py:206
+#: app/labels.py:207
 msgid "Empujar con las piernas"
 msgstr "Push with the legs"
 
-#: app/labels.py:207
+#: app/labels.py:208
 msgid "Estirar la cadera"
 msgstr "Extend the hips"
 
-#: app/labels.py:208
+#: app/labels.py:209
 msgid "Abdomen y zona media"
 msgstr "Abs and core"
 
-#: app/labels.py:209
+#: app/labels.py:210
 msgid "Un solo músculo"
 msgstr "Single muscle"
 
-#: app/labels.py:213
+#: app/labels.py:214
 msgid "Peso corporal"
 msgstr "Body weight"
 
-#: app/labels.py:214
+#: app/labels.py:215
 msgid "Peso libre"
 msgstr "Free weights"
 
-#: app/labels.py:215
+#: app/labels.py:216
 msgid "Poleas"
 msgstr "Cables"
 
-#: app/labels.py:216
+#: app/labels.py:217
 msgid "Máquinas"
 msgstr "Machines"
 
-#: app/labels.py:217
+#: app/labels.py:218
 msgid "Accesorios"
 msgstr "Accessories"
 
-#: app/labels.py:221 app/stored_names.py:23
+#: app/labels.py:222 app/stored_names.py:23
 msgid "Cuerpo completo"
 msgstr "Full body"
 
-#: app/labels.py:222
+#: app/labels.py:223
 msgid "Torso / pierna"
 msgstr "Upper / lower"
 
-#: app/labels.py:223
+#: app/labels.py:224
 msgid "Empuje / tracción / pierna"
 msgstr "Push / pull / legs"
 
-#: app/labels.py:224
+#: app/labels.py:225
 msgid "Torso / pierna + empuje / tracción / pierna"
 msgstr "Upper / lower + push / pull / legs"
 
-#: app/labels.py:225
+#: app/labels.py:226
 msgid "Arnold"
 msgstr "Arnold"
 
-#: app/labels.py:226
+#: app/labels.py:227
 msgid "Empuje / tracción / pierna, dos veces"
 msgstr "Push / pull / legs, twice"
 
-#: app/labels.py:230
+#: app/labels.py:231
+msgid "Técnica sencilla"
+msgstr "Simple technique"
+
+#: app/labels.py:232
+msgid "Técnica media"
+msgstr "Moderate technique"
+
+#: app/labels.py:233
+msgid "Técnica avanzada"
+msgstr "Advanced technique"
+
+#: app/labels.py:237
 msgid "baja"
 msgstr "low"
 
-#: app/labels.py:231
+#: app/labels.py:238
 msgid "media"
 msgstr "medium"
 
-#: app/labels.py:232
+#: app/labels.py:239
 msgid "alta"
 msgstr "high"
 
-#: app/blueprints/tracking/forms.py:22 app/labels.py:236
+#: app/blueprints/tracking/forms.py:22 app/labels.py:243
 #: app/templates/training/routine.html:87
 msgid "Cardio suave"
 msgstr "Easy cardio"
 
-#: app/blueprints/tracking/forms.py:23 app/labels.py:237
+#: app/blueprints/tracking/forms.py:23 app/labels.py:244
 #: app/templates/training/routine.html:88
 msgid "Intervalos"
 msgstr "Intervals"
 
-#: app/labels.py:241
+#: app/labels.py:248
 msgid "Katch-McArdle (sobre masa magra)"
 msgstr "Katch-McArdle (on lean mass)"
 
-#: app/labels.py:242
+#: app/labels.py:249
 msgid "Mifflin-St Jeor"
 msgstr "Mifflin-St Jeor"
 
-#: app/labels.py:243
+#: app/labels.py:250
 msgid "Harris-Benedict revisada"
 msgstr "Harris-Benedict, revised"
 
-#: app/labels.py:247
+#: app/labels.py:254
 msgid "normal"
 msgstr "regular"
 
-#: app/labels.py:248
+#: app/labels.py:255
 msgid "antes de entrenar"
 msgstr "pre-workout"
 
-#: app/labels.py:249
+#: app/labels.py:256
 msgid "después de entrenar"
 msgstr "post-workout"
 
-#: app/labels.py:253
+#: app/labels.py:260
 msgid "por debajo"
 msgstr "below"
 
-#: app/labels.py:254
+#: app/labels.py:261
 msgid "en rango"
 msgstr "in range"
 
-#: app/labels.py:255
+#: app/labels.py:262
 msgid "por encima"
 msgstr "above"
 
-#: app/labels.py:259
+#: app/labels.py:266
 msgid "1 · Muy bajo"
 msgstr "1 · Very low"
 
-#: app/labels.py:260
+#: app/labels.py:267
 msgid "2 · Bajo"
 msgstr "2 · Low"
 
-#: app/blueprints/workouts/forms.py:16 app/labels.py:261
+#: app/blueprints/workouts/forms.py:16 app/labels.py:268
 msgid "3 · Normal"
 msgstr "3 · Normal"
 
-#: app/labels.py:262
+#: app/labels.py:269
 msgid "4 · Alto"
 msgstr "4 · High"
 
-#: app/labels.py:263
+#: app/labels.py:270
 msgid "5 · Muy alto"
 msgstr "5 · Very high"
 
-#: app/labels.py:267
+#: app/labels.py:274
 msgid "principal"
 msgstr "main"
 
-#: app/labels.py:268
+#: app/labels.py:275
 msgid "secundario"
 msgstr "secondary"
 
-#: app/labels.py:269
+#: app/labels.py:276
 msgid "accesorio"
 msgstr "accessory"
 
-#: app/labels.py:270
+#: app/labels.py:277
 msgid "aislamiento"
 msgstr "isolation"
 
-#: app/labels.py:304
+#: app/labels.py:311
 msgid "una barra de dominadas o bandas"
 msgstr "a pull-up bar or bands"
 
-#: app/labels.py:305
+#: app/labels.py:312
 msgid "mancuernas, bandas o un TRX"
 msgstr "dumbbells, bands or a TRX"
 
-#: app/labels.py:306 app/labels.py:307
+#: app/labels.py:313 app/labels.py:314
 msgid "mancuernas o bandas"
 msgstr "dumbbells or bands"
 
-#: app/labels.py:308
+#: app/labels.py:315
 msgid "mancuernas o una kettlebell"
 msgstr "dumbbells or a kettlebell"
 
-#: app/labels.py:309
+#: app/labels.py:316
 msgid "mancuernas, kettlebell o bandas"
 msgstr "dumbbells, a kettlebell or bands"
 
-#: app/labels.py:310
+#: app/labels.py:317
 msgid "una esterilla"
 msgstr "a mat"
 
-#: app/labels.py:368
+#: app/labels.py:375
 msgid "Las cintas con asas que se cuelgan de un anclaje"
 msgstr "The straps with handles that hang from an anchor"
 
-#: app/labels.py:369
+#: app/labels.py:376
 msgid "La barra corta con ondulaciones, para bíceps y tríceps"
 msgstr "The short wavy bar, for biceps and triceps"
 
-#: app/labels.py:370
+#: app/labels.py:377
 msgid "La barra hexagonal en la que te metes dentro"
 msgstr "The hexagonal bar you stand inside"
 
-#: app/labels.py:371
+#: app/labels.py:378
 msgid "Balón con peso, para lanzamientos y abdominales"
 msgstr "A weighted ball, for throws and abs"
 
-#: app/labels.py:372
+#: app/labels.py:379
 msgid "El cajón para subirse o hacer saltos"
 msgstr "The box you step or jump onto"
 
-#: app/labels.py:373
+#: app/labels.py:380
 msgid "La pelota grande hinchable"
 msgstr "The big inflatable ball"
 
-#: app/labels.py:374
+#: app/labels.py:381
 msgid "El banco inclinado para lumbares y glúteos"
 msgstr "The angled bench for lower back and glutes"
 
-#: app/labels.py:375
+#: app/labels.py:382
 msgid "La ruedecita con dos asas"
 msgstr "The little wheel with two handles"
 
-#: app/labels.py:376
+#: app/labels.py:383
 msgid "La torre con poleas y cables regulables"
 msgstr "The tower with pulleys and adjustable cables"
 
-#: app/labels.py:377
+#: app/labels.py:384
 msgid "Sentado, tiras de una barra hacia el pecho"
 msgstr "Seated, you pull a bar down to your chest"
 
-#: app/labels.py:378
+#: app/labels.py:385
 msgid "Sentado, tiras de un agarre hacia el abdomen"
 msgstr "Seated, you pull a handle towards your belly"
 
-#: app/labels.py:379
+#: app/labels.py:386
 msgid "La barra guiada por raíles"
 msgstr "The bar that runs on rails"
 
-#: app/labels.py:380
+#: app/labels.py:387
 msgid "Sentadilla en máquina inclinada, de espaldas al respaldo"
 msgstr "Squat on an angled machine, back against the pad"
 
-#: app/labels.py:381
+#: app/labels.py:388
 msgid "Sentado, juntas los brazos por delante del pecho"
 msgstr "Seated, you bring your arms together in front of your chest"
 
-#: app/labels.py:382
+#: app/labels.py:389
 msgid "Empuje de cadera con la espalda apoyada"
 msgstr "Hip thrust with your back supported"
 
-#: app/labels.py:383
+#: app/labels.py:390
 msgid "Sentado, abres o cierras las piernas"
 msgstr "Seated, you open or close your legs"
 
-#: app/labels.py:384
+#: app/labels.py:391
 msgid "La estructura donde se apoya la barra para sentadillas"
 msgstr "The frame that holds the bar for squats"
 
-#: app/labels.py:390
+#: app/labels.py:397
 msgid "Damos por hecho que tienes de todo: barras, mancuernas, poleas y máquinas."
 msgstr "We assume you have it all: barbells, dumbbells, cables and machines."
 
-#: app/labels.py:393
+#: app/labels.py:400
 msgid "Damos por hecho lo básico: barras, mancuernas, bancos y alguna máquina."
 msgstr "We assume the basics: barbells, dumbbells, benches and a machine or two."
 
-#: app/labels.py:395
+#: app/labels.py:402
 msgid "Damos por hecho mancuernas, bandas y un banco."
 msgstr "We assume dumbbells, bands and a bench."
 
-#: app/labels.py:396
+#: app/labels.py:403
 msgid "Damos por hecho que entrenas solo con tu peso."
 msgstr "We assume you train with your body weight only."
 
@@ -878,7 +890,7 @@ msgstr "Type %(word)s to confirm"
 msgid "Escribe %(word)s exactamente."
 msgstr "Type %(word)s exactly."
 
-#: app/blueprints/account/routes.py:32 app/blueprints/privacy/routes.py:90
+#: app/blueprints/account/routes.py:32 app/blueprints/privacy/routes.py:93
 msgid "La contraseña no es correcta."
 msgstr "That password is not correct."
 
@@ -1097,6 +1109,10 @@ msgstr "Weight"
 #: app/blueprints/dashboard/routes.py:44
 msgid "Media de 7 días"
 msgstr "7-day average"
+
+#: app/blueprints/idle/routes.py:106
+msgid "Tu sesión se cerró tras un rato sin actividad. Vuelve a entrar para seguir."
+msgstr "Your session was closed after a while without activity. Sign in again to carry on."
 
 #: app/blueprints/imports/routes.py:20
 msgid "El fichero pasa de 8 MB. Exporta desde Hevy solo los entrenos."
@@ -1569,15 +1585,15 @@ msgstr "History of an eating disorder"
 msgid "Faltan respuestas en el paso %(n)s."
 msgstr "Answers are missing on step %(n)s."
 
-#: app/blueprints/privacy/routes.py:73
+#: app/blueprints/privacy/routes.py:76
 msgid "Marca la casilla para dar tu consentimiento."
 msgstr "Tick the box to give your consent."
 
-#: app/blueprints/privacy/routes.py:76
+#: app/blueprints/privacy/routes.py:79
 msgid "Gracias. Ya puedes seguir con tu plan."
 msgstr "Thank you. You can carry on with your plan."
 
-#: app/blueprints/privacy/routes.py:94
+#: app/blueprints/privacy/routes.py:97
 msgid "Has retirado tu consentimiento: hemos borrado todos tus datos de salud."
 msgstr "You have withdrawn your consent: we have deleted all your health data."
 
@@ -1644,7 +1660,7 @@ msgid "Revisión registrada: %(text)s"
 msgstr "Review recorded: %(text)s"
 
 #: app/blueprints/tracking/forms.py:30 app/blueprints/tracking/forms.py:104
-#: app/templates/tracking/diary.html:12 app/templates/tracking/diary.html:124
+#: app/templates/tracking/diary.html:12 app/templates/tracking/diary.html:171
 #: app/templates/tracking/measurements.html:43
 msgid "Día"
 msgstr "Day"
@@ -1683,7 +1699,7 @@ msgstr "Fat (g)"
 msgid "Cuánto has seguido el plan (%)"
 msgstr "How closely you followed the plan (%)"
 
-#: app/blueprints/tracking/forms.py:69 app/templates/tracking/diary.html:124
+#: app/blueprints/tracking/forms.py:69 app/templates/tracking/diary.html:171
 msgid "Pasos"
 msgstr "Steps"
 
@@ -1731,76 +1747,97 @@ msgstr "Method"
 msgid "Rellena al menos una medida."
 msgstr "Fill in at least one measurement."
 
-#: app/blueprints/tracking/routes.py:127
+#: app/blueprints/tracking/routes.py:129
 #, python-format
 msgid "Peso guardado: %(kg)s."
 msgstr "Weight saved: %(kg)s."
 
-#: app/blueprints/tracking/routes.py:153
+#: app/blueprints/tracking/routes.py:155
 msgid "Guardado."
 msgstr "Saved."
 
-#: app/blueprints/tracking/routes.py:156
+#: app/blueprints/tracking/routes.py:158
 #, python-format
 msgid "Ingesta guardada: %(kcal)s kcal."
 msgstr "Intake saved: %(kcal)s kcal."
 
-#: app/blueprints/tracking/routes.py:177
+#: app/blueprints/tracking/routes.py:179
 msgid "Actividad guardada."
 msgstr "Activity saved."
 
-#: app/blueprints/tracking/routes.py:202
+#: app/blueprints/tracking/routes.py:204
 msgid "Medidas guardadas."
 msgstr "Measurements saved."
 
-#: app/blueprints/tracking/routes.py:216
+#: app/blueprints/tracking/routes.py:218
 msgid "Open Food Facts no responde ahora mismo. La tabla básica sigue funcionando."
 msgstr "Open Food Facts is not answering right now. The basic table still works."
 
-#: app/blueprints/tracking/routes.py:218
+#: app/blueprints/tracking/routes.py:220
 msgid "Ese código de barras no parece válido: son de 8 a 13 cifras."
 msgstr "That barcode does not look valid: they have 8 to 13 digits."
 
-#: app/blueprints/tracking/routes.py:219
+#: app/blueprints/tracking/routes.py:221
 msgid "No encontramos ese código en Open Food Facts. Búscalo por su nombre."
 msgstr "We could not find that code on Open Food Facts. Search for it by name."
 
-#: app/blueprints/tracking/routes.py:221
+#: app/blueprints/tracking/routes.py:223
 msgid "Ese producto no tiene todos sus valores en Open Food Facts. Búscalo por su nombre."
 msgstr "That product does not have all its values on Open Food Facts. Search for it by name."
 
-#: app/blueprints/tracking/routes.py:223
+#: app/blueprints/tracking/routes.py:225
 msgid "Indica los gramos: entre 1 y 5000."
 msgstr "Enter the grams: between 1 and 5000."
 
-#: app/blueprints/tracking/routes.py:224
+#: app/blueprints/tracking/routes.py:226
 msgid "No encontramos ese alimento."
 msgstr "We could not find that food."
 
-#: app/blueprints/tracking/routes.py:291
+#: app/blueprints/tracking/routes.py:293
 #, python-format
 msgid "Apuntado: %(name)s, %(grams)s g (%(kcal)s kcal)."
 msgstr "Logged: %(name)s, %(grams)s g (%(kcal)s kcal)."
 
-#: app/blueprints/tracking/routes.py:322
+#: app/blueprints/tracking/routes.py:324
 #, python-format
 msgid "%(num)s alimento copiado de ayer."
 msgid_plural "%(num)s alimentos copiados de ayer."
 msgstr[0] "%(num)s food copied from yesterday."
 msgstr[1] "%(num)s foods copied from yesterday."
 
-#: app/blueprints/training/routes.py:142
-msgid "No hay otro ejercicio para ese hueco con tu material y tus limitaciones."
-msgstr "There is no other exercise for that slot with your equipment and your limits."
+#: app/blueprints/training/routes.py:26
+msgid "Ya has apuntado series de ese ejercicio hoy: cámbialo en tu rutina."
+msgstr "You have already logged sets of that exercise today: change it in your routine."
 
-#: app/blueprints/training/routes.py:149
-#, python-format
-msgid "%(old)s fuera: ahora toca %(new)s. No volverá a aparecer en tus rutinas."
-msgstr "%(old)s is out: %(new)s takes its place. It will not show up in your routines again."
+#: app/blueprints/training/routes.py:27 app/blueprints/training/routes.py:221
+msgid "Ese ejercicio no encaja con tu material o tus molestias."
+msgstr "That exercise does not fit your equipment or your aches."
 
-#: app/blueprints/training/routes.py:168
+#: app/blueprints/training/routes.py:28 app/blueprints/training/routes.py:205
+msgid "La sesión ya no está abierta."
+msgstr "The session is no longer open."
+
+#: app/blueprints/training/routes.py:137
 msgid "Vuelve a estar disponible para las próximas rutinas."
 msgstr "It is available again for the next routines."
+
+#: app/blueprints/training/routes.py:199
+msgid "Elige uno de los ejercicios de la lista."
+msgstr "Choose one of the exercises in the list."
+
+#: app/blueprints/training/routes.py:210
+msgid "No se ha podido cambiar."
+msgstr "It could not be changed."
+
+#: app/blueprints/training/routes.py:213
+#, python-format
+msgid "Hoy harás %(name)s."
+msgstr "Today you will do %(name)s."
+
+#: app/blueprints/training/routes.py:225
+#, python-format
+msgid "%(new)s sustituye a %(old)s en tu rutina."
+msgstr "%(new)s replaces %(old)s in your routine."
 
 #: app/blueprints/workouts/forms.py:14
 msgid "1 · Fresco"
@@ -2733,7 +2770,7 @@ msgstr "Training"
 msgid "Material y lesiones"
 msgstr "Equipment and injuries"
 
-#: app/services/onboarding.py:73 app/templates/base.html:31
+#: app/services/onboarding.py:73 app/templates/base.html:44
 #: app/templates/nutrition/menu.html:8 app/templates/nutrition/plan.html:5
 #: app/templates/nutrition/plan.html:14 app/templates/onboarding/result.html:31
 msgid "Nutrición"
@@ -2743,23 +2780,39 @@ msgstr "Nutrition"
 msgid "Salud"
 msgstr "Health"
 
-#: app/templates/base.html:24
+#: app/templates/base.html:28
+msgid "¿Sigues ahí?"
+msgstr "Still there?"
+
+#: app/templates/base.html:29
+msgid "Por seguridad, tu sesión se cerrará en"
+msgstr "For your security, your session will close in"
+
+#: app/templates/base.html:32
+msgid "Seguir conectado"
+msgstr "Stay signed in"
+
+#: app/templates/base.html:33 app/templates/base.html:55
+msgid "Salir"
+msgstr "Sign out"
+
+#: app/templates/base.html:37
 msgid "Saltar al contenido"
 msgstr "Skip to content"
 
-#: app/templates/base.html:26
+#: app/templates/base.html:39
 msgid "Navegación principal"
 msgstr "Main navigation"
 
-#: app/templates/base.html:30 app/templates/dashboard/index.html:5
+#: app/templates/base.html:43 app/templates/dashboard/index.html:5
 msgid "Inicio"
 msgstr "Home"
 
-#: app/templates/base.html:32 app/templates/training/exercise.html:7
+#: app/templates/base.html:45 app/templates/training/exercise.html:7
 msgid "Entreno"
 msgstr "Training"
 
-#: app/templates/base.html:33 app/templates/review/index.html:10
+#: app/templates/base.html:46 app/templates/review/index.html:10
 #: app/templates/tracking/diary.html:4 app/templates/tracking/diary.html:10
 #: app/templates/tracking/foods.html:29
 #: app/templates/tracking/measurements.html:9
@@ -2767,78 +2820,74 @@ msgid "Diario"
 msgstr "Diary"
 
 #: app/templates/account/index.html:5 app/templates/account/index.html:9
-#: app/templates/base.html:34 app/templates/billing/subscription.html:7
+#: app/templates/base.html:47 app/templates/billing/subscription.html:7
 #: app/templates/imports/hevy.html:7 app/templates/privacy/consent.html:24
 msgid "Cuenta"
 msgstr "Account"
 
-#: app/templates/base.html:42
-msgid "Salir"
-msgstr "Sign out"
-
 #: app/templates/auth/login.html:4 app/templates/auth/login.html:8
 #: app/templates/auth/login.html:14 app/templates/auth/register.html:23
-#: app/templates/base.html:46 app/templates/main/index.html:17
+#: app/templates/base.html:59 app/templates/main/index.html:17
 msgid "Entrar"
 msgstr "Sign in"
 
 #: app/templates/auth/login.html:18 app/templates/auth/register.html:4
 #: app/templates/auth/register.html:8 app/templates/auth/register.html:21
-#: app/templates/base.html:47
+#: app/templates/base.html:60
 msgid "Crear cuenta"
 msgstr "Create account"
 
-#: app/templates/base.html:63
+#: app/templates/base.html:76
 msgid "Cambiar de tema"
 msgstr "Switch theme"
 
-#: app/templates/base.html:64
+#: app/templates/base.html:77
 msgid "Cambiar al tema claro"
 msgstr "Switch to the light theme"
 
-#: app/templates/base.html:64
+#: app/templates/base.html:77
 msgid "Cambiar al tema oscuro"
 msgstr "Switch to the dark theme"
 
-#: app/templates/base.html:93
+#: app/templates/base.html:106
 msgid "es una herramienta orientativa. No sustituye el consejo de un médico, dietista-nutricionista ni de ningún otro profesional sanitario."
 msgstr "is a guidance tool. It does not replace the advice of a doctor, a dietitian or any other healthcare professional."
 
-#: app/templates/base.html:95 app/templates/billing/prices.html:3
+#: app/templates/base.html:108 app/templates/billing/prices.html:3
 #: app/templates/billing/prices.html:7
 msgid "Precios"
 msgstr "Pricing"
 
-#: app/templates/base.html:95 app/templates/main/about.html:3
+#: app/templates/base.html:108 app/templates/main/about.html:3
 #: app/templates/main/about.html:8
 msgid "Acerca de"
 msgstr "About"
 
-#: app/templates/base.html:95
+#: app/templates/base.html:108
 msgid "Privacidad"
 msgstr "Privacy"
 
-#: app/templates/base.html:99
+#: app/templates/base.html:112
 msgid "Pendiente de enviar"
 msgstr "Waiting to be sent"
 
-#: app/templates/base.html:100
+#: app/templates/base.html:113
 msgid "Sin conexión: la serie se ha guardado en el móvil y se enviará sola cuando vuelva la cobertura."
 msgstr "No connection: the set is saved on your phone and will be sent by itself when the signal comes back."
 
-#: app/templates/base.html:101
+#: app/templates/base.html:114
 msgid "Tienes series sin enviar. Se enviarán solas cuando vuelva la cobertura."
 msgstr "You have sets that have not been sent. They will be sent by themselves when the signal comes back."
 
-#: app/templates/base.html:102
+#: app/templates/base.html:115
 msgid "Series pendientes enviadas."
 msgstr "Pending sets sent."
 
-#: app/templates/base.html:106
+#: app/templates/base.html:119
 msgid "Ficha del ejercicio"
 msgstr "Exercise sheet"
 
-#: app/templates/base.html:107
+#: app/templates/base.html:120
 msgid "Cerrar"
 msgstr "Close"
 
@@ -3509,8 +3558,8 @@ msgstr "Next session"
 
 #: app/templates/dashboard/index.html:74
 #: app/templates/onboarding/result.html:78 app/templates/training/day.html:4
-#: app/templates/training/day.html:9 app/templates/training/day.html:74
-#: app/templates/training/day.html:76 app/templates/training/routine.html:39
+#: app/templates/training/day.html:9 app/templates/training/day.html:60
+#: app/templates/training/day.html:62 app/templates/training/routine.html:39
 #: app/templates/training/routine.html:49
 #: app/templates/workouts/session.html:10
 #: app/templates/workouts/summary.html:10
@@ -4785,7 +4834,7 @@ msgstr "None yet."
 msgid "Elegir día"
 msgstr "Choose a day"
 
-#: app/templates/tracking/diary.html:14 app/templates/workouts/session.html:126
+#: app/templates/tracking/diary.html:14
 msgid "Cambiar"
 msgstr "Change"
 
@@ -4805,7 +4854,7 @@ msgstr "In the morning, after the bathroom, before eating."
 msgid "Lo que has comido"
 msgstr "What you ate"
 
-#: app/templates/tracking/diary.html:37 app/templates/tracking/diary.html:142
+#: app/templates/tracking/diary.html:37 app/templates/tracking/diary.html:190
 msgid "Cómo apuntar lo que comes"
 msgstr "How to log what you eat"
 
@@ -4857,39 +4906,104 @@ msgstr "Save activity"
 msgid "Objetivo: %(n)s pasos al día."
 msgstr "Target: %(n)s steps a day."
 
-#: app/templates/tracking/diary.html:121
-msgid "Últimos 14 días"
-msgstr "Last 14 days"
+#: app/templates/tracking/diary.html:122
+msgid "Tu semana"
+msgstr "Your week"
 
 #: app/templates/tracking/diary.html:124
+msgid "Semana anterior"
+msgstr "Previous week"
+
+#: app/templates/tracking/diary.html:125
+msgid "Semana siguiente"
+msgstr "Next week"
+
+#: app/templates/tracking/diary.html:131 app/templates/tracking/diary.html:151
+msgid "peso"
+msgstr "weight"
+
+#: app/templates/tracking/diary.html:132 app/templates/tracking/diary.html:151
+msgid "comida"
+msgstr "food"
+
+#: app/templates/tracking/diary.html:133
+msgid "pasos"
+msgstr "steps"
+
+#: app/templates/tracking/diary.html:134
+msgid "entreno"
+msgstr "workout"
+
+#: app/templates/tracking/diary.html:140
+msgid "nada apuntado"
+msgstr "nothing logged"
+
+#: app/templates/tracking/diary.html:151
+msgid "pasos o entreno"
+msgstr "steps or workout"
+
+#: app/templates/tracking/diary.html:154
+msgid "Tus primeros pasos"
+msgstr "Your first steps"
+
+#: app/templates/tracking/diary.html:156
+msgid "Pésate por la mañana y apúntalo."
+msgstr "Weigh yourself in the morning and log it."
+
+#: app/templates/tracking/diary.html:156
+msgid "Apunta lo que comes hoy."
+msgstr "Log what you eat today."
+
+#: app/templates/tracking/diary.html:156
+msgid "Haz tu primer entreno."
+msgstr "Do your first workout."
+
+#: app/templates/tracking/diary.html:158
+msgid "hecho"
+msgstr "done"
+
+#: app/templates/tracking/diary.html:161
+msgid "La revisión de cada dos semanas necesita pesajes y comida apuntados: cuanto antes empieces, antes se ajusta tu plan."
+msgstr "The fortnightly review needs weigh-ins and logged food: the sooner you start, the sooner your plan adjusts."
+
+#: app/templates/tracking/diary.html:167
+#: app/templates/training/_exercise_sheet.html:43
+msgid "Tu historial"
+msgstr "Your record"
+
+#: app/templates/tracking/diary.html:168
+msgid "Solo los días en los que apuntaste algo."
+msgstr "Only the days you logged something."
+
+#: app/templates/tracking/diary.html:171
 msgid "Proteína / Carbohidratos / Grasa"
 msgstr "Protein / Carbohydrates / Fat"
 
-#: app/templates/tracking/diary.html:124
+#: app/templates/tracking/diary.html:171
 msgid "P/C/G"
 msgstr "P/C/F"
 
-#: app/templates/tracking/diary.html:124
+#: app/templates/tracking/diary.html:171
 msgid "Plan"
 msgstr "Plan"
 
-#: app/templates/tracking/diary.html:124
+#: app/templates/tracking/diary.html:171
 msgid "Cardio"
 msgstr "Cardio"
 
-#: app/templates/tracking/diary.html:143
+#: app/templates/tracking/diary.html:191
 msgid "Hay dos formas, y las dos sirven para la revisión:"
 msgstr "There are two ways, and both work for the review:"
 
-#: app/templates/tracking/diary.html:145
+#: app/templates/tracking/diary.html:193
 msgid "Con Alza Pro, buscas cada alimento o escaneas su código de barras, pones los gramos y el total se calcula solo."
 msgstr "With Alza Pro, you search for each food or scan its barcode, enter the grams and the total works itself out."
 
-#: app/templates/tracking/diary.html:146
+#: app/templates/tracking/diary.html:194
 msgid "Si ya cuentas la comida en otra app, escribe el total del día."
 msgstr "If you already track food in another app, enter the day's total."
 
-#: app/templates/tracking/diary.html:148
+#: app/templates/tracking/diary.html:196
 msgid "El cumplimiento es, del 0 al 100, cuánto te has ajustado hoy al plan. Pon un número sincero: un día malo apuntado vale más que uno sin apuntar."
 msgstr "Adherence is, from 0 to 100, how closely you stuck to the plan today. Be honest: a bad day logged is worth more than a day not logged."
 
@@ -5062,10 +5176,6 @@ msgstr "How to do it"
 msgid "en inglés"
 msgstr "in English"
 
-#: app/templates/training/_exercise_sheet.html:43
-msgid "Tu historial"
-msgstr "Your record"
-
 #: app/templates/training/_exercise_sheet.html:46
 msgid "mejor serie"
 msgstr "best set"
@@ -5092,6 +5202,76 @@ msgstr "You have not done it yet."
 #, python-format
 msgid "Para empezar, unos %(kg)s."
 msgstr "To start, about %(kg)s."
+
+#: app/templates/training/_swap_body.html:7 app/templates/training/day.html:52
+#: app/templates/training/routine.html:52 app/templates/training/swap.html:3
+#: app/templates/workouts/session.html:116
+msgid "Cambiar ejercicio"
+msgstr "Swap exercise"
+
+#: app/templates/training/_swap_body.html:9
+#: app/templates/workouts/session.html:74
+#, python-format
+msgid "%(num)s serie"
+msgid_plural "%(num)s series"
+msgstr[0] "%(num)s set"
+msgstr[1] "%(num)s sets"
+
+#: app/templates/training/_swap_body.html:9
+#: app/templates/workouts/session.html:74
+#, python-format
+msgid "de %(min)s a %(max)s repeticiones"
+msgstr "%(min)s to %(max)s reps"
+
+#: app/templates/training/_swap_body.html:9
+msgid "Solo salen ejercicios que puedes hacer con tu material y tus molestias."
+msgstr "Only exercises you can do with your equipment and your aches are shown."
+
+#: app/templates/training/_swap_body.html:11
+msgid "Grupo muscular"
+msgstr "Muscle group"
+
+#: app/templates/training/_swap_body.html:15
+msgid "Todos"
+msgstr "All"
+
+#: app/templates/training/_swap_body.html:20
+#, python-format
+msgid "Al cambiarlo en mi rutina, no volver a proponerme %(name)s"
+msgstr "When I change it in my routine, do not suggest %(name)s again"
+
+#: app/templates/training/_swap_body.html:32
+msgid "Sin material"
+msgstr "No equipment"
+
+#: app/templates/training/_swap_body.html:33
+#: app/templates/training/routine.html:66
+msgid "Recomendado"
+msgstr "Recommended"
+
+#: app/templates/training/_swap_body.html:33
+msgid "Mismo movimiento"
+msgstr "Same movement"
+
+#: app/templates/training/_swap_body.html:35 app/templates/training/day.html:51
+msgid "Ver cómo se hace"
+msgstr "See how it is done"
+
+#: app/templates/training/_swap_body.html:43
+msgid "Solo hoy"
+msgstr "Just today"
+
+#: app/templates/training/_swap_body.html:44
+msgid "En mi rutina"
+msgstr "In my routine"
+
+#: app/templates/training/_swap_body.html:46
+msgid "Elegir este"
+msgstr "Choose this one"
+
+#: app/templates/training/_swap_body.html:55
+msgid "No hay ejercicios de ese grupo que puedas hacer con tu material."
+msgstr "There are no exercises in that group you can do with your equipment."
 
 #: app/templates/training/day.html:13 app/templates/training/routine.html:13
 msgid "Reserva por semana"
@@ -5138,35 +5318,15 @@ msgstr "To move up"
 msgid "Unilateral: las series son por lado."
 msgstr "Unilateral: the sets are per side."
 
-#: app/templates/training/day.html:50
+#: app/templates/training/day.html:51
 msgid "Ver el vídeo y cómo se hace"
 msgstr "Watch the video and how it is done"
 
-#: app/templates/training/day.html:50
-msgid "Ver cómo se hace"
-msgstr "See how it is done"
-
-#: app/templates/training/day.html:53
-msgid "Alternativas"
-msgstr "Alternatives"
-
-#: app/templates/training/day.html:61
-msgid "No me gusta: cámbialo"
-msgstr "I do not like it: swap it"
-
-#: app/templates/training/day.html:63
-msgid "Se queda fuera de esta rutina y de las siguientes. Puedes deshacerlo desde la rutina."
-msgstr "It stays out of this routine and the next ones. You can undo it from the routine."
-
-#: app/templates/training/day.html:65
-msgid "Ninguna con tu material y tus molestias."
-msgstr "None with your equipment and aches."
-
-#: app/templates/training/day.html:73
+#: app/templates/training/day.html:59
 msgid "Otros días"
 msgstr "Other days"
 
-#: app/templates/training/day.html:75
+#: app/templates/training/day.html:61
 msgid "Toda la rutina"
 msgstr "The whole routine"
 
@@ -5195,6 +5355,11 @@ msgstr "We do not generate a routine when safety rules out the nutrition plan. I
 msgid "No pudimos montar una rutina con ese material"
 msgstr "We could not build a routine with that equipment"
 
+#: app/templates/training/routine.html:52
+#, python-format
+msgid "Cambiar %(name)s"
+msgstr "Swap %(name)s"
+
 #: app/templates/training/routine.html:55
 msgid "Ver día"
 msgstr "See the day"
@@ -5210,10 +5375,6 @@ msgstr "Sets a week per muscle, compared with what works for growth."
 #: app/templates/training/routine.html:66
 msgid "Músculo"
 msgstr "Muscle"
-
-#: app/templates/training/routine.html:66
-msgid "Recomendado"
-msgstr "Recommended"
 
 #: app/templates/training/routine.html:70
 msgid "prioridad"
@@ -5258,6 +5419,10 @@ msgstr "The ones you marked «I don't like it». They are not scheduled; bring t
 #: app/templates/training/routine.html:107
 msgid "Volver a permitirlo"
 msgstr "Allow it again"
+
+#: app/templates/training/swap.html:6
+msgid "Volver"
+msgstr "Back"
 
 #: app/templates/workouts/history.html:4
 msgid "Historial de entrenos"
@@ -5357,7 +5522,7 @@ msgid "Sesión libre"
 msgstr "Free session"
 
 #: app/templates/workouts/session.html:10
-#: app/templates/workouts/session.html:158
+#: app/templates/workouts/session.html:145
 msgid "Cómo apuntar una serie"
 msgstr "How to log a set"
 
@@ -5406,7 +5571,7 @@ msgid "Hoy, sesión suave"
 msgstr "Today, an easy session"
 
 #: app/templates/workouts/session.html:30
-#: app/templates/workouts/session.html:169
+#: app/templates/workouts/session.html:156
 msgid "Por qué hoy es suave"
 msgstr "Why today is easy"
 
@@ -5436,18 +5601,6 @@ msgstr "Next set!"
 #: app/templates/workouts/session.html:69
 msgid "sustituido"
 msgstr "swapped"
-
-#: app/templates/workouts/session.html:74
-#, python-format
-msgid "%(num)s serie"
-msgid_plural "%(num)s series"
-msgstr[0] "%(num)s set"
-msgstr[1] "%(num)s sets"
-
-#: app/templates/workouts/session.html:74
-#, python-format
-msgid "de %(min)s a %(max)s repeticiones"
-msgstr "%(min)s to %(max)s reps"
 
 #: app/templates/workouts/session.html:74
 #, python-format
@@ -5513,64 +5666,51 @@ msgstr "Save set %(n)s"
 msgid "Peso ajustado por cómo fue la serie anterior."
 msgstr "Weight adjusted for how the previous set went."
 
-#: app/templates/workouts/session.html:118
-msgid "Cambiar por una alternativa"
-msgstr "Swap for an alternative"
-
 #: app/templates/workouts/session.html:122
-msgid "Alternativa"
-msgstr "Alternative"
-
-#: app/templates/workouts/session.html:123
-#, python-format
-msgid "Original: %(name)s"
-msgstr "Original: %(name)s"
-
-#: app/templates/workouts/session.html:135
 msgid "Cerrar la sesión"
 msgstr "Close the session"
 
-#: app/templates/workouts/session.html:150
+#: app/templates/workouts/session.html:137
 msgid "Terminar y guardar"
 msgstr "Finish and save"
 
-#: app/templates/workouts/session.html:154
+#: app/templates/workouts/session.html:141
 msgid "Abandonar sin guardar"
 msgstr "Drop without saving"
 
-#: app/templates/workouts/session.html:159
+#: app/templates/workouts/session.html:146
 msgid "Al acabar cada serie, apunta el peso, las repeticiones que has hecho y la reserva: cuántas más podrías haber hecho con buena técnica."
 msgstr "After each set, log the weight, the reps you did and the reps in reserve: how many more you could have done with good form."
 
-#: app/templates/workouts/session.html:161
+#: app/templates/workouts/session.html:148
 msgid "El peso propuesto es el de la última vez. Cuando hagas el máximo de repeticiones en todas las series, te propondremos subir."
 msgstr "The suggested weight is last time's. When you hit the top of the rep range in every set, we will suggest going up."
 
-#: app/templates/workouts/session.html:162
+#: app/templates/workouts/session.html:149
 msgid "Al guardar empieza el descanso. Respétalo: la serie siguiente rinde más."
 msgstr "Saving starts the rest timer. Take the full rest: your next set will go better."
 
-#: app/templates/workouts/session.html:163
+#: app/templates/workouts/session.html:150
 msgid "Si te equivocas, borra la serie y apúntala otra vez."
 msgstr "If you make a mistake, delete the set and log it again."
 
-#: app/templates/workouts/session.html:164
+#: app/templates/workouts/session.html:151
 msgid "Sin cobertura, las series esperan en el móvil y se envían solas al volver la señal."
 msgstr "With no signal, sets wait on your phone and are sent on their own when it comes back."
 
-#: app/templates/workouts/session.html:166
+#: app/templates/workouts/session.html:153
 msgid "Toca el nombre de un ejercicio para ver cómo se hace."
 msgstr "Tap an exercise's name to see how it is done."
 
-#: app/templates/workouts/session.html:170
+#: app/templates/workouts/session.html:157
 msgid "Miramos cuatro cosas que ya sabemos: cómo has dormido, lo que comiste ayer frente a tu objetivo, lo cansado que acabaste la última sesión y cuántas semanas llevas comiendo de menos."
 msgstr "We look at four things we already know: how you slept, what you ate yesterday against your target, how tired you finished your last session and how many weeks you have been eating less."
 
-#: app/templates/workouts/session.html:171
+#: app/templates/workouts/session.html:158
 msgid "Si varias apuntan a cansancio, baja un poco el peso de la primera serie de cada ejercicio y dejas una repetición más en reserva. Las series siguientes se ajustan solas con lo que hagas."
 msgstr "If several point to fatigue, the weight of the first set of each exercise goes down a little and you leave one more rep in reserve. The following sets adjust on their own to what you do."
 
-#: app/templates/workouts/session.html:172
+#: app/templates/workouts/session.html:159
 msgid "Es una sugerencia: si te encuentras bien, elige entrenar normal."
 msgstr "It is a suggestion: if you feel good, choose to train as usual."
 
