@@ -6,7 +6,7 @@ El texto completo (historias con criterios Dado/Cuando/Entonces y guía para pro
 
 Se puede exportar a Word, PDF o Markdown desde el propio documento. Aquí queda el índice, con los ficheros de test que vigilan cada historia (`tests/integration/`). Si se cambia una historia, actualizar las dos cosas.
 
-Versión del 2026-11-12: 42 historias en 8 épicas, 813 tests en verde.
+Versión del 2026-11-12: 43 historias en 8 épicas, 842 tests en verde.
 
 | Historia | Plan | Tests |
 |---|---|---|
@@ -39,6 +39,7 @@ Versión del 2026-11-12: 42 historias en 8 épicas, 813 tests en verde.
 | US-4.4 Ficha del ejercicio | Gratis | `test_exercise_sheet` |
 | US-4.5 ¿Cómo llegas hoy? (día suave) | Gratis | `test_connected` |
 | US-4.6 Marcas y racha | Gratis | `test_records_streak`, `test_workout_flow` |
+| US-4.7 Traer mis entrenos de Hevy | Gratis | `test_hevy_import` |
 | **5. Diario, revisión quincenal y fecha de llegada** | | |
 | US-5.1 Panel de hoy | Gratis | `test_plan_pages`, `test_audit_robustness` |
 | US-5.2 Apuntar peso, comida, pasos y medidas | Gratis | `test_tracking_pages` |
