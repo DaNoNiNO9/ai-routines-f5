@@ -14,10 +14,12 @@ venv/
 .env
 .env.*
 !.env.example
+!.env.pro.example
 
 # Local data and logs
 instance/
 logs/
+logs-pro/
 *.db
 *.sqlite
 *.sqlite3
