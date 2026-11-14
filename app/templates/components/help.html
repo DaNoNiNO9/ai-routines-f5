@@ -1,0 +1,18 @@
+{#- Ayuda a demanda: un «?» junto a un título abre una explicación corta.
+
+Con JavaScript es un <dialog> modal (Esc o tocar fuera lo cierran). Sin él, el
+enlace apunta al id y el CSS lo muestra con :target; «Entendido» vuelve a «#».
+El botón va dentro del título; el diálogo, fuera (un <dialog> no cabe en un <h2>). -#}
+{% from "components/icons.html" import icon %}
+
+{% macro help_button(key, title) -%}
+<a class="help-trigger" href="#ayuda-{{ key }}" data-help="ayuda-{{ key }}" aria-haspopup="dialog" title="{{ _('Qué es esto') }}">{{ icon('circle-help') }}<span class="visually-hidden">{{ _('Ayuda: %(title)s', title=title) }}</span></a>
+{%- endmacro %}
+
+{% macro help_dialog(key, title) -%}
+<dialog id="ayuda-{{ key }}" class="sheet-dialog help-dialog" aria-labelledby="ayuda-{{ key }}-titulo">
+  <h2 id="ayuda-{{ key }}-titulo" class="h3">{{ icon('circle-help') }}{{ title }}</h2>
+  <div class="help-body">{{ caller() }}</div>
+  <p class="help-actions"><a class="button button-secondary" href="#" data-help-close>{{ _('Entendido') }}</a></p>
+</dialog>
+{%- endmacro %}

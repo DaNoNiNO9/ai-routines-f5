@@ -4,9 +4,10 @@
 {% block title %}{{ _('Sesión') }} · {{ session.routine_day.name if session.routine_day else '' }} · {{ app_name }}{% endblock %}
 
 {% block content %}
+{% from "components/help.html" import help_button, help_dialog %}
 <section class="page-head" data-wake-lock>
   <p class="eyebrow">{{ _('Sesión en marcha') }}{% if session.mesocycle_week and session.routine_day %} · {{ _('semana %(n)s de %(total)s', n=session.mesocycle_week, total=session.routine_day.routine.mesocycle_weeks) }}{% endif %}</p>
-  <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión libre') }}{% endif %}</h1>
+  <h1>{% if session.routine_day %}{{ _('Día %(n)s', n=session.routine_day.day_index) }} · {{ session.routine_day.name }}{% else %}{{ _('Sesión libre') }}{% endif %}{{ help_button('series', _('Cómo apuntar una serie')) }}</h1>
   <p class="meta" x-data="elapsed({{ started_epoch }})">{{ icon('clock') }} {{ _('Tiempo:') }} <span x-text="text">—</span></p>
   <p class="meta">{{ _('Reserva: las repeticiones que aún podrías hacer al acabar la serie. Apúntala y la siguiente serie se ajusta sola.') }}</p>
   <p><a class="button button-small button-secondary" href="#cierre">{{ _('Terminar sesión') }}</a></p>
@@ -26,7 +27,7 @@
   </section>
 {% elif readiness and readiness.is_easy %}
   <section class="card easy-day" role="status">
-    <h2 class="card-title">{{ icon('moon') }}{% if readiness.kind == 'easier' %}{{ _('Hoy, sesión más suave') }}{% else %}{{ _('Hoy, sesión suave') }}{% endif %}</h2>
+    <h2 class="card-title">{{ icon('moon') }}{% if readiness.kind == 'easier' %}{{ _('Hoy, sesión más suave') }}{% else %}{{ _('Hoy, sesión suave') }}{% endif %}{{ help_button('dia-suave', _('Por qué hoy es suave')) }}</h2>
     <p>{{ ' '.join(readiness_reasons) }}</p>
     <p class="meta">{{ _('El peso sugerido baja un %(pct)s %% y dejas una repetición más en reserva. Entrenar también es saber cuándo apretar menos: mañana recuperas.', pct=((1 - readiness.load_factor) * 100)|round|int) }}</p>
     <form method="post" action="{{ url_for('workouts.how_you_arrive', session_id=session.id) }}" class="inline-form">
@@ -153,4 +154,22 @@
     <button type="submit" class="link-button">{{ _('Abandonar sin guardar') }}</button>
   </form>
 </section>
+
+{% call help_dialog('series', _('Cómo apuntar una serie')) %}
+  <p>{{ _('Al acabar cada serie, apunta el peso, las repeticiones que has hecho y la reserva: cuántas más podrías haber hecho con buena técnica.') }}</p>
+  <ul>
+    <li>{{ _('El peso propuesto es el de la última vez. Cuando hagas el máximo de repeticiones en todas las series, te propondremos subir.') }}</li>
+    <li>{{ _('Al guardar empieza el descanso. Respétalo: la serie siguiente rinde más.') }}</li>
+    <li>{{ _('Si te equivocas, borra la serie y apúntala otra vez.') }}</li>
+    <li>{{ _('Sin cobertura, las series esperan en el móvil y se envían solas al volver la señal.') }}</li>
+  </ul>
+  <p>{{ _('Toca el nombre de un ejercicio para ver cómo se hace.') }}</p>
+{% endcall %}
+{% if readiness and readiness.is_easy %}
+{% call help_dialog('dia-suave', _('Por qué hoy es suave')) %}
+  <p>{{ _('Miramos cuatro cosas que ya sabemos: cómo has dormido, lo que comiste ayer frente a tu objetivo, lo cansado que acabaste la última sesión y cuántas semanas llevas comiendo de menos.') }}</p>
+  <p>{{ _('Si varias apuntan a cansancio, baja un poco el peso de la primera serie de cada ejercicio y dejas una repetición más en reserva. Las series siguientes se ajustan solas con lo que hagas.') }}</p>
+  <p>{{ _('Es una sugerencia: si te encuentras bien, elige entrenar normal.') }}</p>
+{% endcall %}
+{% endif %}
 {% endblock %}

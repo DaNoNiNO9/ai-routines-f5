@@ -820,3 +820,16 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 
 /* Cambiador de idioma: icono y el código del otro idioma, junto al tema. */
 .lang-toggle { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.04em; }
+
+/* Ayuda a demanda (components/help.html). */
+.help-trigger { display: inline-flex; align-items: center; margin-left: var(--space-1); color: var(--text-muted); text-decoration: none; vertical-align: middle; }
+.help-trigger:hover, .help-trigger:focus-visible { color: var(--accent); }
+.help-trigger .icon { width: 1.05rem; height: 1.05rem; }
+.help-dialog { width: min(32rem, 100%); }
+.help-dialog h2 { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-2); }
+.help-body { display: grid; gap: var(--space-2); }
+.help-body p, .help-body ul { margin: 0; }
+.help-body ul { padding-left: 1.2rem; display: grid; gap: var(--space-1); }
+.help-actions { margin: var(--space-3) 0 0; }
+/* Sin JavaScript: el enlace al id lo muestra como panel fijo abajo. */
+.help-dialog:target:not([open]) { display: block; position: fixed; inset: auto 0 0; margin: 0 auto; z-index: 60; box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45); }

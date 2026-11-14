@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+{% from "components/help.html" import help_button, help_dialog %}
 <section class="page-head">
   <p class="eyebrow">{{ _('Nutrición') }}</p>
   <h1>{{ _('Tu plan de nutrición') }}</h1>
@@ -47,7 +48,7 @@
     </section>
 
     <section class="card">
-      <h2 class="card-title">{{ _('Macronutrientes') }}</h2>
+      <h2 class="card-title">{{ _('Macronutrientes') }}{{ help_button('macros', _('Qué son los macronutrientes')) }}</h2>
       {{ chart('macros', 'doughnut', macro_chart, _('Reparto calórico de los macronutrientes'), height='14rem') }}
       <div class="table-wrap">
         <table class="table">
@@ -163,4 +164,14 @@
     </section>
   </div>
 {% endif %}
+
+{% call help_dialog('macros', _('Qué son los macronutrientes')) %}
+  <ul>
+    <li><strong>{{ _('Proteína') }}:</strong> {{ _('mantiene y construye músculo. Es la que más importa cuando comes de menos, porque protege lo que has ganado.') }}</li>
+    <li><strong>{{ _('Hidratos') }}:</strong> {{ _('la energía para entrenar. Por eso los días de entreno pueden ser más.') }}</li>
+    <li><strong>{{ _('Grasa') }}:</strong> {{ _('necesaria para las hormonas y las vitaminas; nunca baja de un mínimo.') }}</li>
+  </ul>
+  <p>{{ _('Las calorías salen de los tres: 4 kcal por gramo de proteína o de hidratos y 9 por gramo de grasa.') }}</p>
+  <p>{{ _('No hace falta clavarlo cada día: acercarte y acertar en la media de la semana es lo que cuenta.') }}</p>
+{% endcall %}
 {% endblock %}

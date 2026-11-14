@@ -5,9 +5,10 @@
 {% block title %}{{ _('Revisión') }} · {{ app_name }}{% endblock %}
 
 {% block content %}
+{% from "components/help.html" import help_button, help_dialog %}
 <section class="page-head">
   <p class="eyebrow">{{ _('Diario') }}</p>
-  <h1>{{ _('Revisión quincenal') }}</h1>
+  <h1>{{ _('Revisión quincenal') }}{{ help_button('revision', _('Qué hace la revisión')) }}</h1>
   <p class="lead">{{ _('Cada dos semanas se mira qué ha hecho tu peso frente a lo previsto y, con lo que has comido, cuánto gastas de verdad. De ahí sale una propuesta pequeña, nunca de más de un 5 %%, y no cambia nada hasta que la apliques.') }}</p>
   {{ health_notice('review') }}
 </section>
@@ -82,4 +83,14 @@
     </section>
   </div>
 {% endif %}
+
+{% call help_dialog('revision', _('Qué hace la revisión')) %}
+  <p>{{ _('Cada 14 días compara cómo ha cambiado tu peso (la tendencia, no un día suelto) con lo que esperaba el plan, y tiene en cuenta lo que has apuntado que comes.') }}</p>
+  <ul>
+    <li>{{ _('Si vas más lento de lo previsto y has cumplido el plan, propone bajar un poco las calorías, como mucho un 5 %%.') }}</li>
+    <li>{{ _('Si pierdes peso demasiado rápido, propone subirlas.') }}</li>
+    <li>{{ _('Necesita al menos 8 pesajes en 10 días. Si faltan, te lo dice y vuelve a mirar en una semana.') }}</li>
+  </ul>
+  <p>{{ _('Nunca cambia nada sola: tú decides si aplicarla.') }}</p>
+{% endcall %}
 {% endblock %}

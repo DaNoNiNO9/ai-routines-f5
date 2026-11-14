@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+{% from "components/help.html" import help_button, help_dialog %}
 <section class="page-head">
   <p class="eyebrow">{{ today|fdate('long') }}</p>
   <h1>{{ _('Hola, %(name)s.', name=user.display_name) }}</h1>
@@ -104,7 +105,7 @@
 
     {% if streak %}
       <article class="card streak-card">
-        <h2 class="card-title">{{ icon('flame') }}{{ _('Constancia') }}</h2>
+        <h2 class="card-title">{{ icon('flame') }}{{ _('Constancia') }}{{ help_button('constancia', _('Cómo cuenta la constancia')) }}</h2>
         {% if streak.weeks %}
           <p class="big-number">{{ ngettext('%(num)s semana', '%(num)s semanas', streak.weeks) }}</p>
           <p>{{ ngettext('cumpliendo tus entrenos.', 'seguidas cumpliendo tus entrenos.', streak.weeks) }}</p>
@@ -130,7 +131,7 @@
     {% if arrival and arrival.arrival.status != 'no_target' %}
       {% set a = arrival.arrival %}
       <article class="card arrival-card">
-        <h2 class="card-title">{{ icon('trending-up' if (a.remaining_kg or 0) > 0 else 'trending-down') }}{{ _('Tu llegada') }}</h2>
+        <h2 class="card-title">{{ icon('trending-up' if (a.remaining_kg or 0) > 0 else 'trending-down') }}{{ _('Tu llegada') }}{{ help_button('llegada', _('Cómo calculamos tu llegada')) }}</h2>
         {% if a.status == 'on_track' %}
           <p class="big-number">{{ a.arrival|fdate('medium') }}</p>
           <p>{{ _('A este ritmo llegas a %(kg)s hacia el %(date)s.', kg=a.target_kg|kg, date=a.arrival|fdate('long')) }}</p>
@@ -165,7 +166,7 @@
     {% endif %}
 
     <article class="card">
-      <h2 class="card-title">{{ icon('calendar-check') }}{{ _('Revisión') }}</h2>
+      <h2 class="card-title">{{ icon('calendar-check') }}{{ _('Revisión') }}{{ help_button('revision', _('Qué hace la revisión')) }}</h2>
       {% if next_review %}
         {% set due = next_review <= today %}
         <p class="big-number">{% if due %}{{ _('Toca hoy') }}{% else %}{{ next_review|fdate('day') }} <small>{{ days_from_now(next_review, today) }}</small>{% endif %}</p>
@@ -177,4 +178,29 @@
     </article>
   </div>
 {% endif %}
+
+{% if streak %}
+{% call help_dialog('constancia', _('Cómo cuenta la constancia')) %}
+  <p>{{ _('Cuenta semanas, no días. Una semana vale si entrenas al menos los días de tu plan menos uno: un imprevisto no te la rompe.') }}</p>
+  <p>{{ _('La semana va de lunes a domingo, y la que está en curso nunca rompe la racha: tienes hasta el domingo.') }}</p>
+  <p>{{ _('Descansar también es parte del plan; por eso no hay racha diaria.') }}</p>
+{% endcall %}
+{% endif %}
+{% if arrival and arrival.arrival.status != 'no_target' %}
+{% call help_dialog('llegada', _('Cómo calculamos tu llegada')) %}
+  <p>{{ _('Al principio sale de tu plan: lo que deberías perder o ganar cada semana con tus calorías.') }}</p>
+  <p>{{ _('Con tus pesajes usamos la tendencia real, la media de 7 días de las últimas semanas, y la fecha se adapta a tu ritmo.') }}</p>
+  <p>{{ _('El margen es donde caerá la fecha 8 de cada 10 veces. El peso sube y baja por agua, sal o digestión; cuantos más pesajes, más estrecho.') }}</p>
+  <p>{{ _('Pésate por la mañana, después de ir al baño y antes de comer.') }}</p>
+{% endcall %}
+{% endif %}
+{% call help_dialog('revision', _('Qué hace la revisión')) %}
+  <p>{{ _('Cada 14 días compara cómo ha cambiado tu peso (la tendencia, no un día suelto) con lo que esperaba el plan, y tiene en cuenta lo que has apuntado que comes.') }}</p>
+  <ul>
+    <li>{{ _('Si vas más lento de lo previsto y has cumplido el plan, propone bajar un poco las calorías, como mucho un 5 %%.') }}</li>
+    <li>{{ _('Si pierdes peso demasiado rápido, propone subirlas.') }}</li>
+    <li>{{ _('Necesita al menos 8 pesajes en 10 días. Si faltan, te lo dice y vuelve a mirar en una semana.') }}</li>
+  </ul>
+  <p>{{ _('Nunca cambia nada sola: tú decides si aplicarla.') }}</p>
+{% endcall %}
 {% endblock %}

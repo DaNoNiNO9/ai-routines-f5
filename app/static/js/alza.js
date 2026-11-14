@@ -671,3 +671,34 @@ document.addEventListener("DOMContentLoaded", function () {
   box.querySelector("[data-scan-stop]").addEventListener("click", stop);
   window.addEventListener("pagehide", stop);
 });
+
+/* Ayuda a demanda: el «?» abre su <dialog> como modal. Sin JavaScript (o sin
+   showModal) el enlace al id funciona igual gracias a :target en el CSS. */
+(function () {
+  "use strict";
+
+  document.addEventListener("click", function (event) {
+    var trigger = event.target.closest && event.target.closest("a[data-help]");
+    if (trigger) {
+      var box = document.getElementById(trigger.getAttribute("data-help"));
+      if (box && typeof box.showModal === "function") {
+        event.preventDefault();
+        box.showModal();
+      }
+      return;
+    }
+    var close = event.target.closest && event.target.closest("[data-help-close]");
+    if (close) {
+      var open = close.closest("dialog");
+      if (open && open.open) {
+        event.preventDefault();
+        open.close();
+      }
+      return;
+    }
+    // Tocar fuera del contenido (el fondo) también cierra.
+    if (event.target.classList && event.target.classList.contains("help-dialog") && event.target.open) {
+      event.target.close();
+    }
+  });
+})();

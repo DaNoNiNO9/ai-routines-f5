@@ -4,6 +4,7 @@
 {% block title %}{{ _('Diario') }} · {{ app_name }}{% endblock %}
 
 {% block content %}
+{% from "components/help.html" import help_button, help_dialog %}
 <section class="page-head">
   <p class="eyebrow">{% if day == today %}{{ _('Hoy') }} · {% endif %}{{ day|fdate('long') }}</p>
   <h1>{{ _('Diario') }}</h1>
@@ -33,7 +34,7 @@
   </section>
 
   <section class="card" id="comida">
-    <h2 class="card-title">{{ _('Lo que has comido') }}</h2>
+    <h2 class="card-title">{{ _('Lo que has comido') }}{{ help_button('comida', _('Cómo apuntar lo que comes')) }}</h2>
     {% if is_pro %}
       {% if foods %}
         {% set goal = targets %}
@@ -137,4 +138,13 @@
     </table>
   </div>
 </section>
+
+{% call help_dialog('comida', _('Cómo apuntar lo que comes')) %}
+  <p>{{ _('Hay dos formas, y las dos sirven para la revisión:') }}</p>
+  <ul>
+    <li>{{ _('Con Alza Pro, buscas cada alimento o escaneas su código de barras, pones los gramos y el total se calcula solo.') }}</li>
+    <li>{{ _('Si ya cuentas la comida en otra app, escribe el total del día.') }}</li>
+  </ul>
+  <p>{{ _('El cumplimiento es, del 0 al 100, cuánto te has ajustado hoy al plan. Pon un número sincero: un día malo apuntado vale más que uno sin apuntar.') }}</p>
+{% endcall %}
 {% endblock %}
