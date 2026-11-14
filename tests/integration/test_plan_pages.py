@@ -93,7 +93,7 @@ def test_training_pages_show_days_volume_and_alternatives(
     assert first.exercise.name_es in day
     assert "img/exercises/" in day
     assert "posición inicial" in day
-    assert "Alternativas" in day
+    assert "Cambiar ejercicio" in day
     assert "Reserva por semana" in day
     assert f"{first.sets}</dd>" in day
     assert "Día 2" in day  # link to the following day

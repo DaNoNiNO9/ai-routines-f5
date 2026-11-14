@@ -131,7 +131,7 @@ def test_an_exercise_can_be_swapped_before_logging(client: FlaskClient, seeded: 
         candidate for candidate in routine.days[0].exercises if candidate.exercise.alternatives
     )
     page = client.get(f"/entreno/{session.id}").get_data(as_text=True)
-    assert "Cambiar por una alternativa" in page
+    assert "Cambiar ejercicio" in page
 
     from app.services import dashboard, onboarding
 

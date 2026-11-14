@@ -113,20 +113,7 @@
           {% endif %}
         {% endfor %}
       </ol>
-      {% if block.alternatives and block.done == 0 %}
-        <details class="panel">
-          <summary>{{ icon('repeat') }} {{ _('Cambiar por una alternativa') }} ({{ block.alternatives|length }})</summary>
-          <form method="post" action="{{ url_for('workouts.substitute', session_id=session.id) }}" class="inline-fields">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="hidden" name="routine_exercise_id" value="{{ item.id }}">
-            <select name="exercise_id" class="field-input" aria-label="{{ _('Alternativa') }}">
-              <option value="">{{ _('Original: %(name)s', name=item.exercise.display_name) }}</option>
-              {% for alt in block.alternatives %}<option value="{{ alt.id }}"{% if alt.id == block.exercise.id %} selected{% endif %}>{{ alt.display_name }}</option>{% endfor %}
-            </select>
-            <button type="submit" class="button button-small button-secondary">{{ _('Cambiar') }}</button>
-          </form>
-        </details>
-      {% endif %}
+      <p class="swap-entry"><a class="link-button" href="{{ url_for('training.choose', item_id=item.id, sesion=session.id, volver=url_for('workouts.session', session_id=session.id)) }}" data-swap>{{ icon('repeat') }} {{ _('Cambiar ejercicio') }}</a></p>
     </li>
   {% endfor %}
 </ol>

@@ -47,24 +47,10 @@
         {% if item.tempo %}<p class="meta">{{ item.tempo|tempo }}.</p>{% endif %}
         {% if item.exercise.is_unilateral %}<p class="meta">{{ _('Unilateral: las series son por lado.') }}</p>{% endif %}
         {% if item.notes %}<p class="help">{{ item.notes }}</p>{% endif %}
-        <p><a class="button button-secondary button-small sheet-link" href="{{ url_for('training.exercise', slug=item.exercise.slug) }}" data-sheet>{{ icon('circle-play') }}{% if has_video[item.id] %}{{ _('Ver el vídeo y cómo se hace') }}{% else %}{{ _('Ver cómo se hace') }}{% endif %}</a></p>
-        {% set options = alternatives[item.id] %}
-        <details class="panel">
-          <summary>{{ _('Alternativas') }} ({{ options|length }})</summary>
-          {% if options %}
-            <ul class="alt-list">
-              {% for alt in options %}<li><a href="{{ url_for('training.exercise', slug=alt.slug) }}" data-sheet>{{ alt.display_name }}</a> <span class="muted">· {{ alt.equipment|map(attribute='display_name')|join(', ') }}</span></li>{% endfor %}
-            </ul>
-            <form method="post" action="{{ url_for('training.swap', index=day.day_index) }}" class="inline-form">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <input type="hidden" name="routine_exercise_id" value="{{ item.id }}">
-              <button type="submit" class="button button-secondary button-small">{{ _('No me gusta: cámbialo') }}</button>
-            </form>
-            <p class="help">{{ _('Se queda fuera de esta rutina y de las siguientes. Puedes deshacerlo desde la rutina.') }}</p>
-          {% else %}
-            <p class="muted">{{ _('Ninguna con tu material y tus molestias.') }}</p>
-          {% endif %}
-        </details>
+        <p class="swap-entry">
+          <a class="button button-secondary button-small sheet-link" href="{{ url_for('training.exercise', slug=item.exercise.slug) }}" data-sheet>{{ icon('circle-play') }}{% if has_video[item.id] %}{{ _('Ver el vídeo y cómo se hace') }}{% else %}{{ _('Ver cómo se hace') }}{% endif %}</a>
+          <a class="button button-secondary button-small" href="{{ url_for('training.choose', item_id=item.id, volver=request.path) }}" data-swap>{{ icon('repeat') }}{{ _('Cambiar ejercicio') }}</a>
+        </p>
       </div>
     </li>
   {% endfor %}

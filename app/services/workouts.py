@@ -235,7 +235,9 @@ def substitute(
     if exercise is None:
         current.pop(str(item.id), None)
     else:
-        allowed = {alt.id for alt in dashboard.usable_alternatives(item, profile, equipment)}
+        from app.services.swaps import usable_pool
+
+        allowed = {row.id for row in usable_pool(item, profile, equipment)}
         if exercise.id not in allowed:
             raise WorkoutError("not_an_alternative")
         current[str(item.id)] = exercise.id

@@ -1,0 +1,57 @@
+{# Cuerpo de «Cambiar ejercicio»: va dentro de la ventana (?parcial=1) o en su página. #}
+{% from "components/icons.html" import icon %}
+{% set item = choice.item %}
+{% set base_args = {'item_id': item.id, 'volver': back} %}
+{% if session %}{% set _unused = base_args.update({'sesion': session.id}) %}{% endif %}
+<div class="swap" data-swap-root>
+  <p class="eyebrow">{{ _('Cambiar ejercicio') }}</p>
+  <h2 class="sheet-title">{{ item.exercise.display_name }}</h2>
+  <p class="meta">{{ ngettext('%(num)s serie', '%(num)s series', item.sets) }} · {{ _('de %(min)s a %(max)s repeticiones', min=item.rep_min, max=item.rep_max) }}. {{ _('Solo salen ejercicios que puedes hacer con tu material y tus molestias.') }}</p>
+
+  <nav class="swap-muscles" aria-label="{{ _('Grupo muscular') }}">
+    {% for muscle, count in choice.muscles %}
+      <a class="chip{% if muscle == choice.muscle %} chip-strong{% endif %}" href="{{ url_for('training.choose', musculo=muscle, **base_args) }}" data-swap-nav{% if muscle == choice.muscle %} aria-current="true"{% endif %}>{{ labels.label(labels.MUSCLE_GROUP, muscle) }} <span class="muted">{{ count }}</span></a>
+    {% endfor %}
+    <a class="chip{% if choice.muscle == 'todos' %} chip-strong{% endif %}" href="{{ url_for('training.choose', musculo='todos', **base_args) }}" data-swap-nav>{{ _('Todos') }}</a>
+  </nav>
+
+  <label class="check-label swap-aside">
+    <input type="checkbox" class="check-input" data-swap-aside>
+    <span>{{ _('Al cambiarlo en mi rutina, no volver a proponerme %(name)s', name=item.exercise.display_name) }}</span>
+  </label>
+
+  {% if choice.candidates %}
+  <ul class="swap-list">
+    {% for c in choice.candidates %}
+      {% set ex = c.exercise %}
+      {% set frames = image_frames(ex) %}
+      <li class="swap-card">
+        {% if frames %}<img class="swap-thumb" src="{{ url_for('static', filename=frames[0]) }}" alt="" loading="lazy" width="96" height="72">{% else %}<span class="swap-thumb"></span>{% endif %}
+        <div class="swap-info">
+          <p class="swap-name">{{ ex.display_name }}</p>
+          <p class="meta">{{ ex.equipment|map(attribute='display_name')|join(', ') or _('Sin material') }} · {{ labels.label(labels.TECHNICAL_LEVEL, ex.technical_level) }}</p>
+          {% if c.recommended %}<span class="badge status-ok">{{ _('Recomendado') }}</span>{% elif c.same_pattern %}<span class="badge">{{ _('Mismo movimiento') }}</span>{% endif %}
+          <div class="swap-actions">
+            <a class="button button-secondary button-small" href="{{ url_for('training.exercise', slug=ex.slug) }}" data-sheet>{{ icon('circle-play') }}{{ _('Ver cómo se hace') }}</a>
+            <form method="post" action="{{ url_for('training.apply_swap', item_id=item.id) }}" class="inline-form" data-swap-form>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="exercise_id" value="{{ ex.id }}">
+              <input type="hidden" name="volver" value="{{ back }}">
+              <input type="hidden" name="apartar" value="">
+              {% if session %}
+                <input type="hidden" name="sesion_id" value="{{ session.id }}">
+                <button type="submit" name="destino" value="sesion" class="button button-small">{{ _('Solo hoy') }}</button>
+                <button type="submit" name="destino" value="rutina" class="button button-secondary button-small">{{ _('En mi rutina') }}</button>
+              {% else %}
+                <button type="submit" name="destino" value="rutina" class="button button-small">{{ _('Elegir este') }}</button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p class="muted">{{ _('No hay ejercicios de ese grupo que puedas hacer con tu material.') }}</p>
+  {% endif %}
+</div>

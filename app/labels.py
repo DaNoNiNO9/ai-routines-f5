@@ -35,6 +35,7 @@ from app.engine.enums import (
     Severity,
     Sex,
     SplitType,
+    TechnicalLevel,
     TrainingExperience,
     TrainingLocation,
     TrainingTime,
@@ -224,6 +225,12 @@ SPLIT_TYPE: Mapping[SplitType, Any] = {
     SplitType.UPPER_LOWER_PPL: _l("Torso / pierna + empuje / tracción / pierna"),
     SplitType.ARNOLD: _l("Arnold"),
     SplitType.PPL_TWICE: _l("Empuje / tracción / pierna, dos veces"),
+}
+
+TECHNICAL_LEVEL: Mapping[TechnicalLevel, Any] = {
+    TechnicalLevel.BEGINNER: _l("Técnica sencilla"),
+    TechnicalLevel.INTERMEDIATE: _l("Técnica media"),
+    TechnicalLevel.ADVANCED: _l("Técnica avanzada"),
 }
 
 CONFIDENCE: Mapping[Confidence, Any] = {

@@ -49,7 +49,7 @@
         <h2 class="card-title">{{ _('Día %(n)s', n=day.day_index) }} · {{ day.name|stored }}</h2>
         <ul class="chips">{% for muscle in day.focus %}<li class="chip">{{ labels.label(labels.MUSCLE_GROUP, muscle) }}</li>{% endfor %}</ul>
         <ol class="exercise-list">
-          {% for item in day.exercises %}<li><a href="{{ url_for('training.exercise', slug=item.exercise.slug) }}" data-sheet>{{ item.exercise.display_name }}</a> <span class="muted">{{ item.sets }} × {{ item.rep_min }}-{{ item.rep_max }}</span></li>{% endfor %}
+          {% for item in day.exercises %}<li><a href="{{ url_for('training.exercise', slug=item.exercise.slug) }}" data-sheet>{{ item.exercise.display_name }}</a> <a class="swap-mini" href="{{ url_for('training.choose', item_id=item.id, volver=request.path) }}" data-swap aria-label="{{ _('Cambiar %(name)s', name=item.exercise.display_name) }}" title="{{ _('Cambiar ejercicio') }}">{{ icon('repeat') }}</a> <span class="muted">{{ item.sets }} × {{ item.rep_min }}-{{ item.rep_max }}</span></li>{% endfor %}
         </ol>
         <p class="meta">{{ ngettext('%(num)s ejercicio', '%(num)s ejercicios', day.exercises|length) }} · {{ _('unos %(m)s minutos', m=day.estimated_minutes) }}</p>
         <p><a class="button button-small button-secondary" href="{{ url_for('training.day', index=day.day_index) }}">{{ _('Ver día') }}</a></p>

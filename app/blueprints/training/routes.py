@@ -2,19 +2,31 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as _l
 from flask_login import current_user, login_required
 from sqlalchemy import select
 from werkzeug.wrappers import Response as WerkzeugResponse
 
 from app import labels
+from app.engine.enums import WorkoutStatus
 from app.engine.routines.generator import build_routine
 from app.extensions import db
-from app.models import Exercise
-from app.services import dashboard, exercise_media, onboarding, plans
+from app.models import Exercise, RoutineExercise, WorkoutSession
+from app.security import safe_redirect_target
+from app.services import dashboard, exercise_media, onboarding, plans, swaps, workouts
+from app.services.workouts import WorkoutError
 
 bp = Blueprint("training", __name__, url_prefix="/entrenamiento")
+
+SWAP_ERRORS = {
+    "sets_logged": _l("Ya has apuntado series de ese ejercicio hoy: cámbialo en tu rutina."),
+    "not_an_alternative": _l("Ese ejercicio no encaja con tu material o tus molestias."),
+    "closed": _l("La sesión ya no está abierta."),
+}
 
 
 def _routine_reasons(profile) -> list[str]:
@@ -112,49 +124,6 @@ def exercise(slug: str) -> str:
     return render_template(template, labels=labels, **context)
 
 
-@bp.post("/dia/<int:index>/cambiar")
-@login_required
-def swap(index: int) -> WerkzeugResponse:
-    """Aparta un ejercicio que no gusta y lo cambia por su mejor alternativa."""
-    profile = onboarding.current_profile(current_user)
-    routine = plans.active_routine(current_user)
-    if profile is None or routine is None:
-        return redirect(url_for("training.routine"))
-    day = next((item for item in routine.days if item.day_index == index), None)
-    if day is None:
-        abort(404)
-    # Se busca dentro del día de la persona: un identificador de otra cuenta no existe aquí.
-    item = next(
-        (
-            row
-            for row in day.exercises
-            if row.id == request.form.get("routine_exercise_id", type=int)
-        ),
-        None,
-    )
-    if item is None:
-        abort(404)
-    equipment = frozenset(row.code for row in current_user.equipment)
-    dropped = item.exercise.display_name
-    replacement = plans.swap_disliked_exercise(profile, item, equipment)
-    if replacement is None:
-        flash(
-            _("No hay otro ejercicio para ese hueco con tu material y tus limitaciones."),
-            "warning",
-        )
-    else:
-        db.session.commit()
-        flash(
-            _(
-                "%(old)s fuera: ahora toca %(new)s. No volverá a aparecer en tus rutinas.",
-                old=dropped,
-                new=replacement.display_name,
-            ),
-            "success",
-        )
-    return redirect(url_for("training.day", index=index))
-
-
 @bp.post("/permitir")
 @login_required
 def allow_again() -> WerkzeugResponse:
@@ -167,3 +136,93 @@ def allow_again() -> WerkzeugResponse:
         db.session.commit()
         flash(_("Vuelve a estar disponible para las próximas rutinas."), "success")
     return redirect(url_for("training.routine"))
+
+
+def _own_item(item_id: int) -> tuple[RoutineExercise, Any] | None:
+    """A slot of this person's active routine (an id from another account does not exist here)."""
+    routine = plans.active_routine(current_user)
+    profile = onboarding.current_profile(current_user)
+    if routine is None or profile is None:
+        return None
+    for day in routine.days:
+        for row in day.exercises:
+            if row.id == item_id:
+                return row, profile
+    return None
+
+
+def _open_session(session_id: int | None) -> WorkoutSession | None:
+    if not session_id:
+        return None
+    session = db.session.get(WorkoutSession, session_id)
+    if session is None or session.user_id != current_user.id:
+        return None
+    return session if session.status is WorkoutStatus.IN_PROGRESS else None
+
+
+@bp.get("/cambiar/<int:item_id>")
+@login_required
+def choose(item_id: int) -> str:
+    """Exercises that can take this slot, by muscle group (page, or dialog with ?parcial=1)."""
+    found = _own_item(item_id)
+    if found is None:
+        abort(404)
+    item, profile = found
+    equipment = frozenset(row.code for row in current_user.equipment)
+    session = _open_session(request.args.get("sesion", type=int))
+    can_today = session is not None and not any(
+        row.routine_exercise_id == item.id for row in session.sets
+    )
+    context = {
+        "choice": swaps.choices(item, profile, equipment, request.args.get("musculo")),
+        "session": session if can_today else None,
+        "back": safe_redirect_target(request.args.get("volver"), "training.routine"),
+        "labels": labels,
+        "image_frames": dashboard.image_frames,
+    }
+    parcial = request.args.get("parcial")
+    template = "training/_swap_body.html" if parcial else "training/swap.html"
+    return render_template(template, **context)
+
+
+@bp.post("/cambiar/<int:item_id>")
+@login_required
+def apply_swap(item_id: int) -> WerkzeugResponse:
+    """Use the chosen exercise only today (in the session) or from now on (in the routine)."""
+    found = _own_item(item_id)
+    if found is None:
+        abort(404)
+    item, profile = found
+    back = safe_redirect_target(request.form.get("volver"), "training.routine")
+    exercise = db.session.get(Exercise, request.form.get("exercise_id", type=int) or 0)
+    if exercise is None or not exercise.is_active:
+        flash(_("Elige uno de los ejercicios de la lista."), "error")
+        return redirect(back)
+    equipment = frozenset(row.code for row in current_user.equipment)
+    if request.form.get("destino") == "sesion":
+        session = _open_session(request.form.get("sesion_id", type=int))
+        if session is None or session.routine_day_id != item.routine_day_id:
+            flash(_("La sesión ya no está abierta."), "warning")
+            return redirect(back)
+        try:
+            workouts.substitute(session, item, exercise, profile, equipment)
+        except WorkoutError as exc:
+            flash(str(SWAP_ERRORS.get(exc.reason, _("No se ha podido cambiar."))), "error")
+            return redirect(back)
+        db.session.commit()
+        flash(_("Hoy harás %(name)s.", name=exercise.display_name), "success")
+        return redirect(f"{url_for('workouts.session', session_id=session.id)}#ex-{item.id}")
+    old = item.exercise.display_name
+    try:
+        swaps.apply_to_routine(
+            item, exercise, profile, equipment, set_aside_old=request.form.get("apartar") == "1"
+        )
+    except swaps.SwapError:
+        flash(_("Ese ejercicio no encaja con tu material o tus molestias."), "error")
+        return redirect(back)
+    db.session.commit()
+    flash(
+        _("%(new)s sustituye a %(old)s en tu rutina.", new=exercise.display_name, old=old),
+        "success",
+    )
+    return redirect(back)

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Cambiar ejercicio') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<p class="eyebrow"><a href="{{ back }}">{{ _('Volver') }}</a></p>
+<section class="card">
+  {% include "training/_swap_body.html" %}
+</section>
+{% endblock %}
