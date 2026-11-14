@@ -189,6 +189,7 @@ REGISTER_OK = {
     "password_confirm": PASSWORD,
     "consent": "y",
     "health_consent": "y",
+    "birth_date": "1990-05-05",
 }
 
 

@@ -120,7 +120,7 @@ def test_withdrawing_deletes_every_health_row_and_keeps_the_account(
 
     response = client.post("/cuenta/consentimiento/retirar", data={"current_password": PASSWORD})
     assert response.status_code == 302
-    assert response.headers["Clear-Site-Data"] == '"cache", "storage"'
+    assert "limpiar=1" in response.headers["Location"]
     seeded.session.expire_all()
     user = _user(seeded)
     assert user.health_consent_at is None

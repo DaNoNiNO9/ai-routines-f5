@@ -104,12 +104,11 @@ def _close(reason_next: str | None) -> WerkzeugResponse:
     logout_user()
     session.pop(LAST_SEEN_KEY, None)
     flash(_("Tu sesión se cerró tras un rato sin actividad. Vuelve a entrar para seguir."), "info")
-    response = redirect(
-        url_for("auth.login", next=reason_next) if reason_next else url_for("auth.login")
-    )
-    # Lo que la app guardó en este navegador para usarla sin red, fuera también.
-    response.headers["Clear-Site-Data"] = '"cache", "storage"'
-    return response
+    # La página siguiente borra con JavaScript lo guardado para usar la app sin red
+    # (?limpiar=1). Clear-Site-Data «cache» puede bloquear el navegador minutos.
+    if reason_next:
+        return redirect(url_for("auth.login", next=reason_next, limpiar=1))
+    return redirect(url_for("auth.login", limpiar=1))
 
 
 @bp.before_app_request

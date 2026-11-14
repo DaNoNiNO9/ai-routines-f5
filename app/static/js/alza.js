@@ -368,6 +368,23 @@
     }
   }
 
+  /* Tras borrar la cuenta, retirar el consentimiento o cerrar la sesión por
+     inactividad, el servidor redirige con ?limpiar=1: fuera la cola de series y las
+     páginas guardadas para usar la app sin red (llevan datos de salud). */
+  (function cleanAfterServerSignal() {
+    var params = new URLSearchParams(window.location.search);
+    if (!params.has("limpiar")) {
+      return;
+    }
+    writeQueue([]);
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage("logout");
+    }
+    params.delete("limpiar");
+    var rest = params.toString();
+    window.history.replaceState(null, "", window.location.pathname + (rest ? "?" + rest : "") + window.location.hash);
+  })();
+
   function notice(text, kind) {
     var list = document.querySelector(".flashes");
     if (!list) {

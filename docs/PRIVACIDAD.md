@@ -11,7 +11,7 @@ Acompaña al borrador de política de privacidad (`/privacidad`, plantilla `app/
 | Prueba | `users.health_consent_at` (fecha y hora UTC) y `users.health_consent_version` (versión del texto, hoy `2026-11-12`, en `app/services/privacy.py`). Sale también en el CSV `cuenta.csv` de la exportación. |
 | Cuentas anteriores | No tienen consentimiento registrado: la próxima vez que entran se les pide en `/consentimiento` antes de ver nada con datos de salud. |
 | Sin consentimiento | Solo se abren cuenta, exportación, borrado, suscripción, precios, privacidad y páginas públicas. Todo lo demás redirige a `/consentimiento`. La lista está en `app/blueprints/privacy/routes.py` (`OPEN_WITHOUT_CONSENT`). |
-| Retirarlo | Cuenta › Tus datos de salud › Retirar (pide la contraseña). Se borran **en el momento** cuestionario, perfiles, planes, rutinas, sesiones y series, pesajes, medidas, comida, actividad, ajustes y material. La cuenta y la suscripción siguen. Además se pide al navegador que borre lo guardado para usar la app sin red (`Clear-Site-Data`). |
+| Retirarlo | Cuenta › Tus datos de salud › Retirar (pide la contraseña). Se borran **en el momento** cuestionario, perfiles, planes, rutinas, sesiones y series, pesajes, medidas, comida, actividad, ajustes y material. La cuenta y la suscripción siguen. Además la página siguiente borra lo guardado para usar la app sin red (`?limpiar=1`, igual que al cerrar sesión). |
 | Cambiar el texto | Si cambia lo que se consiente, sube `CONSENT_VERSION`. Hoy no se vuelve a pedir automáticamente a quien ya dio una versión anterior: decidir con el abogado si hace falta. |
 
 ## 2. Qué sale de la app y hacia dónde

@@ -256,11 +256,11 @@ def _logged_days(model: type, user: User, since: date, until: date) -> set[date]
 
 
 def _workout_days(user: User, since: date, until: date) -> set[date]:
+    from datetime import UTC, datetime, time
+
     from app.engine.enums import WorkoutStatus
     from app.formatting import local_date
     from app.models import WorkoutSession
-
-    from datetime import UTC, datetime, time
 
     # Un día de margen a cada lado por la zona horaria; el filtro fino va después.
     lower = datetime.combine(since - timedelta(days=1), time.min, tzinfo=UTC)

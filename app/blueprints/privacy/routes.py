@@ -97,8 +97,7 @@ def withdraw() -> str | WerkzeugResponse:
             _("Has retirado tu consentimiento: hemos borrado todos tus datos de salud."),
             "success",
         )
-        response = redirect(url_for("account.index"))
-        # Las pantallas guardadas en el móvil para usarlas sin red también llevan datos de salud.
-        response.headers["Clear-Site-Data"] = '"cache", "storage"'
-        return response
+        # La página siguiente borra con JavaScript lo guardado para usar la app sin red
+        # (?limpiar=1). Clear-Site-Data «cache» puede bloquear el navegador minutos.
+        return redirect(url_for("account.index", limpiar=1))
     return render_template("privacy/withdraw.html")

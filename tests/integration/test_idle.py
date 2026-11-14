@@ -37,7 +37,7 @@ def test_a_computer_left_idle_goes_to_the_login(
     assert response.status_code == 302
     assert "/entrar" in response.headers["Location"]
     assert "next=/panel" in response.headers["Location"]
-    assert response.headers["Clear-Site-Data"] == '"cache", "storage"'
+    assert "limpiar=1" in response.headers["Location"]
     page = client.get("/entrar").get_data(as_text=True)
     assert "Tu sesión se cerró tras un rato sin actividad" in page
     assert client.get("/panel", headers=DESKTOP).status_code == 302  # ya no hay sesión
@@ -111,7 +111,7 @@ def test_an_unattended_page_is_sent_to_the_login(
     _register(client)
     _age_session(client, 10 * 60)
     response = client.get("/sesion/caducada", headers=DESKTOP)
-    assert response.headers["Location"].endswith("/entrar")
+    assert response.headers["Location"].endswith("/entrar?limpiar=1")
     # Si otra pestaña seguía activa, no se cierra.
     _register(client, email="otra@example.com")
     response = client.get("/sesion/caducada", headers=DESKTOP)
