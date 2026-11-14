@@ -87,7 +87,9 @@ def _diary_page(day: date, **overrides: object) -> str:
         and not foods
         and bool(food_service.entries(current_user, day - timedelta(days=1))),
         today=current_user.today(),
-        rows=tracking.diary_rows(current_user, current_user.today()),
+        week=tracking.week_of(current_user, day, current_user.today()),
+        first_steps=tracking.first_steps(current_user, current_user.today()),
+        rows=tracking.history_rows(current_user, current_user.today()),
         steps_target=_steps_target(),
         labels=labels,
         **forms,

@@ -25,7 +25,7 @@ CEILINGS = {
     "/nutricion": 15,
     "/entrenamiento": 15,
     "/entrenamiento/dia/1": 20,
-    "/diario": 15,
+    "/diario": 20,  # + «Tu semana» (5 fijas) y «Primeros pasos» (3 fijas)
     "/revision": 15,
     "/entreno/historial": 15,
     "/entreno/progreso": 10,

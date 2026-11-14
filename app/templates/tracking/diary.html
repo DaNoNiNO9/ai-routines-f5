@@ -117,8 +117,55 @@
   </section>
 </div>
 
+<section class="card" aria-labelledby="week-title">
+  <div class="week-head">
+    <h2 id="week-title" class="card-title">{{ _('Tu semana') }}</h2>
+    <div class="week-nav">
+      {% if week.previous %}<a class="button button-secondary button-small" href="{{ url_for('tracking.diary', fecha=week.previous.isoformat()) }}" aria-label="{{ _('Semana anterior') }}">{{ icon('chevron-left') }}</a>{% endif %}
+      {% if week.following %}<a class="button button-secondary button-small" href="{{ url_for('tracking.diary', fecha=week.following.isoformat()) }}" aria-label="{{ _('Semana siguiente') }}">{{ icon('chevron-right') }}</a>{% endif %}
+    </div>
+  </div>
+  <ol class="week-strip">
+    {% for d in week.days %}
+      {% set marks = [] %}
+      {% if d.weight %}{% if marks.append(_('peso')) %}{% endif %}{% endif %}
+      {% if d.food %}{% if marks.append(_('comida')) %}{% endif %}{% endif %}
+      {% if d.activity %}{% if marks.append(_('pasos')) %}{% endif %}{% endif %}
+      {% if d.workout %}{% if marks.append(_('entreno')) %}{% endif %}{% endif %}
+      <li class="week-day{% if d.day == day %} is-selected{% endif %}{% if d.day == today %} is-today{% endif %}">
+        {% if d.before_signup or d.future %}
+          <span class="week-cell is-off" aria-label="{{ d.day|fdate('long') }}"><span class="week-name">{{ d.day|fdate('narrow') }}</span><span class="week-num">{{ d.day.day }}</span></span>
+        {% else %}
+          <a class="week-cell" href="{{ url_for('tracking.diary', fecha=d.day.isoformat()) }}"
+             aria-label="{{ d.day|fdate('long') }}{% if marks %}: {{ marks|join(', ') }}{% else %}: {{ _('nada apuntado') }}{% endif %}"{% if d.day == day %} aria-current="date"{% endif %}>
+            <span class="week-name">{{ d.day|fdate('narrow') }}</span>
+            <span class="week-num">{{ d.day.day }}</span>
+            <span class="week-dots" aria-hidden="true">
+              <i class="dot dot-weight{% if d.weight %} on{% endif %}"></i><i class="dot dot-food{% if d.food %} on{% endif %}"></i><i class="dot dot-move{% if d.activity or d.workout %} on{% endif %}"></i>
+            </span>
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+  <p class="meta week-legend"><i class="dot dot-weight on"></i> {{ _('peso') }} · <i class="dot dot-food on"></i> {{ _('comida') }} · <i class="dot dot-move on"></i> {{ _('pasos o entreno') }}</p>
+
+  {% if first_steps %}
+    <h3 class="h3">{{ _('Tus primeros pasos') }}</h3>
+    <ul class="first-steps">
+      {% set texts = {'weight': _('Pésate por la mañana y apúntalo.'), 'food': _('Apunta lo que comes hoy.'), 'workout': _('Haz tu primer entreno.')} %}
+      {% for step in first_steps %}
+        <li class="{{ 'is-done' if step.done else '' }}">{{ icon('circle-check' if step.done else 'arrow-right') }}<span>{{ texts[step.key] }}</span>{% if step.done %}<span class="visually-hidden"> ({{ _('hecho') }})</span>{% endif %}</li>
+      {% endfor %}
+    </ul>
+    <p class="meta">{{ _('La revisión de cada dos semanas necesita pesajes y comida apuntados: cuanto antes empieces, antes se ajusta tu plan.') }}</p>
+  {% endif %}
+</section>
+
+{% if rows %}
 <section class="card">
-  <h2 class="card-title">{{ _('Últimos 14 días') }}</h2>
+  <h2 class="card-title">{{ _('Tu historial') }}</h2>
+  <p class="meta">{{ _('Solo los días en los que apuntaste algo.') }}</p>
   <div class="table-wrap">
     <table class="table">
       <thead><tr><th>{{ _('Día') }}</th><th>kg</th><th>kcal</th><th><abbr title="{{ _('Proteína / Carbohidratos / Grasa') }}">{{ _('P/C/G') }}</abbr></th><th>{{ _('Plan') }}</th><th>{{ _('Pasos') }}</th><th>{{ _('Cardio') }}</th></tr></thead>
@@ -138,6 +185,7 @@
     </table>
   </div>
 </section>
+{% endif %}
 
 {% call help_dialog('comida', _('Cómo apuntar lo que comes')) %}
   <p>{{ _('Hay dos formas, y las dos sirven para la revisión:') }}</p>

@@ -87,6 +87,8 @@ def fdate(value: date | datetime | str | None, style: str = "short") -> str:
         value = _local(value).date()
     if style == "long":
         return format_date(value, format="long")
+    if style == "narrow":
+        return format_date(value, format="EEEEE")
     if style == "weekday":
         text = format_skeleton("EEEEd", value, locale=get_locale())
         return text[:1].upper() + text[1:]

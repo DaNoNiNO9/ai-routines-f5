@@ -201,3 +201,149 @@ def entry_for(user: User, day: date) -> DiaryRow:
     """What is already logged for ``day`` (to pre-fill the forms)."""
     rows = diary_rows(user, day, days=1)
     return rows[0]
+
+
+# --- «Tu semana» y «Primeros pasos» (en vez de 14 filas vacías) ---------------
+
+HISTORY_MIN_DAYS = 7
+HISTORY_LIMIT = 30
+
+
+@dataclass(frozen=True)
+class WeekDay:
+    """One day of the week strip: what was logged, and whether it can be opened."""
+
+    day: date
+    weight: bool
+    food: bool
+    activity: bool
+    workout: bool
+    before_signup: bool
+    future: bool
+
+
+@dataclass(frozen=True)
+class Week:
+    """Monday to Sunday around a day, with the neighbouring weeks when they make sense."""
+
+    days: list[WeekDay]
+    previous: date | None
+    following: date | None
+
+
+@dataclass(frozen=True)
+class FirstStep:
+    """One thing to do in the first days, ticked off on its own."""
+
+    key: str
+    done: bool
+
+
+def signup_day(user: User) -> date:
+    """The calendar day the account was created, in the person's time zone."""
+    from app.formatting import local_date
+
+    return local_date(user.created_at, user)
+
+
+def _logged_days(model: type, user: User, since: date, until: date) -> set[date]:
+    column = model.logged_on
+    return set(
+        db.session.scalars(
+            select(column).where(model.user_id == user.id, column >= since, column <= until)
+        )
+    )
+
+
+def _workout_days(user: User, since: date, until: date) -> set[date]:
+    from app.engine.enums import WorkoutStatus
+    from app.formatting import local_date
+    from app.models import WorkoutSession
+
+    from datetime import UTC, datetime, time
+
+    # Un día de margen a cada lado por la zona horaria; el filtro fino va después.
+    lower = datetime.combine(since - timedelta(days=1), time.min, tzinfo=UTC)
+    upper = datetime.combine(until + timedelta(days=2), time.min, tzinfo=UTC)
+    moments = db.session.scalars(
+        select(WorkoutSession.started_at).where(
+            WorkoutSession.user_id == user.id,
+            WorkoutSession.status == WorkoutStatus.COMPLETED,
+            WorkoutSession.started_at >= lower,
+            WorkoutSession.started_at < upper,
+        )
+    )
+    days = {local_date(moment, user) for moment in moments}
+    return {d for d in days if since <= d <= until}
+
+
+def week_of(user: User, day: date, today: date) -> Week:
+    """The Monday-to-Sunday strip that contains ``day``."""
+    from app.models import FoodEntry
+
+    monday = day - timedelta(days=day.weekday())
+    sunday = monday + timedelta(days=6)
+    start = signup_day(user)
+    weights = _logged_days(WeightLog, user, monday, sunday)
+    intakes = _logged_days(IntakeLog, user, monday, sunday) | _logged_days(
+        FoodEntry, user, monday, sunday
+    )
+    moved = _logged_days(ActivityLog, user, monday, sunday)
+    trained = _workout_days(user, monday, sunday)
+    days = [
+        WeekDay(
+            day=current,
+            weight=current in weights,
+            food=current in intakes,
+            activity=current in moved,
+            workout=current in trained,
+            before_signup=current < start,
+            future=current > today,
+        )
+        for current in (monday + timedelta(days=offset) for offset in range(7))
+    ]
+    previous = monday - timedelta(days=7)
+    following = monday + timedelta(days=7)
+    return Week(
+        days=days,
+        previous=previous if previous + timedelta(days=6) >= start else None,
+        following=following if following <= today else None,
+    )
+
+
+def first_steps(user: User, today: date) -> list[FirstStep] | None:
+    """The checklist for the first days; ``None`` once done or after two weeks."""
+    from app.engine.enums import WorkoutStatus
+    from app.models import FoodEntry, WorkoutSession
+
+    if (today - signup_day(user)).days > 14:
+        return None
+
+    def exists(model: type, *conditions: object) -> bool:
+        return (
+            db.session.scalar(
+                select(model.id).where(model.user_id == user.id, *conditions).limit(1)
+            )
+            is not None
+        )
+
+    steps = [
+        FirstStep("weight", exists(WeightLog)),
+        FirstStep("food", exists(IntakeLog) or exists(FoodEntry)),
+        FirstStep(
+            "workout", exists(WorkoutSession, WorkoutSession.status == WorkoutStatus.COMPLETED)
+        ),
+    ]
+    return None if all(step.done for step in steps) else steps
+
+
+def history_rows(user: User, today: date) -> list[DiaryRow]:
+    """Recent days with something logged (never empty rows); empty until there are 7."""
+    start = signup_day(user)
+    if (today - start).days + 1 < HISTORY_MIN_DAYS:
+        return []  # ni siquiera hay siete días de cuenta: nada que consultar
+    since = max(start, today - timedelta(days=89))
+    rows = [
+        row for row in diary_rows(user, today, days=(today - since).days + 1) if not row.is_empty
+    ]
+    return rows[:HISTORY_LIMIT] if len(rows) >= HISTORY_MIN_DAYS else []
