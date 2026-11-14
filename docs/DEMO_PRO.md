@@ -21,7 +21,21 @@ navegador ──https──▶ Cloudflare ──túnel──▶ cloudflared (est
 
 Cada arranque aplica las migraciones y carga el catálogo (las dos cosas son idempotentes).
 
-## Pasos
+## Lo más rápido: enlace temporal (sin dominio ni cuenta)
+
+Con `serve_pro.ps1` en marcha, en otra terminal:
+
+```powershell
+& "$env:LOCALAPPDATA\cloudflared\cloudflared.exe" tunnel --no-autoupdate --url http://127.0.0.1:8000
+```
+
+Imprime una dirección `https://…trycloudflare.com` que funciona al momento. Cambia cada vez que se abre y deja de funcionar al cerrar la terminal. Es lo que se usó el 2026-11-14 para la primera demo.
+
+## Con dominio propio
+
+Hace falta un dominio en tu cuenta de Cloudflare (comprado, o dado de alta con sus DNS en Cloudflare).
+
+### Pasos
 
 Una sola vez:
 
