@@ -25,6 +25,7 @@ def make_app(tmp_path: Path) -> AppFactory:
 
     def _make(**overrides: Any) -> Flask:
         overrides.setdefault("LOG_DIR", str(tmp_path / "logs"))
+        overrides.setdefault("IMPORTS_DIR", str(tmp_path / "imports"))
         instance = create_app("testing", overrides)
         instance.test_client_class = FreshClient
         return instance

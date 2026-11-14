@@ -84,6 +84,9 @@ def withdraw_consent(user: User, *, record: bool = True) -> None:
     if record:
         record_erasure(user.id, ERASURE_HEALTH)
     db.session.commit()
+    from app.services.hevy import purge_pending
+
+    purge_pending(user.id)  # un CSV de Hevy a medio importar
     logger.info("Health-data consent withdrawn by user %s: health data deleted", user.id)
 
 

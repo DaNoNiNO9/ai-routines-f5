@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Importar desde Hevy') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('imports.hevy_upload') }}">{{ _('Importar desde Hevy') }}</a></p>
+  <h1>{{ _('Revisa antes de importar') }}</h1>
+  <p class="lead">{{ ngettext('%(num)s entreno', '%(num)s entrenos', history.workouts|length) }} · {{ first|fdate('long') }} – {{ last|fdate('long') }}</p>
+  {% if history.unit == 'lb' %}<p class="meta">{{ _('Los pesos venían en libras: los pasamos a kilos.') }}</p>{% endif %}
+  {% if history.skipped_cardio %}<p class="meta">{{ ngettext('%(num)s fila de cardio (tiempo o distancia) no se importa.', '%(num)s filas de cardio (tiempo o distancia) no se importan.', history.skipped_cardio) }}</p>{% endif %}
+</section>
+
+<form method="post" action="{{ url_for('imports.hevy_confirm') }}" class="form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="token" value="{{ token }}">
+  <section class="card">
+    <h2 class="card-title">{{ _('Ejercicios') }}</h2>
+    <p class="meta">{{ _('Cambia la pareja si no es la misma. Si lo dejas vacío, ese ejercicio no se importa.') }}</p>
+    <div class="table-wrap">
+      <table class="table import-table">
+        <thead><tr><th>{{ _('En Hevy') }}</th><th>{{ _('Series') }}</th><th>{{ _('En Alza') }}</th></tr></thead>
+        <tbody>
+          {% for row in rows %}
+            <tr>
+              <td>{{ row.name }}</td>
+              <td>{{ row.sets }}</td>
+              <td>
+                <input class="field-input" type="text" name="par-{{ loop.index0 }}" list="ejercicios-alza"
+                       value="{{ row.match.exercise.display_name if row.match.exercise else '' }}"
+                       aria-label="{{ _('Ejercicio de Alza para %(name)s', name=row.name) }}">
+                {% if not row.match.exercise %}<span class="badge badge-warn">{{ _('Sin pareja: no se importa') }}</span>
+                {% elif not row.match.sure %}<span class="badge">{{ _('Suposición: revísala') }}</span>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <datalist id="ejercicios-alza">
+      {% for exercise in choices %}<option value="{{ exercise.display_name }}">{% endfor %}
+    </datalist>
+  </section>
+  <p class="meta">{{ _('Los entrenos que ya estén en Alza (misma hora de inicio) no se duplican.') }}</p>
+  <div>
+    <button type="submit" class="button">{{ _('Importar') }}</button>
+  </div>
+</form>
+<form method="post" action="{{ url_for('imports.hevy_cancel') }}" class="inline-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button type="submit" class="link-button">{{ _('Cancelar y borrar el fichero') }}</button>
+</form>
+{% endblock %}

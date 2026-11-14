@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Importar desde Hevy') }} · {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow"><a href="{{ url_for('account.index') }}">{{ _('Cuenta') }}</a></p>
+  <h1>{{ _('Trae tus entrenos de Hevy') }}</h1>
+  <p class="lead">{{ _('Tu historial pasa a Alza: el peso de la última vez, tus marcas y tu progreso siguen donde los dejaste.') }}</p>
+</section>
+
+<div class="grid grid-2">
+  <section class="card">
+    <h2 class="card-title">{{ _('1. Exporta desde Hevy') }}</h2>
+    <ol class="plain-steps">
+      <li>{{ _('En Hevy, abre Perfil y luego Ajustes.') }}</li>
+      <li>{{ _('Entra en «Exportar e importar datos» y elige «Exportar entrenos».') }}</li>
+      <li>{{ _('Guarda el fichero CSV en el móvil o el ordenador.') }}</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">{{ _('2. Súbelo aquí') }}</h2>
+    <form method="post" enctype="multipart/form-data" class="form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field">
+        <label class="field-label" for="archivo">{{ _('Fichero CSV de Hevy') }}</label>
+        <input id="archivo" class="field-input" type="file" name="archivo" accept=".csv,text/csv" required>
+      </div>
+      <button type="submit" class="button">{{ _('Ver qué se importa') }}</button>
+    </form>
+    <p class="meta">{{ _('Antes de guardar nada te enseñamos cada ejercicio y con cuál de Alza lo emparejamos. El fichero se borra al terminar.') }}</p>
+  </section>
+</div>
+{% endblock %}

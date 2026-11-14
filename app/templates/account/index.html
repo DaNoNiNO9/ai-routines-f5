@@ -85,6 +85,12 @@
   </section>
 
   <section class="card card-span">
+    <h2 class="card-title">{{ icon('repeat') }}{{ _('Trae tus entrenos de Hevy') }}</h2>
+    <p>{{ _('Importa tu historial de Hevy y sigue con los mismos pesos, marcas y progreso.') }}</p>
+    <p><a class="button button-secondary" href="{{ url_for('imports.hevy_upload') }}">{{ _('Importar desde Hevy') }}</a></p>
+  </section>
+
+  <section class="card card-span">
     <h2 class="card-title">{{ icon('arrow-right') }}{{ _('Llévate tus datos') }}</h2>
     <div class="grid-2">
       <div>

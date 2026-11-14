@@ -71,6 +71,8 @@ class BaseConfig:
     LOG_DIR = os.environ.get("LOG_DIR", str(BASE_DIR / "logs"))
     LOG_TO_FILE = True
     LOG_RETENTION_DAYS = 30
+    # Lo más grande que se sube: la exportación de Hevy (8 MB) con margen.
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024
     # Más que lo que viven las copias de seguridad (30 días): ver app/models/privacy.py.
     ERASURE_LOG_DAYS = 35
 

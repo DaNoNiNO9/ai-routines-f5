@@ -22,7 +22,7 @@
           {% set session = item.session %}
           <tr>
             <td>{{ session.started_at|fdate }}</td>
-            <td>{% if session.routine_day %}{{ session.routine_day.name|stored }}{% else %}—{% endif %}{% if session.status.value == 'abandoned' %} <span class="badge">{{ _('abandonada') }}</span>{% endif %}{% if item.prs %} <span class="badge status-ok">{{ ngettext('%(num)s marca', '%(num)s marcas', item.prs) }}</span>{% endif %}</td>
+            <td>{% if session.routine_day %}{{ session.routine_day.name|stored }}{% elif session.notes and session.notes.startswith('Hevy · ') %}{{ session.notes }}{% else %}—{% endif %}{% if session.status.value == 'abandoned' %} <span class="badge">{{ _('abandonada') }}</span>{% endif %}{% if item.prs %} <span class="badge status-ok">{{ ngettext('%(num)s marca', '%(num)s marcas', item.prs) }}</span>{% endif %}</td>
             <td>{{ item.working_sets }}</td>
             <td>{{ item.tonnage_kg|num(0) }}</td>
             <td>{{ item.duration_minutes }}</td>
@@ -38,6 +38,7 @@
       {{ icon('clock') }}
       <p>{{ _('Todavía no hay sesiones registradas. Empieza la próxima desde el panel o desde la rutina.') }}</p>
       <a class="button" href="{{ url_for('training.routine') }}">{{ icon('dumbbell') }}{{ _('Ver la rutina') }}</a>
+      <p class="meta"><a href="{{ url_for('imports.hevy_upload') }}">{{ _('¿Vienes de Hevy? Trae tus entrenos') }}</a></p>
     </div>
   </section>
 {% endif %}

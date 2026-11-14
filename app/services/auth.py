@@ -251,12 +251,14 @@ def delete_account(user: User) -> None:
     routines, sessions, sets and every log with them.
     """
     from app.models.privacy import ERASURE_ACCOUNT
+    from app.services.hevy import purge_pending
     from app.services.privacy import record_erasure
 
     user_id = user.id
     db.session.delete(user)
     record_erasure(user_id, ERASURE_ACCOUNT)
     db.session.commit()
+    purge_pending(user_id)  # un CSV de Hevy a medio importar
     logger.info("Account %s deleted at the owner's request", user_id)
 
 
