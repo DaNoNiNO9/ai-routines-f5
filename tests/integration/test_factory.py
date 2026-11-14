@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import pytest
 from flask import Flask
 
@@ -131,3 +133,34 @@ def test_no_two_endpoints_share_a_url_and_method(app: Flask) -> None:
                 clashes.append(f"{method} {rule.rule}: {seen[key]} y {rule.endpoint}")
             seen[key] = rule.endpoint
     assert clashes == []
+
+
+def test_behind_a_tunnel_links_use_the_public_https_address(make_app: Callable[..., Flask]) -> None:
+    app = make_app(BEHIND_PROXY=True, SERVER_NAME=None)
+
+    @app.get("/_enlace")
+    def _enlace() -> str:
+        from flask import request, url_for
+
+        return f"{url_for('main.index', _external=True)} {request.remote_addr}"
+
+    headers = {
+        "X-Forwarded-Proto": "https",
+        "X-Forwarded-Host": "demo.alza.fit",
+        "X-Forwarded-For": "203.0.113.7",
+    }
+    text = app.test_client().get("/_enlace", headers=headers).get_data(as_text=True)
+    assert text == "https://demo.alza.fit/ 203.0.113.7"
+
+
+def test_without_a_proxy_forwarded_headers_are_ignored(make_app: Callable[..., Flask]) -> None:
+    app = make_app()
+
+    @app.get("/_enlace")
+    def _enlace() -> str:
+        from flask import url_for
+
+        return url_for("main.index", _external=True)
+
+    text = app.test_client().get("/_enlace", headers={"X-Forwarded-Host": "evil.example"})
+    assert "evil" not in text.get_data(as_text=True)

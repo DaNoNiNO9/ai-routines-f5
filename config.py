@@ -93,6 +93,9 @@ class BaseConfig:
     # account (checkout, trial, portal, cancellations); "stripe" talks to the real API.
     BILLING_BACKEND = os.environ.get("BILLING_BACKEND", "fake")
     PAYWALL_ENABLED = env_bool("PAYWALL_ENABLED", True)
+    # Detrás de un proxy o túnel (Cloudflare, nginx): fiarse de X-Forwarded-Proto/Host/For
+    # de un solo salto. Sin proxy delante, dejarlo apagado: cualquiera podría falsearlos.
+    BEHIND_PROXY = env_bool("BEHIND_PROXY", False)
     BILLING_TRIAL_DAYS = 7
     BILLING_CURRENCY = "eur"
     BILLING_PLANS: dict[str, dict[str, Any]] = {

@@ -17,6 +17,7 @@ from typing import Any
 from flask import Flask, current_app, session
 from flask_babel import get_locale
 from flask_babel import lazy_gettext as _l
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.cli import register_cli
 from app.errors import register_error_handlers
@@ -67,6 +68,10 @@ def create_app(
 
     if config_class is ProductionConfig:
         ProductionConfig.validate(app.config)
+    if app.config.get("BEHIND_PROXY"):
+        # https y el dominio público llegan en cabeceras: sin esto, url_for(_external)
+        # daría http://127.0.0.1 y el límite de intentos vería a todos con la IP del túnel.
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)  # type: ignore[method-assign]
     _prepare_instance_folder(app)
 
     configure_logging(app)
