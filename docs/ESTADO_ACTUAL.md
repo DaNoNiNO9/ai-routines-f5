@@ -30,7 +30,7 @@ Documento vivo: se actualiza **dentro** de cada fase, no solo al cerrarla. Para 
 | Comprobación | Estado |
 |---|---|
 | Arranque de la app | OK |
-| Suite | 818 tests en verde |
+| Suite | 844 tests en verde |
 | Cobertura de `app/` | 98,3 % |
 | Linter y formato | limpios |
 | Migración aplicada | `1784f54561b7` (cabeza) |
@@ -61,12 +61,12 @@ Después (T-150 a T-157): **escáner en iPhone** con ZXing como plan B y **RGPD*
 
 RGPD cerrado en el código el 2026-11-12 (T-158: borrados que se vuelven a aplicar al restaurar una copia). Lo que queda es de fuera: abogado y alojamiento.
 
-**Para la sesión del 2026-11-13** (pedido por el dueño del producto; traerá más cosas):
+**Sesión del 2026-11-14** (T-159 a T-164): cambiador de idioma en la cabecera, ayuda a demanda («?») en siete pantallas, revisión del inglés pantalla a pantalla (nombres generados y fechas), importación del historial de Hevy por CSV y entorno de producción local con túnel de Cloudflare a un subdominio propio (`docs/DEMO_PRO.md`).
 
-1. **Ayuda dentro de la app**: modales de ayuda donde haga falta (revisar pantalla a pantalla dónde se atasca alguien nuevo: el día suave, la reserva RIR, la revisión quincenal, la fecha de llegada, el material, los macros…). Que no estorben a quien ya sabe: se abren a demanda.
-2. **Cambiador de idioma visible** (hoy el idioma solo se cambia en Cuenta o por el navegador): en la cabecera o el pie, también para quien no ha entrado.
-3. **Revisar las traducciones** al inglés pantalla a pantalla, con capturas, no solo el catálogo al 100 %.
-4. Lo que diga el dueño mañana.
+Pendiente de esa sesión:
+
+1. Túnel: falta que el dueño haga `cloudflared tunnel login` y diga el subdominio.
+2. Rutinas de Hevy (API con clave de Hevy Pro, o deducidas del historial): aplazado por el dueño.
 
 Pendiente sin fecha:
 
