@@ -128,3 +128,45 @@ def test_the_archive_readme_is_translated(client: FlaskClient, seeded: SQLAlchem
     assert leeme.startswith("Alza data export")
     assert "Every version of the nutrition plan." in leeme
     assert cabecera.startswith("version,estado,desde")
+
+
+def test_the_header_switches_language_from_any_page(client: FlaskClient) -> None:
+    page = client.get("/precios").get_data(as_text=True)
+    assert 'name="lang" value="en"' in page
+    assert 'title="Read in English"' in page
+    response = client.post("/idioma", data={"lang": "en", "next": "/precios"})
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/precios")
+    english = client.get("/precios").get_data(as_text=True)
+    assert '<html lang="en"' in english
+    assert 'name="lang" value="es"' in english
+    assert 'title="Ver en español"' in english
+
+
+def test_an_unknown_language_or_a_foreign_next_changes_nothing(client: FlaskClient) -> None:
+    response = client.post("/idioma", data={"lang": "xx", "next": "https://evil.example/"})
+    assert response.headers["Location"].endswith("/")
+    assert "evil" not in response.headers["Location"]
+    assert '<html lang="es"' in client.get("/").get_data(as_text=True)
+
+
+def test_switching_with_an_account_is_remembered_in_it(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    _signup(client)
+    client.post("/idioma", data={"lang": "en", "next": "/panel"})
+    user = seeded.session.scalar(select(User))
+    assert user is not None
+    assert user.locale == "en"
+
+
+def test_the_account_setting_wins_over_an_earlier_switch(
+    client: FlaskClient, seeded: SQLAlchemy
+) -> None:
+    _signup(client)
+    client.get("/panel?lang=en")
+    client.post(
+        "/cuenta/perfil",
+        data={"display_name": "Ana", "locale": "es", "timezone": "Europe/Madrid"},
+    )
+    assert '<html lang="es"' in client.get("/panel").get_data(as_text=True)

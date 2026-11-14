@@ -40,6 +40,7 @@ OPEN_WITHOUT_CONSENT = frozenset(
         "main.favicon",
         "main.health",
         "main.toggle_theme",
+        "main.set_language",
     }
 )
 

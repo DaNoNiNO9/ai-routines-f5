@@ -47,6 +47,16 @@
           <li><a class="button button-small" href="{{ url_for('auth.register') }}">{{ _('Crear cuenta') }}</a></li>
         {% endif %}
         <li>
+          {% set other_lang = 'en' if current_locale.startswith('es') else 'es' %}
+          <form method="post" action="{{ url_for('main.set_language') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="lang" value="{{ other_lang }}">
+            <input type="hidden" name="next" value="{{ request.full_path if request.query_string else request.path }}">
+            {# El nombre del otro idioma va en ese idioma: quien no lee este tiene que reconocerlo. #}
+            <button type="submit" class="theme-toggle lang-toggle" lang="{{ other_lang }}" title="{{ 'Read in English' if other_lang == 'en' else 'Ver en español' }}">{{ icon('languages') }}<span aria-hidden="true">{{ other_lang|upper }}</span><span class="visually-hidden">{{ 'English' if other_lang == 'en' else 'Español' }}</span></button>
+          </form>
+        </li>
+        <li>
           <form method="post" action="{{ url_for('main.toggle_theme') }}" class="inline-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="next" value="{{ request.full_path if request.query_string else request.path }}">

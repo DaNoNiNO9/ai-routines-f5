@@ -15,8 +15,11 @@ from flask import (
 )
 from flask_babel import get_locale
 from flask_babel import gettext as _
+from flask_login import current_user
 from werkzeug.wrappers import Response as WerkzeugResponse
 
+from app.extensions import db
+from app.i18n import LANG_SESSION_KEY
 from app.security import safe_redirect_target
 
 bp = Blueprint("main", __name__)
@@ -101,4 +104,16 @@ def health() -> Response:
 def toggle_theme() -> WerkzeugResponse:
     """Switch between the dark and light themes (kept in the session, no JS needed)."""
     session["theme"] = THEMES[1] if session.get("theme", THEMES[0]) == THEMES[0] else THEMES[0]
+    return redirect(safe_redirect_target(request.form.get("next"), "main.index"))
+
+
+@bp.post("/idioma")
+def set_language() -> WerkzeugResponse:
+    """Switch the language from any page; with an account, it is remembered there too."""
+    lang = request.form.get("lang", "")
+    if lang in current_app.config["LANGUAGES"]:
+        session[LANG_SESSION_KEY] = lang
+        if current_user.is_authenticated and current_user.locale != lang:
+            current_user.locale = lang
+            db.session.commit()
     return redirect(safe_redirect_target(request.form.get("next"), "main.index"))

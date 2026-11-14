@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from flask import Blueprint, Response, flash, redirect, render_template, url_for
+from flask import Blueprint, Response, flash, redirect, render_template, session, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as _l
 from flask_login import current_user, login_required, logout_user
@@ -21,6 +21,7 @@ from app.blueprints.account.forms import (
 from app.blueprints.auth.routes import password_messages
 from app.engine.nutrition import build_nutrition_plan
 from app.extensions import db, limiter
+from app.i18n import LANG_SESSION_KEY
 from app.services import auth as auth_service
 from app.services import billing, exports, onboarding, plans
 
@@ -65,6 +66,7 @@ def save_profile() -> str | WerkzeugResponse:
         return _page(profile_form=form)
     current_user.display_name = (form.display_name.data or "").strip()
     current_user.locale = form.locale.data
+    session[LANG_SESSION_KEY] = form.locale.data  # si no, un idioma elegido antes mandaría
     current_user.timezone = form.timezone.data
     db.session.commit()
     flash(_("Datos guardados."), "success")

@@ -817,3 +817,6 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 
 .stat.is-today { border-color: var(--accent); }
 .stat.is-other { opacity: 0.6; }
+
+/* Cambiador de idioma: icono y el código del otro idioma, junto al tema. */
+.lang-toggle { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.04em; }
